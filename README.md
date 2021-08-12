@@ -30,8 +30,8 @@ ArshWell has many features, including:
 | ------ | ------ |
 | Routing | JSON files for routing _(including lg, pagination and params)_ |
 | DB objects | Easy to create PHP classes for every MySQL table |
-| Layouts | HTML/CSS/JS layouts for pages |
-| Pieces | Reusable HTML/CSS/JS codes |
+| Layouts | HTML/SCSS/JS layouts for pages |
+| Pieces | Reusable HTML/SCSS/JS codes |
 | Modules | Easy to create CMS pages |
 | Compressing | CSS/JS compressing with minimal resources for every page |
 
@@ -41,7 +41,7 @@ DevPanel is a built-in panel which has many features, including:
 
 | Feature |
 | ------ |
-| Recompiling CSS/JS files |
+| Recompiling SCSS/JS files |
 | Downloading project as ZIP |
 | Updating with newer version (throw ZIP file) |
 | Removing dangerous files |
