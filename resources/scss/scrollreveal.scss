@@ -1,0 +1,13 @@
+/**
+    Custom CSS necessary for ScrollReveal JS library.
+
+    @source: http://demo.prologue.ro/prologue/static/css/style.css
+    @author: valentin@iscreambrands.ro
+*/
+
+[scrollreveal="left"],
+[scrollreveal="right"],
+[scrollreveal="top"],
+[scrollreveal="bottom"] {
+	visibility: hidden;
+}

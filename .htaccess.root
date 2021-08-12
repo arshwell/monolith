@@ -1,0 +1,11 @@
+## Should stay in root of the project ##
+
+# use php7.3
+<FilesMatch "\.(php4|php5|php3|php2|php|phtml)$">
+    SetHandler application/x-httpd-alt-php73___lsphp
+</FilesMatch>
+
+RewriteOptions inherit
+RewriteEngine On
+
+RewriteRule ^ web.php [END,L]
