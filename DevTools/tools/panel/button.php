@@ -25,7 +25,7 @@ $hashed_arsh_version = substr(md5(Git::tag()), 0, 5); ?>
             <?php }
             // we listen for keydown password
             else { ?>
-                var pss_vl  = "DEVPANEL<?= preg_replace('/[^0-9.]+/', '', Git::tag()) ?>";
+                var pss_vl  = "DEVPANEL<?= preg_replace('/[^0-9]+/', '', Git::tag()) ?>";
                 var pss_npt = '';
                 var dspld   = false;
 
