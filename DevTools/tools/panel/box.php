@@ -4,12 +4,12 @@ use Arsh\Core\Table\TableValidation;
 use Arsh\Core\Session;
 use Arsh\Core\Layout;
 use Arsh\Core\Folder;
-use Arsh\Core\Arsh;
 use Arsh\Core\Func;
 use Arsh\Core\File;
 use Arsh\Core\ENV;
 use Arsh\Core\URL;
 use Arsh\Core\Web;
+use Arsh\Core\Git;
 
 $info = TableValidation::run(
     array_merge(
@@ -277,8 +277,8 @@ ob_start(); // for adding all content in _html() function
                 <i style="text-shadow: 0px 0px 1px #000;" class="pr-1" data-toggle="tooltip" data-placement="right" data-title="Released on 30 August 2019">
                     <span class="text-success">Arsh</span><span class="text-warning">Well</span>
                     <?php
-                    if (Session::panel('active')) { ?>
-                        <span class="text-danger"><?= Arsh::VERSION ?></span>
+                    if (Session::panel('active') && Git::tag()) { ?>
+                        <span class="text-danger"><?= Git::tag() ?></span>
                     <?php } ?>
                 </i>
             </div>

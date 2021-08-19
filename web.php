@@ -10,6 +10,7 @@ use Arsh\Core\Meta;
 use Arsh\Core\ENV;
 use Arsh\Core\URL;
 use Arsh\Core\Web;
+use Arsh\Core\Git;
 use Arsh\Core\DB;
 
 session_start();
@@ -21,6 +22,7 @@ if (ENV::board('dev') && ENV::supervisor() && $_SERVER['REQUEST_METHOD'] == 'GET
     require("ArshWell/DevTools/checks.php");
 }
 
+Git::inform();
 DB::connect('default');
 Session::set(ENV::url().ENV::db('conn.default.name'));
 Web::fetch()::prepare(

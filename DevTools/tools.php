@@ -1,6 +1,6 @@
 <?php
 
-use Arsh\Core\Arsh;
+use Arsh\Core\Git;
 
 /**
  * Preparation for development mode actions.
@@ -14,10 +14,10 @@ use Arsh\Core\Arsh;
  ***** just removed vowels *****
 
  * @package DevTools
- * @author Tanasescu Valentin <valentin_tanasescu.2000@yahoo.com>
+ * @author Valentin Arșavin <valentin@iscreambrands.ro>
  */
 
-if (!empty($_REQUEST['rshwll']) && $_REQUEST['rshwll'] == substr(md5(Arsh::VERSION), 0, 5)) {
+if (!empty($_REQUEST['rshwll']) && $_REQUEST['rshwll'] == substr(md5(Git::tag()), 0, 5)) {
     call_user_func(function () {
         // DevTool panel action
         if (!empty($_REQUEST['pnl']) && is_file("ArshWell/DevTools/tools/panel/". $_REQUEST['pnl'] .".php")) {

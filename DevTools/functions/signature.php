@@ -1,8 +1,8 @@
 <?php
 
 /**
- * @package App/DevTools
- * @author Tanasescu Valentin <valentin_tanasescu.2000@yahoo.com>
+ * @package Arsh/DevTools
+ * @author Valentin Arșavin <valentin@iscreambrands.ro>
  */
 function _signature (string $site = NULL): ?string {
     $emails = array(

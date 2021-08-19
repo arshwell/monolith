@@ -5,8 +5,8 @@ namespace Arsh\Core;
 /**
  * Helper class for organizing meta tags from <head> section of html.
 
- * @package App/Core
- * @author Tanasescu Valentin <valentin_tanasescu.2000@yahoo.com>
+ * @package Arsh/Core/Core
+ * @author Valentin Arșavin <valentin@iscreambrands.ro>
 */
 final class Meta {
     private static $metas = array();

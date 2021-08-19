@@ -6,8 +6,8 @@ use Arsh\Core\ENV;
  * It prints the sql query and its parameters nicer.
  * This function is used at least by try-catch from Table Class methods.
 
- * @package App/DevTools
- * @author Tanasescu Valentin <valentin_tanasescu.2000@yahoo.com>
+ * @package Arsh/DevTools
+ * @author Valentin Arșavin <valentin@iscreambrands.ro>
  */
 function _print_sql_query ($sql, $columns = array()): void {
     if (ENV::supervisor() == false) {

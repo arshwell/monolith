@@ -5,8 +5,8 @@ namespace Arsh\Core;
 /**
  * Helper class for adding certain pieces of HTML.
 
- * @package App/Core
- * @author Tanasescu Valentin <valentin_tanasescu.2000@yahoo.com>
+ * @package Arsh/Core/Core
+ * @author Valentin Arșavin <valentin@iscreambrands.ro>
 */
 final class HTML {
     static function iFrame (string $url): string {

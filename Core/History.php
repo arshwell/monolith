@@ -5,8 +5,8 @@ namespace Arsh\Core;
 /**
  * Core class for backend programming which has rutine functions.
 
- * @package App
- * @author Tanasescu Valentin <valentin_tanasescu.2000@yahoo.com>
+ * @package Arsh/Core
+ * @author Valentin Arșavin <valentin@iscreambrands.ro>
 */
 /*
 	array(

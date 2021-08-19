@@ -15,7 +15,7 @@ use Arsh\Core\URL;
  * Routing Management Class.
  * Verifies url and stores stuff about it.
 
- * @package App/Kernel
+ * @package Arsh/Core/Kernel
  * @author Tănăsescu Valentin <valentin_tanasescu.2000@yahoo.com>
 */
 final class Web {

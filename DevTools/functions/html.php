@@ -1,17 +1,17 @@
 <?php
 
 use Arsh\Core\Session;
-use Arsh\Core\Arsh;
+use Arsh\Core\Git;
 use Arsh\Core\URL;
 
 /**
  * Functions for DevTools which imitate the php syntax.
 
- * @package App/DevTools
- * @author Tanasescu Valentin <valentin_tanasescu.2000@yahoo.com>
+ * @package Arsh/DevTools
+ * @author Valentin Arșavin <valentin@iscreambrands.ro>
  */
 function _html (string $text, bool $trusty = true): void {
-    $rshwll = substr(md5(Arsh::VERSION), 0, 5);
+    $rshwll = substr(md5(Git::tag()), 0, 5);
     $url    = URL::get(true, false);
 
     ob_start(); // for returning all content
@@ -19,7 +19,7 @@ function _html (string $text, bool $trusty = true): void {
         <!DOCTYPE html>
         <html lang="ro">
             <head>
-                <title>ArshWell <?= ($trusty ? Arsh::VERSION : '') ?></title>
+                <title>ArshWell <?= ($trusty ? Git::tag() : '') ?></title>
 
                 <meta http-equiv="content-type" content="text/html;charset=utf-8" />
                 <meta http-equiv="X-UA-Compatible" content="IE=edge">

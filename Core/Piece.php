@@ -9,8 +9,8 @@ namespace Arsh\Core;
  * Also minifies them and HTML too.
  * You can 'hook' pieces on pages. These have their own CSS and JS, automatically added.
 
- * @package App/Core
- * @author Tanasescu Valentin <valentin_tanasescu.2000@yahoo.com>
+ * @package Arsh/Core/Core
+ * @author Valentin Arșavin <valentin@iscreambrands.ro>
 */
 final class Piece {
     private static $pieces                  = array();

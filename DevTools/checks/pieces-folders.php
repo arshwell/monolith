@@ -5,8 +5,8 @@ use Arsh\Core\Folder;
 /**
  * Verifies if url requests (from routes.php) exists and are uppercase.
 
- * @package App/DevTools
- * @author Tanasescu Valentin <valentin_tanasescu.2000@yahoo.com>
+ * @package Arsh/DevTools
+ * @author Valentin Arșavin <valentin@iscreambrands.ro>
  */
 
 $regex = '/[a-z]+[a-z0-9-]*/';

@@ -6,8 +6,8 @@ use Arsh\Core\File;
  * We are including all helpfull functions for development mode.
  * Every function runs only if the IP belongs to a developer.
 
- * @package App/DevTools
- * @author Tanasescu Valentin <valentin_tanasescu.2000@yahoo.com>
+ * @package Arsh/Core/DevTools
+ * @author Valentin Arșavin <valentin@iscreambrands.ro>
  */
 call_user_func(function () {
     require("ArshWell/DevTools/checks/php-settings.php");

@@ -3,8 +3,8 @@
 /**
  * Verifies if routes are properly created.
 
- * @package DevTools/checks
- * @author Tanasescu Valentin <valentin_tanasescu.2000@yahoo.com>
+ * @package Arsh/DevTools/checks
+ * @author Valentin Arșavin <valentin@iscreambrands.ro>
  */
 call_user_func(function () {
     $code = '';

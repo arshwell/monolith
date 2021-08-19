@@ -18,8 +18,8 @@ use Closure;
  * Made especially for html forms.
  * It also allows you to create custom validation rules, in TableValidation::message().
 
- * @package App
- * @author Tanasescu Valentin <valentin_tanasescu.2000@yahoo.com>
+ * @package Arsh/Core
+ * @author Valentin Arșavin <valentin@iscreambrands.ro>
  * @link www.valentin-tanasescu.com
 */
 abstract class TableValidation extends Table {

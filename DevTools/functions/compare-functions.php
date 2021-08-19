@@ -5,8 +5,8 @@ use Arsh\Core\ENV;
 /**
  * Returns array representing how many times every closure was fastest.
 
- * @package App/DevTools
- * @author Tanasescu Valentin <valentin_tanasescu.2000@yahoo.com>
+ * @package Arsh/DevTools
+ * @author Valentin Arșavin <valentin@iscreambrands.ro>
  */
 function _compare_functions (array $funcs, int $counter = 1000): array {
     if (ENV::supervisor() == false) {

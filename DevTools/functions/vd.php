@@ -6,8 +6,8 @@ use Arsh\Core\ENV;
 /**
  * It prints received variable in the proper way.
 
- * @package App/DevTools
- * @author Tanasescu Valentin <valentin_tanasescu.2000@yahoo.com>
+ * @package Arsh/DevTools
+ * @author Valentin Arșavin <valentin@iscreambrands.ro>
  */
 function _vd ($variable, string $description = NULL): void {
     if (ENV::supervisor() == false) {

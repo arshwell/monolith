@@ -2,11 +2,11 @@
 
 use Arsh\Core\Session;
 use Arsh\Core\Piece;
-use Arsh\Core\Arsh;
 use Arsh\Core\Func;
 use Arsh\Core\Web;
+use Arsh\Core\Git;
 
-$hashed_arsh_version = substr(md5(Arsh::VERSION), 0, 5); ?>
+$hashed_arsh_version = substr(md5(Git::tag()), 0, 5); ?>
 
 <!-- - - - - - - - - - - - - - - - - - - - ArshWell | DevPanel - - - - - - - - - - - - - - - - - - - -->
 <script type="text/javascript">
@@ -25,7 +25,7 @@ $hashed_arsh_version = substr(md5(Arsh::VERSION), 0, 5); ?>
             <?php }
             // we listen for keydown password
             else { ?>
-                var pss_vl  = "DEVPANEL<?= Arsh::VERSION_GENERATION . Arsh::VERSION_UPDATES . Arsh::VERSION_IMPROVEMENTS ?>";
+                var pss_vl  = "DEVPANEL<?= preg_replace('/[^0-9.]+/', '', Git::tag()) ?>";
                 var pss_npt = '';
                 var dspld   = false;
 

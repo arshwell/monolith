@@ -11,14 +11,14 @@ use Arsh\Core\Tygh\Mailer;
 use Arsh\Core\Folder;
 use Arsh\Core\Layout;
 use Arsh\Core\Piece;
-use Arsh\Core\Arsh;
 use Arsh\Core\ENV;
+use Arsh\Core\Git;
 
 /**
  * PHP Core class for sending and displaying mail templates.
 
- * @package App
- * @author Tanasescu Valentin <valentin_tanasescu.2000@yahoo.com>
+ * @package Arsh/Core
+ * @author Valentin Arșavin <valentin@iscreambrands.ro>
 */
 final class Mail {
 
@@ -95,7 +95,7 @@ final class Mail {
             $mailer->Body         = $html;
             $mailer->AltBody      = self::prepareText($html);
 
-            $mailer->AddCustomHeader("Organization: ArshWell " . Arsh::VERSION);
+            $mailer->AddCustomHeader("Organization: ArshWell " . Git::tag());
 
             if ($files) {
                 foreach ($files as $file) {

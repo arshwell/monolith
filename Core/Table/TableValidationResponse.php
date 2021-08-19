@@ -8,8 +8,8 @@ use Arsh\Core\Web;
 /**
  * Object class for working with table validation response.
 
- * @package App
- * @author Tanasescu Valentin <valentin_tanasescu.2000@yahoo.com>
+ * @package Arsh/Core
+ * @author Valentin Arșavin <valentin@iscreambrands.ro>
  * @link www.iscreambrands.ro
 */
 final class TableValidationResponse {

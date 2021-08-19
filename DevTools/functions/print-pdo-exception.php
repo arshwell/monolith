@@ -9,8 +9,8 @@ use Arsh\Core\DB;
  * It prints the sql query and its parameters nicer.
  * This function is used at least by try-catch from Table Class methods.
 
- * @package DevTools
- * @author Tanasescu Valentin <valentin_tanasescu.2000@yahoo.com>
+ * @package Arsh/DevTools
+ * @author Valentin Arșavin <valentin@iscreambrands.ro>
  */
 function _print_pdo_exception (object $exception, string $sql_query, array $params = NULL): void {
     DB::rollBack();
