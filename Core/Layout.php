@@ -1533,7 +1533,6 @@ final class Layout {
 
     	$dirname = (is_file(Folder::realpath($path)) ? dirname($path) : $path);
 
-
     	do {
             if (is_file(($file = Folder::realpath($dirname .'/utils.'. $type .'.json')))) {
     			$utils[] = $file;

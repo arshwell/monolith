@@ -95,6 +95,42 @@ final class Func {
         return $result;
     }
 
+    /**
+     * Convert a multi-dimensional array into a single-dimensional array, keeping tree keys.
+     *
+     * @param string $prefix
+     * @param mixed $value
+     * @param string $separator
+     * @param bool $add_subarrays
+     *
+     * @return array
+     */
+    static function arrayFlattenTree (array $value, string $prefix = NULL, string $separator = '-', bool $add_subarrays = false): array {
+        $array = array();
+
+        if (!self::isAssoc($value)) {
+            $array[$prefix] = $value;
+        }
+        else {
+            foreach ($value as $k => $v) {
+                $newprefix = ($prefix ? $prefix.$separator.$k : $k);
+
+                if (is_array($v)) {
+                    // NOTE: array_merge_recursive is not good
+                    $array = array_replace_recursive($array, self::arrayFlattenTree($v, $newprefix, $separator, $add_subarrays));
+                }
+                else if ($prefix) {
+                    if ($add_subarrays) {
+                        $array[$prefix][$k] = $v;
+                    }
+                    $array[$newprefix] = $v;
+                }
+            }
+        }
+
+        return $array;
+    }
+
     static function isAssoc (array $array): bool {
         return (array_keys($array) !== range(0, count($array) - 1));
     }

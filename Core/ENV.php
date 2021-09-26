@@ -61,24 +61,14 @@ final class ENV {
                         $value = ('statics/'.$value.'/');
                     });
 
-        			$compile = function (string $group, string $prefix = NULL, $array) use (&$compile) {
-        				if (!is_array($array) || !Func::isAssoc($array)) {
-        					($prefix ? ($this->json[$group][$prefix] = $array) : ($this->json[$group] = $array));
-        					return;
-        				}
-
-        				if ($prefix) {
-        					$prefix .= '.';
-        				}
-
-        				foreach ($array as $key => $value) {
-        					$this->json[$group][$prefix.$key] = $value;
-        					$compile($group, $prefix.$key, $value);
-        				}
-        			};
-
         			foreach ($this->json as $key => $value) {
-        				$compile($key, NULL, $value);
+                        if (is_array($value)) {
+                            // NOTE: array_merge_recursive is not good
+                            $this->json[$key] = array_replace_recursive(
+                                $this->json[$key],
+                                Func::arrayFlattenTree($value, NULL, '.', true)
+                            );
+                        }
         			}
                 }
         		else {
