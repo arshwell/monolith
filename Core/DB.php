@@ -20,12 +20,16 @@ final class DB {
 
         if (!isset(self::$pdos[$key])) {
             self::$tb_prefixes[$key] = ENV::db('conn.'.$key.'.prefix');
-            self::$pdos[$key]        = new PDO(
+            self::$pdos[$key] = new PDO(
                 'mysql:host='.ENV::db('conn.'.$key.'.host').';dbname='.ENV::db('conn.'.$key.'.name').';charset='.ENV::db('conn.'.$key.'.charset'),
                 strrev(ENV::db('conn.'.$key.'.username')),
-                strrev(ENV::db('conn.'.$key.'.password')),
-                array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES '".ENV::db('conn.'.$key.'.charset')."' COLLATE '".ENV::db('conn.'.$key.'.charset')."_general_ci'")
+                strrev(ENV::db('conn.'.$key.'.password'))
             );
+
+            self::$pdos[$key]->query(
+                "SET SQL_MODE='NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'; SET NAMES '".ENV::db('conn.'.$key.'.charset')."'; SET COLLATE '".ENV::db('conn.'.$key.'.charset')."_general_ci';"
+            );
+
             self::$backups = ENV::db('backups');
 
             // Supervisors are alerted if there are problems.
@@ -510,7 +514,7 @@ final class DB {
                         );
                     }
                 }
-                
+
                 $result->execute();
 
                     if (isset(self::$backups[self::$key])) {
