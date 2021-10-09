@@ -23,7 +23,7 @@ final class TableValidationResponse {
         'immortal'  => false
     );
 
-    final function __construct ($data) {
+    final function __construct (array $data) {
         $this->data = array_merge($this->data, $data);
     }
 
@@ -33,7 +33,18 @@ final class TableValidationResponse {
     final function expired (): bool {
         return $this->data['expired'];
     }
-    final function valid (): bool {
+
+    /**
+     * Check if form, or certain field, is valid.
+     *
+     * @param string $key (optional)
+     *
+     * @return bool
+     */
+    final function valid (string $key = NULL): bool {
+        if ($key) {
+            return ($this->data['errors'][$key] == NULL);
+        }
         return $this->data['valid'];
     }
     final function invalid (): bool {
@@ -51,20 +62,25 @@ final class TableValidationResponse {
     final function error (string $key, string $value = NULL): ?string {
         return ($this->data['errors'][$key] ?? NULL);
     }
+    final function setError (string $key, string $value = NULL) {
+        $this->data['errors'][$key] = $value;
+
+        $this->data['valid'] = (count(array_filter($this->data['errors'], function ($error) {
+            return $error != NULL;
+        })) == 0);
+    }
 
     final function __set (string $key, $value): void {
         $this->data['values'][$key] = $value;
     }
-    final function values (array $keys = NULL, bool $keep_keys = false): array {
+    final function values (array $keys = NULL, bool $preserve_keys = true): array {
         if (!$keys) {
-            return $this->data['values'];
+            return ($preserve_keys ? $this->data['values'] : array_values($this->data['values']));
         }
         $keys = array_flip($keys);
+        $keys = array_replace($keys, array_intersect_key($this->data['values'], $keys));
 
-        return ($keep_keys ?
-            array_replace($keys, array_intersect_key($this->data['values'], $keys)) :
-            array_values(array_intersect_key($this->data['values'], $keys))
-        );
+        return ($preserve_keys ? $keys : array_values($keys));
     }
     final function value (string $key) {
         return ($this->data['values'][$key] ?? NULL);
