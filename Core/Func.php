@@ -82,10 +82,19 @@ final class Func {
      *
      * @param array $array The multi-dimensional array.
      */
-    static function arrayFlatten (array $array): array {
+    static function arrayFlatten (array $array, bool $preserve_keys = false): array {
         $result = array();
+
+        if ($preserve_keys == false) {
+            $array = array_values($array);
+        }
+
         foreach ($array as $key => $value) {
             if (is_array($value)) {
+                if ($preserve_keys == false) {
+                    $value = array_values($value);
+                }
+
                 $result = array_merge($result, self::arrayFlatten($value));
             }
             else {

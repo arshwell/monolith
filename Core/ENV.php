@@ -70,6 +70,15 @@ final class ENV {
                             );
                         }
         			}
+
+                    if (!empty($this->json['board']['supervisors'])) {
+                        // NOTE: We need flattining also subarrays of IPs
+                        // Exception: arrayFlattenTree() can't make yet that.
+                        $this->json['board']['supervisors'] = array_replace_recursive(
+                            $this->json['board']['supervisors'],
+                            Func::arrayFlattenTree($this->json['board']['supervisors'], NULL, '.', true)
+                        );
+                    }
                 }
         		else {
         			$this->json = Cache::fetch('ArshWell/env');
@@ -166,7 +175,7 @@ final class ENV {
                     self::$client_ip = substr(self::$client_ip, strrpos(self::$client_ip, ':') + 1);
                 }
 
-                self::$supervisor = in_array(self::$client_ip, $object->board('supervisors'));
+                self::$supervisor = in_array(self::$client_ip, Func::arrayFlatten($object->board('supervisors')));
             }
 
             self::$env = $object;
