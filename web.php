@@ -17,14 +17,15 @@ session_start();
 
 require("ArshWell/Core/ENV.php");
 
+Git::inform();
+DB::connect('default');
+Session::set(ENV::url().ENV::db('conn.default.name'));
+
 // Supervisors are alerted if there are problems.
 if (ENV::board('dev') && ENV::supervisor() && $_SERVER['REQUEST_METHOD'] == 'GET') {
     require("ArshWell/DevTools/checks.php");
 }
 
-Git::inform();
-DB::connect('default');
-Session::set(ENV::url().ENV::db('conn.default.name'));
 Web::fetch()::prepare(
     preg_replace('~^'. ENV::root() .'~', '', URL::path()),
     $_SERVER['REQUEST_METHOD'],
