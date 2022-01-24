@@ -5,7 +5,7 @@
 
 $fa-font-path: "#{map-get($env-statics, 'fonts')}/fontawesome";
 
-$font-awesome-utilities-path: "plugins/font-awesome-v5/";
+$font-awesome-utilities-path: "font-awesome-v5/";
 
 @import '#{$font-awesome-utilities-path}variables';
 @import '#{$font-awesome-utilities-path}mixins';

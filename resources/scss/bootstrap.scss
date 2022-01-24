@@ -5,7 +5,7 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
 
-$bootstrap-utilities-path: "plugins/bootstrap-v4/";
+$bootstrap-utilities-path: "bootstrap-v4/";
 
 @import "#{$bootstrap-utilities-path}functions";
 @import "#{$bootstrap-utilities-path}variables";

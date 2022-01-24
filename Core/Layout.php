@@ -683,7 +683,6 @@ final class Layout {
                     return (is_array($value) ? self::SASSify($value) : $value);
                 }, $vars) : array())
             ));
-            $scss->setImportPaths('resources/scss/');
             $scss->setFormatter('ScssPhp\\ScssPhp\\Formatter\\Crunched');
 
             $mins = array_unique(array_column(array_merge(array_column($media['files'], 'range')), 'min'));
@@ -738,7 +737,7 @@ final class Layout {
                     // Is .scss for layouts & outcomes
                     if ((strpos($file['name'], 'layouts/') === 0 || strpos($file['name'], 'outcomes/') === 0) && $ranges) {
                         $css .= "@media (".implode(') and (', $ranges).") {
-                                    @import '../../". $file['name'] ."';
+                                    @import '". $file['name'] ."';
                                 }";
                     }
                     // Is .scss for piece
@@ -749,7 +748,7 @@ final class Layout {
 
                         $css .= "div.arshpiece". strtolower(str_replace('/', '.', $matches[1])) ." { ".
                             "display: block;".
-                            "@import '../../". $file['name'] ."';".
+                            "@import '". $file['name'] ."';".
                         "}";
 
                         if ($ranges) {
@@ -758,7 +757,7 @@ final class Layout {
                     }
                     // Is .scss from resources/
                     else {
-                        $css .= "@import '../../". $file['name'] ."';";
+                        $css .= "@import '". $file['name'] ."';";
                     }
 
                     if (next($files)) {
@@ -804,7 +803,7 @@ final class Layout {
                     // Is .scss for layouts & outcomes
                     if ((strpos($file['name'], 'layouts/') === 0 || strpos($file['name'], 'outcomes/') === 0) && $ranges) {
                         $css .= "@media (".implode(') and (', $ranges).") {
-                                    @import '../../". $file['name'] ."';
+                                    @import '". $file['name'] ."';
                                 }";
                     }
                     // Is .scss for piece
@@ -815,7 +814,7 @@ final class Layout {
 
                         $css .= "div.arshpiece". strtolower(str_replace('/', '.', $matches[1])) ." { ".
                             "display: block;".
-                            "@import '../../". $file['name'] ."';".
+                            "@import '". $file['name'] ."';".
                         "}";
 
                         if ($ranges) {
@@ -824,7 +823,7 @@ final class Layout {
                     }
                     // Is .scss from resources/
                     else {
-                        $css .= "@import '../../". $file['name'] ."';";
+                        $css .= "@import '". $file['name'] ."';";
                     }
 
                     if (next($media['files'])) {
