@@ -66,4 +66,13 @@ final class Text {
     // static function chars (string $text, int $limit, bool $reversed = false);
     // static function words (string $text, int $limit, bool $reversed = false);
     // static function sentences (string $text, int $limit, bool $reversed = false);
+
+    static function commonStartChars (string $s1, string $s2): string {
+        $min = min(strlen($s1), strlen($s2));
+        for ($i = 0; $i < $min; $i++)
+            if ($s2[$i] != $s1[$i])
+                break;
+
+        return substr($s1, 0, $i);
+    }
 }
