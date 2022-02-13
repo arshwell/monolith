@@ -22,8 +22,8 @@ final class DB {
             self::$tb_prefixes[$key] = ENV::db('conn.'.$key.'.prefix');
             self::$pdos[$key] = new PDO(
                 'mysql:host='.ENV::db('conn.'.$key.'.host').';dbname='.ENV::db('conn.'.$key.'.name').';charset='.ENV::db('conn.'.$key.'.charset'),
-                strrev(ENV::db('conn.'.$key.'.username')),
-                strrev(ENV::db('conn.'.$key.'.password'))
+                ENV::db('conn.'.$key.'.username'),
+                ENV::db('conn.'.$key.'.password')
             );
 
             self::$pdos[$key]->query(

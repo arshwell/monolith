@@ -80,7 +80,7 @@ final class Mail {
 
             if (ENV::mail('smtp.data.password')) {
                 $mailer->Username = ENV::mail('smtp.data.auth');
-                $mailer->Password = strrev(ENV::mail('smtp.data.password'));
+                $mailer->Password = ENV::mail('smtp.data.password');
                 $mailer->SMTPAuth = true;
                 $mailer->SMTPAutoTLS = false;
             }
