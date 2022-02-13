@@ -35,9 +35,7 @@ final class Mail {
         $pieces         = Piece::used($template); // pieces used inside this mail template
         $pieces_path    = NULL;
 
-        if (ENV::board('dev')) {
-            Layout::compileMailSCSS($template, $pieces);
-        }
+        Layout::compileMailSCSS($template, $pieces);
 
         if ($pieces) {
             sort($pieces);
@@ -57,7 +55,7 @@ final class Mail {
             7
         );
 
-        require(Folder::realpath("App/Core/Tygh/emogrifier/autoload.php"));
+        require(Folder::realpath("ArshWell/Core/Tygh/emogrifier/autoload.php")); // Emogrifier
 
         $cssInliner = CssInliner::fromHtml($html)->inlineCss();
         $domDocument = $cssInliner->getDomDocument();
@@ -95,7 +93,7 @@ final class Mail {
             $mailer->Body         = $html;
             $mailer->AltBody      = self::prepareText($html);
 
-            $mailer->AddCustomHeader("Organization: ArshWell " . Git::tag());
+            $mailer->AddCustomHeader("Organization: " . ENV::mail('from.name') .' '. Git::tag());
 
             if ($files) {
                 foreach ($files as $file) {

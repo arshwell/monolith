@@ -1124,7 +1124,10 @@ final class Layout {
                 ),
                 ($row ? ($vars ?? array()) : array()) // because we need custom file for custom vars
             ));
-            $scss->setImportPaths(Folder::realpath('resources/scss/'));
+
+            // We need root because also crons can use this class
+            $scss->setImportPaths(Folder::root());
+
             $scss->setFormatter('ScssPhp\\ScssPhp\\Formatter\\Crunched');
 
             $mins = array_unique(array_column(array_merge(array_column($media['files'], 'range')), 'min'));
@@ -1191,7 +1194,7 @@ final class Layout {
                     }
                     // Is .scss from resources/
                     else {
-                        $css .= file_get_contents(Folder::realpath($file['name']));
+                        $css .= "@import '". $file['name'] ."';";
                     }
 
                     if (next($files)) {
@@ -1215,7 +1218,7 @@ final class Layout {
                 $return = true;
             }
 
-            if ($return && !$row && !$destination) {
+            if ($return && !$row && $destination == Folder::root()) {
                 ini_set('max_execution_time', ini_get('max_execution_time') + 6);
 
                 $css = '';
@@ -1245,7 +1248,7 @@ final class Layout {
                     }
                     // Is .scss from resources/
                     else {
-                        $css .= file_get_contents(Folder::realpath($file['name']));
+                        $css .= "@import '". $file['name'] ."';";
                     }
 
                     if (next($media['files'])) {
