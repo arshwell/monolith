@@ -37,7 +37,7 @@ if ($form->valid()) {
             }
         }
 
-        $arshwell_errors = require("DevTools/tools/validation.errors.php");
+        $arshwell_errors = require("ArshWell/DevTools/tools/validation.errors.php");
         $validation_tables = array();
 
         // Create and update validation tables

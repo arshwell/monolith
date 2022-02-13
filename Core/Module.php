@@ -18,6 +18,7 @@ final class Module {
     */
     static function backend (array $back, array $query, array $files = array()) {
         if (ENV::board('dev') && ENV::supervisor()) {
+            // syntax validation
             foreach ($back as $key => $value) {
                 $back[$key] = ("Arsh\Core\Module\Syntax\Backend")::{$key}($value);
             }
@@ -49,6 +50,7 @@ final class Module {
 
     static function frontend (array $module, array $front): string {
         if (ENV::board('dev') && ENV::supervisor()) {
+            // syntax validation
             foreach ($front as $key => $value) {
                 $front[$key] = ("Arsh\Core\Module\Syntax\Frontend")::{$key}($value);
             }
