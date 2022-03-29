@@ -578,7 +578,7 @@ ob_start(); // for adding all content in _html() function
                                         <div class="col-12 col-lg-6">
                                             <div class="card bg-dark mb-2">
                                                 <div class="card-header py-2">
-                                                    <a href="<?= $mediaLinks['css'] ?>" target="_blank" data-toggle="tooltip" data-placement="top" title="<?= substr($mediaLinks['css'], strlen(Web::site())) ?>">
+                                                    <a href="<?= $mediaLinks['urls']['css'] ?>" target="_blank" data-toggle="tooltip" data-placement="top" title="<?= $mediaLinks['paths']['css'] ?>">
                                                         CSS
                                                     </a>
                                                 </div>
@@ -614,7 +614,7 @@ ob_start(); // for adding all content in _html() function
                                         <div class="col-12 col-lg-6">
                                             <div class="card bg-dark mb-2">
                                                 <div class="card-header py-2">
-                                                    <a href="<?= $mediaLinks['js']['header'] ?>" target="_blank" data-toggle="tooltip" data-placement="top" title="<?= substr($mediaLinks['js']['header'], strlen(Web::site())) ?>">
+                                                    <a href="<?= $mediaLinks['urls']['js']['header'] ?>" target="_blank" data-toggle="tooltip" data-placement="top" title="<?= $mediaLinks['paths']['js']['header'] ?>">
                                                         JS header
                                                     </a>
                                                 </div>
@@ -633,7 +633,7 @@ ob_start(); // for adding all content in _html() function
                                         <div class="col-12 col-lg-6">
                                             <div class="card bg-dark">
                                                 <div class="card-header py-2">
-                                                    <a href="<?= $mediaLinks['js']['footer'] ?>" target="_blank" data-toggle="tooltip" data-placement="top" title="<?= substr($mediaLinks['js']['footer'], strlen(Web::site())) ?>">
+                                                    <a href="<?= $mediaLinks['urls']['js']['footer'] ?>" target="_blank" data-toggle="tooltip" data-placement="top" title="<?= $mediaLinks['paths']['js']['footer'] ?>">
                                                         JS footer
                                                     </a>
                                                 </div>

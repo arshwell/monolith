@@ -164,30 +164,37 @@ unset($v); // NOTE: used by gates/ and ENV.php ↑
                     $time = substr(str_shuffle("BCDFGHKLMNPQRSTVWXYZ"), 0, 4); // without vowels
 
                     $ml = array(
-                        'css' => implode('?v='.$time.'" />'.PHP_EOL.'<link type="text/css" rel="stylesheet" href="', $links['css']),
-                        'js'  => array(
-                            'header' => implode('?v='.$time.'"></script>'.PHP_EOL.'<script src="', $links['js']['header']),
-                            'footer' => implode('?v='.$time.'"></script>'.PHP_EOL.'<script src="', $links['js']['footer'])
+                        'urls' => array(
+                            'css' => implode('?v='.$time.'" />'.PHP_EOL.'<link type="text/css" rel="stylesheet" href="', $links['css']),
+                            'js'  => array(
+                                'header' => implode('?v='.$time.'"></script>'.PHP_EOL.'<script src="', $links['js']['header']),
+                                'footer' => implode('?v='.$time.'"></script>'.PHP_EOL.'<script src="', $links['js']['footer'])
+                            )
                         )
                     );
                 }
                 else { // Using all resources together.
                     $ml = Layout::mediaLinks();
 
-                    $time = getlastmod(); // HACK: the last modification of the current page
+                    $time = max(
+                        getlastmod(), // Last modification of the current page (probably not useful)
+                        filemtime($ml['paths']['css']),
+                        filemtime($ml['paths']['js']['header']),
+                        filemtime($ml['paths']['js']['footer'])
+                    );
                 }
 
                 $output = str_replace(
                     '[@css@]',
                     '<meta name="csrf-form-token" content="'.Session::token('form').'">'.PHP_EOL.
                     '<meta name="csrf-ajax-token" content="'.Session::token('ajax').'">'.PHP_EOL.PHP_EOL.
-                    '<link rel="stylesheet" type="text/css" href="'. ($ml['css'].'?v='.$time) .'" />',
+                    '<link rel="stylesheet" type="text/css" href="'. ($ml['urls']['css'].'?v='.$time) .'" />',
                     str_replace(
                         '[@js-header@]',
-                        '<script src="'. ($ml['js']['header'].'?v='.$time) .'"></script>',
+                        '<script src="'. ($ml['urls']['js']['header'].'?v='.$time) .'"></script>',
                         str_replace(
                             '[@js-footer@]',
-                            '<script src="'. ($ml['js']['footer'].'?v='.$time) .'"></script>',
+                            '<script src="'. ($ml['urls']['js']['footer'].'?v='.$time) .'"></script>',
                             str_replace(
                                 '[@frontend@]',
                                 ob_get_clean(), // outcome

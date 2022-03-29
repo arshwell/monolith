@@ -1615,21 +1615,31 @@ final class Layout {
 
         foreach (self::$css_suffixes as $suffix) {
             if (is_file($css_path . $suffix . '.css')) {
-                return array(
-                    'css'   => $site . $css_path . $suffix . '.css',
-                    'js'    => array(
-                        'header' => call_user_func(function (array $js_header_files) use ($site, $folder, $pieces_path) {
-                                return ($site .ENV::design('js-header'). $folder .'/'. $pieces_path . (Session::design() ? Func::closestDown(Session::design(), $js_header_files) : max($js_header_files)) .'.js');
-                            },
-                            File::folder(ENV::design('js-header'). $folder .'/'. $pieces_path, array('js'), false, false)
-                        ),
-                        'footer' => call_user_func(function (array $js_footer_files) use ($site, $folder, $pieces_path) {
-                                return ($site .ENV::design('js-footer'). $folder .'/'. $pieces_path . (Session::design() ? Func::closestDown(Session::design(), $js_footer_files) : max($js_footer_files)) .'.js');
-                            },
-                            File::folder(ENV::design('js-footer'). $folder .'/'. $pieces_path, array('js'), false, false)
+                $mediaLinks = array(
+                    'paths' => array(
+                        'css'   => $css_path . $suffix . '.css',
+                        'js'    => array(
+                            'header' => call_user_func(function (array $js_header_files) use ($site, $folder, $pieces_path) {
+                                    return (ENV::design('js-header'). $folder .'/'. $pieces_path . (Session::design() ? Func::closestDown(Session::design(), $js_header_files) : max($js_header_files)) .'.js');
+                                },
+                                File::folder(ENV::design('js-header'). $folder .'/'. $pieces_path, array('js'), false, false)
+                            ),
+                            'footer' => call_user_func(function (array $js_footer_files) use ($site, $folder, $pieces_path) {
+                                    return (ENV::design('js-footer'). $folder .'/'. $pieces_path . (Session::design() ? Func::closestDown(Session::design(), $js_footer_files) : max($js_footer_files)) .'.js');
+                                },
+                                File::folder(ENV::design('js-footer'). $folder .'/'. $pieces_path, array('js'), false, false)
+                            )
                         )
                     )
                 );
+                $mediaLinks['urls'] = array(
+                    'css'   => $site . $mediaLinks['paths']['css'],
+                    'js'    => array(
+                        'header' => $site . $mediaLinks['paths']['js']['header'],
+                        'footer' => $site . $mediaLinks['paths']['js']['footer']
+                    )
+                );
+                return $mediaLinks;
             }
         }
     }
