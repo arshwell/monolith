@@ -109,16 +109,89 @@ $(document).ready(function () {
             branding:   false,
             height:     250,
             menubar:    true,
+            menu: {
+                /**
+                 * Default menu controls: https://www.tiny.cloud/docs/general-configuration-guide/basic-setup/#defaultmenucontrols
+                 *
+                 * Started from default menu items.
+                 *
+                 * Changelog:
+                 *  - 'fontformats' & 'fontsizes' removed
+                 *  - 'hr' (Horizontal Line) added
+                 */
+                file: {
+                    title: 'File',
+                    items: 'newdocument restoredraft | preview | print | deleteallconversations'
+                },
+                edit: {
+                    title: 'Edit',
+                    items: 'undo redo | cut copy paste pastetext | selectall | searchreplace'
+                },
+                view: {
+                    title: 'View',
+                    items: 'code | visualaid visualchars visualblocks | spellchecker | preview fullscreen | showcomments'
+                },
+                insert: {
+                    title: 'Insert',
+                    items: 'image link media addcomment pageembed template codesample inserttable | charmap emoticons hr | pagebreak nonbreaking anchor toc | insertdatetime'
+                },
+                format: {
+                    title: 'Format',
+                    items: 'bold italic underline strikethrough superscript subscript codeformat | formats blockformats align | forecolor backcolor | removeformat'
+                },
+                tools: {
+                    title: 'Tools',
+                    items: 'spellchecker spellcheckerlanguage | a11ycheck code wordcount'
+                },
+                table: {
+                    title: 'Table',
+                    items: 'inserttable | cell row column | advtablesort | tableprops deletetable'
+                },
+                help: {
+                    title: 'Help',
+                    items: 'help'
+                }
+            },
+            toolbar: 'undo redo | formatselect | forecolor backcolor | ' +
+                'bold italic backcolor | alignleft aligncenter ' +
+                'alignright alignjustify | bullist numlist outdent indent | ' +
+                'removeformat | help',
+
+            /**
+             * Text color map: https://www.tiny.cloud/docs-4x/plugins/textcolor/#textcolor_map
+             *
+             * Would allow only used colors in website.
+             *
+             * TODO: should be extracted from resources\scss\site\colors.scss
+             */
+            // textcolor_map: [
+            //     "000000", "Black",
+            //     "000080", "Navy Blue"
+            // ],
+
+            /**
+             * Custom CSS: https://www.tiny.cloud/docs-3x/reference/Configuration3x/Configuration3x@content_css/
+             *
+             * This can be used to match the styling of your published content for a truer WYSIWYG experience.
+             *
+             * TODO: file with fonts, sizes used in site.
+             */
+            // content_css : "css/custom_content.css",
+
             plugins: [
-                'advlist autolink lists link image charmap print preview anchor',
+                'advlist autolink lists link image charmap hr print preview anchor',
                 'searchreplace visualblocks code fullscreen',
-                'insertdatetime media table paste code help wordcount'
+                'insertdatetime media table paste code help wordcount textcolor'
             ],
-            toolbar: 'undo redo | formatselect | ' +
-            'bold italic backcolor | alignleft aligncenter ' +
-            'alignright alignjustify | bullist numlist outdent indent | ' +
-            'removeformat | help',
-            forced_root_block: false,
+
+            // remove custom font sizes from external sources
+            paste_postprocess: function (plugin, args) {
+                $(args.node).css('font-size', '').find('*').css('font-size', '');
+            },
+
+            default_link_target: "_blank",
+            extended_valid_elements : "a[href|target=_blank]",
+            forced_root_block: false, // no html tag parent
             images_upload_url: 'doesntmatter.php', // won't be actually used
             automatic_uploads: false, // we don't upload, so files stay as blob
             image_advtab: true // advanced image style (margin, border)

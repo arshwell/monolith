@@ -10,8 +10,9 @@ final class Action {
             if (empty($action['HTML']['hidden'])) { ?>
                 <a
                 data-key="<?= $key ?>"
-                class="<?= $action['HTML']['class'] ?> arshmodule-html arshmodule-html-action arshmodule-html-action-link"
-                href="<?= $action['HTML']['href'] ?>"
+                class="<?= $action['HTML']['class'] ?> <?= (($action['HTML']['disabled'] ?? false) ? 'disabled' : '') ?> arshmodule-html arshmodule-html-action arshmodule-html-action-link"
+                <?= (empty($action['HTML']['disabled']) ? 'href="'. $action['HTML']['href'] .'"' : '') ?>
+                <?= (($action['HTML']['disabled'] ?? false) ? 'role="link" aria-disabled="true"' : '') ?>
                 <?= (!empty($action['HTML']['title']) ? 'title="'.$action['HTML']['title'].'"' : '') ?>
                 target="<?= $action['HTML']['target'] ?? '_self' ?>">
                     <?php
@@ -32,7 +33,8 @@ final class Action {
                 <button
                 type="button"
                 data-key="<?= $key ?>"
-                class="<?= $action['HTML']['class'] ?> arshmodule-html arshmodule-html-action arshmodule-html-action-button">
+                <?= (($action['HTML']['disabled'] ?? false) ? 'role="link" aria-disabled="true"' : '') ?>
+                class="<?= $action['HTML']['class'] ?> <?= (($action['HTML']['disabled'] ?? false) ? 'disabled' : '') ?> arshmodule-html arshmodule-html-action arshmodule-html-action-button">
                     <?php
                     if ($action['HTML']['icon']) { ?>
                         <i class="fa fa-fw fa-<?= $action['HTML']['icon'] ?>"></i>
