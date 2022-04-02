@@ -722,7 +722,7 @@ final class Field {
                     }
                 } ?>
                 <?= (($config['HTML']['name'] ?? false) ? 'name="'.$config['HTML']['name'].'"' : '') ?>
-                value="<?= $config['HTML']['value'] ?>"
+                value="<?= htmlspecialchars($config['HTML']['value']) // to avoid HTML conflicts ?>"
                 form-valid-update="<?= (empty($config['JS']['update']) ? 'false' : 'true') ?>"
                 <?= (($config['HTML']['disabled'] ?? false) ? 'disabled="disabled"' : '') ?>
                 <?= (($config['HTML']['readonly'] ?? false) ? 'readonly="readonly"' : '') ?>
@@ -865,6 +865,20 @@ final class Field {
             }
         }
 
+        if (!empty($config['HTML']['value'])) {
+            /**
+             * htmlspecialchars — Convert special characters to HTML entities
+             *
+             * Like:
+             *  - & (ampersand)
+             *  - " (double quote)
+             *  - ' (single quote)
+             *  - < (less than)
+             *  - > (greater than)
+             */
+            $config['HTML']['value'] = htmlspecialchars($config['HTML']['value']); // To avoid HTML conflicts
+        }
+
         ob_start(); ?>
 
             <div class="input-group arshmodule-html arshmodule-html-field arshmodule-html-field-icon">
@@ -934,7 +948,7 @@ final class Field {
                 placeholder="<?= $config['HTML']['placeholder'] ?? '' ?>"
                 <?= (($config['HTML']['id'] ?? false) ? 'id="'.$config['HTML']['id'].'"' : '') ?>
                 <?= (($config['HTML']['name'] ?? false) ? 'name="'.$config['HTML']['name'].'"' : '') ?>
-                value="<?= $config['HTML']['value'] ?>"
+                value="<?= htmlspecialchars($config['HTML']['value']) // to avoid HTML conflicts ?>"
                 <?= (($config['HTML']['disabled'] ?? false) ? 'disabled="disabled"' : '') ?>
                 <?= (($config['HTML']['readonly'] ?? false) ? 'readonly="readonly"' : '') ?>
                 form-valid-update="<?= (empty($config['JS']['update']) ? 'false' : 'true') ?>" />

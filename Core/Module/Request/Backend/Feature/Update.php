@@ -270,19 +270,21 @@ final class Update {
             ), true);
 
             foreach ($form->array('filetools.delete.data') as $key => $input) {
-                foreach ($input as $lg => $value) {
-                    if ($value) {
-                        $file = $table->file($key);
+                if ($input) {
+                    foreach ($input as $lg => $value) {
+                        if ($value) {
+                            $file = $table->file($key);
 
-                        switch (get_class($file)) {
-                            case 'Arsh\Core\Table\Files\Doc':
-                            case 'Arsh\Core\Table\Files\Image': {
-                                $file->delete($lg ?: NULL);
-                                break;
-                            }
-                            case 'Arsh\Core\Table\Files\ImageGroup': {
-                                $file->delete($value, $lg ?: NULL);
-                                break;
+                            switch (get_class($file)) {
+                                case 'Arsh\Core\Table\Files\Doc':
+                                case 'Arsh\Core\Table\Files\Image': {
+                                    $file->delete($lg ?: NULL);
+                                    break;
+                                }
+                                case 'Arsh\Core\Table\Files\ImageGroup': {
+                                    $file->delete($value, $lg ?: NULL);
+                                    break;
+                                }
                             }
                         }
                     }
@@ -290,9 +292,11 @@ final class Update {
         	}
 
             foreach ($form->array('filetools.rename.data') as $key => $input) {
-                foreach ($input as $lg => $value) {
-                    $table->file($key)->rename($value, $lg);
-        		}
+                if ($input) {
+                    foreach ($input as $lg => $value) {
+                        $table->file($key)->rename($value, $lg);
+                    }
+                }
         	}
 
             foreach ($form->value('data') as $key => $input) {
