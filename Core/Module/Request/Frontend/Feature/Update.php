@@ -9,7 +9,8 @@ final class Update {
 
     static function GET (array $module, array $front): string {
         foreach ($front['fields'] as $key => $field) {
-            if (isset($module['response']['options'][$key])) {
+            // if no custom values given by front AND if response options given by back
+            if (empty($front['fields'][$key]['HTML']['values']) && isset($module['response']['options'][$key])) {
                 $front['fields'][$key]['HTML']['values'] = $module['response']['options'][$key];
             }
         }
@@ -47,7 +48,7 @@ final class Update {
                                         $module['back']['DB']['table'],
                                         $front['fields'],
                                         $module['response']['data'],
-                                        call_user_func(function () use ($module) {
+                                        call_user_func(function () use ($module) { // translated fields in form (columns & images)
                                             $files = array();
                                             $translated = array();
 

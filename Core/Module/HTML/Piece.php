@@ -281,13 +281,13 @@ final class Piece {
                 <?php } ?>
 
                 <div class="dropdown btn px-0 pb-0 mx-0 mb-0">
-                    <button class="btn btn-sm btn-danger dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-offset="0,5">
+                    <button class="btn btn-sm dropdown-toggle text-light" type="button" data-lg="<?= $lg ?>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-offset="0,5">
                         <?= strtoupper($lg) ?>
                     </button>
                     <div class="dropdown-menu dropdown-menu-right py-0">
                         <?php
-                        foreach ($languages as $language) { ?>
-                            <button class="dropdown-item btn-sm <?= ($language == $lg ? 'bg-danger text-light' : '') ?>" type="button" data-lg="<?= $language ?>">
+                        foreach ($languages as $i => $language) { ?>
+                            <button class="dropdown-item btn-sm text-light" type="button" data-lg="<?= $language ?>">
                                 <?= strtoupper($language) ?>
                             </button>
                         <?php } ?>
@@ -601,6 +601,7 @@ final class Piece {
     }
 
     static function field (string $key, array $field, TableSegment $segment = NULL, array $languages = NULL): string {
+        // run $field if it is a closure
         if (!is_string($field) && is_callable($field)) {
             $field = $field(
                 $segment ? $segment->key() : NULL,
@@ -633,6 +634,7 @@ final class Piece {
             $field['HTML']
         );
 
+        // run subkeys which are closures
         array_walk_recursive($field, function (&$value) use ($segment) {
             if (!is_string($value) && is_callable($value)) {
                 $value = $value(

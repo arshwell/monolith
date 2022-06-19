@@ -68,7 +68,9 @@ $(document).ready(function () {
             if (languages.length) {
                 $(modal['footer']).show();
                 $(modal['footer.languages']).html(
-                    languages.map(lg => lg.toUpperCase()).join(', ')
+                    languages.map(function (lg) {
+                        return '<span data-lg="'+ lg +'">'+ lg.toUpperCase() +'</span>';
+                    }).join(' & ')
                 );
             }
         }

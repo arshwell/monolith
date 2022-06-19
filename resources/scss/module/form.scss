@@ -37,7 +37,7 @@
                         top: 8px;
                         font-size: 9px;
                         color: white;
-                        background-color: #dc3545;
+                        background-color: #222222; // editable from JS according to current language
                         padding: 1px 2px 1px 3px;
                         z-index: 1;
                     }
@@ -58,7 +58,7 @@
                     &:-webkit-autofill,
                     &:-webkit-autofill:hover,
                     &:-webkit-autofill:focus,
-                    &:-webkit-autofill:active  {
+                    &:-webkit-autofill:active {
                         -webkit-box-shadow: 0 0 0 30px #fff inset !important;
                         -webkit-text-fill-color: #555 !important;
                     }
@@ -76,6 +76,7 @@
             *[form-error] {
                 min-height: 16px;
                 height: auto;
+                overflow-wrap: normal;
             }
         }
 
@@ -138,6 +139,16 @@
                         border-color: #117a8b;
                     }
                 }
+            }
+        }
+    }
+
+    .arshmodule-html-piece-dialog {
+        .arshmodule-modal-languages {
+            span[data-lg] {
+                background-color: #222222; // editable from JS according to current language
+                padding: 2px 4px;
+                color: white;
             }
         }
     }
