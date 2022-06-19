@@ -209,7 +209,7 @@ final class DB {
 
             if ($where) {
                 // $query .= " WHERE ". preg_replace("/(^|\s)(\w+[.]\w+)|(\w+[.\*])($|\s)/", self::$tb_prefixes[self::$key]."$1$2", $where);
-                $query .= " WHERE ". self::prefix($where);
+                $query .= " WHERE ". self::prefix($where, true);
             }
 
             $query = self::languages($query.';', $class, $params);
