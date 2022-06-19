@@ -626,7 +626,7 @@ final class Layout {
         private static function SASSify (array $vars, \closure $fn = NULL): string {
             foreach ($vars as $key => $value) {
                 if (is_array($value)) {
-                    $value = self::SASSify($value);
+                    $value = self::SASSify($value, $fn);
                 }
                 else {
                     if ($fn) {
@@ -642,6 +642,33 @@ final class Layout {
             }
 
             return '('.implode(',', $vars).')';
+        }
+
+        private static function VARify (array $array, \closure $fn = NULL, string $prefix = NULL): array {
+            if ($prefix == NULL) {
+                $prefix = '-';
+            }
+
+            $cssvars = array();
+
+            foreach ($array as $key => $value) {
+                if (is_array($value)) {
+                    $cssvars = array_merge($cssvars, self::VARify($value, $fn, $prefix.'-'.$key));
+                }
+                else {
+                    if ($fn) {
+                        $value = $fn($value);
+                    }
+                    if (is_string($value) && !preg_match("/^#[0-9A-F]{6}$/i", $value)
+                    && !preg_match("/[a-zA-Z][a-zA-Z0-9-]+[a-zA-Z0-9]\(.*\)/", $value)) { // isn't color
+                        $value = ('"'. $value .'"');
+                    }
+
+                    $cssvars[] = ($prefix.'-'.$key.': '. $value.';');
+                }
+            }
+
+            return $cssvars;
         }
 
         static function compileSCSS (string $folder, array $pieces, string $url = NULL, string $destination = NULL, Table $row = NULL, array $vars = NULL): bool {
@@ -669,6 +696,7 @@ final class Layout {
 
             $scss = new ScssPhp();
 
+            $cssvars = implode("\n", self::VARify($media['json']['scss']['vars']));
             $scss->setVariables(array_merge(
                 array_map(function ($value) {
                     return (is_array($value) ? self::SASSify($value) : $value);
@@ -720,7 +748,11 @@ final class Layout {
                     break; // go to compile
                 } while (false);
 
-                $css = '';
+                $css = "
+                    :root {
+                        $cssvars
+                    }
+                ";
                 foreach ($files as $file) {
                     $ranges = call_user_func(function ($range) {
                         foreach ($range as $key => $value) {
@@ -786,7 +818,11 @@ final class Layout {
             if ($return && !$row && !$destination) {
                 ini_set('max_execution_time', ini_get('max_execution_time') + 6);
 
-                $css = '';
+                $css = "
+                    :root {
+                        $cssvars
+                    }
+                ";
                 foreach ($media['files'] as $file) {
                     $ranges = call_user_func(function ($range) {
                         foreach ($range as $key => $value) {
