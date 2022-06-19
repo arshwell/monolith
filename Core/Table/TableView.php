@@ -230,10 +230,12 @@ abstract class TableView extends Table {
         if ($result) {
             Session::setView(static::class, $result[static::PRIMARY_KEY]);
 
-            $file = File::first('uploads/'. Folder::encode(static::class) .'/'. $result[static::PRIMARY_KEY] .'/value/'. $language .'/'. $width.'x'.$height);
+            $urlpath = Folder::encode(static::class) .'/'. $result[static::PRIMARY_KEY] .'/value/'. $language .'/'. $width.'x'.$height;
+
+            $file = File::first(ENV::uploads(true). $urlpath);
 
             if ($file) {
-                return ($site . $file);
+                return ($site . 'uploads/' . $urlpath . '/'. basename($file));
             }
         }
         else {
@@ -249,7 +251,7 @@ abstract class TableView extends Table {
 
         foreach ((static::TRANSLATOR)::LANGUAGES as $lang) {
             unset($max); // because $max is used many times in this foreach
-            foreach (Folder::children('uploads/'. $image_folder . $lang, true) as $size) {
+            foreach (Folder::children(ENV::uploads(true). $image_folder . $lang, true) as $size) {
                 list($w, $h) = explode('x', $size);
                 $value = ($w*$h);
 
@@ -260,7 +262,7 @@ abstract class TableView extends Table {
             }
 
             $image = (isset($biggest) ?
-                File::first('uploads/'. $image_folder . $lang .'/'. $biggest)
+                File::first(ENV::uploads(true). $image_folder . $lang .'/'. $biggest)
                 :
                 self::$source['image']
             );
@@ -286,10 +288,10 @@ abstract class TableView extends Table {
             $resizer->image_y            = $height;
             $resizer->image_ratio_crop   = true;
 
-            $resizer->process('uploads/'. $image_folder . $lang .'/'. $width .'x'. $height .'/');
+            $resizer->process(ENV::uploads(true). $image_folder . $lang .'/'. $width .'x'. $height .'/');
 
             if ($lang == $language) {
-                $file = ($site .'uploads/'. $image_folder . $language .'/'. $width .'x'. $height .'/'. $basename);
+                $file = ($site .ENV::uploads(true). $image_folder . $language .'/'. $width .'x'. $height .'/'. $basename);
             }
         }
 
@@ -517,9 +519,11 @@ abstract class TableView extends Table {
         if ($result) {
             Session::setView(static::class, $result[static::PRIMARY_KEY]);
 
-            $file = File::first('uploads/'. Folder::encode(static::class) .'/'. $result[static::PRIMARY_KEY] .'/value/'. $language .'/'. $width.'x'.$height);
+            $urlpath = Folder::encode(static::class) .'/'. $result[static::PRIMARY_KEY] .'/value/'. $language .'/'. $width.'x'.$height;
 
-            return ($file ? $site . $file : NULL);
+            $file = File::first(ENV::uploads(true). $urlpath);
+
+            return ($file ? $site .'uploads/'. $urlpath .'/'. basename($file) : NULL);
         }
         else {
             $result[static::PRIMARY_KEY] = DB::insert(
@@ -534,7 +538,7 @@ abstract class TableView extends Table {
 
         foreach ((static::TRANSLATOR)::LANGUAGES as $lang) {
             unset($max); // because $max is used many times in this foreach
-            foreach (Folder::children('uploads/'. $image_folder . $lang, true) as $size) {
+            foreach (Folder::children(ENV::uploads(true). $image_folder . $lang, true) as $size) {
                 list($w, $h) = explode('x', $size);
                 $value = ($w*$h);
 
@@ -545,7 +549,7 @@ abstract class TableView extends Table {
             }
 
             $image = (isset($biggest) ?
-                File::first('uploads/'. $image_folder . $lang .'/'. $biggest)
+                File::first(ENV::uploads(true). $image_folder . $lang .'/'. $biggest)
                 :
                 self::$source['image']
             );
@@ -571,10 +575,10 @@ abstract class TableView extends Table {
             $resizer->image_y            = $height;
             $resizer->image_ratio_crop   = true;
 
-            $resizer->process('uploads/'. $image_folder . $lang .'/'. $width .'x'. $height .'/');
+            $resizer->process(ENV::uploads(true). $image_folder . $lang .'/'. $width .'x'. $height .'/');
 
             if ($lang == $language) {
-                $file = ($site .'uploads/'. $image_folder . $language .'/'. $width .'x'. $height .'/'. $basename);
+                $file = ($site .ENV::uploads(true). $image_folder . $language .'/'. $width .'x'. $height .'/'. $basename);
             }
         }
 
@@ -602,9 +606,11 @@ abstract class TableView extends Table {
         if ($result) {
             Session::setView(static::class, $result[static::PRIMARY_KEY]);
 
-            $files = array_map(function ($file) use ($site) {
-                return ($site . $file);
-            }, File::folder('uploads/'. Folder::encode(static::class) .'/'. $result[static::PRIMARY_KEY] .'/value/'. $language .'/'.$width .'x'. $height));
+            $urlpath = Folder::encode(static::class) .'/'. $result[static::PRIMARY_KEY] .'/value/'. $language .'/'.$width .'x'. $height;
+
+            $files = array_map(function ($file) use ($site, $urlpath) {
+                return ($site .'uploads/'. $urlpath .'/'. basename($file));
+            }, File::folder(ENV::uploads(true). $urlpath));
 
             return $files;
         }
@@ -622,7 +628,7 @@ abstract class TableView extends Table {
 
         foreach ((static::TRANSLATOR)::LANGUAGES as $lang) {
             unset($max); // because $max is used many times in this foreach
-            foreach (Folder::children('uploads/'. $image_folder . $lang, true) as $size) {
+            foreach (Folder::children(ENV::uploads(true). $image_folder . $lang, true) as $size) {
                 list($w, $h) = explode('x', $size);
                 $value = ($w*$h);
 
@@ -633,7 +639,7 @@ abstract class TableView extends Table {
             }
 
             $images = (isset($biggest) ?
-                File::folder('uploads/'. $image_folder . $lang .'/'. $biggest)
+                File::folder(ENV::uploads(true). $image_folder . $lang .'/'. $biggest)
                 :
                 array(self::$source['image'])
             );
@@ -660,10 +666,10 @@ abstract class TableView extends Table {
                 $resizer->image_y            = $height;
                 $resizer->image_ratio_crop   = true;
 
-                $resizer->process('uploads/'. $image_folder . $lang .'/'. $width .'x'. $height .'/');
+                $resizer->process(ENV::uploads(true). $image_folder . $lang .'/'. $width .'x'. $height .'/');
 
                 if ($lang == $language) {
-                    $results[] = ($site .'uploads/'. $image_folder . $lang .'/'. $width .'x'. $height .'/'. $basename);
+                    $results[] = ($site .ENV::uploads(true). $image_folder . $lang .'/'. $width .'x'. $height .'/'. $basename);
                 }
             }
         }
@@ -727,10 +733,12 @@ abstract class TableView extends Table {
         if ($result) {
             Session::setView(static::class, $result[static::PRIMARY_KEY]);
 
-            $file = File::first('uploads/'. Folder::encode(static::class) .'/'. $result[static::PRIMARY_KEY] .'/value/'. $language);
+            $urlpath = Folder::encode(static::class) .'/'. $result[static::PRIMARY_KEY] .'/value/'. $language;
+
+            $file = File::first(ENV::uploads(true). $urlpath);
 
             if ($file) {
-                return ($site . $file);
+                return ($site . 'uploads/' . $urlpath . '/'. basename($file));
             }
         }
         else {
@@ -746,15 +754,17 @@ abstract class TableView extends Table {
 
         foreach ((static::TRANSLATOR)::LANGUAGES as $lang) {
             $basename = basename(self::$source['image']);
-            $dirname = 'uploads/'. $image_folder . $language;
 
-            if (!is_dir($dirname)) {
-                mkdir($dirname, 0755, true);
+            $dirpath = ENV::uploads() . $image_folder . $language; // could be outside of project
+            $urlpath = 'uploads/'. $image_folder . $language;
+
+            if (!is_dir($dirpath)) {
+                mkdir($dirpath, 0755, true);
             }
-            copy(self::$source['video'], $dirname .'/'. $basename);
+            copy(self::$source['video'], $dirpath .'/'. $basename);
 
             if ($lang == $language) {
-                $file = ($site . $dirname .'/'. $basename);
+                $file = ($site . $urlpath .'/'. $basename);
             }
         }
 

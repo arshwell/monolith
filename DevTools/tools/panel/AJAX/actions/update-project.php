@@ -85,7 +85,7 @@ if ($form->valid()) {
                     $destination = $zip->getNameIndex($index);
 
                     if ($form->value('replace') || basename($destination) == '.htaccess'
-                    || (strpos($destination, 'caches/') !== 0 && strpos($destination, 'uploads/') !== 0)
+                    || (strpos($destination, 'caches/') !== 0 && strpos($destination, ENV::uploads(true)) !== 0)
                     || (strpos($destination, ENV::design()) === 0 && preg_match("/^\d+\.css$/", basename($destination)))) {
                         $zip_files[$index] = $zip->getNameIndex($index);
                     }

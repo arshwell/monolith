@@ -6,6 +6,7 @@ use Arsh\Core\Table\TableSegment;
 use Arsh\Core\Folder;
 use Arsh\Core\File;
 use Arsh\Core\Web;
+use Arsh\Core\ENV;
 
 final class Doc implements TableSegment {
     private $class;
@@ -20,7 +21,7 @@ final class Doc implements TableSegment {
         $this->filekey  = $filekey;
         $this->folder   = (Folder::encode($class) .'/'. $id_table .'/'. $filekey);
 
-        $files = File::tree('uploads/'. $this->folder, NULL, false, true);
+        $files = File::tree(ENV::uploads(true). $this->folder, NULL, false, true);
 
         if ($files) {
             $site = Web::site();
@@ -29,13 +30,13 @@ final class Doc implements TableSegment {
                 if (!isset($files[$language])) {
                     $first_lang = array_key_first($files);
 
-                    if (Folder::copy('uploads/'. $this->folder .'/'. $first_lang, 'uploads/'. $this->folder .'/'. $language)) {
+                    if (Folder::copy(ENV::uploads(true). $this->folder .'/'. $first_lang, ENV::uploads(true). $this->folder .'/'. $language)) {
                         $files[$language] = $files[$first_lang];
                     }
                 }
 
                 if (!empty($files[$language])) {
-                    $this->urls[$language] = ($site .'uploads/'. $this->folder .'/'. $language .'/'. array_values($files[$language])[0]);
+                    $this->urls[$language] = ($site .ENV::uploads(true). $this->folder .'/'. $language .'/'. array_values($files[$language])[0]);
                 }
             }
         }
@@ -68,9 +69,9 @@ final class Doc implements TableSegment {
     function rename (string $name, string $language = NULL): void {
         $language = ($language ?: (($this->class)::TRANSLATOR)::default());
 
-        $file_ext = ('.'. File::extension(File::rFirst('uploads/'. $this->folder .'/'. $language)));
+        $file_ext = ('.'. File::extension(File::rFirst(ENV::uploads(true). $this->folder .'/'. $language)));
 
-        foreach (File::rFolder('uploads/'. $this->folder .'/'. $language) as $file) {
+        foreach (File::rFolder(ENV::uploads(true). $this->folder .'/'. $language) as $file) {
             rename($file, dirname($file) .'/'. $name . $file_ext);
         }
     }
@@ -78,29 +79,29 @@ final class Doc implements TableSegment {
     function update (array $data, string $language = NULL): void {
         $language = ($language ?: (($this->class)::TRANSLATOR)::default());
 
-        $dirname = 'uploads/'.$this->folder.'/'.$language;
+        $dirname = ENV::uploads(true).$this->folder.'/'.$language;
 
         Folder::remove($dirname);
         mkdir($dirname, 0755, true);
 
         if (isset($data['content'])) {
             file_put_contents(
-                'uploads/'.$this->folder.'/'.$language.'/'.$data['name'],
+                ENV::uploads(true).$this->folder.'/'.$language.'/'.$data['name'],
                 $data['content'],
                 LOCK_EX
             );
         }
         else {
-            copy($data['tmp_name'], 'uploads/'.$this->folder.'/'.$language.'/'.$data['name']);
+            copy($data['tmp_name'], ENV::uploads(true).$this->folder.'/'.$language.'/'.$data['name']);
         }
 
-        $this->urls[$language] = Web::site().'uploads/'.$this->folder.'/'.$language.'/'.$data['name'];
+        $this->urls[$language] = Web::site().ENV::uploads(true).$this->folder.'/'.$language.'/'.$data['name'];
     }
 
     function delete (string $language = NULL): bool {
-        Folder::remove('uploads/'. $this->folder .'/'. ($language ?? ''));
+        Folder::remove(ENV::uploads(true). $this->folder .'/'. ($language ?? ''));
 
-        Folder::removeEmpty('uploads/'. dirname($this->folder));
+        Folder::removeEmpty(ENV::uploads(true). dirname($this->folder));
 
         if (!$language) {
             $this->urls = NULL;

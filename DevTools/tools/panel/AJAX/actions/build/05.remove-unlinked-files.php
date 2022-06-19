@@ -14,7 +14,7 @@ $form = TableValidation::run($_POST, array(
 
 if ($form->valid()) {
     $build_dir  = sys_get_temp_dir().'/ArshWell/builds/sess_'.session_id().'/';
-    $asset      = 'uploads/';
+    $asset      = ENV::uploads(true);
 
     if (!is_dir($build_dir.$asset.'.app/')) {
         $form->info = array("TABLE FILES have not been added.");

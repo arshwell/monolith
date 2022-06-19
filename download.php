@@ -14,9 +14,10 @@ require("ArshWell/Core/ENV.php");
 DB::connect('default');
 Session::set(ENV::url().ENV::db('conn.default.name'));
 
-$filepath = ltrim(preg_replace('~^'. ENV::root() .'~', '', URL::path()), '/');
+$urlpath = ltrim(preg_replace('~^'. ENV::root() .'~', '', URL::path()), '/');
+$filepath = ENV::uploads() . $urlpath; // could be outside of project
 
-if (is_file($filepath) && ($matches = File::parsePath($filepath))
+if (is_file($filepath) && ($matches = File::parsePath($urlpath))
     && call_user_func_array(
         array(Folder::decode($matches['class']), 'fileAccess'),
         array($matches['id_table'], $matches['filekey'], $matches['language'], $matches['size'], $matches['extension'])

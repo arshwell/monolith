@@ -61,6 +61,10 @@ final class ENV {
                         $value = ('statics/'.$value.'/');
                     });
 
+                    if ($this->json['uploads']) {
+                        $this->json['uploads'] = trim($this->json['uploads'], '/') . '/'; // having one, and only one, slash at the end
+                    }
+
         			foreach ($this->json as $key => $value) {
                         if (is_array($value)) {
                             // NOTE: array_merge_recursive is not good
@@ -136,6 +140,10 @@ final class ENV {
             function statics (string $key = NULL) {
         		return ($key ? $this->json['statics'][$key] : $this->json['statics']);
         	}
+
+            function uploads (bool $add_subdirectory = false) {
+                return $this->json['uploads'] . ($add_subdirectory ? 'uploads/' : '');
+            }
 
         	function translations (): array {
         		return $this->json['translations'];
