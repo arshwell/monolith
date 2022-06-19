@@ -82,6 +82,12 @@ textarea {
 	z-index: initial !important; // against covering fixed menus
 }
 
+.owl-carousel {
+    .owl-stage {
+        margin: 0 auto;
+    }
+}
+
 // All redirect and AJAX submits have <form> tag because Form JS class needs it.
 form {
     *[form-error]:not([form-error=""]) {
