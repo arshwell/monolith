@@ -2,6 +2,7 @@
 
 namespace Arsh\Core\Module\HTML;
 
+use Arsh\Core\Module\HTML\Piece;
 use Arsh\Core\Table\Files\ImageGroup;
 use Arsh\Core\Table\Files\Image;
 use Arsh\Core\Table\Files\Doc;
@@ -76,29 +77,17 @@ final class Field {
                                             </button>
                                             <div class="dropdown-menu p-1">
                                                 <?php
-                                                foreach ($image->sizes() as $size => $values) { ?>
-                                                    <a class="dropdown-item p-1" data-size="<?= $size ?>" href="<?= $image->url($size, $language) ?>" target="_blank">
-                                                        <small><?= implode('x', array_map(function (array $side) {
-                                                            if ($side[0] == $side[1]) {
-                                                                if ($side[0] == NULL) {
-                                                                    return "(auto)";
-                                                                }
-                                                                return $side[0];
-                                                            }
-                                                            else if ($side[0] == NULL) {
-                                                                return "<span class='text-monospace'>(&#8804;$side[1])</span>";
-                                                            }
-                                                            else if ($side[1] == NULL) {
-                                                                return "<span class='text-monospace'>(&#8805;$side[0])</span>";
-                                                            }
-                                                            else {
-                                                                sort($side);
+                                                $imagesizes = $image->getimagesize($language);
 
-                                                                return "<span class='text-monospace'>($side[0]-$side[1])</span>";
-                                                            }
-                                                        }, $values)) ?></small>
-                                                    </a>
-                                                <?php } ?>
+                                                if ($imagesizes) {
+                                                    foreach ($imagesizes as $sizename => $values) { ?>
+                                                        <a class="dropdown-item p-1" data-size="<?= $sizename ?>" href="<?= $image->url($sizename, $language) ?>" target="_blank">
+                                                            <small>
+                                                                <span class='text-monospace'><?= $values[0] ?></span>×<span class='text-monospace'><?= $values[1] ?></span>
+                                                            </small>
+                                                        </a>
+                                                    <?php }
+                                                } ?>
                                             </div>
                                         </div>
                                     </div>
@@ -147,7 +136,7 @@ final class Field {
                     </div>
                 </div>
                 <?php
-                if ($image && $image->sizes()) {
+                if ($image && $image->configSizes()) {
                     array_unshift(
                         $config['HTML']['notes'],
                         call_user_func(function () use ($image) {
@@ -156,7 +145,7 @@ final class Field {
                                 <u data-toggle="tooltip" data-placement="left" data-html="true"
                                 title="<span style='font-size: smaller'>Rezoluțiile finale:<br><?= implode(', ', array_map(function (array $size) {
                                     return (
-                                        implode('x', array_map(function (array $side) {
+                                        implode('×', array_map(function (array $side) {
                                             if ($side[0] == $side[1]) {
                                                 if ($side[0] == NULL) {
                                                     return "(auto)";
@@ -177,8 +166,8 @@ final class Field {
                                         }, $size)) .
                                         ($size['width'][0] != $size['width'][1] || $size['height'][0] != $size['height'][1] ? '<br>' : '')
                                     );
-                                }, $image->sizes())) ?></u></span>">
-                                    <?= File::minProperlyRatio($image->sizes()) ?>
+                                }, $image->configSizes())) ?></u></span>">
+                                    <?= File::minProperlyRatio($image->configSizes()) ?>
                                 </u>
                             <?php
                             return ob_get_clean();
@@ -230,6 +219,7 @@ final class Field {
                         $smallest   = $images->smallest($language);
                         $biggest    = $images->biggest($language);
                         $count      = count($smallest);
+                        $imagesizes = $images->getimagesize($language);
 
                         for ($i = 0; $i < $count; $i++) {
                             $basename = basename($smallest[$i]); ?>
@@ -261,29 +251,15 @@ final class Field {
                                                 </button>
                                                 <div class="dropdown-menu p-1">
                                                     <?php
-                                                    foreach ($images->sizes() as $size => $ranges) { ?>
-                                                        <a class="dropdown-item p-1" data-size="<?= $size ?>" href="<?= $images->url($size, $language)[$i] ?>" target="_blank">
-                                                            <small><?= implode('x', array_map(function (array $side) {
-                                                                if ($side[0] == $side[1]) {
-                                                                    if ($side[0] == NULL) {
-                                                                        return "(auto)";
-                                                                    }
-                                                                    return $side[0];
-                                                                }
-                                                                else if ($side[0] == NULL) {
-                                                                    return "<span class='text-monospace'>(&#8804;$side[1])</span>";
-                                                                }
-                                                                else if ($side[1] == NULL) {
-                                                                    return "<span class='text-monospace'>(&#8805;$side[0])</span>";
-                                                                }
-                                                                else {
-                                                                    sort($side);
-
-                                                                    return "<span class='text-monospace'>($side[0]-$side[1])</span>";
-                                                                }
-                                                            }, $ranges)) ?></small>
-                                                        </a>
-                                                    <?php } ?>
+                                                    if ($imagesizes) {
+                                                        foreach ($imagesizes as $sizename => $values) { ?>
+                                                            <a class="dropdown-item p-1" data-size="<?= $sizename ?>" href="<?= $images->url($sizename, $language)[$i] ?>" target="_blank">
+                                                                <small>
+                                                                    <span class='text-monospace'><?= $values[$i][0] ?></span>×<span class='text-monospace'><?= $values[$i][1] ?></span>
+                                                                </small>
+                                                            </a>
+                                                        <?php }
+                                                    } ?>
                                                 </div>
                                             </div>
                                         </div>
@@ -328,35 +304,7 @@ final class Field {
                                             <i class="fa fa-fw fa-download"></i>
                                         </button>
                                         <div class="dropdown-menu p-1">
-                                            <?php
-                                            if ($images) {
-                                                foreach ($images->sizes() as $size => $ranges) { ?>
-                                                    <a class="dropdown-item p-1" data-size="<?= $size ?>" href="" target="_blank">
-                                                        <small><?= implode('x', array_map(function (array $side) {
-                                                            if ($side[0] == $side[1]) {
-                                                                if ($side[0] == NULL) {
-                                                                    return "(auto)";
-                                                                }
-                                                                return $side[0];
-                                                            }
-                                                            else if ($side[0] == NULL) {
-                                                                return "<span class='text-monospace'>(&#8804;$side[1])</span>";
-                                                            }
-                                                            else if ($side[1] == NULL) {
-                                                                return "<span class='text-monospace'>(&#8805;$side[0])</span>";
-                                                            }
-                                                            else {
-                                                                sort($side);
-
-                                                                return "<span class='text-monospace'>($side[0]-$side[1])</span>";
-                                                            }
-                                                        }, $ranges)) ?></small>
-                                                    </a>
-                                                <?php }
-                                            }
-                                            else { ?>
-                                                <a class="dropdown-item p-1" href target="_blank"></a>
-                                            <?php } ?>
+                                            <a class="dropdown-item p-1" href target="_blank"></a>
                                         </div>
                                     </div>
                                 </div>
@@ -390,7 +338,7 @@ final class Field {
                     </div>
                 </div>
                 <?php
-                if ($images && $images->sizes()) {
+                if ($images && $images->configSizes()) {
                     array_unshift(
                         $config['HTML']['notes'],
                         call_user_func(function () use ($images) {
@@ -420,8 +368,8 @@ final class Field {
                                             }
                                         }, $ranges))
                                     );
-                                }, $images->sizes())) ?></u></span>">
-                                    <?= File::minProperlyRatio($images->sizes()) ?>
+                                }, $images->configSizes())) ?></u></span>">
+                                    <?= File::minProperlyRatio($images->configSizes()) ?>
                                 </u>
                             <?php
                             return ob_get_clean();
@@ -911,7 +859,7 @@ final class Field {
                 <div class="input-group-append"
                 data-toggle="tooltip" data-placement="left" title="fontawesome.com">
                     <a class="input-group-text" target="_blank"
-                    href="https://fontawesome.com/icons?d=gallery&m=free&q=<?= substr($config['HTML']['value'], strpos($config['HTML']['value'], '-') + 1) ?>">
+                    href="https://fontawesome.com/v5/search?m=free&q=<?= substr($config['HTML']['value'], strpos($config['HTML']['value'], '-') + 1) ?>">
                         <i class="<?= $config['HTML']['value'] ?> fa-fw"></i>
                     </a>
                 </div>

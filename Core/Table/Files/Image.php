@@ -6,6 +6,7 @@ use Arsh\Core\Table\TableSegment;
 use Arsh\Core\Tygh\Upload;
 use Arsh\Core\Folder;
 use Arsh\Core\File;
+use Arsh\Core\Text;
 use Arsh\Core\Func;
 use Arsh\Core\Web;
 use Arsh\Core\ENV;
@@ -16,8 +17,9 @@ final class Image implements TableSegment {
     private $filekey;
     private $folder;
     private $config = array();
-    private $smallest = array();
-    private $biggest = array();
+    private $smallest = array(); // urls
+    private $biggest = array(); // urls
+    private $sizes = array();
     private $urls = array();
 
     function __construct (string $class, int $id_table = NULL, string $filekey) {
@@ -30,7 +32,8 @@ final class Image implements TableSegment {
             array(
                 'default'   => false, // doesn't copy the files where some lg don't have
                 'quality'   => 100,
-                'bytes'     => NULL, // we don't use it here anyway
+                'bytes'     => NULL, // we don't use it here anyway, but instead in TableValidation
+                'sizes'     => array(),
                 'watermark' => array(
                     NULL, '50%', '50%', false
                 )
@@ -38,13 +41,17 @@ final class Image implements TableSegment {
             ($class)::FILES[$filekey]
         );
 
-        if (!isset($this->config['sizes'])) {
+        if (empty($this->config['sizes'])) { // if no sizes, like TableView
             foreach (Folder::children(ENV::uploads(true). $this->folder .'/'. ($class::TRANSLATOR)::get(), true) as $size) {
-                list($this->config['sizes'][$size]['width'], $this->config['sizes'][$size]['height']) = explode('x', $size);
+                list($width, $height) = explode('x', $size);
+
+                $this->config['sizes'][$size]['width'] = array($width, $width);
+                $this->config['sizes'][$size]['height'] = array($height, $height);
             }
         }
 
-        if (isset($this->config['sizes'])) {
+        // setup urls
+        if (!empty($this->config['sizes'])) { // if had sizes or created above
             foreach ($this->config['sizes'] as $size => $ranges) {
                 $ranges['width'] = array_values((array)($ranges['width'] ?? array(NULL)));
 
@@ -76,6 +83,8 @@ final class Image implements TableSegment {
      */
     private function setup ($default = false): void {
         $site = Web::site();
+
+        // reset urls
         $this->smallest = array();
         $this->biggest  = array();
         $this->urls     = array();
@@ -182,8 +191,11 @@ final class Image implements TableSegment {
                         }
                     }
 
-                    if (isset($files[$language])) {
-                        $this->urls[$language][$size] = ($site .ENV::uploads(true). $this->folder .'/'. $language .'/'. $size .'/'. $files[$language][$size][0]);
+                    // if file found
+                    if (isset($files[$language][$size][0])) {
+                        $this->sizes[$language][$size] = getimagesize(ENV::uploads(true) . $this->folder .'/'. $language .'/'. $size .'/'. $files[$language][$size][0]);
+
+                        $this->urls[$language][$size] = ($site .'uploads/'. $this->folder .'/'. $language .'/'. $size .'/'. $files[$language][$size][0]);
                     }
                 }
             }
@@ -223,7 +235,27 @@ final class Image implements TableSegment {
         return $this->biggest[($lang ?: (($this->class)::TRANSLATOR)::get())] ?? NULL;
     }
 
-    function sizes (): ?array {
+    function getimagesize (string $lang = NULL, string $sizename = NULL, string $key = NULL) {
+        $info = $this->sizes[($lang ?: (($this->class)::TRANSLATOR)::get())] ?? NULL;
+
+        if (empty($info)) {
+            return NULL;
+        }
+
+        if ($sizename && $key != NULL) {
+            return $info[$sizename][$key];
+        }
+        else if ($sizename) {
+            return $info[$sizename];
+        }
+        else if ($key != NULL) {
+            return $info[array_key_first($info)][$key];
+        }
+
+        return $info ?? NULL;
+    }
+
+    function configSizes (): ?array {
         return $this->config['sizes'] ?? NULL;
     }
 
@@ -231,16 +263,19 @@ final class Image implements TableSegment {
         return $this->{$method}; // class, id_table, filekey, folder
     }
 
-    function rename (string $name, string $language = NULL): void {
+    function rename (string $name, string $language = NULL): string {
         $language = ($language ?: (($this->class)::TRANSLATOR)::default());
 
         $file_ext = ('.'. File::extension(File::rFirst(ENV::uploads(true). $this->folder .'/'. $language)));
+        $name = Text::slug($name);
 
         foreach (File::rFolder(ENV::uploads(true). $this->folder .'/'. $language) as $file) {
             rename($file, dirname($file) .'/'. $name . $file_ext);
         }
 
         $this->setup();
+
+        return $name;
     }
 
     function update (array $data, string $language = NULL): void {
@@ -260,6 +295,7 @@ final class Image implements TableSegment {
 
             Folder::remove(ENV::uploads(true).$this->folder.'/'.$language.'/'.$size);
 
+            // width OR height is not NULL - so a resize is needed
             if (($ranges['width'][1] != NULL && $imagesize[0] > $ranges['width'][1]) || ($ranges['height'][1] != NULL && $imagesize[1] > $ranges['height'][1])) {
                 $resizer = new Upload($data['tmp_name']);
 
@@ -271,12 +307,14 @@ final class Image implements TableSegment {
                 $resizer->webp_quality              = ($ranges['quality'] ?? $this->config['quality']);
                 $resizer->jpeg_quality              = ($ranges['quality'] ?? $this->config['quality']);
 
+                // size custom watermark
                 if (!empty($ranges['watermark'])) {
                     $resizer->image_watermark    = ($ranges['watermark'][0] ?? $this->config['watermark'][0]);
                     $resizer->image_watermark_x  = ($ranges['watermark'][1] ?? $this->config['watermark'][1] ?? '50%');
                     $resizer->image_watermark_y  = ($ranges['watermark'][2] ?? $this->config['watermark'][2] ?? '50%');
                     $resizer->image_watermark_no_zoom_in = ($ranges['watermark'][3] ?? $this->config['watermark'][3] ?? false);
                 }
+                // file default watermark
                 else if (!empty($this->config['watermark'][0])) {
                     $resizer->image_watermark    = $this->config['watermark'][0];
                     $resizer->image_watermark_x  = $this->config['watermark'][1];
@@ -310,6 +348,7 @@ final class Image implements TableSegment {
                     throw new \ErrorException($resizer->error);
                 }
             }
+            // no resize needed
             else if (is_dir(ENV::uploads(true).$this->folder.'/'.$language.'/'.$size) || mkdir(ENV::uploads(true).$this->folder.'/'.$language.'/'.$size, 0755, true)) {
                 copy($data['tmp_name'], ENV::uploads(true).$this->folder.'/'.$language.'/'.$size.'/'.$data['name']);
             }

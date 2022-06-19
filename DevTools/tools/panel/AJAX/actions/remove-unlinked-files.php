@@ -77,7 +77,16 @@ if ($form->valid()) {
         $removed[0] = ("<b>count:</b> ". $removed[0]); // for nice display in DevPanel
     }
 
-    Folder::removeEmpty(ENV::uploads(true) . '.brain/');
+    /**
+     * Deleting empty folders if not inside ./brain/.view/.
+     *
+     * We need those folders for TableView files, so TableFiles classes can know the required filesizes.
+     */
+    foreach (Folder::children(ENV::uploads(true) . '.brain/') as $folder) {
+        if (basename($folder) != '.view') {
+            Folder::removeEmpty($folder);
+        }
+    }
 
     $form->info = array(
         'missing tables'    => $missing ?: NULL,

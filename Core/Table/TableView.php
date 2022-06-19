@@ -523,7 +523,22 @@ abstract class TableView extends Table {
 
             $file = File::first(ENV::uploads(true). $urlpath);
 
-            return ($file ? $site .'uploads/'. $urlpath .'/'. basename($file) : NULL);
+            if ($file) {
+                return $site .'uploads/'. $urlpath .'/'. basename($file);
+            }
+
+            $dirpath = ENV::uploads(true) . $urlpath .'/'. dirname($file);
+
+            /**
+             * Creating its directory no matter what.
+             *
+             * We need it for TableView files, so TableFiles classes can know the required filesizes.
+             */
+            if (!is_dir($dirpath)) {
+                mkdir($dirpath, 0755, true);
+            }
+
+            return NULL;
         }
         else {
             $result[static::PRIMARY_KEY] = DB::insert(

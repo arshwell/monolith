@@ -68,7 +68,10 @@ final class HTML {
         return $value;
     }
 
-    static function values (array $values): array {
+    /**
+     * (closure|array) $notes
+    */
+    static function values ($values) {
         return $values;
     }
 

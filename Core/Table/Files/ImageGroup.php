@@ -16,8 +16,9 @@ final class ImageGroup implements TableSegment {
     private $filekey;
     private $folder;
     private $config = array();
-    private $smallest = array();
-    private $biggest = array();
+    private $smallest = array(); // urls
+    private $biggest = array(); // urls
+    private $sizes = array();
     private $urls = array();
 
     function __construct (string $class, int $id_table = NULL, string $filekey) {
@@ -30,7 +31,7 @@ final class ImageGroup implements TableSegment {
             array(
                 'default'   => false, // doesn't copy the files where some lg don't have
                 'quality'   => 100,
-                'bytes'     => NULL, // we don't use it here anyway
+                'bytes'     => NULL, // we don't use it here anyway, but instead in TableValidation
                 'sizes'     => array(),
                 'watermark' => array(
                     NULL, '50%', '50%', false
@@ -39,13 +40,17 @@ final class ImageGroup implements TableSegment {
             ($class)::FILES[$filekey]
         );
 
-        if (empty($this->config['sizes'])) {
+        if (empty($this->config['sizes'])) { // if no sizes, like TableView
             foreach (Folder::children(ENV::uploads(true). $this->folder .'/'. ($class::TRANSLATOR)::get(), true) as $size) {
-                list($this->config['sizes'][$size]['width'], $this->config['sizes'][$size]['height']) = explode('x', $size);
+                list($width, $height) = explode('x', $size);
+
+                $this->config['sizes'][$size]['width'] = array($width, $width);
+                $this->config['sizes'][$size]['height'] = array($height, $height);
             }
         }
 
-        if (!empty($this->config['sizes'])) {
+        // setup urls
+        if (!empty($this->config['sizes'])) { // if had sizes or created above
             foreach ($this->config['sizes'] as $size => $ranges) {
                 $ranges['width'] = array_values((array)($ranges['width'] ?? array(NULL)));
 
@@ -71,6 +76,8 @@ final class ImageGroup implements TableSegment {
      */
     private function setup ($default = false): void {
         $site = Web::site();
+
+        // reset urls
         $this->smallest = array();
         $this->biggest  = array();
         $this->urls     = array();
@@ -81,30 +88,32 @@ final class ImageGroup implements TableSegment {
             foreach (Folder::children(ENV::uploads(true). $this->folder, true) as $lg) {
                 $lg_files = File::tree(ENV::uploads(true). $this->folder .'/'. $lg, NULL, true, true);
 
-                $lg_sized_files = array_map(function ($files) {
-                    return array_map(function ($file) {
-                        $data = getimagesize($file);
+                if ($lg_files) {
+                    $lg_sized_files = array_map(function ($files) {
+                        return array_map(function ($file) {
+                            $data = getimagesize($file);
 
-                        return ($data[0]*$data[1]);
-                    }, $files);
-                }, $lg_files);
+                            return ($data[0]*$data[1]);
+                        }, $files);
+                    }, $lg_files);
 
-                $this->smallest[$lg] = array_map(
-                    function ($file) use ($site) {
-                        return $site.ltrim(preg_replace('~^'. ENV::uploads() .'~', '', $file), '/');
-                    },
-                    $lg_files[Func::keyFromSmallest(array_map(function ($filesizes) {
-                        return max($filesizes);
-                    }, $lg_sized_files))]
-                );
-                $this->biggest[$lg] = array_map(
-                    function ($file) use ($site) {
-                        return $site.ltrim(preg_replace('~^'. ENV::uploads() .'~', '', $file), '/');
-                    },
-                    $lg_files[Func::keyFromBiggest(array_map(function ($filesizes) {
-                        return min($filesizes);
-                    }, $lg_sized_files))]
-                );
+                    $this->smallest[$lg] = array_map(
+                        function ($file) use ($site) {
+                            return $site.ltrim(preg_replace('~^'. ENV::uploads() .'~', '', $file), '/');
+                        },
+                        $lg_files[Func::keyFromSmallest(array_map(function ($filesizes) {
+                            return max($filesizes);
+                        }, $lg_sized_files))]
+                    );
+                    $this->biggest[$lg] = array_map(
+                        function ($file) use ($site) {
+                            return $site.ltrim(preg_replace('~^'. ENV::uploads() .'~', '', $file), '/');
+                        },
+                        $lg_files[Func::keyFromBiggest(array_map(function ($filesizes) {
+                            return min($filesizes);
+                        }, $lg_sized_files))]
+                    );
+                }
             }
 
             foreach ((($this->class)::TRANSLATOR)::LANGUAGES as $language) {
@@ -191,8 +200,11 @@ final class ImageGroup implements TableSegment {
                         }
                     }
 
+                    // if files found
                     if (isset($files[$language][$size][0])) {
                         foreach ($files[$language][$size] as $filename) {
+                            $this->sizes[$language][$size][] = getimagesize(ENV::uploads(true) . $this->folder .'/'. $language .'/'. $size .'/'. $filename);
+
                             $this->urls[$language][$size][] = ($site .ENV::uploads(true). $this->folder .'/'. $language .'/'. $size .'/'. $filename);
                         }
                     }
@@ -230,7 +242,27 @@ final class ImageGroup implements TableSegment {
         return $this->biggest[($lang ?: (($this->class)::TRANSLATOR)::get())] ?? array();
     }
 
-    function sizes (): ?array {
+    function getimagesize (string $lang = NULL, string $sizename = NULL, string $key = NULL): ?array {
+        $info = $this->sizes[($lang ?: (($this->class)::TRANSLATOR)::get())] ?? NULL;
+
+        if (empty($info)) {
+            return NULL;
+        }
+
+        if ($sizename && $key != NULL) {
+            return array_column($info[$sizename], $key);
+        }
+        else if ($sizename) {
+            return $info[$sizename];
+        }
+        else if ($key != NULL) {
+            return array_column($info[array_key_first($info)], $key);
+        }
+
+        return $info ?? NULL;
+    }
+
+    function configSizes (): ?array {
         return $this->config['sizes'] ?? NULL;
     }
 
@@ -266,12 +298,14 @@ final class ImageGroup implements TableSegment {
                     $resizer->webp_quality              = ($ranges['quality'] ?? $this->config['quality']);
                     $resizer->jpeg_quality              = ($ranges['quality'] ?? $this->config['quality']);
 
+                    // size custom watermark
                     if (!empty($ranges['watermark'])) {
                         $resizer->image_watermark    = ($ranges['watermark'][0] ?? $this->config['watermark'][0]);
                         $resizer->image_watermark_x  = ($ranges['watermark'][1] ?? $this->config['watermark'][1] ?? '50%');
                         $resizer->image_watermark_y  = ($ranges['watermark'][2] ?? $this->config['watermark'][2] ?? '50%');
                         $resizer->image_watermark_no_zoom_in = ($ranges['watermark'][3] ?? $this->config['watermark'][3] ?? false);
                     }
+                    // file default watermark
                     else if (!empty($this->config['watermark'][0])) {
                         $resizer->image_watermark    = $this->config['watermark'][0];
                         $resizer->image_watermark_x  = $this->config['watermark'][1];
