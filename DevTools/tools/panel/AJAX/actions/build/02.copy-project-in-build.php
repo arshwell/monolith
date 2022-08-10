@@ -42,7 +42,7 @@ if ($form->valid()) {
     }
 
     if (empty($form->value('table-files'))) {
-        Folder::remove($build_dir.'uploads/.app');
+        Folder::remove($build_dir . ENV::uploads(true) . '.brain/');
     }
 
     Folder::removeEmpty($build_dir.'uploads');

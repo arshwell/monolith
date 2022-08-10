@@ -1,6 +1,7 @@
 <?php
 
 use Arsh\Core\Table\TableValidation;
+use Arsh\Core\Table\TableView;
 use Arsh\Core\Folder;
 use Arsh\Core\File;
 use Arsh\Core\Func;
@@ -33,6 +34,7 @@ if ($form->valid()) {
             if (class_exists($class) && !DB::existsTable(($class)::TABLE)) {
                 $missing[] = ($class)::TABLE;
             }
+            // class doesn't exist || table row doesn't exist || class don't have files
             else if (!class_exists($class) || !($class)::get($matches['id_table']) || !defined("{$class}::FILES")) {
                 $path = $matches['class'] .'/'. $matches['id_table'];
                 $count = count(File::rFolder(ENV::uploads(true) . $path));
@@ -42,6 +44,7 @@ if ($form->valid()) {
                     $removed[1][] = $path . ' <small class="text-muted text-monospace">('.$count.')</small>';
                 }
             }
+            // class files don't have this certain filekey
             else if (!isset(($class)::FILES[$matches['filekey']])) {
                 $path = $matches['class'] .'/'. $matches['id_table'] .'/'. $matches['filekey'];
                 $count = count(File::rFolder(ENV::uploads(true) . $path));
@@ -51,6 +54,7 @@ if ($form->valid()) {
                     $removed[1][] = $path . ' <small class="text-muted text-monospace">('.$count.')</small>';
                 }
             }
+            // remove lg - if not used by class
             else if ($form->value('remove-lg') && !in_array($matches['language'], (($class)::TRANSLATOR)::LANGUAGES)) {
                 $path = $matches['class'] .'/'. $matches['id_table'] .'/'. $matches['filekey'] .'/'. $matches['language'];
                 $count = count(File::rFolder(ENV::uploads(true) . $path));
@@ -70,22 +74,20 @@ if ($form->valid()) {
                     $removed[1][] = $path . ' <small class="text-muted text-monospace">('.$count.')</small>';
                 }
             }
+
+            /**
+             * Deleting empty folders if not View folders.
+             *
+             * We need those folders for TableView files, so TableFiles classes can know the required filesizes.
+             */
+            if (!is_subclass_of($class, TableView::class)) {
+                Folder::removeEmpty(ENV::uploads(true) . $matches['class']);
+            }
         }
     }
 
     if ($removed[0]) {
         $removed[0] = ("<b>count:</b> ". $removed[0]); // for nice display in DevPanel
-    }
-
-    /**
-     * Deleting empty folders if not inside ./brain/.view/.
-     *
-     * We need those folders for TableView files, so TableFiles classes can know the required filesizes.
-     */
-    foreach (Folder::children(ENV::uploads(true) . '.brain/') as $folder) {
-        if (basename($folder) != '.view') {
-            Folder::removeEmpty($folder);
-        }
     }
 
     $form->info = array(

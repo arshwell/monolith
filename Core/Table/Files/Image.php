@@ -357,12 +357,14 @@ final class Image implements TableSegment {
         $this->setup();
     }
 
-    function delete (string $language = NULL): bool {
-        if (Folder::remove(ENV::uploads(true). $this->folder .'/'. ($language ?? ''))) {
+    function delete (string $language = NULL, bool $removeEmpty = true): bool {
+        if (Folder::remove(ENV::uploads(true). $this->folder .'/'. ($language ?? ''), $removeEmpty)) {
             $this->setup();
         }
 
-        Folder::removeEmpty(ENV::uploads(true). dirname($this->folder));
+        if ($removeEmpty) {
+            Folder::removeEmpty(ENV::uploads(true). dirname($this->folder));
+        }
 
         return true;
     }

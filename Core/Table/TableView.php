@@ -43,8 +43,8 @@ abstract class TableView extends Table {
     );
 
     private static $source = array(
-        'image' => "resources/images/views/default-image-view.png",
-        'video' => "resources/images/views/default-video-view.mp4"
+        'image' => "ArshWell/resources/images/views/default-image-view.png",
+        'video' => "ArshWell/resources/images/views/default-video-view.mp4"
     );
 
     private static function source (bool &$global): string {
@@ -237,6 +237,8 @@ abstract class TableView extends Table {
             if ($file) {
                 return ($site . 'uploads/' . $urlpath . '/'. basename($file));
             }
+
+            // If no file found, will be created below. Because imageSEO is not optional (any page should have imageSEO).
         }
         else {
             $result[static::PRIMARY_KEY] = DB::insert(
@@ -250,48 +252,41 @@ abstract class TableView extends Table {
         $image_folder = Folder::encode(static::class) .'/'. $result[static::PRIMARY_KEY] .'/value/';
 
         foreach ((static::TRANSLATOR)::LANGUAGES as $lang) {
-            unset($max); // because $max is used many times in this foreach
-            foreach (Folder::children(ENV::uploads(true). $image_folder . $lang, true) as $size) {
-                list($w, $h) = explode('x', $size);
-                $value = ($w*$h);
+            // if this language doesn't have the file
+            if (File::first(ENV::uploads(true). $image_folder . $lang .'/'. $width.'x'.$height) == NULL) {
+                $image = (
+                    File::findBiggestSibling(ENV::uploads(true). $image_folder . $lang .'/'. $width.'x'.$height.'/foo.bar')
+                    ?:
+                    self::$source['image']
+                );
 
-                if (($max ?? $value) >= $value) {
-                    $max = $value;
-                    $biggest = $size;
+                $basename   = basename($image);
+                $image_name = File::name($basename); // getting name from sibling file
+
+                $resizer = new Upload($image);
+
+                if (!$resizer->uploaded) {
+                    throw new Exception($resizer->error);
                 }
-            }
 
-            $image = (isset($biggest) ?
-                File::first(ENV::uploads(true). $image_folder . $lang .'/'. $biggest)
-                :
-                self::$source['image']
-            );
+                $resizer->file_new_name_body        = $image_name;
+                $resizer->file_overwrite            = true;
+                $resizer->file_name_body_lowercase  = true;
+                $resizer->jpeg_quality              = self::FILES['value']['quality'];
 
-            $basename   = basename($image);
-            $image_name = File::name($basename);
+                $resizer->file_safe_name    = false;
+                $resizer->image_resize      = true;
 
-            $resizer = new Upload($image);
+                $resizer->image_x            = $width;
+                $resizer->image_y            = $height;
+                $resizer->image_ratio_crop   = true;
 
-            if (!$resizer->uploaded) {
-                throw new Exception($resizer->error);
-            }
+                $resizer->process(ENV::uploads(true). $image_folder . $lang .'/'. $width .'x'. $height .'/');
 
-            $resizer->file_new_name_body        = $image_name;
-            $resizer->file_overwrite            = true;
-            $resizer->file_name_body_lowercase  = true;
-            $resizer->jpeg_quality              = self::FILES['value']['quality'];
-
-            $resizer->file_safe_name    = false;
-            $resizer->image_resize      = true;
-
-            $resizer->image_x            = $width;
-            $resizer->image_y            = $height;
-            $resizer->image_ratio_crop   = true;
-
-            $resizer->process(ENV::uploads(true). $image_folder . $lang .'/'. $width .'x'. $height .'/');
-
-            if ($lang == $language) {
-                $file = ($site .ENV::uploads(true). $image_folder . $language .'/'. $width .'x'. $height .'/'. $basename);
+                // remember url file, for current language
+                if ($lang == $language) {
+                    $file = ($site .'uploads/'. $image_folder . $language .'/'. $width .'x'. $height .'/'. $basename);
+                }
             }
         }
 
@@ -538,7 +533,7 @@ abstract class TableView extends Table {
                 mkdir($dirpath, 0755, true);
             }
 
-            return NULL;
+            return NULL; // If no file found, NULL returned. Because image is optional.
         }
         else {
             $result[static::PRIMARY_KEY] = DB::insert(
@@ -552,20 +547,10 @@ abstract class TableView extends Table {
         $image_folder = Folder::encode(static::class) .'/'. $result[static::PRIMARY_KEY] .'/value/';
 
         foreach ((static::TRANSLATOR)::LANGUAGES as $lang) {
-            unset($max); // because $max is used many times in this foreach
-            foreach (Folder::children(ENV::uploads(true). $image_folder . $lang, true) as $size) {
-                list($w, $h) = explode('x', $size);
-                $value = ($w*$h);
-
-                if (($max ?? $value) >= $value) {
-                    $max = $value;
-                    $biggest = $size;
-                }
-            }
-
-            $image = (isset($biggest) ?
-                File::first(ENV::uploads(true). $image_folder . $lang .'/'. $biggest)
-                :
+            // getting name from sibling file
+            $image = (
+                File::findBiggestSibling(ENV::uploads(true). $image_folder . $lang .'/'. $width.'x'.$height.'/foo.bar')
+                ?:
                 self::$source['image']
             );
 
@@ -592,6 +577,7 @@ abstract class TableView extends Table {
 
             $resizer->process(ENV::uploads(true). $image_folder . $lang .'/'. $width .'x'. $height .'/');
 
+            // remember url file, for current language
             if ($lang == $language) {
                 $file = ($site .ENV::uploads(true). $image_folder . $language .'/'. $width .'x'. $height .'/'. $basename);
             }

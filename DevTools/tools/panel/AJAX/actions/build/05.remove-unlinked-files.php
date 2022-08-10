@@ -16,11 +16,11 @@ if ($form->valid()) {
     $build_dir  = sys_get_temp_dir().'/ArshWell/builds/sess_'.session_id().'/';
     $asset      = ENV::uploads(true);
 
-    if (!is_dir($build_dir.$asset.'.app/')) {
+    if (!is_dir($build_dir.$asset.'.brain/')) {
         $form->info = array("TABLE FILES have not been added.");
     }
     else {
-        $removed    = 0;
+        $removed = 0;
 
         foreach (File::rFolder($build_dir.$asset) as $file) {
             if (is_file($file) && ($matches = File::parsePath(substr($file, strlen($build_dir))))) {
@@ -44,10 +44,17 @@ if ($form->valid()) {
                     // if dirname was removed, we add up removed files
                     $removed += Folder::remove($build_dir.$asset.$matches['class'] .'/'. $matches['id_table'] .'/'. $matches['filekey'] .'/'. $matches['language'] .'/'. $matches['size']);
                 }
+
+                /**
+                 * Deleting empty folders if not View folders.
+                 *
+                 * We need those folders for TableView files, so TableFiles classes can know the required filesizes.
+                 */
+                if (!is_subclass_of($class, TableView::class)) {
+                    Folder::removeEmpty($build_dir.$asset.$matches['class']);
+                }
             }
         }
-
-        Folder::removeEmpty($build_dir.$asset);
 
         $form->info = array("Have been deleted ".$removed." files from ".$asset);
     }

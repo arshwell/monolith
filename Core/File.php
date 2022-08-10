@@ -212,6 +212,79 @@ final class File {
         return NULL;
     }
 
+    static function findBiggestSibling (string $file, array $siblings = NULL): ?string {
+        $filepath = self::parsePath($file);
+
+        if (!$filepath) {
+            return NULL; // invalid file path
+        }
+
+        $filekeyfolder = ENV::uploads(true). $filepath['class'] .'/'. $filepath['id_table'] .'/'. $filepath['filekey'];
+
+        if (empty($siblings)) {
+            $siblings = File::tree($filekeyfolder, NULL, false, true);
+        }
+
+        if (empty($siblings)) {
+            return NULL; // no file siblings at all
+        }
+
+        /**
+         * Proper order:
+         *
+         * 1. Same LG - biggest Size
+         * 2. Another LG - same Size
+         * 3. Another LG - biggest Size
+         * 4. Same LG - smaller Size
+         * 5. Another LG - smaller Size
+         */
+
+        $biggest = NULL;
+
+        // biggest language size from existent ones
+        if (!empty($siblings[$filepath['language']])) {
+            $lg_files = File::rFolder($filekeyfolder .'/'. $filepath['language'], NULL, true, true);
+
+            if ($lg_files) {
+                $biggest = File::parsePath($lg_files[Func::keyFromBiggest(array_map(function ($file) {
+                    $data = getimagesize($file);
+
+                    return ($data[0]*$data[1]);
+                }, $lg_files))], 'size');
+            }
+        }
+
+        if ($biggest != $filepath['size'] && isset($siblings[$filepath['language']][$biggest][0])) {
+            // 1. Same LG - biggest Size
+            return ($filekeyfolder .'/'. $filepath['language'] .'/'. $biggest .'/'. $siblings[$filepath['language']][$biggest][0]);
+        }
+        else {
+            $another_file = NULL;
+
+            foreach (array_keys($siblings) as $lg) {
+                foreach (array_keys($siblings[$lg]) as $sz) {
+                    if ($lg != $filepath['language'] && $filepath['size'] == $sz) {
+                        // 2. Another LG - same Size
+                        return ($filekeyfolder .'/'. $lg .'/'. $sz .'/'. $siblings[$lg][$sz][0]);
+                    }
+                    // We get a file in any case, because:
+                    //    - could be only one language
+                    //    - your size name could be no more existent
+                    else if ($lg != $filepath['language'] || $filepath['size'] != $sz) {
+                        $another_file = ($filekeyfolder .'/'. $lg .'/'. $sz .'/'. $siblings[$lg][$sz][0]);
+                    }
+                }
+            }
+
+            // We get a file in any case, because:
+            //    - could be only one language
+            //    - your size name could be no more existent
+            return $another_file;
+        }
+
+        return NULL;
+    }
+
     /**
      * NOTE: this function has no size limit (beside built-in copy fn).
 

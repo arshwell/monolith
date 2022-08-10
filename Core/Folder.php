@@ -78,21 +78,24 @@ final class Folder {
         return false;
     }
 
-    static function remove (string $dir): int {
+    static function remove (string $dir, bool $rmdir = true): int {
         $removed = 0;
 
         if (is_dir($dir)) {
             foreach (scandir($dir) as $file) {
                 if ($file != '.' && $file != '..') {
                     if (is_dir($dir .'/'. $file)) {
-                        $removed += self::remove($dir .'/'. $file);
+                        $removed += self::remove($dir .'/'. $file, $rmdir);
                     }
                     else if (unlink($dir .'/'. $file)) {
                         $removed++;
                     }
                 }
             }
-            rmdir($dir);
+
+            if ($rmdir) {
+                rmdir($dir);
+            }
         }
 
         return $removed;

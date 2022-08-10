@@ -376,7 +376,7 @@ final class ImageGroup implements TableSegment {
         $this->setup();
     }
 
-    function delete (array $names = NULL, string $language = NULL): int {
+    function delete (array $names = NULL, string $language = NULL, bool $removeEmpty = true): int {
         $count = 0;
 
         foreach (($language ? array($language) : Folder::children(ENV::uploads(true). $this->folder, true)) as $lg) {
@@ -389,7 +389,9 @@ final class ImageGroup implements TableSegment {
             }
         }
 
-        Folder::removeEmpty(ENV::uploads(true). dirname($this->folder));
+        if ($removeEmpty) {
+            Folder::removeEmpty(ENV::uploads(true). dirname($this->folder));
+        }
 
         if ($count) {
             $this->setup();
