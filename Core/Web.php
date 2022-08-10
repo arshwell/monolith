@@ -15,8 +15,7 @@ use Arsh\Core\URL;
  * Routing Management Class.
  * Verifies url and stores stuff about it.
 
- * @package Arsh/Core/Kernel
- * @author Tănăsescu Valentin <valentin_tanasescu.2000@yahoo.com>
+ * @package https://github.com/arshavin-dev/ArshWell
 */
 final class Web {
     const WRNNG_NONE = 0;

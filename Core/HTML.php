@@ -5,8 +5,7 @@ namespace Arsh\Core;
 /**
  * Helper class for adding certain pieces of HTML.
 
- * @package Arsh/Core/Core
- * @author Valentin Arșavin <valentin@iscreambrands.ro>
+ * @package https://github.com/arshavin-dev/ArshWell
 */
 final class HTML {
     static function iFrame (string $url): string {

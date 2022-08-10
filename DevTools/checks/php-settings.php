@@ -3,10 +3,9 @@
 use Arsh\Core\Git;
 
 /**
- * Verifies if url requests (from routes.php) exists and are uppercase.
+ * Verifies if the minimum PHP requirements are met.
 
- * @package Arsh/DevTools
- * @author Valentin Arșavin <valentin@iscreambrands.ro>
+ * @package https://github.com/arshavin-dev/ArshWell
  */
 if (version_compare(PHP_VERSION, '7.3') == -1) {
     _html(
@@ -20,6 +19,15 @@ if (!class_exists('ZipArchive', false)) {
         _error(
 			"ZipArchive class is missing. You need it for launching the build.<br>
 			Try to enable <i>zip</i> extension from <b>cPanel > PHP Version > Extensions</b>."
+		)
+    );
+}
+if (!function_exists('json_encode')) {
+    _html(
+        _code("<i>ArshWell ". Git::tag() ."</i>") .
+        _error(
+			"json_encode() function is missing. You need it for, but not only, ENV, Cache, Layyout, Table, etc.<br>
+			Check <b>cPanel > PHP Version</b>."
 		)
     );
 }

@@ -5,10 +5,12 @@ namespace Arsh\Core;
 use Arsh\Core\ENV;
 use Arsh\Core\DB;
 
-/*
- * Core class for backend programming powered by Valentin Tanasescu
+/**
+ * Class for preparing SQL queries.
+ *
+ * It has routine functions.
 
- * It has rutine functions
+ * @package https://github.com/arshavin-dev/ArshWell
 */
 final class SQL {
     private $sql = NULL;

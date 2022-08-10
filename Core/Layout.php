@@ -14,10 +14,9 @@ use Arsh\Core\ENV;
 use Arsh\Core\Web;
 
 /**
- * Core class for compiling scss/js, getting utils and links.
+ * Class for compiling scss/js, getting utils and links.
 
- * @package Arsh/Core
- * @author Valentin Arșavin <valentin@iscreambrands.ro>
+ * @package https://github.com/arshavin-dev/ArshWell
 */
 final class Layout {
     private static $css_suffixes = array(''); // ex: for certain users

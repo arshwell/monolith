@@ -7,8 +7,7 @@ use Arsh\Core\URL;
 /**
  * Functions for DevTools which imitate the php syntax.
 
- * @package Arsh/DevTools
- * @author Valentin Arșavin <valentin@iscreambrands.ro>
+ * @package https://github.com/arshavin-dev/ArshWell
  */
 function _html (string $text, bool $trusty = true): void {
     $rshwll = substr(md5(Git::tag()), 0, 5);

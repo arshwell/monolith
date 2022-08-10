@@ -3,10 +3,9 @@
 use Arsh\Core\Folder;
 
 /**
- * Verifies if url requests (from routes.php) exists and are uppercase.
+ * Verifies if all pieces have correct name pattern.
 
- * @package Arsh/DevTools
- * @author Valentin Arșavin <valentin@iscreambrands.ro>
+ * @package https://github.com/arshavin-dev/ArshWell
  */
 
 $regex = '/[a-z]+[a-z0-9-]*/';
@@ -17,12 +16,13 @@ foreach (Folder::all('pieces') as $folder) {
         $problems[] = $folder;
     }
 }
+
 if ($problems) {
     _html(
         '<i>pieces/*</i><br>' .
         _code(implode('<br>', $problems)) .
-        _error("
-            All pieces folders should match <code>$regex</code>.<br>
+        _error(
+            "All pieces folders should match <code>$regex</code>.<br>
             That's because these are used in <i>css classes</i> and <i>file links</i>."
         )
     );

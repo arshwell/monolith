@@ -7,12 +7,11 @@ use Arsh\Core\Cache;
 /**
  * Class for getting git information. Like commits and tags.
 
- * @package Arsh/Core
- * @author Valentin Arșavin <valentin@iscreambrands.ro>
+ * @package https://github.com/arshavin-dev/ArshWell
 */
 class Git {
     private static $tag = NULL;
-    
+
     final static function inform () {
         // if is a child of this class
         if (get_parent_class(static::class) != false) {
@@ -33,18 +32,18 @@ class Git {
                 if (function_exists('exec')) {
                     $git['tag'] = exec('git tag');
                 }
-                
+
                 if (is_dir("$dir_path.git/refs/tags")) {
                     $tags = Folder::children("$dir_path.git/refs/tags", true);
-                    
+
                     if ($tags) {
                         usort($tags, 'version_compare');
-            
+
                         $git['tag'] = $tags[array_key_last($tags)];
                     }
                 }
             }
-            
+
             if (empty($git['tag'])) {
                 $git['tag'] = 'v1.0.0'; // default
             }

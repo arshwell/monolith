@@ -6,10 +6,11 @@ use Arsh\Core\Folder;
 use Arsh\Core\ENV;
 
 /**
- * Core class for backend programming which has rutine functions.
+ * Class for manipulating files.
+ *
+ * It has routine functions.
 
- * @package Arsh/Core
- * @author Valentin Arșavin <valentin@iscreambrands.ro>
+ * @package https://github.com/arshavin-dev/ArshWell
 */
 final class File {
 

@@ -1,13 +1,14 @@
 <?php
 
 /**
- * @package Arsh/DevTools
- * @author Valentin Arșavin <valentin@iscreambrands.ro>
+ * Signature added in production final media files (css/js).
+
+ * @package https://github.com/arshavin-dev/ArshWell
  */
 function _signature (string $site = NULL): ?string {
     $emails = array(
-        'valentin@iscreambrands.ro',
-        'wallentyn_t@yahoo.com',
+        'https://github.com/arshavin-dev',
+        'https://www.linkedin.com/in/arsavin-valentin/',
         'arsavinwallentyn@gmail.com'
     );
     $text_1 = '[Framework] and [Website'. ($site ? ' - '.$site : '') .']';

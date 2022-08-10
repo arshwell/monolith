@@ -5,10 +5,11 @@ namespace Arsh\Core;
 use Arsh\Core\Func;
 
 /**
- * Core class for backend programming which has rutine functions.
+ * Class for math functions and calculations.
+ *
+ * It has routine functions.
 
- * @package Arsh/Core
- * @author Valentin Arșavin <valentin@iscreambrands.ro>
+ * @package https://github.com/arshavin-dev/ArshWell
 */
 final class Math {
     static function factorial (int $number): int {

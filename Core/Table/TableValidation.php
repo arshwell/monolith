@@ -18,9 +18,7 @@ use Closure;
  * Made especially for html forms.
  * It also allows you to create custom validation rules, in TableValidation::message().
 
- * @package Arsh/Core
- * @author Valentin Arșavin <valentin@iscreambrands.ro>
- * @link www.valentin-tanasescu.com
+ * @package https://github.com/arshavin-dev/ArshWell
 */
 abstract class TableValidation extends Table {
     const PRIMARY_KEY   = NULL;

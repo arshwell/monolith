@@ -3,8 +3,7 @@
 /**
  * Verifies if routes are properly created.
 
- * @package Arsh/DevTools/checks
- * @author Valentin Arșavin <valentin@iscreambrands.ro>
+ * @package https://github.com/arshavin-dev/ArshWell
  */
 call_user_func(function () {
     $code = '';

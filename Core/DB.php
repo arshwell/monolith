@@ -6,8 +6,10 @@ use Arsh\Core\ENV;
 use PDOException;
 use PDO;
 
-/*
- * DB class for MySQL server
+/**
+ * DB class for sending queries to MySQL server.
+
+ * @package https://github.com/arshavin-dev/ArshWell
 */
 final class DB {
     private static $pdos        = array();

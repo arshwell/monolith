@@ -3,11 +3,10 @@
 use Arsh\Core\File;
 
 /**
- * We are including all helpfull functions for development mode.
+ * We are including all helpful functions for development mode.
  * Every function runs only if the IP belongs to a developer.
 
- * @package Arsh/Core/DevTools
- * @author Valentin Arșavin <valentin@iscreambrands.ro>
+ * @package https://github.com/arshavin-dev/ArshWell
  */
 call_user_func(function () {
     require("ArshWell/DevTools/checks/php-settings.php");

@@ -4,10 +4,12 @@ namespace Arsh\Core;
 
 use Arsh\Core\File;
 
-/*
- * Core class for backend programming powered by Valentin Tanasescu
+/**
+ * Class for manipulating folders.
+ *
+ * It has routine functions.
 
- * It has rutine functions
+ * @package https://github.com/arshavin-dev/ArshWell
 */
 final class Folder {
     const MODE = 0755;

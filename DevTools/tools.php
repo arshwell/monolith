@@ -13,8 +13,7 @@ use Arsh\Core\Git;
  * fl       -> file
  ***** just removed vowels *****
 
- * @package DevTools
- * @author Valentin Arșavin <valentin@iscreambrands.ro>
+ * @package https://github.com/arshavin-dev/ArshWell
  */
 
 if (!empty($_REQUEST['rshwll']) && $_REQUEST['rshwll'] == substr(md5(Git::tag()), 0, 5)) {

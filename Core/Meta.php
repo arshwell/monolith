@@ -5,8 +5,7 @@ namespace Arsh\Core;
 /**
  * Helper class for organizing meta tags from <head> section of html.
 
- * @package Arsh/Core/Core
- * @author Valentin Arșavin <valentin@iscreambrands.ro>
+ * @package https://github.com/arshavin-dev/ArshWell
 */
 final class Meta {
     private static $metas = array();

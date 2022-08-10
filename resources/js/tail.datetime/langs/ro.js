@@ -1,5 +1,5 @@
 /*
- |  Translator:     Tanasescu Valentin - (valentin_tanasescu.2000@yahoo.com)
+ |  Translator: @arshavin-dev
  */
 ;(function (factory) {
    if (typeof(define) == "function" && define.amd) {

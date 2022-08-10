@@ -15,10 +15,9 @@ use Arsh\Core\ENV;
 use Arsh\Core\Git;
 
 /**
- * PHP Core class for sending and displaying mail templates.
+ * PHP Class for sending and displaying mail templates.
 
- * @package Arsh/Core
- * @author Valentin Arșavin <valentin@iscreambrands.ro>
+ * @package https://github.com/arshavin-dev/ArshWell
 */
 final class Mail {
 

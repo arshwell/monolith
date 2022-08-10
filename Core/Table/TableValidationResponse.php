@@ -8,9 +8,7 @@ use Arsh\Core\Web;
 /**
  * Object class for working with table validation response.
 
- * @package Arsh/Core
- * @author Valentin Arșavin <valentin@iscreambrands.ro>
- * @link www.iscreambrands.ro
+ * @package https://github.com/arshavin-dev/ArshWell
 */
 final class TableValidationResponse {
     private $data = array(

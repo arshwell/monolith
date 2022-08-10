@@ -3,10 +3,11 @@
 namespace Arsh\Core;
 
 /**
- * Core class for backend programming which has rutine functions.
+ * Class for URL manipulation.
+ *
+ * It has routine functions.
 
- * @package Arsh/Core
- * @author Valentin Arșavin <valentin@iscreambrands.ro>
+ * @package https://github.com/arshavin-dev/ArshWell
 */
 final class URL {
 
