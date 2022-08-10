@@ -97,12 +97,12 @@ if ($form->valid()) {
                 // in not existing conflicts during update attempts.
                 $zip_folders = array(
                     // NOTE: Exceptions which don't create conflicts
-                    'App/Core/Tygh/.+',
-                    'DevTools/(tools/files|update\.run|upgrade\.run)/',
-                    preg_quote(Folder::shorter(__DIR__), '~').'/(?!'.preg_quote(basename(__FILE__), '~').'$)', // DevTools/panel/AJAX/actions/*
+                    'ArshWell/Core/Tygh/.+',
+                    'ArshWell/DevTools/tools/files/',
+                    preg_quote(Folder::shorter(__DIR__), '~').'/(?!'.preg_quote(basename(__FILE__), '~').'$)', // ArshWell/DevTools/panel/AJAX/actions/*
 
-                    '(?!\.htaccess$|env\.json$|web\.php$|App/Core/.+|DevTools/.+)', // everything else
-                    '.+' // .htaccess, web.php, App/Core/, DevTools/ (which create coflicts)
+                    '(?!\.htaccess$|env\.json$|web\.php$|ArshWell/Core/.+|ArshWell/DevTools/.+)', // everything else
+                    '.+' // .htaccess, web.php, ArshWell/Core/, ArshWell/DevTools/ (which create coflicts)
                 );
 
                 uasort($zip_files, function ($file_1, $file_2) use ($zip_folders) {

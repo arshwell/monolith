@@ -21,8 +21,7 @@ if ($form->valid()) {
 		    foreach (File::rFolder($build_dir) as $i => $file) {
 				$entryname = substr($file, strlen($build_dir) + 1); // local name inside the ZIP archive
 
-				if (strpos($entryname, 'DevTools/backups/') !== 0
-				&& $zip->locateName($entryname) === false) {
+				if (strpos($entryname, 'ArshWell/DevTools/backups/') !== 0 && $zip->locateName($entryname) === false) {
 					$filesize += filesize($file);
 
 					if ($filesize > 52428800 && $i > 0) { // 52428800 = 50MB
@@ -37,7 +36,7 @@ if ($form->valid()) {
 
 		    $zip->close();
 
-			$path = '../../../'; // getting out from DevTools/tools/files
+			$path = '../../../../'; // getting out from ArshWell/DevTools/tools/files
 	        $getcwd = getcwd();
 
 	        do {

@@ -55,7 +55,7 @@ if ($form->valid()) {
 
             $zip->close();
 
-            $path = '../../../'; // getting out from DevTools/tools/files
+			$path = '../../../../'; // getting out from ArshWell/DevTools/tools/files
             $getcwd = getcwd();
 
             do {

@@ -107,7 +107,8 @@ final class ENV {
                             json_decode(file_get_contents("{$this->path}env.json"), true),
                             json_decode(file_get_contents("{$this->path}env.build.json"), true)
                         ),
-                        JSON_PRETTY_PRINT
+                        JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE
+                        // makes is readable | encodes characters correctly
                     ));
                     unlink("{$this->path}env.build.json");
                 }
