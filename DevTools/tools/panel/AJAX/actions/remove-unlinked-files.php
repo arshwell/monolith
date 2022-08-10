@@ -4,7 +4,7 @@ use Arsh\Core\Table\TableValidation;
 use Arsh\Core\Table\TableView;
 use Arsh\Core\Folder;
 use Arsh\Core\File;
-use Arsh\Core\Func;
+use Arsh\Core\Time;
 use Arsh\Core\ENV;
 use Arsh\Core\DB;
 
@@ -93,7 +93,7 @@ if ($form->valid()) {
     $form->info = array(
         'missing tables'    => $missing ?: NULL,
         'removed'           => ($removed[0] ? $removed : 'none'),
-        'PHP'               => Func::readableTime((microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']) * 1000)
+        'PHP'               => Time::readableTime((microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']) * 1000)
     );
 }
 else if ($form->expired()) {

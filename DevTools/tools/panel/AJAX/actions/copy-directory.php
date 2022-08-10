@@ -2,7 +2,7 @@
 
 use Arsh\Core\Table\TableValidation;
 use Arsh\Core\Folder;
-use Arsh\Core\Func;
+use Arsh\Core\Time;
 
 $form = TableValidation::run($_POST,
     array(
@@ -49,7 +49,7 @@ if ($form->valid()) {
 
     $form->info = array(
         'status'    => "Source was copied in the destination",
-        'PHP'       => Func::readableTime((microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']) * 1000)
+        'PHP'       => Time::readableTime((microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']) * 1000)
     );
 }
 else if ($form->expired()) {

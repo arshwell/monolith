@@ -4,7 +4,7 @@ use Arsh\Core\Table\TableValidation;
 use Arsh\Core\Session;
 use Arsh\Core\Layout;
 use Arsh\Core\Folder;
-use Arsh\Core\Func;
+use Arsh\Core\Time;
 use Arsh\Core\File;
 use Arsh\Core\ENV;
 use Arsh\Core\URL;
@@ -30,7 +30,7 @@ $info = TableValidation::run(
             },
             "min:1|maxLength:10",
             function ($value) {
-                return Func::readableTime($value);
+                return Time::readableTime($value);
             }
         ),
         'path' => array(

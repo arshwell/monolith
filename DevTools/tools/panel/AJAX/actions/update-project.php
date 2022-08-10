@@ -4,7 +4,7 @@ use Arsh\Core\Table\TableValidation;
 use Arsh\Core\Module\Backend;
 use Arsh\Core\Folder;
 use Arsh\Core\File;
-use Arsh\Core\Func;
+use Arsh\Core\Time;
 use Arsh\Core\Web;
 use Arsh\Core\ENV;
 use Arsh\Core\DB;
@@ -268,7 +268,7 @@ if ($form->valid()) {
                     }
 
                     $info['3.']     = '---';
-                    $info['PHP']    = Func::readableTime((microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']) * 1000);
+                    $info['PHP']    = Time::readableTime((microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']) * 1000);
                     $info['4.']     = '---';
                     $info['NEXT']   = '<a class="text-success" href="javascript:$(\'[href=&quot;#actions-daily&quot;]\').click();$(\'[href=&quot;#actions-daily-recompile&quot;]\').click();">Recompile existing css/js files</a>';
                 }

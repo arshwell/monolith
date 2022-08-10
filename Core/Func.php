@@ -144,25 +144,6 @@ final class Func {
         return (array_keys($array) !== range(0, count($array) - 1));
     }
 
-    static function readableTime (int $ms, int $precision = 2, string $separator = '', $units = array('ms','s','m','h')): string {
-        if ($ms < 1000) {
-            return round($ms, $precision).$separator.($units[0] ?? 'ms');
-        }
-
-        $seconds = $ms / 1000;
-        if ($seconds < 60) {
-            return round($seconds, $precision).$separator.($units[1] ?? 's');
-        }
-
-        $minutes = $seconds / 60;
-        if ($minutes < 60) {
-            return round($minutes, $precision).$separator.($units[2] ?? 'm');
-        }
-
-        $hours = $minutes / 60;
-        return round($hours, $precision).$separator.($units[3] ?? 'h');
-    }
-
     static function hasValidJSON (string $file): bool {
         json_decode(file_get_contents($file));
 

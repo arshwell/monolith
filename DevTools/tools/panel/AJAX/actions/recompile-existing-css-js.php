@@ -5,7 +5,7 @@ use Arsh\Core\Session;
 use Arsh\Core\Layout;
 use Arsh\Core\Folder;
 use Arsh\Core\Cache;
-use Arsh\Core\Func;
+use Arsh\Core\Time;
 use Arsh\Core\ENV;
 use Arsh\Core\Web;
 
@@ -35,7 +35,7 @@ if ($form->valid()) {
                     'footer'    => Layout::recompileJSFooter()
                 )
             ),
-            'PHP' => Func::readableTime((microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']) * 1000)
+            'PHP' => Time::readableTime((microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']) * 1000)
         );
 
         $prev = $form->value('prev');

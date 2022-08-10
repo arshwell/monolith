@@ -3,7 +3,7 @@
 use Arsh\Core\Table\TableValidation;
 use Arsh\Core\Folder;
 use Arsh\Core\File;
-use Arsh\Core\Func;
+use Arsh\Core\Time;
 use Arsh\Core\ENV;
 
 $form = TableValidation::run($_POST,
@@ -62,7 +62,7 @@ if ($form->valid()) {
         		$form->info = array(
                     'status'    => "Entire project was archived in ". dirname($zippath),
                     'filesize'  => filesize($zippath),
-                    'PHP'       => Func::readableTime((microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']) * 1000)
+                    'PHP'       => Time::readableTime((microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']) * 1000)
                 );
                 break;
             }

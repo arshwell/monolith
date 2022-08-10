@@ -4,7 +4,7 @@ use Arsh\Core\Table\TableValidation;
 use Arsh\Core\Module\Backend;
 use Arsh\Core\Folder;
 use Arsh\Core\File;
-use Arsh\Core\Func;
+use Arsh\Core\Time;
 use Arsh\Core\DB;
 
 $form = TableValidation::run($_POST,
@@ -101,7 +101,7 @@ if ($form->valid()) {
 
     $form->info = array(
         'Validation tables' => $validation_tables,
-        'PHP'               => Func::readableTime((microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']) * 1000)
+        'PHP'               => Time::readableTime((microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']) * 1000)
     );
 }
 else if ($form->expired()) {

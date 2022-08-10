@@ -1,7 +1,7 @@
 <?php
 
 use Arsh\Core\Table\TableValidation;
-use Arsh\Core\Func;
+use Arsh\Core\Time;
 use Arsh\Core\File;
 use Arsh\Core\ENV;
 use Arsh\Core\URL;
@@ -79,7 +79,7 @@ if ($form->valid()) {
                 'status'    => "Project was copied in the archive.",
                 'archive'   => "Has been sent to browser.",
                 'filesize'  => File::readableSize($zipsize),
-                'PHP'       => Func::readableTime((microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']) * 1000)
+                'PHP'       => Time::readableTime((microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']) * 1000)
             );
             break;
         }
