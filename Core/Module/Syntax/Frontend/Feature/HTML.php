@@ -4,7 +4,10 @@ namespace Arsh\Core\Module\Syntax\Frontend\Feature;
 
 final class HTML {
 
-    static function icon (string $icon = NULL): ?string {
+    /**
+     * (array|string) $icon
+    */
+    static function icon ($icon = NULL) {
         return $icon;
     }
 

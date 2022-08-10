@@ -42,7 +42,7 @@ final class Field {
             <div class="arshmodule-html arshmodule-html-field arshmodule-html-field-image">
                 <div class="row">
                     <?php
-                    if ($image && $image->urls()) { // because, inserting new first image, doesn't need this box
+                    if ($image && $image->urls($language)) { // because, inserting new first image, doesn't need this box
                         $basename = basename($image->smallest($language)); ?>
 
                         <div class="col-12 col-sm-6">

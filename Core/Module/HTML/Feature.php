@@ -29,8 +29,23 @@ final class Feature {
                 href="<?= $feature['HTML']['href'] ?>"
                 target="<?= $feature['HTML']['target'] ?? '_self' ?>">
                     <?php
-                    if ($feature['HTML']['icon']) { ?>
-                        <i class="fa fa-fw fa-<?= $feature['HTML']['icon'] ?>" data-toggle="fa-<?= $feature['HTML']['icon'] ?> fa-spinner"></i>
+                    if ($feature['HTML']['icon']) {
+                        switch ($feature['HTML']['icon']['style'] ?? NULL) {
+                            case NULL:
+                            case 'solid': {
+                                $fa_class = 'fas';
+                                break;
+                            }
+                            case 'regular': {
+                                $fa_class = 'far';
+                                break;
+                            }
+                            case 'brand': {
+                                $fa_class = 'fab';
+                                break;
+                            }
+                        } ?>
+                        <i class="<?= $fa_class ?> fa-fw fa-<?= $feature['HTML']['icon']['name'] ?? $feature['HTML']['icon'] ?>" data-toggle="fa-<?= $feature['HTML']['icon']['name'] ?? $feature['HTML']['icon'] ?> fa-spinner"></i>
                     <?php } ?>
                     <?= $feature['HTML']['text'] ?>
                 </a>
@@ -66,8 +81,23 @@ final class Feature {
                 <?= (!empty($feature['HTML']['title']) ? 'title="'.$feature['HTML']['title'].'"' : '') ?>
                 class="<?= $feature['HTML']['class'] ?> arshmodule-html arshmodule-html-feature arshmodule-html-feature-button">
                     <?php
-                    if ($feature['HTML']['icon']) { ?>
-                        <i class="fa fa-fw fa-<?= $feature['HTML']['icon'] ?>"></i>
+                    if ($feature['HTML']['icon']) {
+                        switch ($feature['HTML']['icon']['style'] ?? NULL) {
+                            case NULL:
+                            case 'solid': {
+                                $fa_class = 'fas';
+                                break;
+                            }
+                            case 'regular': {
+                                $fa_class = 'far';
+                                break;
+                            }
+                            case 'brand': {
+                                $fa_class = 'fab';
+                                break;
+                            }
+                        } ?>
+                        <i class="<?= $fa_class ?> fa-fw fa-<?= $feature['HTML']['icon']['name'] ?? $feature['HTML']['icon'] ?>"></i>
                     <?php } ?>
                     <?= $feature['HTML']['text'] ?>
                 </button>
@@ -107,8 +137,23 @@ final class Feature {
                     <?= (!empty($feature['HTML']['title']) ? 'title="'.$feature['HTML']['title'].'"' : '') ?>
                     class="<?= $feature['HTML']['class'] ?>">
                         <?php
-                        if ($feature['HTML']['icon']) { ?>
-                            <i class="fa fa-fw fa-<?= $feature['HTML']['icon'] ?>"></i>
+                        if ($feature['HTML']['icon']) {
+                            switch ($feature['HTML']['icon']['style'] ?? NULL) {
+                                case NULL:
+                                case 'solid': {
+                                    $fa_class = 'fas';
+                                    break;
+                                }
+                                case 'regular': {
+                                    $fa_class = 'far';
+                                    break;
+                                }
+                                case 'brand': {
+                                    $fa_class = 'fab';
+                                    break;
+                                }
+                            } ?>
+                            <i class="<?= $fa_class ?> fa-fw fa-<?= $feature['HTML']['icon']['name'] ?? $feature['HTML']['icon'] ?>" data-toggle="<?= $fa_class ?> fa-<?= $feature['HTML']['icon']['name'] ?? $feature['HTML']['icon'] ?> fas fa-spinner"></i>
                         <?php } ?>
                         <?= $feature['HTML']['text'] ?>
                     </button>
@@ -161,8 +206,23 @@ final class Feature {
                         <?= (!empty($feature['HTML']['title']) ? 'title="'.$feature['HTML']['title'].'"' : '') ?>
                         class="<?= $feature['HTML']['class'] ?>">
                             <?php
-                            if ($feature['HTML']['icon']) { ?>
-                                <i class="fa fa-fw fa-<?= $feature['HTML']['icon'] ?>" data-toggle="fa-<?= $feature['HTML']['icon'] ?> fa-spinner"></i>
+                            if ($feature['HTML']['icon']) {
+                                switch ($feature['HTML']['icon']['style'] ?? NULL) {
+                                    case NULL:
+                                    case 'solid': {
+                                        $fa_class = 'fas';
+                                        break;
+                                    }
+                                    case 'regular': {
+                                        $fa_class = 'far';
+                                        break;
+                                    }
+                                    case 'brand': {
+                                        $fa_class = 'fab';
+                                        break;
+                                    }
+                                } ?>
+                                <i class="<?= $fa_class ?> fa-fw fa-<?= $feature['HTML']['icon']['name'] ?? $feature['HTML']['icon'] ?>" data-toggle="fa-<?= $feature['HTML']['icon']['name'] ?? $feature['HTML']['icon'] ?> fa-spinner"></i>
                             <?php } ?>
                             <?= $feature['HTML']['text'] ?>
                         </button>

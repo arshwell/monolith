@@ -8,7 +8,10 @@ final class HTML {
         return $classes;
     }
 
-    static function icon (string $icon = NULL): ?string {
+    /**
+     * (array|string) $notes
+    */
+    static function icon ($icon = NULL) {
         return $icon;
     }
 

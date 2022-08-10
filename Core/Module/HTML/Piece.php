@@ -663,8 +663,23 @@ final class Piece {
                     <label <?= ($field['HTML']['label'] ? 'title="'.$field['HTML']['label'].'"' : '') ?>
                     for="<?= $field['HTML']['id'] ?><?= $lg ? "-$lg" : '' ?>">
                         <?php
-                        if ($field['HTML']['icon']) { ?>
-                            <i class="fa fa-fw fa-<?= $field['HTML']['icon'] ?>"></i>
+                        if ($field['HTML']['icon']) {
+                            switch ($field['HTML']['icon']['style'] ?? NULL) {
+                                case NULL:
+                                case 'solid': {
+                                    $fa_class = 'fas';
+                                    break;
+                                }
+                                case 'regular': {
+                                    $fa_class = 'far';
+                                    break;
+                                }
+                                case 'brand': {
+                                    $fa_class = 'fab';
+                                    break;
+                                }
+                            } ?>
+                            <i class="<?= $fa_class ?> fa-fw fa-<?= $field['HTML']['icon']['name'] ?? $field['HTML']['icon'] ?>"></i>
                         <?php }
                         if ($field['HTML']['label']) {
                             echo $field['HTML']['label'];

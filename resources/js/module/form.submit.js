@@ -223,6 +223,8 @@ $(document).ready(function () {
                             }
                         }
                         triggers.prop('disabled', false).removeClass('progress-bar-striped progress-bar-animated');
+
+                        triggers.find('i').toggleClass(triggers.find('i').data('toggle')); // happens if data-toggle exists
                     }, 100);
                 }
             },
