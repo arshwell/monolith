@@ -217,7 +217,7 @@ if ($form->valid()) {
                                 return require($file);
                             });
 
-                            if (!empty($back['DB']) && is_array($back['DB'])
+                            if (!empty($back['DB']) && is_array($back['DB']) && class_exists($back['DB']['table'])
                             && !empty($back['fields']) && is_array($back['fields'])) {
                                 Backend::buildDB($back['DB'], $back['features'], $back['fields']);
                             }
