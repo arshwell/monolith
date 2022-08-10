@@ -150,6 +150,10 @@ final class ENV {
         		return $this->json['translations'];
         	}
 
+            function migrations (): string {
+        		return $this->json['migrations'];
+        	}
+
             function maintenance (string $key) {
         		return $this->json['maintenance'][$key];
         	}

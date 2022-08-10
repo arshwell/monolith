@@ -2,6 +2,7 @@
 
 use Arsh\Core\Table\TableValidation;
 use Arsh\Core\Module\Backend;
+use Arsh\Core\Table\TableMigration;
 use Arsh\Core\Folder;
 use Arsh\Core\File;
 use Arsh\Core\Time;
@@ -231,40 +232,30 @@ if ($form->valid()) {
                             $removed . ' removed'
                         ),
                         '2.' => '---',
-                        'hook.update' => array()
+                        'migrations' => array()
                     );
 
-                    foreach (File::rFolder('DevTools/hooks/update/') as $file) {
-                        try {
-                            switch (File::extension($file)) {
-                                case 'sql': {
-                                    DB::importSqlFile($file);
+                    // Migrations
+                    try {
+                        $class = ENV::migrations();
 
-                                    $info['hook.update'][$file] = "<i>SQL executed</i>";
-                                    break;
-                                }
-                                case 'php': {
-                                    $fn = require_once($file);
-
-                                    if (is_object($fn) && $fn instanceof Closure) {
-                                        $info['hook.update'][$file] = $fn($form->values());
-                                    }
-                                    break;
-                                }
-                            }
+                        if (class_exists($class) && is_subclass_of($class, TableMigration::class)) {
+                            $info['migrations'] = ($class)::migrate();
                         }
-                        catch (Exception $e) {
-                            $info['hook.update'][$file] = array(
-                                'status'    => get_class($e) . " Error",
-                                'from'      => Folder::shorter($e->getFile()) .':'. $e->getLine(),
-                                'message'   => $e->getMessage()
-                            );
-                        }
-
-                        // see if subextension is 'always'
-                        if (File::extension(File::name($file)) != 'always') {
-                            unlink($file);
-                        }
+                    }
+                    catch (Error $e) { // we need this because Fatal Errors (like wrong defined classes) aren't catched
+                        $info['migrations'] = array(
+                            'status'    => get_class($e),
+                            'from'      => Folder::shorter($e->getFile()) .':'. $e->getLine(),
+                            'message'   => $e->getMessage()
+                        );
+                    }
+                    catch (Exception $e) {
+                        $info['migrations'] = array(
+                            'status'    => get_class($e) . " Error",
+                            'from'      => Folder::shorter($e->getFile()) .':'. $e->getLine(),
+                            'message'   => $e->getMessage()
+                        );
                     }
 
                     $info['3.']     = '---';
