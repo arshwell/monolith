@@ -298,7 +298,7 @@ if (strstr(Folder::shorter(getcwd()), '/', true) == 'crons' && !ENV::isCRON()
 }
 
 // Supervisors can see the errors directly displayed.
-if (ENV::board('dev') && ENV::supervisor()) {
+if (ENV::supervisor()) {
     ini_set('display_errors', TRUE);
     ini_set('display_startup_errors', TRUE);
 }

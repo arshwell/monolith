@@ -33,7 +33,7 @@ final class DB {
             self::$backups = ENV::db('backups');
 
             // Supervisors are alerted if there are problems.
-            if (ENV::board('dev') && ENV::supervisor()) {
+            if (ENV::supervisor()) {
                 self::$pdos[$key]->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             }
         }
