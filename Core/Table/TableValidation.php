@@ -745,6 +745,29 @@ abstract class TableValidation extends Table {
                     }
                     break;
                 }
+                case 'maxBytes': {
+                    if (!empty($value)) {
+                        // minimal file validation //
+                            if (!isset($value['name']) || !isset($value['type'])
+                            || !isset($value['tmp_name']) || !is_file($value['tmp_name'])
+                            || !isset($value['size']) || !is_numeric($value['size'])) {
+                                return $message ?? self::message('required');
+                            }
+                        // ↑ minimal file validation //
+
+                        // custom IMAGE validation
+                        if (!empty($params[0]) && is_numeric($params[0])) {
+                            if ($value['size'] > $params[0]) {
+                                return ($message ?? self::message('big_file_size', [
+                                    $value['name'],
+                                    File::readableSize($value['size']),
+                                    File::readableSize($params[0])
+                                ]));
+                            }
+                        }
+                    }
+                    break;
+                }
                 default: {
                     // Assuming, the keyword, is a php, default or defined, function.
                     if (is_numeric($value) || !empty($value)) {

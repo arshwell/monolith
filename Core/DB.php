@@ -141,11 +141,12 @@ final class DB {
             $regex = "/(^|\(|\s|,|`)((".self::$tb_prefixes[self::$key].")(\w+)\.)?(\w+)(:lg)((\s+AS\s+\w+)(:lg))?(`|,|\s|\)|;|$)/i";
 
             if (preg_match($regex, $query, $matches)) {
+                $nr_langs_per_column = array(); // for replacing ?:lg with real count of placeholders
                 $languages = (empty($params[':lg']) ? array((($class)::TRANSLATOR)::get()) : NULL);
 
                 $query = preg_replace_callback(
                     $regex,
-                    function ($matches) use ($languages, $params) {
+                    function ($matches) use ($languages, $params, &$nr_langs_per_column) {
                         /***************** example ******************
                         $matches (
                             [0] =>  br_services.title:lg AS anaaremere:lg,
@@ -166,15 +167,25 @@ final class DB {
                             $languages = (array)($params[':lg'][$matches[4].'.'.$matches[5]] ?? $params[':lg']);
                         }
 
+                        $nr_langs_per_column[] = count($languages); // record languages mentioned for this column
+
                         return $matches[1].implode(',', array_map(function (string $lg) use ($matches) {
                             return $matches[2].$matches[5].'_'.$lg.($matches[7] ? $matches[8].'_'.$lg : '');
                         }, $languages)).$matches[10];
                     },
                     $query
                 );
-                if (!empty($params)) {
-                    unset($params[':lg']);
+
+                // Create all necessary placeholders
+                // according to every mentioned languages of the column.
+                foreach ($nr_langs_per_column as $nr) {
+                    $query = preg_replace('/\?\:lg/', rtrim(str_repeat('?, ', $nr), ", "), $query, 1);
                 }
+                foreach ($nr_langs_per_column as $nr) {
+                    $query = preg_replace('/(\:\w+)\:lg/', rtrim(str_repeat('$1, ', $nr), ", "), $query, 1);
+                }
+
+                unset($params[':lg']); // destroy if exists
             }
 
             return $query;
