@@ -1,17 +1,17 @@
 <?php
 
-namespace Arsh\Core\Module\HTML;
+namespace Arsavinel\Arshwell\Module\HTML;
 
-use Arsh\Core\Module\HTML\Piece;
-use Arsh\Core\Table\Files\ImageGroup;
-use Arsh\Core\Table\Files\Image;
-use Arsh\Core\Table\Files\Doc;
-use Arsh\Core\File;
-use Arsh\Core\Func;
-use Arsh\Core\Math;
-use Arsh\Core\Web;
-use Arsh\Core\ENV;
-use Arsh\Core\URL;
+use Arsavinel\Arshwell\Module\HTML\Piece;
+use Arsavinel\Arshwell\Table\Files\ImageGroup;
+use Arsavinel\Arshwell\Table\Files\Image;
+use Arsavinel\Arshwell\Table\Files\Doc;
+use Arsavinel\Arshwell\File;
+use Arsavinel\Arshwell\Func;
+use Arsavinel\Arshwell\Math;
+use Arsavinel\Arshwell\Web;
+use Arsavinel\Arshwell\ENV;
+use Arsavinel\Arshwell\URL;
 
 final class Field {
 

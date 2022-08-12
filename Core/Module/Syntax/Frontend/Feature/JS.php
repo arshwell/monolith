@@ -1,6 +1,6 @@
 <?php
 
-namespace Arsh\Core\Module\Syntax\Frontend\Feature;
+namespace Arsavinel\Arshwell\Module\Syntax\Frontend\Feature;
 
 final class JS {
 

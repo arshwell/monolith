@@ -1,11 +1,11 @@
 <?php
 
-use Arsh\Core\Git;
+use Arsavinel\Arshwell\Git;
 
 /**
  * Verifies if the minimum PHP requirements are met.
 
- * @package https://github.com/arshavin-dev/ArshWell
+ * @package https://github.com/arsavinel/ArshWell
  */
 if (version_compare(PHP_VERSION, '7.3') == -1) {
     _html(

@@ -1,8 +1,8 @@
 <?php
 
-use Arsh\Core\Session;
-use Arsh\Core\ENV;
-use Arsh\Core\Web;
+use Arsavinel\Arshwell\Session;
+use Arsavinel\Arshwell\ENV;
+use Arsavinel\Arshwell\Web;
 
 // $sessions = Session::all(false, true); // without current session
 $sessions = Session::all(true, true); // TODO: Delete it at the end

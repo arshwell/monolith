@@ -3,23 +3,23 @@
 <?php
 $links = array(
     'css'   => array(
-        'web'   => Arsh\Core\Layout::mediaSCSS(Arsh\Core\Web::folder($_REQUEST['request']['route']), $_REQUEST['request']['pieces'], true)['files'],
-        'mails' => Arsh\Core\Layout::mediaMailSCSS(Arsh\Core\Web::folder($_REQUEST['request']['route']), $_REQUEST['request']['pieces'], true)['files']
+        'web'   => Arsavinel\Arshwell\Layout::mediaSCSS(Arsavinel\Arshwell\Web::folder($_REQUEST['request']['route']), $_REQUEST['request']['pieces'], true)['files'],
+        'mails' => Arsavinel\Arshwell\Layout::mediaMailSCSS(Arsavinel\Arshwell\Web::folder($_REQUEST['request']['route']), $_REQUEST['request']['pieces'], true)['files']
     ),
     'js'    => array(
-        'header' => Arsh\Core\Layout::mediaJSHeader(Arsh\Core\Web::folder($_REQUEST['request']['route']), $_REQUEST['request']['pieces'])['files'],
-        'footer' => Arsh\Core\Layout::mediaJSFooter(Arsh\Core\Web::folder($_REQUEST['request']['route']), $_REQUEST['request']['pieces'])['files']
+        'header' => Arsavinel\Arshwell\Layout::mediaJSHeader(Arsavinel\Arshwell\Web::folder($_REQUEST['request']['route']), $_REQUEST['request']['pieces'])['files'],
+        'footer' => Arsavinel\Arshwell\Layout::mediaJSFooter(Arsavinel\Arshwell\Web::folder($_REQUEST['request']['route']), $_REQUEST['request']['pieces'])['files']
     )
 );
 
 array_unshift($links['js']['header'], array(
-    'name' => 'dynamic/'. Arsh\Core\Web::folder($_REQUEST['request']['route']) .'/web.js'
+    'name' => 'dynamic/'. Arsavinel\Arshwell\Web::folder($_REQUEST['request']['route']) .'/web.js'
 ));
 
 $time   = substr(str_shuffle("BCDFGHKLMNPQRSTVWXYZ"), 0, 4);
-$asset  = Arsh\Core\ENV::root().'/uploads/design/';
+$asset  = Arsavinel\Arshwell\ENV::root().'/uploads/design/';
 
-$mediaLinks = Arsh\Core\Layout::mediaLinks($_REQUEST['request']['route'], $_REQUEST['request']['pieces']); ?>
+$mediaLinks = Arsavinel\Arshwell\Layout::mediaLinks($_REQUEST['request']['route'], $_REQUEST['request']['pieces']); ?>
 
 <div class="row">
     <div class="col-12 col-lg-6">

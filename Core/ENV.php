@@ -1,11 +1,11 @@
 <?php
 
-namespace Arsh\Core;
+namespace Arsavinel\Arshwell;
 
-use Arsh\Core\Folder;
-use Arsh\Core\Filter;
-use Arsh\Core\Func;
-use Arsh\Core\File;
+use Arsavinel\Arshwell\Folder;
+use Arsavinel\Arshwell\Filter;
+use Arsavinel\Arshwell\Func;
+use Arsavinel\Arshwell\File;
 use ErrorException;
 use PDOException;
 use Exception;
@@ -46,8 +46,8 @@ final class ENV {
 
                 Cache::setProject($path ?: Folder::root()); // where to look for caches
 
-                if (!is_file(Cache::file('ArshWell/env')) || !Cache::fetch('ArshWell/env')
-                || $merge_env_build || filemtime("{$path}env.json") >= Cache::filemtime('ArshWell/env')) {
+                if (!is_file(Cache::file('vendor/arsavinel/arshwell/env')) || !Cache::fetch('vendor/arsavinel/arshwell/env')
+                || $merge_env_build || filemtime("{$path}env.json") >= Cache::filemtime('vendor/arsavinel/arshwell/env')) {
         			$this->json = json_decode(file_get_contents("{$path}env.json"), true, 512, JSON_THROW_ON_ERROR);
 
                     if ($merge_env_build) {
@@ -85,7 +85,7 @@ final class ENV {
                     }
                 }
         		else {
-        			$this->json = Cache::fetch('ArshWell/env');
+        			$this->json = Cache::fetch('vendor/arsavinel/arshwell/env');
         		}
 
                 $this->merge_env_build  = $merge_env_build;
@@ -98,7 +98,7 @@ final class ENV {
             function cache (): void {
                 // Changes you've made are cached.
                 // NOTE: But env source stay the same.
-                Cache::store('ArshWell/env', $this->json);
+                Cache::store('vendor/arsavinel/arshwell/env', $this->json);
 
                 if ($this->merge_env_build) {
                     // merge env with env.build
@@ -270,7 +270,7 @@ error_reporting(E_ALL);
 
 // Auto Class Load
 spl_autoload_register(function ($class) {
-    if (is_file(($file = (__DIR__ .'/../../'. preg_replace("~^Arsh/~", 'ArshWell/', str_replace('\\', '/', $class)) .'.php')))) {
+    if (is_file(($file = (__DIR__ .'/../../'. preg_replace("~^Arsh/~", 'vendor/arsavinel/arshwell/', str_replace('\\', '/', $class)) .'.php')))) {
         require($file);
     }
 }, true);
@@ -285,7 +285,7 @@ ini_set(
 	__DIR__ .'/../../errors/'. strtok(strtok(Folder::shorter(ENV::scriptfile() ?? getcwd()), '.'), '/') .'.log'
 ); // setting for saving errors (web.log, download.log, crons.log)
 
-foreach (glob(Folder::realpath('ArshWell/DevTools/functions/*.php')) as $v) {
+foreach (glob(Folder::realpath('vendor/arsavinel/arshwell/DevTools/functions/*.php')) as $v) {
     require($v);
 }
 

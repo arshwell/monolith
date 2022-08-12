@@ -1,6 +1,6 @@
 <?php
 
-namespace Arsh\Core\Module\Request\Backend\Feature;
+namespace Arsavinel\Arshwell\Module\Request\Backend\Feature;
 
 final class Order {
 

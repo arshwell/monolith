@@ -1,6 +1,6 @@
 <?php
 
-namespace Arsh\Core;
+namespace Arsavinel\Arshwell;
 
 /**
  * PHP Template Engin.
@@ -9,7 +9,7 @@ namespace Arsh\Core;
  * Also minifies them and HTML too.
  * You can 'hook' pieces on pages. These have their own CSS and JS, automatically added.
 
- * @package https://github.com/arshavin-dev/ArshWell
+ * @package https://github.com/arsavinel/ArshWell
 */
 final class Piece {
     private static $pieces                  = array();
@@ -23,7 +23,7 @@ final class Piece {
         do {
             // Looking if this piece is used inside a mail template.
             foreach (debug_backtrace(0) as $trace) {
-                if (!empty($trace['class']) && $trace['class'] == 'Arsh\Core\Mail'
+                if (!empty($trace['class']) && $trace['class'] == 'Arsavinel\Arshwell\Mail'
                 && !empty($trace['function']) && in_array($trace['function'], ['send', 'html'])) {
                     self::$pieces_used_in_mails[$trace['args'][0]][] = $folder;
                     break 2;

@@ -1,11 +1,11 @@
 <?php
 
-use Arsh\Core\Folder;
+use Arsavinel\Arshwell\Folder;
 
 /**
  * Verifies if all pieces have correct name pattern.
 
- * @package https://github.com/arshavin-dev/ArshWell
+ * @package https://github.com/arsavinel/ArshWell
  */
 
 $regex = '/[a-z]+[a-z0-9-]*/';

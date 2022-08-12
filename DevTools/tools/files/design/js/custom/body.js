@@ -1,7 +1,7 @@
 /*******************************************************************************
     This file (body.js) is used at least by:
         - DevTools/helpers/functions/html.php - html()
-        - Arsh\Core\layout::compileJSFooter()
+        - Arsavinel\Arshwell\layout::compileJSFooter()
 *******************************************************************************/
 "use strict";
 document.body.setAttribute("browser", /Edge\/\d+/.test(navigator.userAgent) ? "edge" : /MSIE 9/.test(navigator.userAgent) || /MSIE 10/.test(navigator.userAgent) || /MSIE 11/.test(navigator.userAgent) || /MSIE\s\d/.test(navigator.userAgent) || /rv\:11/.test(navigator.userAgent) ? "ie" : /Firefox\W\d/.test(navigator.userAgent) ? "firefox" : /Chrom(e|ium)\W\d|CriOS\W\d/.test(navigator.userAgent) ? "chrome" : /\bSafari\W\d/.test(navigator.userAgent) ? "safari" : /\bOpera\W\d/.test(navigator.userAgent) || /\bOPR\W\d/i.test(navigator.userAgent) ? "opera" : typeof MSPointerEvent !== "undefined" ? "ie" : "undefined");

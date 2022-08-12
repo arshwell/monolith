@@ -1,21 +1,21 @@
 <?php
 
-namespace Arsh\Core;
+namespace Arsavinel\Arshwell;
 
-use Arsh\Core\Language;
-use Arsh\Core\Session;
-use Arsh\Core\Cache;
-use Arsh\Core\Text;
-use Arsh\Core\Func;
-use Arsh\Core\File;
-use Arsh\Core\ENV;
-use Arsh\Core\URL;
+use Arsavinel\Arshwell\Language;
+use Arsavinel\Arshwell\Session;
+use Arsavinel\Arshwell\Cache;
+use Arsavinel\Arshwell\Text;
+use Arsavinel\Arshwell\Func;
+use Arsavinel\Arshwell\File;
+use Arsavinel\Arshwell\ENV;
+use Arsavinel\Arshwell\URL;
 
 /**
  * Routing Management Class.
  * Verifies url and stores stuff about it.
 
- * @package https://github.com/arshavin-dev/ArshWell
+ * @package https://github.com/arsavinel/ArshWell
 */
 final class Web {
     const WRNNG_NONE = 0;
@@ -51,7 +51,7 @@ final class Web {
         self::$protocol = ENV::isCRON() ? 'https' : URL::protocol();
         self::$site     = ENV::url();
 
-        if (!is_file(Cache::file('ArshWell/forks')) || Folder::mTime('forks') >= Cache::filemtime('ArshWell/forks')) {
+        if (!is_file(Cache::file('vendor/arsavinel/arshwell/forks')) || Folder::mTime('forks') >= Cache::filemtime('vendor/arsavinel/arshwell/forks')) {
             self::$routes_by_request = array();
 
             $getforks = function (string $dir) use (&$getforks) {
@@ -318,7 +318,7 @@ final class Web {
                 self::$routes_by_request['GET']
             );
 
-            Cache::store('ArshWell/forks', array(
+            Cache::store('vendor/arsavinel/arshwell/forks', array(
                 self::$keys_by_folder,
                 self::$routes,
                 self::$routes_by_request,
@@ -326,7 +326,7 @@ final class Web {
             ));
         }
         else {
-            list(self::$keys_by_folder, self::$routes, self::$routes_by_request, self::$groups) = Cache::fetch('ArshWell/forks');
+            list(self::$keys_by_folder, self::$routes, self::$routes_by_request, self::$groups) = Cache::fetch('vendor/arsavinel/arshwell/forks');
         }
 
         return static::class;

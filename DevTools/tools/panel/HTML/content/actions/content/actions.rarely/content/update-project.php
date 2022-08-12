@@ -1,4 +1,4 @@
-<form action="update-project" max-attempts="<?= ceil(Arsh\Core\Folder::size('.') / 26214400) /* 25MB */ ?>" next="#actions-daily-recompile form[action]">
+<form action="update-project" max-attempts="<?= ceil(Arsavinel\Arshwell\Folder::size('.') / 26214400) /* 25MB */ ?>" next="#actions-daily-recompile form[action]">
     <button type="submit" class="btn btn-success loader py-1">Update project</button>
 
     <div class="text-muted my-2">

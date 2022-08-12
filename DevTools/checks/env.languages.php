@@ -1,6 +1,6 @@
 <?php
 
-use Arsh\Core\ENV;
+use Arsavinel\Arshwell\ENV;
 
 call_user_func(function () {
     $regex = "/^[a-z]{2}$/";
@@ -11,11 +11,11 @@ call_user_func(function () {
                 $recursively($class);
             }
             else {
-                if (!class_exists($class) || !defined($class."::LANGUAGES") || !is_subclass_of($class, "Arsh\Core\Language")) {
+                if (!class_exists($class) || !defined($class."::LANGUAGES") || !is_subclass_of($class, "Arsavinel\Arshwell\Language")) {
                     _html(
                         '<i>env.php</i> > <i>'.$class.'</i><br>' .
                         _code(file_get_contents(str_replace('\\', '/', $class) . '.php')) .
-                        _error("ENV translations classes should extend <i>Arsh\Core\Language</i> and contain LANGUAGES array constant.")
+                        _error("ENV translations classes should extend <i>Arsavinel\Arshwell\Language</i> and contain LANGUAGES array constant.")
                     );
                 }
                 foreach (($class)::LANGUAGES as $lang) {

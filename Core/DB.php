@@ -1,15 +1,15 @@
 <?php
 
-namespace Arsh\Core;
+namespace Arsavinel\Arshwell;
 
-use Arsh\Core\ENV;
+use Arsavinel\Arshwell\ENV;
 use PDOException;
 use PDO;
 
 /**
  * DB class for sending queries to MySQL server.
 
- * @package https://github.com/arshavin-dev/ArshWell
+ * @package https://github.com/arsavinel/ArshWell
 */
 final class DB {
     private static $pdos        = array();

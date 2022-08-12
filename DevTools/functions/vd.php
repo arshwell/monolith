@@ -1,12 +1,12 @@
 <?php
 
-use Arsh\Core\Folder;
-use Arsh\Core\ENV;
+use Arsavinel\Arshwell\Folder;
+use Arsavinel\Arshwell\ENV;
 
 /**
  * It prints received variable in the proper way.
 
- * @package https://github.com/arshavin-dev/ArshWell
+ * @package https://github.com/arsavinel/ArshWell
  */
 function _vd ($variable, string $description = NULL): void {
     if (ENV::supervisor() == false) {

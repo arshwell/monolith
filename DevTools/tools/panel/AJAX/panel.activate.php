@@ -1,7 +1,7 @@
 <?php
 
-use Arsh\Core\Table\TableValidation;
-use Arsh\Core\Session;
+use Arsavinel\Arshwell\Table\TableValidation;
+use Arsavinel\Arshwell\Session;
 
 $form = TableValidation::run($_POST, array());
 

@@ -1,13 +1,13 @@
 <?php
 
-use Arsh\Core\Table\TableValidation;
+use Arsavinel\Arshwell\Table\TableValidation;
 
 $form = TableValidation::run($_POST, array(), false);
 
 if ($form->valid()) {
     $form->info = array("Input is valid.");
 
-    $build_zip = sys_get_temp_dir().'/ArshWell/builds/sess_'.session_id().'.zip';
+    $build_zip = sys_get_temp_dir().'/vendor/arsavinel/arshwell/builds/sess_'.session_id().'.zip';
 
     if (is_file($build_zip)) {
         $form->info[] = "Deleting last build .zip";

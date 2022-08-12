@@ -1,6 +1,6 @@
 <?php
 
-namespace Arsh\Core\Module\Syntax;
+namespace Arsavinel\Arshwell\Module\Syntax;
 
 final class Frontend {
 
@@ -12,7 +12,7 @@ final class Frontend {
         foreach ($actions as $key => $action) {
             foreach ($action as $category => $attributes) {
                 foreach ($attributes as $attr => $value) {
-                    $actions[$key][$category][$attr] = ("Arsh\Core\Module\Syntax\Frontend\Action\\{$category}")::{$attr}($value);
+                    $actions[$key][$category][$attr] = ("Arsavinel\Arshwell\Module\Syntax\Frontend\Action\\{$category}")::{$attr}($value);
                 }
             }
         }
@@ -24,7 +24,7 @@ final class Frontend {
         foreach ($features as $key => $feature) {
             foreach ($feature as $category => $attributes) {
                 foreach ($attributes as $attr => $value) {
-                    $features[$key][$category][$attr] = ("Arsh\Core\Module\Syntax\Frontend\Feature\\{$category}")::{$attr}($value);
+                    $features[$key][$category][$attr] = ("Arsavinel\Arshwell\Module\Syntax\Frontend\Feature\\{$category}")::{$attr}($value);
                 }
             }
         }
@@ -36,7 +36,7 @@ final class Frontend {
         foreach ($fields as $key => $field) {
             foreach ($field as $category => $attributes) {
                 foreach ($attributes as $attr => $value) {
-                    $fields[$key][$category][$attr] = ("Arsh\Core\Module\Syntax\Frontend\Field\\{$category}")::{$attr}($value);
+                    $fields[$key][$category][$attr] = ("Arsavinel\Arshwell\Module\Syntax\Frontend\Field\\{$category}")::{$attr}($value);
                 }
             }
         }

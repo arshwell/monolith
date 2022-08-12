@@ -3,7 +3,7 @@
 /**
  * Verifies if routes are properly created.
 
- * @package https://github.com/arshavin-dev/ArshWell
+ * @package https://github.com/arsavinel/ArshWell
  */
 call_user_func(function () {
     $code = '';

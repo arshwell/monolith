@@ -1,9 +1,9 @@
 <?php
 
-namespace Arsh\Core\Table;
+namespace Arsavinel\Arshwell\Table;
 
-use Arsh\Core\Table\TableSegment;
-use Arsh\Core\DB;
+use Arsavinel\Arshwell\Table\TableSegment;
+use Arsavinel\Arshwell\DB;
 
 final class TableField implements TableSegment {
     private $class      = NULL;

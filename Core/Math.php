@@ -1,15 +1,15 @@
 <?php
 
-namespace Arsh\Core;
+namespace Arsavinel\Arshwell;
 
-use Arsh\Core\Func;
+use Arsavinel\Arshwell\Func;
 
 /**
  * Class for math functions and calculations.
  *
  * It has routine functions.
 
- * @package https://github.com/arshavin-dev/ArshWell
+ * @package https://github.com/arsavinel/ArshWell
 */
 final class Math {
     static function factorial (int $number): int {

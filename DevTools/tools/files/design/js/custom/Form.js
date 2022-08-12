@@ -1,7 +1,7 @@
 /*******************************************************************************
     This file (Form.js) is used at least by:
         - DevTools/helpers/functions/html.php -> html()
-        - Arsh\Core\layout::compileJSHeader()
+        - Arsavinel\Arshwell\layout::compileJSHeader()
 *******************************************************************************/
 
 // helps you with any need about JS forms

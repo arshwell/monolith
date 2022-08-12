@@ -1,17 +1,17 @@
 <?php
 
-namespace Arsh\Core\Module\HTML;
+namespace Arsavinel\Arshwell\Module\HTML;
 
-use Arsh\Core\Table\TableSegment;
-use Arsh\Core\Table\TableColumn;
-use Arsh\Core\Table\TableField;
-use Arsh\Core\Table\TableFiles;
-use Arsh\Core\Table;
-use Arsh\Core\Text;
-use Arsh\Core\File;
-use Arsh\Core\Func;
-use Arsh\Core\URL;
-use Arsh\Core\Web;
+use Arsavinel\Arshwell\Table\TableSegment;
+use Arsavinel\Arshwell\Table\TableColumn;
+use Arsavinel\Arshwell\Table\TableField;
+use Arsavinel\Arshwell\Table\TableFiles;
+use Arsavinel\Arshwell\Table;
+use Arsavinel\Arshwell\Text;
+use Arsavinel\Arshwell\File;
+use Arsavinel\Arshwell\Func;
+use Arsavinel\Arshwell\URL;
+use Arsavinel\Arshwell\Web;
 
 final class Piece {
 
@@ -76,7 +76,7 @@ final class Piece {
         $action['HTML']['href'] = URL::get(true, false, $action['HTML']['href']) .'?ctn='. $key;
 
         return array(
-            'Arsh\Core\Module\HTML\Action',
+            'Arsavinel\Arshwell\Module\HTML\Action',
             $action['HTML']['type']
         )($key, $action);
     }
@@ -568,7 +568,7 @@ final class Piece {
 
         foreach ($feature as $category => $attributes) {
             foreach ($attributes as $attr => $value) {
-                $feature[$category][$attr] = ("Arsh\Core\Module\Syntax\Frontend\Feature\\{$category}")::{$attr}($value);
+                $feature[$category][$attr] = ("Arsavinel\Arshwell\Module\Syntax\Frontend\Feature\\{$category}")::{$attr}($value);
             }
         }
 
@@ -576,7 +576,7 @@ final class Piece {
         $feature['HTML']['href'] = URL::get(true, false, $feature['HTML']['href']) .'?'.($query ? $query.'&' : '').'ftr='. $key .'&id=' . $id_table;
 
         return array(
-            'Arsh\Core\Module\HTML\Feature',
+            'Arsavinel\Arshwell\Module\HTML\Feature',
             $feature['HTML']['type']
         )($key, $feature, $id_table);
     }
@@ -727,7 +727,7 @@ final class Piece {
                     }
 
                     echo array(
-                        'Arsh\Core\Module\HTML\Field',
+                        'Arsavinel\Arshwell\Module\HTML\Field',
                         $field['HTML']['type']
                     )($field, $lg); ?>
                 </div>

@@ -1,9 +1,9 @@
 <?php
 
-namespace Arsh\Core\Tygh\Minifier;
+namespace Arsavinel\Arshwell\Tygh\Minifier;
 
-use Arsh\Core\Tygh\Minifier\CSS\CssMin;
-use Arsh\Core\Tygh\Minifier\JsMin;
+use Arsavinel\Arshwell\Tygh\Minifier\CSS\CssMin;
+use Arsavinel\Arshwell\Tygh\Minifier\JsMin;
 
 /*
 

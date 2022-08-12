@@ -1,22 +1,22 @@
 <?php
 
-namespace Arsh\Core;
+namespace Arsavinel\Arshwell;
 
 use ScssPhp\ScssPhp\Compiler as ScssPhp;
-use Arsh\Core\Tygh\Minifier\JsMin;
-use Arsh\Core\Session;
-use Arsh\Core\Folder;
-use Arsh\Core\Piece;
-use Arsh\Core\Table;
-use Arsh\Core\File;
-use Arsh\Core\Func;
-use Arsh\Core\ENV;
-use Arsh\Core\Web;
+use Arsavinel\Arshwell\Tygh\Minifier\JsMin;
+use Arsavinel\Arshwell\Session;
+use Arsavinel\Arshwell\Folder;
+use Arsavinel\Arshwell\Piece;
+use Arsavinel\Arshwell\Table;
+use Arsavinel\Arshwell\File;
+use Arsavinel\Arshwell\Func;
+use Arsavinel\Arshwell\ENV;
+use Arsavinel\Arshwell\Web;
 
 /**
  * Class for compiling scss/js, getting utils and links.
 
- * @package https://github.com/arshavin-dev/ArshWell
+ * @package https://github.com/arsavinel/ArshWell
 */
 final class Layout {
     private static $css_suffixes = array(''); // ex: for certain users
@@ -44,7 +44,7 @@ final class Layout {
         	$return['json']['layout'] = $array['json'];
 
             foreach ($return['json']['layout']['scss']['ArshWell'] as $file) {
-                foreach (glob('ArshWell/resources/scss/'. $file .'.scss') as $f) {
+                foreach (glob('vendor/arsavinel/arshwell/resources/scss/'. $file .'.scss') as $f) {
                     $return['files'][] = array(
         				'name'	=> (File::name($f, false) .'.'. $extension)
         			);
@@ -87,7 +87,7 @@ final class Layout {
             );
 
             foreach ($return['json']['outcome']['scss']['ArshWell'] as $file) {
-                foreach (glob('ArshWell/resources/scss/'. $file .'.scss') as $f) {
+                foreach (glob('vendor/arsavinel/arshwell/resources/scss/'. $file .'.scss') as $f) {
         			$return['files'][] = array(
         				'name'	=> (File::name($f, false) .'.'. $extension)
         			);
@@ -135,7 +135,7 @@ final class Layout {
         		$return['json']['pieces'] = array_merge_recursive($return['json']['pieces'], $array['json']);
 
         		foreach ($array['json']['scss']['ArshWell'] as $file) {
-                    foreach (glob('ArshWell/resources/scss/'. $file .'.scss') as $f) {
+                    foreach (glob('vendor/arsavinel/arshwell/resources/scss/'. $file .'.scss') as $f) {
         				$return['files'][] = array(
         					'name'	=> (File::name($f, false) .'.'. $extension)
         				);
@@ -206,19 +206,19 @@ final class Layout {
         		),
         		'files'	=> array(
                     array(
-                        'name' => 'ArshWell/DevTools/tools/files/design/js/custom/http_build_query.js',
+                        'name' => 'vendor/arsavinel/arshwell/DevTools/tools/files/design/js/custom/http_build_query.js',
                         'range' => array(
                             'min' => 0 // guarantees will compile even if there are no other js files
                         )
                     ),
                     array(
-                        'name' => 'ArshWell/DevTools/tools/files/design/js/custom/Form.js',
+                        'name' => 'vendor/arsavinel/arshwell/DevTools/tools/files/design/js/custom/Form.js',
                         'range' => array(
                             'min' => 0 // guarantees will compile even if there are no other js files
                         )
                     ),
                     array(
-                        'name' => 'ArshWell/DevTools/tools/files/design/js/custom/VanillaJS.js',
+                        'name' => 'vendor/arsavinel/arshwell/DevTools/tools/files/design/js/custom/VanillaJS.js',
                         'range' => array(
                             'min' => 0 // guarantees will compile even if there are no other js files
                         )
@@ -235,7 +235,7 @@ final class Layout {
         	$return['json']['layout'] = $array['json'];
 
             foreach ($return['json']['layout']['js']['header']['ArshWell'] as $file) {
-                foreach (glob('ArshWell/resources/js/'. $file .'.js') as $f) {
+                foreach (glob('vendor/arsavinel/arshwell/resources/js/'. $file .'.js') as $f) {
                     $return['files'][] = array(
         				'name' => $f
         			);
@@ -278,7 +278,7 @@ final class Layout {
             );
 
             foreach ($return['json']['outcome']['js']['header']['ArshWell'] as $file) {
-                foreach (glob('ArshWell/resources/js/'. $file .'.js') as $f) {
+                foreach (glob('vendor/arsavinel/arshwell/resources/js/'. $file .'.js') as $f) {
                     $return['files'][] = array(
         				'name' => $f
         			);
@@ -299,7 +299,7 @@ final class Layout {
         		$return['json']['pieces'] = array_merge_recursive($return['json']['pieces'], $array['json']);
 
         		foreach ($array['json']['js']['header']['ArshWell'] as $file) {
-                    foreach (glob('ArshWell/resources/js/'. $file .'.js') as $f) {
+                    foreach (glob('vendor/arsavinel/arshwell/resources/js/'. $file .'.js') as $f) {
         				$return['files'][] = array(
         					'name'	=> $f
         				);
@@ -336,7 +336,7 @@ final class Layout {
         		),
         		'files'	=> array(
                     array(
-                        'name' => 'ArshWell/DevTools/tools/files/design/js/custom/body.js',
+                        'name' => 'vendor/arsavinel/arshwell/DevTools/tools/files/design/js/custom/body.js',
                         'range' => array(
         	                'min' => 0 // guarantees will compile even if there are no other js files
         				)
@@ -360,7 +360,7 @@ final class Layout {
         	}
 
         	foreach ($return['json']['layout']['js']['footer']['ArshWell'] as $file) {
-        		foreach (glob('ArshWell/resources/js/'. $file .'.js') as $f) {
+        		foreach (glob('vendor/arsavinel/arshwell/resources/js/'. $file .'.js') as $f) {
         			if (!$nonexistent_in_header || !in_array($f, $js_header_files)) {
         				$return['files'][] = array(
         					'name' => $f
@@ -379,7 +379,7 @@ final class Layout {
         	}
 
         	foreach ($return['json']['outcome']['js']['footer']['ArshWell'] as $file) {
-        		foreach (glob('ArshWell/resources/js/'. $file .'.js') as $f) {
+        		foreach (glob('vendor/arsavinel/arshwell/resources/js/'. $file .'.js') as $f) {
         			if (!$nonexistent_in_header || !in_array($f, $js_header_files)) {
         				$return['files'][] = array(
         					'name' => $f
@@ -430,7 +430,7 @@ final class Layout {
         		$return['json']['pieces'] = array_merge_recursive($return['json']['pieces'], $array['json']);
 
         		foreach ($array['json']['js']['footer']['ArshWell'] as $file) {
-                    foreach (glob('ArshWell/resources/js/'. $file .'.js') as $f) {
+                    foreach (glob('vendor/arsavinel/arshwell/resources/js/'. $file .'.js') as $f) {
         				if (!$nonexistent_in_header || !in_array($f, $js_header_files)) {
         					$return['files'][] = array(
         						'name'	=> $f
@@ -511,7 +511,7 @@ final class Layout {
         	$return['json']['mail'] = $array['json'];
 
             foreach ($return['json']['mail']['scss']['ArshWell'] as $file) {
-                foreach (glob(Folder::realpath('ArshWell/resources/scss/'. $file .'.scss')) as $f) {
+                foreach (glob(Folder::realpath('vendor/arsavinel/arshwell/resources/scss/'. $file .'.scss')) as $f) {
         			$return['files'][] = array(
         				'name'	=> (File::name(Folder::shorter($f), false) .'.'. $extension)
         			);
@@ -560,7 +560,7 @@ final class Layout {
         		$return['json']['pieces'] = array_merge_recursive($return['json']['pieces'], $array['json']);
 
         		foreach ($array['json']['scss']['ArshWell'] as $file) {
-                    foreach (glob(Folder::realpath('ArshWell/resources/scss/'. $file .'.scss')) as $f) {
+                    foreach (glob(Folder::realpath('vendor/arsavinel/arshwell/resources/scss/'. $file .'.scss')) as $f) {
         				$return['files'][] = array(
         					'name'	=> (File::name($f, false) .'.'. $extension)
         				);
@@ -691,7 +691,7 @@ final class Layout {
             $time   = time();
             $return = false;
 
-            require_once("ArshWell/Core/Tygh/SCSS/autoload.php"); // leafo/SCSS
+            require_once("vendor/arsavinel/arshwell/Core/Tygh/SCSS/autoload.php"); // leafo/SCSS
 
             $scss = new ScssPhp();
 
@@ -1007,7 +1007,7 @@ final class Layout {
                             )) .';',
                             'Web.vars.routes = '. json_encode($routes) .';',
                         ),
-                        file_get_contents('ArshWell/DevTools/tools/files/design/js/custom/Web.js')
+                        file_get_contents('vendor/arsavinel/arshwell/DevTools/tools/files/design/js/custom/Web.js')
                     ));
                 }
 
@@ -1146,7 +1146,7 @@ final class Layout {
             $time = time();
 
             // We need realpath because also crons can use this class
-            require_once(Folder::realpath("ArshWell/Core/Tygh/SCSS/autoload.php")); // leafo/SCSS
+            require_once(Folder::realpath("vendor/arsavinel/arshwell/Core/Tygh/SCSS/autoload.php")); // leafo/SCSS
 
             $scss = new ScssPhp();
 

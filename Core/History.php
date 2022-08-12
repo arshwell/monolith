@@ -1,11 +1,11 @@
 <?php
 
-namespace Arsh\Core;
+namespace Arsavinel\Arshwell;
 
 /**
  * Class for backend programming which has routine functions.
 
- * @package https://github.com/arshavin-dev/ArshWell
+ * @package https://github.com/arsavinel/ArshWell
 */
 /*
 	array(

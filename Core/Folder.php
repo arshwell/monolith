@@ -1,15 +1,15 @@
 <?php
 
-namespace Arsh\Core;
+namespace Arsavinel\Arshwell;
 
-use Arsh\Core\File;
+use Arsavinel\Arshwell\File;
 
 /**
  * Class for manipulating folders.
  *
  * It has routine functions.
 
- * @package https://github.com/arshavin-dev/ArshWell
+ * @package https://github.com/arsavinel/ArshWell
 */
 final class Folder {
     const MODE = 0755;
@@ -183,7 +183,7 @@ final class Folder {
     }
 
     static function root (): string {
-        // NOTE: ArshWell/Core has 13 chars ;)
+        // NOTE: vendor/arsavinel/arshwell/Core has 13 chars ;)
         return substr(__DIR__, 0, -13);
     }
 
@@ -203,7 +203,7 @@ final class Folder {
 
     static function shorter (string $path): string {
         if ($path[0] == '/' && strpos($path, sys_get_temp_dir()) !== 0) {
-            // NOTE: ArshWell/Core has 13 chars ;)
+            // NOTE: vendor/arsavinel/arshwell/Core has 13 chars ;)
             $path = substr($path, strlen(__DIR__) - 13); // remove root
         }
         return $path;

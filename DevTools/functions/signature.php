@@ -3,7 +3,7 @@
 /**
  * Signature added in production final media files (css/js).
 
- * @package https://github.com/arshavin-dev/ArshWell
+ * @package https://github.com/arsavinel/ArshWell
  */
 function _signature (string $site = NULL): ?string {
     $emails = array(

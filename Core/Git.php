@@ -1,13 +1,13 @@
 <?php
 
-namespace Arsh\Core;
+namespace Arsavinel\Arshwell;
 
-use Arsh\Core\Cache;
+use Arsavinel\Arshwell\Cache;
 
 /**
  * Class for getting git information. Like commits and tags.
 
- * @package https://github.com/arshavin-dev/ArshWell
+ * @package https://github.com/arsavinel/ArshWell
 */
 class Git {
     private static $tag = NULL;
@@ -19,8 +19,8 @@ class Git {
             $cache_name = static::CACHE_NAME;
         }
         else {
-            $dir_path = 'ArshWell/';
-            $cache_name = 'ArshWell/git';
+            $dir_path = 'vendor/arsavinel/arshwell/';
+            $cache_name = 'vendor/arsavinel/arshwell/git';
         }
 
         $git = Cache::fetch($cache_name);

@@ -1,6 +1,6 @@
 <?php
 
-namespace Arsh\Core\Module\Syntax\Backend;
+namespace Arsavinel\Arshwell\Module\Syntax\Backend;
 
 final class DB {
 

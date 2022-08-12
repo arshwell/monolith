@@ -2,15 +2,15 @@
     <tr>
         <th>board.dev</th>
         <td>
-            <?= Arsh\Core\ENV::board('dev') ? '<b>Yes</b>' : 'No' ?>
+            <?= Arsavinel\Arshwell\ENV::board('dev') ? '<b>Yes</b>' : 'No' ?>
         </td>
     </tr>
     <tr>
         <th>IP</th>
         <td>
-            <?= Arsh\Core\ENV::clientIP() ?>
+            <?= Arsavinel\Arshwell\ENV::clientIP() ?>
             <span data-toggle="tooltip" data-placement="top" title="Supervisor key from env.json">
-                (<?= array_search(Arsh\Core\ENV::clientIP(), Arsh\Core\ENV::board('supervisors')) ?>)
+                (<?= array_search(Arsavinel\Arshwell\ENV::clientIP(), Arsavinel\Arshwell\ENV::board('supervisors')) ?>)
             </span>
         </td>
     </tr>
@@ -20,17 +20,17 @@
         </th>
         <td>
             <div class="collapse show fade" id="routes-count-all">
-                <?= count(Arsh\Core\Web::routes()) ?>
+                <?= count(Arsavinel\Arshwell\Web::routes()) ?>
             </div>
             <table class="table table-bordered table-dark m-0 collapse fade" id="routes-count-request">
                 <tr><td colspan="2" class="border-0 p-0">
                     <sup class="text-muted">They could be duplicated. Because a route can accept more requests.</sup>
                 </td></tr>
                 <?php
-                foreach (array_unique(call_user_func_array('array_merge', array_column(Arsh\Core\Web::routes(), 1))) as $request) { ?>
+                foreach (array_unique(call_user_func_array('array_merge', array_column(Arsavinel\Arshwell\Web::routes(), 1))) as $request) { ?>
                     <tr>
                         <th><?= $request ?></th>
-                        <td><?= count(Arsh\Core\Web::routes($request)) ?></td>
+                        <td><?= count(Arsavinel\Arshwell\Web::routes($request)) ?></td>
                     </tr>
                 <?php } ?>
             </table>

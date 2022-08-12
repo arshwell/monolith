@@ -1,16 +1,16 @@
 <?php
 
-use Arsh\Core\Table\TableValidation;
-use Arsh\Core\Folder;
-use Arsh\Core\File;
-use Arsh\Core\ENV;
-use Arsh\Core\URL;
+use Arsavinel\Arshwell\Table\TableValidation;
+use Arsavinel\Arshwell\Folder;
+use Arsavinel\Arshwell\File;
+use Arsavinel\Arshwell\ENV;
+use Arsavinel\Arshwell\URL;
 
 $form = TableValidation::run($_POST, array(), false);
 
 if ($form->valid()) {
-	$build_dir = sys_get_temp_dir().'/ArshWell/builds/sess_'.session_id();
-	$build_zip = sys_get_temp_dir().'/ArshWell/builds/sess_'.session_id().'.zip';
+	$build_dir = sys_get_temp_dir().'/vendor/arsavinel/arshwell/builds/sess_'.session_id();
+	$build_zip = sys_get_temp_dir().'/vendor/arsavinel/arshwell/builds/sess_'.session_id().'.zip';
 
 	$zip = new ZipArchive();
 
@@ -21,7 +21,7 @@ if ($form->valid()) {
 		    foreach (File::rFolder($build_dir) as $i => $file) {
 				$entryname = substr($file, strlen($build_dir) + 1); // local name inside the ZIP archive
 
-				if (strpos($entryname, 'ArshWell/DevTools/backups/') !== 0 && $zip->locateName($entryname) === false) {
+				if (strpos($entryname, 'vendor/arsavinel/arshwell/DevTools/backups/') !== 0 && $zip->locateName($entryname) === false) {
 					$filesize += filesize($file);
 
 					if ($filesize > 52428800 && $i > 0) { // 52428800 = 50MB
@@ -36,7 +36,7 @@ if ($form->valid()) {
 
 		    $zip->close();
 
-			$path = '../../../../'; // getting out from ArshWell/DevTools/tools/files
+			$path = '../../../../'; // getting out from vendor/arsavinel/arshwell/DevTools/tools/files
 	        $getcwd = getcwd();
 
 	        do {

@@ -1,10 +1,10 @@
 <?php
 
-use Arsh\Core\ENV;
-use Arsh\Core\Web;
-use Arsh\Core\File;
-use Arsh\Core\Func;
-use Arsh\Core\Folder;
+use Arsavinel\Arshwell\ENV;
+use Arsavinel\Arshwell\Web;
+use Arsavinel\Arshwell\File;
+use Arsavinel\Arshwell\Func;
+use Arsavinel\Arshwell\Folder;
 
 $max_attempts = array(
     'recompile-css-js' => call_user_func(function () {

@@ -1,14 +1,14 @@
 <?php
 
-namespace Arsh\Core\Table;
+namespace Arsavinel\Arshwell\Table;
 
-use Arsh\Core\Table\TableValidationResponse;
-use Arsh\Core\Session;
-use Arsh\Core\Filter;
-use Arsh\Core\Table;
-use Arsh\Core\File;
-use Arsh\Core\Text;
-use Arsh\Core\DB;
+use Arsavinel\Arshwell\Table\TableValidationResponse;
+use Arsavinel\Arshwell\Session;
+use Arsavinel\Arshwell\Filter;
+use Arsavinel\Arshwell\Table;
+use Arsavinel\Arshwell\File;
+use Arsavinel\Arshwell\Text;
+use Arsavinel\Arshwell\DB;
 use ReflectionFunction;
 use ReflectionMethod;
 use Closure;
@@ -18,7 +18,7 @@ use Closure;
  * Made especially for html forms.
  * It also allows you to create custom validation rules, in TableValidation::message().
 
- * @package https://github.com/arshavin-dev/ArshWell
+ * @package https://github.com/arsavinel/ArshWell
 */
 abstract class TableValidation extends Table {
     const PRIMARY_KEY   = NULL;
@@ -392,7 +392,7 @@ abstract class TableValidation extends Table {
 
                             $dataimage = getimagesize($value['tmp_name']);
 
-                            // NOTE: Arsh\Core\Table\TableView doesn't have sizes set
+                            // NOTE: Arsavinel\Arshwell\Table\TableView doesn't have sizes set
                             if (isset(($params[0])::FILES[$filekey]['sizes'])) {
                                 $sizes = ($params[0])::FILES[$filekey]['sizes'];
 
@@ -697,7 +697,7 @@ abstract class TableValidation extends Table {
                             foreach ($value['tmp_name'] as $k => $tmp_name) {
                                 $dataimage = getimagesize($value['tmp_name'][$k]);
 
-                                // NOTE: Arsh\Core\Table\TableView doesn't have sizes set
+                                // NOTE: Arsavinel\Arshwell\Table\TableView doesn't have sizes set
                                 if (isset(($params[0])::FILES[$filekey]['sizes'])) {
                                     $sizes = ($params[0])::FILES[$filekey]['sizes'];
 

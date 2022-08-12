@@ -1,7 +1,7 @@
 /*******************************************************************************
     This file (VanillaJS.js) is used at least by:
         - DevTools/helpers/functions/html.php - html()
-        - Arsh\Core\layout::compileJSHeader()
+        - Arsavinel\Arshwell\layout::compileJSHeader()
 *******************************************************************************/
 
 // insertAfter doesnt exist in Javascript Vanilla

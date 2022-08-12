@@ -1,9 +1,9 @@
 <?php
 
-namespace Arsh\Core;
+namespace Arsavinel\Arshwell;
 
-use Arsh\Core\Folder;
-use Arsh\Core\File;
+use Arsavinel\Arshwell\Folder;
+use Arsavinel\Arshwell\File;
 use Exception;
 
 final class Cache {

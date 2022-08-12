@@ -1,7 +1,7 @@
 <?php
 
-use Arsh\Core\ENV;
-use Arsh\Core\File;
+use Arsavinel\Arshwell\ENV;
+use Arsavinel\Arshwell\File;
 
 $warnings = array(
     'errors' => call_user_func(function (): array {

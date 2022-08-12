@@ -1,8 +1,8 @@
 <?php
 
-namespace Arsh\Core\Table;
+namespace Arsavinel\Arshwell\Table;
 
-use Arsh\Core\Table;
+use Arsavinel\Arshwell\Table;
 use Exception;
 
 /*

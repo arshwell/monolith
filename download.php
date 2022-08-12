@@ -1,15 +1,15 @@
 <?php
 
-use Arsh\Core\Session;
-use Arsh\Core\Folder;
-use Arsh\Core\File;
-use Arsh\Core\ENV;
-use Arsh\Core\URL;
-use Arsh\Core\DB;
+use Arsavinel\Arshwell\Session;
+use Arsavinel\Arshwell\Folder;
+use Arsavinel\Arshwell\File;
+use Arsavinel\Arshwell\ENV;
+use Arsavinel\Arshwell\URL;
+use Arsavinel\Arshwell\DB;
 
 session_start();
 
-require("ArshWell/Core/ENV.php");
+require("vendor/arsavinel/arshwell/Core/ENV.php");
 
 DB::connect('default');
 Session::set(ENV::url().ENV::db('conn.default.name'));

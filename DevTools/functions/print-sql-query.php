@@ -1,12 +1,12 @@
 <?php
 
-use Arsh\Core\ENV;
+use Arsavinel\Arshwell\ENV;
 
 /**
  * It prints the sql query and its parameters nicer.
  * This function is used at least by try-catch from Table Class methods.
 
- * @package https://github.com/arshavin-dev/ArshWell
+ * @package https://github.com/arsavinel/ArshWell
  */
 function _print_sql_query ($sql, $columns = array()): void {
     if (ENV::supervisor() == false) {

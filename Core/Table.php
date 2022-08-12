@@ -1,12 +1,12 @@
 <?php
 
-namespace Arsh\Core;
+namespace Arsavinel\Arshwell;
 
-use Arsh\Core\Table\TableField;
-use Arsh\Core\Table\TableFiles;
-use Arsh\Core\Language;
-use Arsh\Core\ENV;
-use Arsh\Core\DB;
+use Arsavinel\Arshwell\Table\TableField;
+use Arsavinel\Arshwell\Table\TableFiles;
+use Arsavinel\Arshwell\Language;
+use Arsavinel\Arshwell\ENV;
+use Arsavinel\Arshwell\DB;
 
 /*
  * Table class for manipulating certain table and its columns.
@@ -184,7 +184,7 @@ abstract class Table {
             if (trim($columns) != '*' && static::PRIMARY_KEY && !preg_match("/(^(\s+)?|.+,(\s+)?)". static::PRIMARY_KEY ."((\s+)?,.+|$)/", $columns)) {
                 $columns = (trim($columns) ? (static::PRIMARY_KEY .', '. $columns) : static::PRIMARY_KEY);
             }
-            if (in_array('Arsh\Core\Traits\Languages', class_uses(static::class))) {
+            if (in_array('Arsavinel\Arshwell\Traits\Languages', class_uses(static::class))) {
                 $columns = preg_replace("/([^\s]):lng(\s|,|$)/", '$1'.ENV::language().' ', $columns);
             }
 

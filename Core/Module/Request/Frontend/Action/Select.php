@@ -1,9 +1,9 @@
 <?php
 
-namespace Arsh\Core\Module\Request\Frontend\Action;
+namespace Arsavinel\Arshwell\Module\Request\Frontend\Action;
 
-use Arsh\Core\Module\HTML\Piece;
-use Arsh\Core\URL;
+use Arsavinel\Arshwell\Module\HTML\Piece;
+use Arsavinel\Arshwell\URL;
 
 final class Select {
 

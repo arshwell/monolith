@@ -1,6 +1,6 @@
 <?php
 
-namespace Arsh\Core\Tygh;
+namespace Arsavinel\Arshwell\Tygh;
 
 // +------------------------------------------------------------------------+
 // | class.upload.php                                                       |

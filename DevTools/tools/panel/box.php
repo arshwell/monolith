@@ -1,14 +1,14 @@
 <?php
 
-use Arsh\Core\Table\TableValidation;
-use Arsh\Core\Session;
-use Arsh\Core\Folder;
-use Arsh\Core\Time;
-use Arsh\Core\File;
-use Arsh\Core\ENV;
-use Arsh\Core\URL;
-use Arsh\Core\Web;
-use Arsh\Core\Git;
+use Arsavinel\Arshwell\Table\TableValidation;
+use Arsavinel\Arshwell\Session;
+use Arsavinel\Arshwell\Folder;
+use Arsavinel\Arshwell\Time;
+use Arsavinel\Arshwell\File;
+use Arsavinel\Arshwell\ENV;
+use Arsavinel\Arshwell\URL;
+use Arsavinel\Arshwell\Web;
+use Arsavinel\Arshwell\Git;
 
 $info = TableValidation::run(
     array_merge(

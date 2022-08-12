@@ -1,11 +1,11 @@
 <?php
 
-use Arsh\Core\ENV;
+use Arsavinel\Arshwell\ENV;
 
 /**
  * Returns array representing how many times every closure was fastest.
 
- * @package https://github.com/arshavin-dev/ArshWell
+ * @package https://github.com/arsavinel/ArshWell
  */
 function _compare_functions (array $funcs, int $counter = 1000): array {
     if (ENV::supervisor() == false) {

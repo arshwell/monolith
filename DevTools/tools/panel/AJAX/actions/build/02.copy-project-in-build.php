@@ -1,9 +1,9 @@
 <?php
 
-use Arsh\Core\Table\TableValidation;
-use Arsh\Core\Folder;
-use Arsh\Core\File;
-use Arsh\Core\ENV;
+use Arsavinel\Arshwell\Table\TableValidation;
+use Arsavinel\Arshwell\Folder;
+use Arsavinel\Arshwell\File;
+use Arsavinel\Arshwell\ENV;
 
 $form = TableValidation::run($_POST,
     array(
@@ -20,7 +20,7 @@ $form = TableValidation::run($_POST,
 );
 
 if ($form->valid()) {
-    $build_dir = sys_get_temp_dir().'/ArshWell/builds/sess_'.session_id().'/';
+    $build_dir = sys_get_temp_dir().'/vendor/arsavinel/arshwell/builds/sess_'.session_id().'/';
 
     Folder::remove($build_dir); // NOTE: safety decision
 

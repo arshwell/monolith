@@ -1,11 +1,11 @@
 <?php
 
-use Arsh\Core\Table\TableValidation;
-use Arsh\Core\Module\Backend;
-use Arsh\Core\Folder;
-use Arsh\Core\File;
-use Arsh\Core\Time;
-use Arsh\Core\DB;
+use Arsavinel\Arshwell\Table\TableValidation;
+use Arsavinel\Arshwell\Module\Backend;
+use Arsavinel\Arshwell\Folder;
+use Arsavinel\Arshwell\File;
+use Arsavinel\Arshwell\Time;
+use Arsavinel\Arshwell\DB;
 
 $form = TableValidation::run($_POST,
     array(
@@ -37,7 +37,7 @@ if ($form->valid()) {
             }
         }
 
-        $arshwell_errors = require("ArshWell/DevTools/tools/validation.errors.php");
+        $arshwell_errors = require("vendor/arsavinel/arshwell/DevTools/tools/validation.errors.php");
         $validation_tables = array();
 
         // Create and update validation tables

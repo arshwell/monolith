@@ -3,7 +3,7 @@
     "description": "PHP Framework | LAMP Solution stack",
     "autoload": {
         "psr-4": {
-            "Arsavinel\\Arshwell\\": "src/"
+            "Arsavinel\\Arshwell\\": ""
         }
     },
     "authors": [

@@ -1,10 +1,10 @@
 <?php
 
-namespace Arsh\Core\Table;
+namespace Arsavinel\Arshwell\Table;
 
-use Arsh\Core\Session;
-use Arsh\Core\Table;
-use Arsh\Core\ENV;
+use Arsavinel\Arshwell\Session;
+use Arsavinel\Arshwell\Table;
+use Arsavinel\Arshwell\ENV;
 
 /*
  * Static and non-static methods, for manipulating MySQL DB tables,

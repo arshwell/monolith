@@ -1,6 +1,6 @@
 <?php
 
-namespace Arsh\Core\Module\Syntax\Backend\Field;
+namespace Arsavinel\Arshwell\Module\Syntax\Backend\Field;
 
 final class PHP {
 

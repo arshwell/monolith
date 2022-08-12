@@ -1,12 +1,12 @@
 <?php
 
-namespace Arsh\Core\Table\Files;
+namespace Arsavinel\Arshwell\Table\Files;
 
-use Arsh\Core\Table\TableSegment;
-use Arsh\Core\Folder;
-use Arsh\Core\File;
-use Arsh\Core\Web;
-use Arsh\Core\ENV;
+use Arsavinel\Arshwell\Table\TableSegment;
+use Arsavinel\Arshwell\Folder;
+use Arsavinel\Arshwell\File;
+use Arsavinel\Arshwell\Web;
+use Arsavinel\Arshwell\ENV;
 
 final class Doc implements TableSegment {
     private $class;

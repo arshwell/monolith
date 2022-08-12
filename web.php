@@ -2,20 +2,20 @@
 
 // highlighted words: TODO, FIXME, CHANGED, XXX, IDEA, HACK, NOTE, REVIEW, NB and BUG
 
-use Arsh\Core\Session;
-use Arsh\Core\Module;
-use Arsh\Core\Layout;
-use Arsh\Core\Piece;
-use Arsh\Core\Meta;
-use Arsh\Core\ENV;
-use Arsh\Core\URL;
-use Arsh\Core\Web;
-use Arsh\Core\Git;
-use Arsh\Core\DB;
+use Arsavinel\Arshwell\Session;
+use Arsavinel\Arshwell\Module;
+use Arsavinel\Arshwell\Layout;
+use Arsavinel\Arshwell\Piece;
+use Arsavinel\Arshwell\Meta;
+use Arsavinel\Arshwell\ENV;
+use Arsavinel\Arshwell\URL;
+use Arsavinel\Arshwell\Web;
+use Arsavinel\Arshwell\Git;
+use Arsavinel\Arshwell\DB;
 
 session_start();
 
-require("ArshWell/Core/ENV.php");
+require("vendor/arsavinel/arshwell/Core/ENV.php");
 
 Git::inform();
 DB::connect('default');
@@ -23,7 +23,7 @@ Session::set(ENV::url().ENV::db('conn.default.name'));
 
 // Supervisors are alerted if there are problems.
 if (ENV::board('dev') && ENV::supervisor() && $_SERVER['REQUEST_METHOD'] == 'GET') {
-    require("ArshWell/DevTools/checks.php");
+    require("vendor/arsavinel/arshwell/DevTools/checks.php");
 }
 
 Web::fetch()::prepare(
@@ -35,7 +35,7 @@ Web::fetch()::prepare(
 // Supervisors can use DevPanel and access DevFiles.
 if (ENV::supervisor()) {
     // NOTE: We do it here, before Session::memorize(), for not saving DevTools actions in Session.
-    require("ArshWell/DevTools/tools.php");
+    require("vendor/arsavinel/arshwell/DevTools/tools.php");
 }
 
 if (!Web::warning(Web::WRNNG_NONE) && $_SERVER['REQUEST_METHOD'] == 'GET') {
@@ -210,7 +210,7 @@ unset($v); // NOTE: used by gates/ and ENV.php ↑
 
         // Supervisors can see DevPanel (if they write down current version).
         if (ENV::supervisor()) {
-            require("ArshWell/DevTools/tools/panel/button.php"); // NOTE: it uses the $compiled variable
+            require("vendor/arsavinel/arshwell/DevTools/tools/panel/button.php"); // NOTE: it uses the $compiled variable
         }
 
         // Empty outdated forms data.

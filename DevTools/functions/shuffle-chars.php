@@ -1,6 +1,6 @@
 <?php
 
-use Arsh\Core\Math;
+use Arsavinel\Arshwell\Math;
 
 function _shuffle_chars (string $text, int $key = 0, string $flag = NULL, string $chars = NULL): string {
     $str = "01234aAbBcCdDeEfFgGhHiIjJkKlLmM<[{(:*.+!=\n \t\r%?-,#;)}]>NnOoPpQqRrSsTtUuVvWwXxYyZz56789";

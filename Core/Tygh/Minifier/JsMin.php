@@ -1,6 +1,6 @@
 <?php
 
-namespace Arsh\Core\Tygh\Minifier;
+namespace Arsavinel\Arshwell\Tygh\Minifier;
 
 /**
  * JSMin.php - modified PHP implementation of Douglas Crockford's JSMin.

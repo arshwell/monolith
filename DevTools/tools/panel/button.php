@@ -1,10 +1,10 @@
 <?php
 
-use Arsh\Core\Session;
-use Arsh\Core\Piece;
-use Arsh\Core\Func;
-use Arsh\Core\Web;
-use Arsh\Core\Git;
+use Arsavinel\Arshwell\Session;
+use Arsavinel\Arshwell\Piece;
+use Arsavinel\Arshwell\Func;
+use Arsavinel\Arshwell\Web;
+use Arsavinel\Arshwell\Git;
 
 $hashed_arsh_version = substr(md5(Git::tag()), 0, 5); ?>
 

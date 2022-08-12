@@ -1,7 +1,7 @@
 <small class="d-block text-muted">Only supervisors can run them <u>directly</u> (if dev TRUE).</small>
 
 <?php
-if (count(Arsh\Core\File::rFolder('crons', ['php'])) == 0) { ?>
+if (count(Arsavinel\Arshwell\File::rFolder('crons', ['php'])) == 0) { ?>
     <div class="alert alert-secondary mt-1 mb-0">
         Do you need a Cron Job? Create a PHP file in crons/.
     </div>
@@ -17,7 +17,7 @@ $assoc = function (string $folder, bool $margin = false) use (&$assoc) {
             $assoc($f, true);
         }
         else if (is_file($f) && File::extension($f) == 'php') {
-            echo '<li class="list-group-item list-group-item-dark"><a href="'. (Arsh\Core\Web::site() . $f) .'" target="_blank">'. basename($f) .'</a></li>';
+            echo '<li class="list-group-item list-group-item-dark"><a href="'. (Arsavinel\Arshwell\Web::site() . $f) .'" target="_blank">'. basename($f) .'</a></li>';
         }
     }
 

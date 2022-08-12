@@ -1,6 +1,6 @@
 <?php
 
-use Arsh\Core\Table\TableValidation;
+use Arsavinel\Arshwell\Table\TableValidation;
 
 $form = TableValidation::run($_POST,
     array(

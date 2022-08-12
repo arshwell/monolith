@@ -1,16 +1,16 @@
 <?php
 
-namespace Arsh\Core;
+namespace Arsavinel\Arshwell;
 
-use Arsh\Core\ENV;
-use Arsh\Core\DB;
+use Arsavinel\Arshwell\ENV;
+use Arsavinel\Arshwell\DB;
 
 /**
  * Class for preparing SQL queries.
  *
  * It has routine functions.
 
- * @package https://github.com/arshavin-dev/ArshWell
+ * @package https://github.com/arsavinel/ArshWell
 */
 final class SQL {
     private $sql = NULL;

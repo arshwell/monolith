@@ -1,11 +1,11 @@
 <?php
 
-use Arsh\Core\ENV;
+use Arsavinel\Arshwell\ENV;
 
 /**
  * Returns execution time for action inside the closure.
 
- * @package https://github.com/arshavin-dev/ArshWell
+ * @package https://github.com/arsavinel/ArshWell
  */
 function _execution_time (closure $function): int {
     if (ENV::supervisor() == false) {

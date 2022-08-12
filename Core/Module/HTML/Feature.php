@@ -1,8 +1,8 @@
 <?php
 
-namespace Arsh\Core\Module\HTML;
+namespace Arsavinel\Arshwell\Module\HTML;
 
-use Arsh\Core\URL;
+use Arsavinel\Arshwell\URL;
 
 final class Feature {
 

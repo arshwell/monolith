@@ -1,13 +1,13 @@
 <?php
 
-use Arsh\Core\Session;
-use Arsh\Core\Git;
-use Arsh\Core\URL;
+use Arsavinel\Arshwell\Session;
+use Arsavinel\Arshwell\Git;
+use Arsavinel\Arshwell\URL;
 
 /**
  * Functions for DevTools which imitate the php syntax.
 
- * @package https://github.com/arshavin-dev/ArshWell
+ * @package https://github.com/arsavinel/ArshWell
  */
 function _html (string $text, bool $trusty = true): void {
     $rshwll = substr(md5(Git::tag()), 0, 5);

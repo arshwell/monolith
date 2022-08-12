@@ -1,23 +1,23 @@
 <?php
 
-namespace Arsh\Core;
+namespace Arsavinel\Arshwell;
 
 use Pelago\Emogrifier\CssInliner;
 use Pelago\Emogrifier\HtmlProcessor\CssToAttributeConverter;
 use Pelago\Emogrifier\HtmlProcessor\HtmlNormalizer;
 use Pelago\Emogrifier\HtmlProcessor\HtmlPruner;
 
-use Arsh\Core\Tygh\Mailer;
-use Arsh\Core\Folder;
-use Arsh\Core\Layout;
-use Arsh\Core\Piece;
-use Arsh\Core\ENV;
-use Arsh\Core\Git;
+use Arsavinel\Arshwell\Tygh\Mailer;
+use Arsavinel\Arshwell\Folder;
+use Arsavinel\Arshwell\Layout;
+use Arsavinel\Arshwell\Piece;
+use Arsavinel\Arshwell\ENV;
+use Arsavinel\Arshwell\Git;
 
 /**
  * PHP Class for sending and displaying mail templates.
 
- * @package https://github.com/arshavin-dev/ArshWell
+ * @package https://github.com/arsavinel/ArshWell
 */
 final class Mail {
 
@@ -54,7 +54,7 @@ final class Mail {
             7
         );
 
-        require(Folder::realpath("ArshWell/Core/Tygh/emogrifier/autoload.php")); // Emogrifier
+        require(Folder::realpath("vendor/arsavinel/arshwell/Core/Tygh/emogrifier/autoload.php")); // Emogrifier
 
         $cssInliner = CssInliner::fromHtml($html)->inlineCss();
         $domDocument = $cssInliner->getDomDocument();

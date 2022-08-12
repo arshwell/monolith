@@ -1,7 +1,7 @@
 /*******************************************************************************
     This file (Web.js) is used at least by:
         - DevTools/helpers/functions/html.php - html()
-        - Arsh\Core\layout::compileJSHeader()
+        - Arsavinel\Arshwell\layout::compileJSHeader()
 *******************************************************************************/
 function Web () {}
 

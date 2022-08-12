@@ -1,11 +1,11 @@
 <?php
 
-namespace Arsh\Core;
+namespace Arsavinel\Arshwell;
 
 /**
  * Helper class for organizing meta tags from <head> section of html.
 
- * @package https://github.com/arshavin-dev/ArshWell
+ * @package https://github.com/arsavinel/ArshWell
 */
 final class Meta {
     private static $metas = array();

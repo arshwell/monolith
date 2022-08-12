@@ -1,14 +1,14 @@
 <?php
 
-namespace Arsh\Core\Module\Request\Backend\Feature;
+namespace Arsavinel\Arshwell\Module\Request\Backend\Feature;
 
-use Arsh\Core\Table\TableColumn;
-use Arsh\Core\Table\TableField;
-use Arsh\Core\Table\TableFiles;
-use Arsh\Core\File;
-use Arsh\Core\Text;
-use Arsh\Core\URL;
-use Arsh\Core\DB;
+use Arsavinel\Arshwell\Table\TableColumn;
+use Arsavinel\Arshwell\Table\TableField;
+use Arsavinel\Arshwell\Table\TableFiles;
+use Arsavinel\Arshwell\File;
+use Arsavinel\Arshwell\Text;
+use Arsavinel\Arshwell\URL;
+use Arsavinel\Arshwell\DB;
 
 final class Update {
 
@@ -276,12 +276,12 @@ final class Update {
                             $file = $table->file($key);
 
                             switch (get_class($file)) {
-                                case 'Arsh\Core\Table\Files\Doc':
-                                case 'Arsh\Core\Table\Files\Image': {
+                                case 'Arsavinel\Arshwell\Table\Files\Doc':
+                                case 'Arsavinel\Arshwell\Table\Files\Image': {
                                     $file->delete($lg ?: NULL);
                                     break;
                                 }
-                                case 'Arsh\Core\Table\Files\ImageGroup': {
+                                case 'Arsavinel\Arshwell\Table\Files\ImageGroup': {
                                     $file->delete($value, $lg ?: NULL);
                                     break;
                                 }
@@ -365,12 +365,12 @@ final class Update {
                         $file = $table->file($key);
 
                         switch (get_class($file)) {
-                            case 'Arsh\Core\Table\Files\Doc':
-                            case 'Arsh\Core\Table\Files\Image': {
+                            case 'Arsavinel\Arshwell\Table\Files\Doc':
+                            case 'Arsavinel\Arshwell\Table\Files\Image': {
                                 $file->update($value, $column ?: NULL); // $column is lg
                                 break;
                             }
-                            case 'Arsh\Core\Table\Files\ImageGroup': {
+                            case 'Arsavinel\Arshwell\Table\Files\ImageGroup': {
                                 $file->insert($value, $column ?: NULL); // $column is lg
                                 break;
                             }

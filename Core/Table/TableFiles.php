@@ -1,12 +1,12 @@
 <?php
 
-namespace Arsh\Core\Table;
+namespace Arsavinel\Arshwell\Table;
 
-use Arsh\Core\Table\Files\Image;
-use Arsh\Core\Table\Files\ImageGroup;
-use Arsh\Core\Table\Files\Doc;
-use Arsh\Core\Table\Files\DocGroup;
-use Arsh\Core\Table;
+use Arsavinel\Arshwell\Table\Files\Image;
+use Arsavinel\Arshwell\Table\Files\ImageGroup;
+use Arsavinel\Arshwell\Table\Files\Doc;
+use Arsavinel\Arshwell\Table\Files\DocGroup;
+use Arsavinel\Arshwell\Table;
 
 final class TableFiles {
     private $files = array(); // has files - images & docs

@@ -1,6 +1,6 @@
 <?php
 
-use Arsh\Core\Session;
+use Arsavinel\Arshwell\Session;
 
 $tabs   = explode('-', $_POST['tb']);
 $tab    = '';

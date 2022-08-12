@@ -1,16 +1,16 @@
 <?php
 
-namespace Arsh\Core;
+namespace Arsavinel\Arshwell;
 
-use Arsh\Core\Folder;
-use Arsh\Core\ENV;
+use Arsavinel\Arshwell\Folder;
+use Arsavinel\Arshwell\ENV;
 
 /**
  * Class for manipulating files.
  *
  * It has routine functions.
 
- * @package https://github.com/arshavin-dev/ArshWell
+ * @package https://github.com/arsavinel/ArshWell
 */
 final class File {
 

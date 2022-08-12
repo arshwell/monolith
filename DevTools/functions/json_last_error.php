@@ -1,11 +1,11 @@
 <?php
 
-use Arsh\Core\ENV;
+use Arsavinel\Arshwell\ENV;
 
 /**
  * It prints received variable in the proper way.
 
- * @package https://github.com/arshavin-dev/ArshWell
+ * @package https://github.com/arsavinel/ArshWell
  */
 function _json_last_error (): void {
     if (ENV::supervisor() == false) {

@@ -1,15 +1,15 @@
 <?php
 
-use Arsh\Core\Folder;
-use Arsh\Core\Text;
-use Arsh\Core\ENV;
-use Arsh\Core\DB;
+use Arsavinel\Arshwell\Folder;
+use Arsavinel\Arshwell\Text;
+use Arsavinel\Arshwell\ENV;
+use Arsavinel\Arshwell\DB;
 
 /**
  * It prints the sql query and its parameters nicer.
  * This function is used at least by try-catch from Table Class methods.
 
- * @package https://github.com/arshavin-dev/ArshWell
+ * @package https://github.com/arsavinel/ArshWell
  */
 function _print_pdo_exception (object $exception, string $sql_query, array $params = NULL): void {
     DB::rollBack();

@@ -1,17 +1,17 @@
 <?php
 
-namespace Arsh\Core\Table;
+namespace Arsavinel\Arshwell\Table;
 
-use Arsh\Core\Tygh\Upload;
-use Arsh\Core\Session;
-use Arsh\Core\Folder;
-use Arsh\Core\Table;
-use Arsh\Core\File;
-use Arsh\Core\Func;
-use Arsh\Core\Web;
-use Arsh\Core\ENV;
-use Arsh\Core\SQL;
-use Arsh\Core\DB;
+use Arsavinel\Arshwell\Tygh\Upload;
+use Arsavinel\Arshwell\Session;
+use Arsavinel\Arshwell\Folder;
+use Arsavinel\Arshwell\Table;
+use Arsavinel\Arshwell\File;
+use Arsavinel\Arshwell\Func;
+use Arsavinel\Arshwell\Web;
+use Arsavinel\Arshwell\ENV;
+use Arsavinel\Arshwell\SQL;
+use Arsavinel\Arshwell\DB;
 use Exception;
 
 /*
@@ -43,8 +43,8 @@ abstract class TableView extends Table {
     );
 
     private static $source = array(
-        'image' => "ArshWell/resources/images/views/default-image-view.png",
-        'video' => "ArshWell/resources/images/views/default-video-view.mp4"
+        'image' => "vendor/arsavinel/arshwell/resources/images/views/default-image-view.png",
+        'video' => "vendor/arsavinel/arshwell/resources/images/views/default-video-view.mp4"
     );
 
     private static function source (bool &$global): string {
@@ -66,8 +66,8 @@ abstract class TableView extends Table {
 
                 foreach (debug_backtrace(0) as $trace) {
                     if (!empty($trace['class']) && !empty($trace['function'])
-                    && (($trace['class'] == 'Arsh\Core\Piece' && $trace['function'] == 'html')
-                    || ($trace['class'] == 'Arsh\Core\Mail' && in_array($trace['function'], ['send', 'html'])))) {
+                    && (($trace['class'] == 'Arsavinel\Arshwell\Piece' && $trace['function'] == 'html')
+                    || ($trace['class'] == 'Arsavinel\Arshwell\Mail' && in_array($trace['function'], ['send', 'html'])))) {
                         $source = strtolower(substr($trace['class'], strrpos($trace['class'], '\\') + 1)) .'s/'. $trace['args'][0];
                         break;
                     }
