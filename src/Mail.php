@@ -54,7 +54,7 @@ final class Mail {
             7
         );
 
-        require(Folder::realpath("vendor/arsavinel/arshwell/Core/Tygh/emogrifier/autoload.php")); // Emogrifier
+        require(Folder::realpath("vendor/arsavinel/arshwell/src/Tygh/emogrifier/autoload.php")); // Emogrifier
 
         $cssInliner = CssInliner::fromHtml($html)->inlineCss();
         $domDocument = $cssInliner->getDomDocument();

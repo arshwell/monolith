@@ -691,7 +691,7 @@ final class Layout {
             $time   = time();
             $return = false;
 
-            require_once("vendor/arsavinel/arshwell/Core/Tygh/SCSS/autoload.php"); // leafo/SCSS
+            require_once("vendor/arsavinel/arshwell/src/Tygh/SCSS/autoload.php"); // leafo/SCSS
 
             $scss = new ScssPhp();
 
@@ -1146,7 +1146,7 @@ final class Layout {
             $time = time();
 
             // We need realpath because also crons can use this class
-            require_once(Folder::realpath("vendor/arsavinel/arshwell/Core/Tygh/SCSS/autoload.php")); // leafo/SCSS
+            require_once(Folder::realpath("vendor/arsavinel/arshwell/src/Tygh/SCSS/autoload.php")); // leafo/SCSS
 
             $scss = new ScssPhp();
 

@@ -17,7 +17,7 @@ session_start();
 
 require("vendor/autoload.php");
 
-require("vendor/arsavinel/arshwell/Core/ENV.php");
+require("vendor/arsavinel/arshwell/src/ENV.php");
 
 Git::inform();
 DB::connect('default');

@@ -98,12 +98,12 @@ if ($form->valid()) {
                 // in not existing conflicts during update attempts.
                 $zip_folders = array(
                     // NOTE: Exceptions which don't create conflicts
-                    'vendor/arsavinel/arshwell/Core/Tygh/.+',
+                    'vendor/arsavinel/arshwell/src/Tygh/.+',
                     'vendor/arsavinel/arshwell/DevTools/tools/files/',
                     preg_quote(Folder::shorter(__DIR__), '~').'/(?!'.preg_quote(basename(__FILE__), '~').'$)', // vendor/arsavinel/arshwell/DevTools/panel/AJAX/actions/*
 
-                    '(?!\.htaccess$|env\.json$|web\.php$|vendor/arsavinel/arshwell/Core/.+|vendor/arsavinel/arshwell/DevTools/.+)', // everything else
-                    '.+' // .htaccess, web.php, vendor/arsavinel/arshwell/Core/, vendor/arsavinel/arshwell/DevTools/ (which create coflicts)
+                    '(?!\.htaccess$|env\.json$|web\.php$|vendor/arsavinel/arshwell/src/.+|vendor/arsavinel/arshwell/DevTools/.+)', // everything else
+                    '.+' // .htaccess, web.php, vendor/arsavinel/arshwell/src/, vendor/arsavinel/arshwell/DevTools/ (which create coflicts)
                 );
 
                 uasort($zip_files, function ($file_1, $file_2) use ($zip_folders) {
