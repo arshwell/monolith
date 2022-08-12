@@ -599,9 +599,9 @@ final class Web {
         header_remove("Location");
     }
 
-    static function back (string $key = NULL, array $values = NULL, int $page = 0, array $_get = NULL): ?string {
-        // $route is the backup if is no referer
-        return ($_SERVER['HTTP_REFERER'] ?? ($key ? self::url($key, $values, $page, $_get) : NULL));
+    static function back (string $key = NULL, array $values = NULL, string $language = NULL, int $page = 0, array $_get = NULL): ?string {
+        // $key is the backup if is no referer
+        return ($_SERVER['HTTP_REFERER'] ?? ($key ? self::url($key, $values, $language, $page, $_get) : NULL));
     }
 
     static function goBack (string $key = NULL, array $values = NULL, int $page = 0, array $_get = NULL): bool {
@@ -609,7 +609,7 @@ final class Web {
             header("Location: ". $_SERVER['HTTP_REFERER']);
             return false;
         }
-        if ($route) { // backup if is no referer
+        if ($key) { // backup if is no referer
             header("Location: ". self::get($key, $values, $page, $_get));
             return true;
         }
