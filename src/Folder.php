@@ -183,8 +183,8 @@ final class Folder {
     }
 
     static function root (): string {
-        // NOTE: vendor/arsavinel/arshwell/Core has 13 chars ;)
-        return substr(__DIR__, 0, -13);
+        // NOTE: returns the path of the project
+        return substr(__DIR__, 0, -1 * strlen("vendor/arsavinel/arshwell/src"));
     }
 
     static function realpath (string $path): string {
@@ -203,8 +203,7 @@ final class Folder {
 
     static function shorter (string $path): string {
         if ($path[0] == '/' && strpos($path, sys_get_temp_dir()) !== 0) {
-            // NOTE: vendor/arsavinel/arshwell/Core has 13 chars ;)
-            $path = substr($path, strlen(__DIR__) - 13); // remove root
+            $path = substr($path, strlen(__DIR__) - strlen("vendor/arsavinel/arshwell/src")); // remove root
         }
         return $path;
     }
