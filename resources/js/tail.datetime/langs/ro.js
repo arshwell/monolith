@@ -1,5 +1,5 @@
 /*
- |  Translator: @arshavin-dev
+ |  Translator: @arsavinel
  */
 ;(function (factory) {
    if (typeof(define) == "function" && define.amd) {

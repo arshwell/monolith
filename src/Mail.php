@@ -12,7 +12,6 @@ use Arsavinel\Arshwell\Folder;
 use Arsavinel\Arshwell\Layout;
 use Arsavinel\Arshwell\Piece;
 use Arsavinel\Arshwell\ENV;
-use Arsavinel\Arshwell\Git;
 
 /**
  * PHP Class for sending and displaying mail templates.
@@ -92,7 +91,7 @@ final class Mail {
             $mailer->Body         = $html;
             $mailer->AltBody      = self::prepareText($html);
 
-            $mailer->AddCustomHeader("Organization: " . ENV::mail('from.name') .' '. Git::tag());
+            $mailer->AddCustomHeader("Organization: " . ENV::mail('from.name') .' '. DevPanelVersion());
 
             if ($files) {
                 foreach ($files as $file) {

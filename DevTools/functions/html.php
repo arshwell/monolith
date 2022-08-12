@@ -1,8 +1,8 @@
 <?php
 
 use Arsavinel\Arshwell\Session;
-use Arsavinel\Arshwell\Git;
 use Arsavinel\Arshwell\URL;
+use Arsavinel\Arshwell\Folder;
 
 /**
  * Functions for DevTools which imitate the php syntax.
@@ -10,7 +10,9 @@ use Arsavinel\Arshwell\URL;
  * @package https://github.com/arsavinel/ArshWell
  */
 function _html (string $text, bool $trusty = true): void {
-    $rshwll = substr(md5(Git::tag()), 0, 5);
+    require_once(Folder::root() . "vendor/arsavinel/arshwell/DevTools/tools/panel/functions.php");
+
+    $rshwll = substr(md5(DevPanelVersion()), 0, 5);
     $url    = URL::get(true, false);
 
     ob_start(); // for returning all content
@@ -18,7 +20,7 @@ function _html (string $text, bool $trusty = true): void {
         <!DOCTYPE html>
         <html lang="ro">
             <head>
-                <title>ArshWell <?= ($trusty ? Git::tag() : '') ?></title>
+                <title>ArshWell <?= ($trusty ? DevPanelVersion() : '') ?></title>
 
                 <meta http-equiv="content-type" content="text/html;charset=utf-8" />
                 <meta http-equiv="X-UA-Compatible" content="IE=edge">

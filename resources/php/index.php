@@ -10,7 +10,6 @@ use Arsavinel\Arshwell\Meta;
 use Arsavinel\Arshwell\ENV;
 use Arsavinel\Arshwell\URL;
 use Arsavinel\Arshwell\Web;
-use Arsavinel\Arshwell\Git;
 use Arsavinel\Arshwell\DB;
 
 session_start();
@@ -19,7 +18,6 @@ require("vendor/autoload.php");
 
 require("vendor/arsavinel/arshwell/src/ENV.php");
 
-Git::inform();
 DB::connect('default');
 Session::set(ENV::url().ENV::db('conn.default.name'));
 

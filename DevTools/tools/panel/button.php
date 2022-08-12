@@ -4,9 +4,10 @@ use Arsavinel\Arshwell\Session;
 use Arsavinel\Arshwell\Piece;
 use Arsavinel\Arshwell\Func;
 use Arsavinel\Arshwell\Web;
-use Arsavinel\Arshwell\Git;
 
-$hashed_arsh_version = substr(md5(Git::tag()), 0, 5); ?>
+require_once("functions.php");
+
+$hashed_arsh_version = substr(md5(DevPanelVersion()), 0, 5); ?>
 
 <!-- - - - - - - - - - - - - - - - - - - - ArshWell | DevPanel - - - - - - - - - - - - - - - - - - - -->
 <script type="text/javascript">
@@ -25,7 +26,7 @@ $hashed_arsh_version = substr(md5(Git::tag()), 0, 5); ?>
             <?php }
             // we listen for keydown password
             else { ?>
-                var pss_vl  = "DEVPANEL<?= preg_replace('/[^0-9]+/', '', Git::tag()) ?>";
+                var pss_vl  = "DEVPANEL<?= DevPanelVersionNumber() ?>";
                 var pss_npt = '';
                 var dspld   = false;
 
@@ -33,7 +34,7 @@ $hashed_arsh_version = substr(md5(Git::tag()), 0, 5); ?>
                 function KDwnDvPnlPswrd (event) {
                     pss_npt += event.key;
 
-                    if (pss_vl == pss_npt.toUpperCase()) {
+                    if (pss_vl.toLowerCase() == pss_npt.toLowerCase()) {
                         var xhr = new XMLHttpRequest();
                         xhr.open('POST', window.location);
                         xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');

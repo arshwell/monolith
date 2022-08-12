@@ -2,13 +2,11 @@
 
 use Arsavinel\Arshwell\Table\TableValidation;
 use Arsavinel\Arshwell\Session;
-use Arsavinel\Arshwell\Folder;
 use Arsavinel\Arshwell\Time;
 use Arsavinel\Arshwell\File;
 use Arsavinel\Arshwell\ENV;
 use Arsavinel\Arshwell\URL;
 use Arsavinel\Arshwell\Web;
-use Arsavinel\Arshwell\Git;
 
 $info = TableValidation::run(
     array_merge(
@@ -165,6 +163,8 @@ $warnings = array(
     })
 );
 
+require_once("functions.php");
+
 ob_start(); // for adding all content in _html() function
 ?>
 <style type="text/css">
@@ -208,11 +208,13 @@ ob_start(); // for adding all content in _html() function
         body .card .card-body pre::-webkit-scrollbar-thumb,
         body .card .card-body .tab-content.scrollable .tab-pane::-webkit-scrollbar-thumb {
             border-radius: 10px;
+            box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
             -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
             background-color: #555;
         }
         body .card .card-body pre::-webkit-scrollbar-track,
         body .card .card-body .tab-content.scrollable .tab-pane::-webkit-scrollbar-track {
+            box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
             -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
             border-radius: 10px;
             background-color: transparent;
@@ -228,7 +230,7 @@ ob_start(); // for adding all content in _html() function
             background-color: transparent;
         }
             body .card .card-body .tab-content.scrollable > .tab-pane > .tab-content {
-                /* display: inline-block; /* for correct horizontal scrollbar */ */
+                /* display: inline-block; /* for correct horizontal scrollbar */
             }
 
     body .card .card-body .nav.nav-pills .nav-link {
@@ -333,8 +335,8 @@ ob_start(); // for adding all content in _html() function
                 <i style="text-shadow: 0px 0px 1px #000;" class="pr-1" data-toggle="tooltip" data-placement="right" data-title="Released on 30 August 2019">
                     <span class="text-success">Arsh</span><span class="text-warning">Well</span>
                     <?php
-                    if (Session::panel('active') && Git::tag()) { ?>
-                        <span class="text-danger"><?= Git::tag() ?></span>
+                    if (Session::panel('active') && DevPanelVersion()) { ?>
+                        <span class="text-danger"><?= DevPanelVersion() ?></span>
                     <?php } ?>
                 </i>
             </div>
@@ -953,18 +955,17 @@ if (Session::panel('active')) { // load js ?>
                     $(parent).find(".advice-or-instance-of-panel, .instance-of-panel")
                         .addClass('d-block').fadeOut(0).html(
                             "<b>This panel comes from <u>an instance</u> of "+
-                            '<a href="'+ (window.location.origin + window.location.pathname) +'" target="_blank">' +
-                                '<span'+ (window.location.pathname.length > 1 ? ' class="d-none d-lg-inline"' : '') +'>'+ (window.location.host || window.location.hostname) +'</span>' +
-                                window.location.pathname +
-                            "</a> (from "+
-                            "<?= date(
-                                    (date('Ymd', $info->value('time')) != date('Ymd') ? "d F " : '') .
-                                    (date('Y', $info->value('time')) != date('Y') ? "Y " : '') .
-                                    (date('Ymd H:i', $info->value('time')) != date('Ymd H:i') ? "H:i" : '\n\o\w'),
-                                    $info->value('time')
-                                 )
-                            ?>" +
-                            ")</b>"
+                                '<a href="'+ (window.location.origin + window.location.pathname) +'" target="_blank">' +
+                                    '<span'+ (window.location.pathname.length > 1 ? ' class="d-none d-lg-inline"' : '') +'>'+ (window.location.host || window.location.hostname) +'</span>' +
+                                    window.location.pathname +
+                                "</a> (from "+
+                                "<?= date(
+                                        (date('Ymd', $info->value('time')) != date('Ymd') ? "d F " : '') .
+                                        (date('Y', $info->value('time')) != date('Y') ? "Y " : '') .
+                                        (date('Ymd H:i', $info->value('time')) != date('Ymd H:i') ? "H:i" : '\n\o\w'),
+                                        $info->value('time')
+                                    )
+                                ?>" + ")</b>"
                         ).fadeIn(700);
                 }
             },
