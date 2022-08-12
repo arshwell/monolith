@@ -1,0 +1,9 @@
+RewriteEngine On
+
+# Write requested file
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^.*\.(css|js) - [END,L]
+
+# If non-existent file, serve a 404 otherwise...
+RewriteCond %{ENV:REDIRECT_STATUS} ^$
+RewriteRule ^ - [R=404]

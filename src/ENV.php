@@ -278,12 +278,20 @@ if (!is_file(Folder::root(). '.htaccess')) {
     copy(Folder::root() . 'vendor/arsavinel/arshwell/resources/htaccess/project.htaccess', Folder::root() . '.htaccess');
 }
 
+// uploads/.htaccess file
+if (!is_file(Folder::root() . ENV::uploads(true) . '.htaccess')) {
+    if (!is_dir(Folder::root() . ENV::uploads(true))) {
+        mkdir(Folder::root() . ENV::uploads(true));
+    }
+    copy(Folder::root() . 'vendor/arsavinel/arshwell/resources/htaccess/uploads.htaccess', Folder::root() . ENV::uploads(true) . '.htaccess');
+}
+
 // uploads/design/.htaccess file
 if (!is_file(Folder::root() . ENV::design() . '.htaccess')) {
-    if (!is_dir(Folder::root() . 'vendor/arsavinel/arshwell/resources/htaccess/')) {
-        mkdir(Folder::root() . 'vendor/arsavinel/arshwell/resources/htaccess/');
+    if (!is_dir(Folder::root() . ENV::design())) {
+        mkdir(Folder::root() . ENV::design());
     }
-    copy(Folder::root() . 'vendor/arsavinel/arshwell/resources/htaccess/uploads.htaccess', Folder::root() . ENV::design() . '.htaccess');
+    copy(Folder::root() . 'vendor/arsavinel/arshwell/resources/htaccess/uploads.design.htaccess', Folder::root() . ENV::design() . '.htaccess');
 }
 
 ini_set(

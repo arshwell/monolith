@@ -1,9 +1,7 @@
-RewriteEngine On
-
-# Write requested file
-RewriteCond %{REQUEST_FILENAME} -f
-RewriteRule ^.*\.(css|js) - [END,L]
-
-# If non-existent file, serve a 404 otherwise...
-RewriteCond %{ENV:REDIRECT_STATUS} ^$
-RewriteRule ^ - [R=404]
+RewriteEngine On
+
+# Allows any user to see this directory
+Satisfy Any # Apache 2.3
+Allow from all # Apache 2.4
+
+RewriteRule ^ ../download.php [END,L]
