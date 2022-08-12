@@ -268,13 +268,6 @@ ini_set('log_errors_max_len',		1024); // Logging file size
 
 error_reporting(E_ALL);
 
-// Auto Class Load
-spl_autoload_register(function ($class) {
-    if (is_file(($file = (__DIR__ .'/../../'. preg_replace("~^Arsh/~", 'vendor/arsavinel/arshwell/', str_replace('\\', '/', $class)) .'.php')))) {
-        require($file);
-    }
-}, true);
-
 if (!is_dir(__DIR__ .'/../../errors')) {
     mkdir(__DIR__ .'/../../errors');
 }

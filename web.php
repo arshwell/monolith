@@ -15,6 +15,8 @@ use Arsavinel\Arshwell\DB;
 
 session_start();
 
+require("vendor/autoload.php");
+
 require("vendor/arsavinel/arshwell/Core/ENV.php");
 
 Git::inform();
