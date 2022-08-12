@@ -273,6 +273,18 @@ if (!is_dir(Folder::root() . 'errors/')) {
     mkdir(Folder::root() . 'errors/');
 }
 
+ini_set(
+	'error_log',
+    // Folder::root() . 'errors/'. strtok(strtok(substr(ENV::scriptfile(), (strlen(__DIR__) - 8)), '.'), '/') .'.log'
+	Folder::root() . 'errors/'. strtok(strtok(Folder::shorter(ENV::scriptfile() ?? getcwd()), '.'), '/') .'.log'
+); // setting for saving errors (web.log, download.log, crons.log)
+
+foreach (glob(Folder::realpath('vendor/arsavinel/arshwell/DevTools/functions/*.php')) as $v) {
+    require($v);
+}
+
+ENV::fetch();
+
 // .htaccess file
 if (!is_file(Folder::root(). '.htaccess')) {
     copy(Folder::root() . 'vendor/arsavinel/arshwell/resources/htaccess/project.htaccess', Folder::root() . '.htaccess');
@@ -293,18 +305,6 @@ if (!is_file(Folder::root() . ENV::design() . '.htaccess')) {
     }
     copy(Folder::root() . 'vendor/arsavinel/arshwell/resources/htaccess/uploads.design.htaccess', Folder::root() . ENV::design() . '.htaccess');
 }
-
-ini_set(
-	'error_log',
-    // Folder::root() . 'errors/'. strtok(strtok(substr(ENV::scriptfile(), (strlen(__DIR__) - 8)), '.'), '/') .'.log'
-	Folder::root() . 'errors/'. strtok(strtok(Folder::shorter(ENV::scriptfile() ?? getcwd()), '.'), '/') .'.log'
-); // setting for saving errors (web.log, download.log, crons.log)
-
-foreach (glob(Folder::realpath('vendor/arsavinel/arshwell/DevTools/functions/*.php')) as $v) {
-    require($v);
-}
-
-ENV::fetch();
 
 if (strstr(Folder::shorter(getcwd()), '/', true) == 'crons' && !ENV::isCRON()
 && (!ENV::board('dev') || !ENV::supervisor())) { // CRON is run by a stranger.
