@@ -1,0 +1,22 @@
+{
+    "name": "arsavinel/arshwell",
+    "description": "PHP Framework | LAMP Solution stack",
+    "autoload": {
+        "psr-4": {
+            "Arsavinel\\Arshwell\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Arshavin",
+            "email": "arsavinwallentyn@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "~7.3.0 || ~7.4.0"
+    },
+    "require-dev": {
+        "searchturbine/phpwee-php-minifier": "dev-master",
+        "pelago/emogrifier": "6.*"
+    }
+}

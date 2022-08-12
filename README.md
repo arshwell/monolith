@@ -2,25 +2,22 @@
 
 Simple to learn and use:
 >  ArshWell started from the idea of a fast and clean framework.
->  Used as submodule project or directly as subfolder.
 ---
 
 ### Tech
 
 ArshWell uses next technologies:
 
-- [MySQL] - Project uses SQL
+- [MySQL] - Package uses SQL
 - [PHP 7.3+] - Also some OOP features (ex: DB)
 - [SASS] - A good fit CSS extension language for ArshWell
-- [JS Vanilla functions] - Built-in helpfull functions (ex: Web, Form)
+- [JS Vanilla functions] - Built-in helpful functions (ex: Web, Form)
 - [jQuery] - default JS library
 
 ### Installation
 
-You need only:
-
-- [ArshWell ZIP] - Upload zip file throw FTP/SFTP
-- [unzip.php] - Call this file throw browser
+- Include this package (arsavinel/arshwell) in your project composer
+- Run `composer install`
 
 ### Features
 
