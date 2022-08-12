@@ -153,7 +153,7 @@ final class Folder {
 
         foreach ($folders as $folder) {
             // We need realpath because also crons can use this class
-            $folder = realpath(__DIR__.'/../../'.$folder);
+            $folder = realpath(self::root().$folder);
 
             foreach (scandir($folder) as $file) {
                 if ($file != '.' && $file != '..') {

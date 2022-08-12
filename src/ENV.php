@@ -268,14 +268,28 @@ ini_set('log_errors_max_len',		1024); // Logging file size
 
 error_reporting(E_ALL);
 
-if (!is_dir(__DIR__ .'/../../errors')) {
-    mkdir(__DIR__ .'/../../errors');
+// errors folder
+if (!is_dir(Folder::root() . 'errors/')) {
+    mkdir(Folder::root() . 'errors/');
+}
+
+// .htaccess file
+if (!is_file(Folder::root(). '.htaccess')) {
+    copy(Folder::root() . 'vendor/arsavinel/arshwell/resources/htaccess/project.htaccess', Folder::root() . '.htaccess');
+}
+
+// uploads/design/.htaccess file
+if (!is_file(Folder::root() . ENV::design() . '.htaccess')) {
+    if (!is_dir(Folder::root() . 'vendor/arsavinel/arshwell/resources/htaccess/')) {
+        mkdir(Folder::root() . 'vendor/arsavinel/arshwell/resources/htaccess/');
+    }
+    copy(Folder::root() . 'vendor/arsavinel/arshwell/resources/htaccess/uploads.htaccess', Folder::root() . ENV::design() . '.htaccess');
 }
 
 ini_set(
 	'error_log',
-    // __DIR__ .'/../../errors/'. strtok(strtok(substr(ENV::scriptfile(), (strlen(__DIR__) - 8)), '.'), '/') .'.log'
-	__DIR__ .'/../../errors/'. strtok(strtok(Folder::shorter(ENV::scriptfile() ?? getcwd()), '.'), '/') .'.log'
+    // Folder::root() . 'errors/'. strtok(strtok(substr(ENV::scriptfile(), (strlen(__DIR__) - 8)), '.'), '/') .'.log'
+	Folder::root() . 'errors/'. strtok(strtok(Folder::shorter(ENV::scriptfile() ?? getcwd()), '.'), '/') .'.log'
 ); // setting for saving errors (web.log, download.log, crons.log)
 
 foreach (glob(Folder::realpath('vendor/arsavinel/arshwell/DevTools/functions/*.php')) as $v) {

@@ -8,4 +8,4 @@
 RewriteOptions inherit
 RewriteEngine On
 
-RewriteRule ^ web.php [END,L]
+RewriteRule ^ index.php [END,L]

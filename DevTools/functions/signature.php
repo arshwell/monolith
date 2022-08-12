@@ -7,7 +7,7 @@
  */
 function _signature (string $site = NULL): ?string {
     $emails = array(
-        'https://github.com/arshavin-dev',
+        'https://github.com/arsavinel',
         'https://www.linkedin.com/in/arsavin-valentin/',
         'arsavinwallentyn@gmail.com'
     );
