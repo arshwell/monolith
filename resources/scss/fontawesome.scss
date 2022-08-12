@@ -1,0 +1,26 @@
+/*!
+ * Font Awesome Free 5.15.3 by @fontawesome - https://fontawesome.com
+ * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
+ */
+
+$fa-font-path: "#{map-get($env-statics, 'fonts')}/fontawesome";
+
+$font-awesome-utilities-path: "font-awesome-v5/";
+
+@import '#{$font-awesome-utilities-path}variables';
+@import '#{$font-awesome-utilities-path}mixins';
+@import '#{$font-awesome-utilities-path}core';
+@import '#{$font-awesome-utilities-path}larger';
+@import '#{$font-awesome-utilities-path}fixed-width';
+@import '#{$font-awesome-utilities-path}list';
+@import '#{$font-awesome-utilities-path}bordered-pulled';
+@import '#{$font-awesome-utilities-path}animated';
+@import '#{$font-awesome-utilities-path}rotated-flipped';
+@import '#{$font-awesome-utilities-path}stacked';
+@import '#{$font-awesome-utilities-path}icons';
+@import '#{$font-awesome-utilities-path}screen-reader';
+
+// free icons type
+@import '#{$font-awesome-utilities-path}solid';
+@import '#{$font-awesome-utilities-path}regular';
+@import '#{$font-awesome-utilities-path}brands';

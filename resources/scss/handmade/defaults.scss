@@ -1,0 +1,119 @@
+html {
+    height: -webkit-fill-available; // for mobile vh bug
+}
+
+a, button, .btn {
+    &, &:hover, &:focus {
+        text-decoration: none;
+        @include arsh--no-outline-no-shadows;
+    }
+}
+.btn.active, .btn:active {
+    @include arsh--box-shadow(none);
+}
+
+.clearfix {
+    @include arsh--clearfix;
+}
+
+input[type="text"], input[type="password"], input[type="email"], input[type="date"],
+textarea, .form-control {
+	&::-webkit-input-placeholder,   /* Chrome/Opera/Safari */
+    &::-moz-placeholder,            /* Firefox 19+ */
+    &:-ms-input-placeholder,        /* IE 10+ */
+    &:-moz-placeholder {            /* Firefox 18- */
+        color: #808880;
+    }
+}
+
+input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
+    background-color: white !important;
+    background-image: none !important;
+    color: black !important;
+}
+
+label[for] {
+    cursor: pointer;
+	display: block;
+}
+
+ul, ol {
+    margin: 0;
+
+    &.unordered {
+        padding: 0;
+        list-style: none;
+        list-style-image: none;
+    }
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-weight: 600; // because diacritics are thinner by default
+}
+
+input, textarea, button, .form-control {
+   @include arsh--appearance(none);
+
+   &:focus {
+       @include arsh--no-outline-no-shadows;
+   }
+}
+textarea {
+    min-width: 100%;
+    max-width: 100%;
+    min-height: 60px;
+    height: auto;
+}
+
+.modal-open {
+	overflow: initial; // so sticky elements don't break
+}
+.dropdown {
+    @include arsh--box-shadow(none);
+
+	.dropdown-menu {
+	    min-width: max-content;
+		max-width: max-content;
+		width: max-content;
+	}
+}
+
+.tox-tinymce:not(.tox-fullscreen) {
+	z-index: initial !important; // against covering fixed menus
+}
+
+.owl-carousel {
+    .owl-stage {
+        margin: 0 auto;
+    }
+}
+
+// All redirect and AJAX submits have <form> tag because Form JS class needs it.
+form {
+    *[form-error]:not([form-error=""]) {
+		font-size: 10px;
+		line-height: 16px;
+		height: 16px;
+		opacity: 1;
+		visibility: visible;
+		display: block;
+    }
+}
+
+/* For input[type="file"] made with bootstrap. */
+	.custom-file .custom-file-label {
+	    overflow: hidden;
+	    white-space: nowrap;
+	}
+	.input-group {
+	    .custom-file-trash {
+	        color: #495057;
+	        background-color: #e9ecef;
+	        border: 1px solid #ced4da;
+	        border-radius: 0.25rem 0 0 0.25rem;
+	    }
+	}
+
+.nowrap {
+    white-space: nowrap;
+}
