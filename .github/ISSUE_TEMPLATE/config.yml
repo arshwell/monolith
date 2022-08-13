@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Community Support
+    url: https://github.com/arsavinel/ArshWell/discussions
+    about: Please use the ArshWell discussions section for support.
+  - name: Support Question
+    url: https://www.instagram.com/arsavinel/
+    about: We use GitHub issues only to discuss about ArshWell bugs and new features. For paid support about using ArshWell, please contact me on https://www.instagram.com/arsavinel/.
