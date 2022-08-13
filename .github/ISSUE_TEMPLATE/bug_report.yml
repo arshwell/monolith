@@ -1,5 +1,5 @@
 name: "Bug Report"
-description: "⚠️ NEVER report security issues, read https://github.com/arsavinel/ArshWell/security/policy instead"
+description: "⚠️ NEVER report Security issues, read Security Policy instead"
 labels: ["bug"]
 body:
   - type: input
@@ -11,11 +11,11 @@ body:
   - type: textarea
     attributes:
       label: "Description"
-      description: "Please provide a description and way to reproduce the problem."
+      description: "A clear and concise description of the problem."
       placeholder: |
-        "Please use the ArshWell discussions section for questions.
+        Please use the ArshWell Discussions section for questions:
 
-        https://github.com/arsavinel/ArshWell/discussions"
+        https://github.com/arsavinel/ArshWell/discussions
     validations:
       required: true
   - type: textarea
@@ -23,17 +23,14 @@ body:
       label: "How to reproduce"
       description: "⚠️ This is the most important part of the report ⚠️"
       placeholder: |
-        "Without a way to easily reproduce your issue, there is little chance we will be able to help you and work on a fix.
+        Without a way to easily reproduce your issue, there is little chance we will be able to help you and work on a fix.
         Please, take the time to show us some code and/or config that is needed for others to reproduce the problem easily.
-
-        Most of the time, creating a "bug reproducer" is the best way to help us
-        and increases the chances someone will have a look at it."
     validations:
       required: true
   - type: textarea
     attributes:
       label: Possible Solution
-      description: "Optional: only if you have suggestions on a fix/reason for the bug"
+      description: "Optional: only if you have suggestions on a fix/reason for the bug."
       placeholder: "Don't hesitate to create a pull request with your solution, it helps get faster feedback."
   - type: textarea
     attributes:
@@ -42,7 +39,7 @@ body:
   - type: input
     attributes:
       label: "PHP Version"
-      description: "The php version used, if needed."
+      description: "Optional: the php version used, if needed."
       placeholder: "x.y"
     validations:
       required: false
