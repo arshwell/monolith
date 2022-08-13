@@ -43,3 +43,16 @@ DevPanel is a built-in panel which has many features, including:
 | Updating with newer version (throw ZIP file) |
 | Removing dangerous files |
 | Activating maintenance mode |
+
+### Contributing
+Thank you for considering contributing to the ArshWell framework!
+
+### Code of Conduct
+In order to ensure that the ArshWell community is welcoming to all,
+please review and abide by the [Code of Conduct](https://github.com/arsavinel/ArshWell/blob/main/CODE_OF_CONDUCT.md).
+
+### Security Vulnerabilities
+If you’ve found a security issue in ArshWell, please use the procedure described in SECURITY.md.
+
+### License
+The ArshWell framework is open-sourced software licensed under the MIT license.
