@@ -13,7 +13,6 @@
         }
     ],
     "require": {
-        "php": "~7.3.0 || ~7.4.0"
     },
     "require-dev": {
         "searchturbine/phpwee-php-minifier": "dev-master",
