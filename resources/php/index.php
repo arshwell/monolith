@@ -74,18 +74,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && (!isset($_SERVER['HTTP_REFERER']) || 
     exit;
 }
 
-if (ENV::maintenance('active')) {
+if ((ENV::class('maintenance'))::active()) {
     if (ENV::supervisor()) {
         // supervisor keep their session, so they can acces DevPanel
-        Web::force(ENV::maintenance('route'));
+        Web::force((ENV::class('maintenance'))::route());
     }
-    else if (ENV::maintenance('smart') && !Session::isNew()) {
+    else if ((ENV::class('maintenance'))::smart() && !Session::isNew()) {
         // NOTE: Client still can use the app.
     }
     else {
         // HACK: so here are the other 3 situations
         Session::empty(); // for keeping the session new
-        Web::force(ENV::maintenance('route'));
+        Web::force((ENV::class('maintenance'))::route());
     }
 }
 

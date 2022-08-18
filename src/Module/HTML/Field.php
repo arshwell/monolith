@@ -52,7 +52,7 @@ final class Field {
                                 <div class="image"
                                 data-language="<?= ($language ?: (($image->class())::TRANSLATOR)::get()) ?>"
                                 data-folder="<?= $image->folder() ?>"
-                                data-uploads="<?= Web::site() ?>uploads/"
+                                data-uploads="<?= Web::uploads('files') ?>"
                                 data-smallest-size="<?= File::parsePath(ltrim(preg_replace('~^'. ENV::root() .'~', '', URL::path($image->smallest($language))), '/'), 'size') ?>">
                                     <div class="image-actions px-2">
                                         <input type="hidden" name="filetools[delete]<?= $piece['filetools']['name'] ?>" value="1" disabled />
@@ -230,7 +230,7 @@ final class Field {
                                     <div class="image"
                                     data-language="<?= ($language ?: (($images->class())::TRANSLATOR)::get()) ?>"
                                     data-folder="<?= $images->folder() ?>"
-                                    data-uploads="<?= Web::site() ?>uploads/"
+                                    data-uploads="<?= Web::uploads('files') ?>"
                                     data-smallest-size="<?= File::parsePath(ltrim(preg_replace('~^'. ENV::root() .'~', '', URL::path($images->smallest($language)[0])), '/'), 'size') ?>">
                                         <div class="image-actions px-2">
                                             <input type="hidden" name="filetools[delete]<?= $piece['filetools']['name'] ?>[<?= $basename ?>]" value="1" disabled />
@@ -430,7 +430,7 @@ final class Field {
                                 <div class="doc"
                                 data-language="<?= ($language ?: (($doc->class())::TRANSLATOR)::get()) ?>"
                                 data-folder="<?= $doc->folder() ?>"
-                                data-uploads="<?= Web::site() ?>uploads/">
+                                data-uploads="<?= Web::uploads('files') ?>">
                                     <div class="doc-actions px-2">
                                         <input type="hidden" name="filetools[delete]<?= $piece['filetools']['name'] ?>" value="1" disabled />
                                         <span class="info info-red text-light" form-error="filetools.delete.<?= $piece['filetools']['identifier'] ?>"></span>
@@ -547,7 +547,7 @@ final class Field {
                                 <div class="video"
                                 data-language="<?= ($language ?: (($video->class())::TRANSLATOR)::get()) ?>"
                                 data-folder="<?= $video->folder() ?>"
-                                data-uploads="<?= Web::site() ?>uploads/">
+                                data-uploads="<?= Web::uploads('files') ?>">
                                     <div class="video-actions px-2">
                                         <input type="hidden" name="filetools[delete]<?= $piece['filetools']['name'] ?>" value="1" disabled />
                                         <span class="info info-red text-light" form-error="filetools.delete.<?= $piece['filetools']['identifier'] ?>"></span>

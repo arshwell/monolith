@@ -7,29 +7,29 @@ namespace Composer\Autoload;
 class ComposerStaticInitb353e2d9863e28e6e74c52445844c3a9
 {
     public static $prefixLengthsPsr4 = array (
-        'S' => 
+        'S' =>
         array (
             'Symfony\\Component\\CssSelector\\' => 30,
         ),
-        'P' => 
+        'P' =>
         array (
             'Pelago\\Emogrifier\\' => 18,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'Symfony\\Component\\CssSelector\\' => 
+        'Symfony\\Component\\CssSelector\\' =>
         array (
-            0 => __DIR__ . '/..' . '/symfony/css-selector',
+            0 => __DIR__ . '/../symfony/css-selector',
         ),
-        'Pelago\\Emogrifier\\' => 
+        'Pelago\\Emogrifier\\' =>
         array (
-            0 => __DIR__ . '/..' . '/pelago/emogrifier/src',
+            0 => __DIR__ . '/../pelago/emogrifier/src',
         ),
     );
 
     public static $classMap = array (
-        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'Composer\\InstalledVersions' => __DIR__ . '/../composer/InstalledVersions.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

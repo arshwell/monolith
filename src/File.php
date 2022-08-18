@@ -3,7 +3,6 @@
 namespace Arsavinel\Arshwell;
 
 use Arsavinel\Arshwell\Folder;
-use Arsavinel\Arshwell\ENV;
 
 /**
  * Class for manipulating files.
@@ -220,7 +219,7 @@ final class File {
             return NULL; // invalid file path
         }
 
-        $filekeyfolder = ENV::uploads(true). $filepath['class'] .'/'. $filepath['id_table'] .'/'. $filepath['filekey'];
+        $filekeyfolder = ENV::uploads('files') . $filepath['class'] .'/'. $filepath['id_table'] .'/'. $filepath['filekey'];
 
         if (empty($siblings)) {
             $siblings = File::tree($filekeyfolder, NULL, false, true);
@@ -376,10 +375,10 @@ final class File {
 
         preg_match(
             // TODO: Don't remove it. Is another class match solution
-            // NOTE: Is a very old. So needs updates before using it.
-            // "~^uploads/(?<class>(?!\d+/)[a-z0-9_.]+(?:/(?!\d+/)[a-z0-9_.]+)*)/(?<id_table>\d+)/(?<filekey>[a-z0-9-_]+)(/\w+)?\.\w+$~",
+            // NOTE: It is a very old. So needs updates before using it.
+            // "~^".ENV::uploads('files')."(?<class>(?!\d+/)[a-z0-9_.]+(?:/(?!\d+/)[a-z0-9_.]+)*)/(?<id_table>\d+)/(?<filekey>[a-z0-9-_]+)(/\w+)?\.\w+$~",
 
-            "~^uploads/(?<class>\d*+[a-z0-9_.]+(?>/\d*+[a-z0-9_.]+)*)/(?<id_table>\d+)/(?<filekey>[a-z0-9-_]+)/(?<lang>[^/]+)/((?<size>[^/]+)/)?(?<title>[^/]+)\.(?<extension>[^/.]+)$~",
+            "~^".ENV::uploads('files')."(?<class>\d*+[a-z0-9_.]+(?>/\d*+[a-z0-9_.]+)*)/(?<id_table>\d+)/(?<filekey>[a-z0-9-_]+)/(?<lang>[^/]+)/((?<size>[^/]+)/)?(?<title>[^/]+)\.(?<extension>[^/.]+)$~",
             $path, $matches
         );
 

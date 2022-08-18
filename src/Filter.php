@@ -3,7 +3,9 @@
 namespace Arsavinel\Arshwell;
 
 /**
- * Class for backend programming which has routine functions.
+ * Class for filtering data.
+ *
+ * It has routine functions.
 
  * @package https://github.com/arsavinel/ArshWell
 */

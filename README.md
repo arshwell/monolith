@@ -14,10 +14,20 @@ ArshWell uses next technologies:
 - [JS Vanilla functions] - Built-in helpful functions (ex: Web, Form)
 - [jQuery] - default JS library
 
-### Installation
+### Installation & Use
 
-- Include this package (arsavinel/arshwell) in your project composer
-- Run `composer install`
+- Include this package (arsavinel/arshwell) in your project composer;
+- Run `composer install`;
+- Create `index.php`, in root of your project, and include the following code:
+    - ```php
+      <?php
+      require("vendor/arsavinel/arshwell/resources/php/index.php");
+      ```
+- Create `download.php`, in root of your project, and include the following code:
+    - ```php
+      <?php
+      require("vendor/arsavinel/arshwell/resources/php/download.php");
+      ```
 
 ### Features
 
@@ -49,10 +59,11 @@ Thank you for considering contributing to the ArshWell framework!
 
 ### Code of Conduct
 In order to ensure that the ArshWell community is welcoming to all,
-please review and abide by the [Code of Conduct](https://github.com/arsavinel/ArshWell/blob/main/CODE_OF_CONDUCT.md).
+please review and abide by the CODE_OF_CONDUCT.md.
 
 ### Security Vulnerabilities
-If you’ve found a security issue in ArshWell, please use the procedure described in SECURITY.md.
+If you’ve found a security issue in ArshWell, please use the procedure
+described in [SECURITY](https://github.com/arsavinel/ArshWell/security/policy).
 
 ### License
 The ArshWell framework is open-sourced software licensed under the MIT license.

@@ -128,7 +128,7 @@ final class Web {
                 return $array;
             };
 
-            $envlangs = $getenvlangs(ENV::translations());
+            $envlangs = $getenvlangs(ENV::class('translation')));
 
             $assoc = function (string $group = NULL, array $routes, $folders) use (&$assoc, &$envlangs) {
                 foreach ($routes as $name => $route) {
@@ -640,7 +640,11 @@ final class Web {
         return (($protocol ? (self::$protocol .'://') : '') . self::$site .'/');
     }
 
-    static function statics (string $name): string {
-        return (self::$protocol .'://'. self::$site .'/'. ENV::statics($name));
+    static function statics (string $name = NULL): string {
+        return (self::$protocol .'://'. self::$site .'/'. ($name ? ENV::statics($name) : 'statics/'));
+    }
+
+    static function uploads (string $name = NULL): string {
+        return (self::$protocol .'://'. self::$site .'/'. ($name ? ENV::uploads($name) : 'uploads/'));
     }
 }

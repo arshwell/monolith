@@ -3,7 +3,7 @@
     <div class="form-check mt-2">
         <input class="form-check-input" type="checkbox" checked disabled />
         <label class="form-check-label">
-            From uploads/.brain/
+            From <?= Arsavinel\Arshwell\ENV::uploads('files') ?>
         </label>
     </div>
     <div class="form-check mb-2">

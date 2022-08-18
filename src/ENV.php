@@ -5,7 +5,6 @@ namespace Arsavinel\Arshwell;
 use Arsavinel\Arshwell\Folder;
 use Arsavinel\Arshwell\Filter;
 use Arsavinel\Arshwell\Func;
-use Arsavinel\Arshwell\File;
 use ErrorException;
 use PDOException;
 use Exception;
@@ -22,8 +21,8 @@ final class ENV {
         All vars are NULL so we get error if we don't fetch() before anything.
     ******************************************************************************/
     private static $env         = NULL; // our env object
-    private static $client_ip   = NULL; // on CRON Jobs, it is not set
     private static $is_cron     = NULL;
+    private static $client_ip   = NULL; // on CRON Jobs, it is not set
     private static $supervisor  = false; // on CRON Jobs, it is false
 
 	static function fetch (string $path = NULL, bool $merge_env_build = false): object {
@@ -58,12 +57,12 @@ final class ENV {
                     }
 
                     array_walk_recursive($this->json['statics'], function (string &$value): void {
-                        $value = ('statics/'.$value.'/');
+                        $value = trim('statics/'.$value.'/') . '/'; // having one, and only one, slash at the end
                     });
 
-                    if ($this->json['uploads']) {
-                        $this->json['uploads'] = trim($this->json['uploads'], '/') . '/'; // having one, and only one, slash at the end
-                    }
+                    array_walk_recursive($this->json['uploads'], function (string &$value): void {
+                        $value = trim('uploads/'.$value.'/') . '/'; // having one, and only one, slash at the end
+                    });
 
         			foreach ($this->json as $key => $value) {
                         if (is_array($value)) {
@@ -138,25 +137,55 @@ final class ENV {
         		return $this->json['mail'][$key];
         	}
 
-            function statics (string $key = NULL) {
-        		return ($key ? $this->json['statics'][$key] : $this->json['statics']);
+            /**
+             * @return array|string
+             */
+            function statics (string $subdirectory = NULL) {
+        		return ($subdirectory ? $this->json['statics'][$subdirectory] : $this->json['statics']);
         	}
 
-            function uploads (bool $add_subdirectory = false) {
-                return $this->json['uploads'] . ($add_subdirectory ? 'uploads/' : '');
+            /**
+             * @return array|string
+             */
+            function uploads (bool $subdirectory = NULL, string $path = NULL) {
+                if ($subdirectory) {
+                    switch ($subdirectory) {
+                        case 'design': {
+                            return array(
+                                'css'       => 'uploads/design/css/',
+                                'js-header' => 'uploads/design/js/h/',
+                                'js-footer' => 'uploads/design/js/f/',
+                                'mails'     => 'uploads/design/mails/',
+                                'dev'       => 'uploads/design/dev/'
+                            )[$path];
+                        }
+                        default: {
+                            return $this->json['uploads'][$subdirectory];
+                        }
+                    }
+                }
+
+                return $this->json['uploads'];
             }
 
-        	function translations (): array {
-        		return $this->json['translations'];
-        	}
+            /**
+             * @return (array|static)
+            */
+            function class (string $key) {
+                return $this->json['classes'][$key];
+            }
 
-            function migrations (): string {
-        		return $this->json['migrations'];
-        	}
+                function translations (): array {
+                    return $this->json['translations'];
+                }
 
-            function maintenance (string $key) {
-        		return $this->json['maintenance'][$key];
-        	}
+                function migrations (): string {
+                    return $this->json['migrations'];
+                }
+
+                function maintenance (string $key) {
+                    return $this->json['maintenance'][$key];
+                }
 
             function setMaintenance (bool $active, bool $smart = NULL): void {
                 $this->json['maintenance']['active'] = $active;
@@ -208,16 +237,6 @@ final class ENV {
 
     static function supervisor (): bool {
         return self::$supervisor;
-    }
-
-    static function design (string $key = NULL): string {
-        return (!$key ? 'uploads/design/' : array(
-            'css'       => 'uploads/design/css/',
-            'js-header' => 'uploads/design/js/h/',
-            'js-footer' => 'uploads/design/js/f/',
-            'mails'     => 'uploads/design/mails/',
-            'dev'       => 'uploads/design/dev/'
-        )[$key]);
     }
 
     static function scriptfile (): ?string {
@@ -291,19 +310,19 @@ if (!is_file(Folder::root(). '.htaccess')) {
 }
 
 // uploads/.htaccess file
-if (!is_file(Folder::root() . ENV::uploads(true) . '.htaccess')) {
-    if (!is_dir(Folder::root() . ENV::uploads(true))) {
-        mkdir(Folder::root() . ENV::uploads(true));
+if (!is_file(Folder::root() . 'uploads/.htaccess')) {
+    if (!is_dir(Folder::root() . 'uploads/')) {
+        mkdir(Folder::root() . 'uploads/');
     }
-    copy(Folder::root() . 'vendor/arsavinel/arshwell/resources/htaccess/uploads.htaccess', Folder::root() . ENV::uploads(true) . '.htaccess');
+    copy(Folder::root() . 'vendor/arsavinel/arshwell/resources/htaccess/uploads.htaccess', Folder::root() . 'uploads/.htaccess');
 }
 
 // uploads/design/.htaccess file
-if (!is_file(Folder::root() . ENV::design() . '.htaccess')) {
-    if (!is_dir(Folder::root() . ENV::design())) {
-        mkdir(Folder::root() . ENV::design());
+if (!is_file(Folder::root() . ENV::uploads('design') . '.htaccess')) {
+    if (!is_dir(Folder::root() . ENV::uploads('design'))) {
+        mkdir(Folder::root() . ENV::uploads('design'));
     }
-    copy(Folder::root() . 'vendor/arsavinel/arshwell/resources/htaccess/uploads.design.htaccess', Folder::root() . ENV::design() . '.htaccess');
+    copy(Folder::root() . 'vendor/arsavinel/arshwell/resources/htaccess/uploads.design.htaccess', Folder::root() . ENV::uploads('design') . '.htaccess');
 }
 
 if (strstr(Folder::shorter(getcwd()), '/', true) == 'crons' && !ENV::isCRON()

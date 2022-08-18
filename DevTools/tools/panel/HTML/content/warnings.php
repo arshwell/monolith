@@ -30,7 +30,7 @@ $warnings = array(
             }
         }
         foreach (File::rFolder('uploads', array(NULL, 'php', 'phtml')) as $file) {
-            if (!in_array($file, ['uploads/.htaccess', ENV::design().'.htaccess'])
+            if (!in_array($file, ['uploads/.htaccess', ENV::uploads('design').'.htaccess'])
             && (in_array(basename($file), ['.htaccess', '.htpasswd'])
             || in_array(File::extension($file), ['php', 'phtml'])
             || in_array(File::mimeType($file), [NULL, 'text/x-php']))) {

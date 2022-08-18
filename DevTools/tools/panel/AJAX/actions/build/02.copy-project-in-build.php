@@ -26,15 +26,13 @@ if ($form->valid()) {
 
     Folder::copy('.', $build_dir);
 
-    Folder::remove($build_dir.'backups');
-
     if ($form->value('css-js-files')) {
         // remove only css/js dev files
-        Folder::remove($build_dir. ENV::design('dev'));
+        Folder::remove($build_dir . ENV::uploads('design', 'dev'));
     }
     else {
         // keep .htaccess files
-        foreach (File::rFolder($build_dir.ENV::design()) as $file) {
+        foreach (File::rFolder($build_dir . ENV::uploads('design')) as $file) {
             if (basename($file) != '.htaccess') {
                 unlink($file);
             }
@@ -42,10 +40,10 @@ if ($form->valid()) {
     }
 
     if (empty($form->value('table-files'))) {
-        Folder::remove($build_dir . ENV::uploads(true) . '.brain/');
+        Folder::remove($build_dir . ENV::uploads('files'));
     }
 
-    Folder::removeEmpty($build_dir.'uploads');
+    Folder::removeEmpty($build_dir . 'uploads/');
 
     $form->info = array("Project was copied in build.");
 }

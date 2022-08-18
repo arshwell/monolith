@@ -1,6 +1,7 @@
 <?php
 
 use Arsavinel\Arshwell\Table\TableValidation;
+use Arsavinel\Arshwell\Table\TableView;
 use Arsavinel\Arshwell\Folder;
 use Arsavinel\Arshwell\File;
 use Arsavinel\Arshwell\ENV;
@@ -14,9 +15,9 @@ $form = TableValidation::run($_POST, array(
 
 if ($form->valid()) {
     $build_dir  = sys_get_temp_dir().'/vendor/arsavinel/arshwell/builds/sess_'.session_id().'/';
-    $asset      = ENV::uploads(true);
+    $asset      = 'uploads/';
 
-    if (!is_dir($build_dir.$asset.'.brain/')) {
+    if (!is_dir($build_dir . ENV::uploads('files'))) {
         $form->info = array("TABLE FILES have not been added.");
     }
     else {
