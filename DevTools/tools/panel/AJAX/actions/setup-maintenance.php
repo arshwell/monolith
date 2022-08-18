@@ -16,10 +16,8 @@ $form = TableValidation::run($_POST,
 );
 
 if ($form->valid()) {
-    $env = ENV::fetch();
-
-    $env->setMaintenance($form->value('type') != 'none', $form->value('type') != 'instant');
-    $env->cache();
+    (ENV::class('maintenance'))::setActive($form->value('type') != 'none');
+    (ENV::class('maintenance'))::setSmart($form->value('type') != 'instant');
 
     $form->info = array(
         'status'    => 'Maintenance set',

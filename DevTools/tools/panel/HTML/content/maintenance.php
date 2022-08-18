@@ -22,7 +22,7 @@ $sessions = Session::all(true, true); // TODO: Delete it at the end
                     <div class="row">
                         <div class="col-4">
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" onclick="$('.maintenance--smart-configuration').collapse('hide');" name="type" id="maintenance--none" value="none" <?= (!(ENV::class('maintenance'))::active() ? 'checked' : '') ?> />
+                                <input class="form-check-input" type="radio" onclick="$('.maintenance--smart-configuration').collapse('hide');" name="type" id="maintenance--none" value="none" <?= (!(ENV::class('maintenance'))::isActive() ? 'checked' : '') ?> />
                                 <label class="form-check-label" for="maintenance--none">
                                     None
                                 </label>
@@ -30,7 +30,7 @@ $sessions = Session::all(true, true); // TODO: Delete it at the end
                         </div>
                         <div class="col-4">
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" onclick="$('.maintenance--smart-configuration').collapse('show');" name="type" id="maintenance--smart" value="smart" <?= ((ENV::class('maintenance'))::active() && (ENV::class('maintenance'))::smart() ? 'checked' : '') ?> />
+                                <input class="form-check-input" type="radio" onclick="$('.maintenance--smart-configuration').collapse('show');" name="type" id="maintenance--smart" value="smart" <?= ((ENV::class('maintenance'))::isActive() && (ENV::class('maintenance'))::isSmart() ? 'checked' : '') ?> />
                                 <label class="form-check-label" for="maintenance--smart">
                                     SMART
                                 </label>
@@ -38,7 +38,7 @@ $sessions = Session::all(true, true); // TODO: Delete it at the end
                         </div>
                         <div class="col-4">
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" onclick="$('.maintenance--smart-configuration').collapse('hide');" name="type" id="maintenance--instant" value="instant" <?= ((ENV::class('maintenance'))::active() && !(ENV::class('maintenance'))::smart() ? 'checked' : '') ?> />
+                                <input class="form-check-input" type="radio" onclick="$('.maintenance--smart-configuration').collapse('hide');" name="type" id="maintenance--instant" value="instant" <?= ((ENV::class('maintenance'))::isActive() && !(ENV::class('maintenance'))::isSmart() ? 'checked' : '') ?> />
                                 <label class="form-check-label" for="maintenance--instant">
                                     Instant
                                 </label>
@@ -46,7 +46,7 @@ $sessions = Session::all(true, true); // TODO: Delete it at the end
                         </div>
                     </div>
 
-                    <div class="card bg-dark maintenance--smart-configuration collapse <?= ((ENV::class('maintenance'))::active() && (ENV::class('maintenance'))::smart() ? 'show' : '') ?> mt-3">
+                    <div class="card bg-dark maintenance--smart-configuration collapse <?= ((ENV::class('maintenance'))::isActive() && (ENV::class('maintenance'))::isSmart() ? 'show' : '') ?> mt-3">
                         <div class="card-header py-2">
                             SMART configuration
                         </div>
@@ -71,13 +71,13 @@ $sessions = Session::all(true, true); // TODO: Delete it at the end
         <div class="card bg-dark mb-2">
             <div class="card-header py-2">
                 Routes accessed in real time
-                <span class="maintenance--smart-configuration collapse <?= ((ENV::class('maintenance'))::active() && (ENV::class('maintenance'))::smart() ? 'show' : '') ?>">
+                <span class="maintenance--smart-configuration collapse <?= ((ENV::class('maintenance'))::isActive() && (ENV::class('maintenance'))::isSmart() ? 'show' : '') ?>">
                     <?php // all sessions with history ?>
                     (by all ~<?= count(array_filter(array_column(array_column($sessions, 'ArshWell'), 'history'))) ?> sessions)
                 </span>
             </div>
             <div class="card-body py-0">
-                <ul class="list-group list-group-flush maintenance--smart-configuration collapse <?= ((ENV::class('maintenance'))::active() && (ENV::class('maintenance'))::smart() ? 'show' : '') ?>">
+                <ul class="list-group list-group-flush maintenance--smart-configuration collapse <?= ((ENV::class('maintenance'))::isActive() && (ENV::class('maintenance'))::isSmart() ? 'show' : '') ?>">
                     <?php
                     foreach ($sessions as $session) {
                         foreach (array_reverse($session['ArshWell']['history']) as $index => $route) { ?>

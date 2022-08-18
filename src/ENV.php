@@ -57,11 +57,11 @@ final class ENV {
                     }
 
                     array_walk_recursive($this->json['statics'], function (string &$value): void {
-                        $value = trim('statics/'.$value.'/') . '/'; // having one, and only one, slash at the end
+                        $value = trim('statics/'.$value, '/') . '/'; // having one, and only one, slash at the end
                     });
 
                     array_walk_recursive($this->json['uploads'], function (string &$value): void {
-                        $value = trim('uploads/'.$value.'/') . '/'; // having one, and only one, slash at the end
+                        $value = trim('uploads/'.$value, '/') . '/'; // having one, and only one, slash at the end
                     });
 
         			foreach ($this->json as $key => $value) {
@@ -147,17 +147,24 @@ final class ENV {
             /**
              * @return array|string
              */
-            function uploads (bool $subdirectory = NULL, string $path = NULL) {
+            function uploads (string $subdirectory = NULL, string $path = NULL) {
                 if ($subdirectory) {
                     switch ($subdirectory) {
                         case 'design': {
-                            return array(
-                                'css'       => 'uploads/design/css/',
-                                'js-header' => 'uploads/design/js/h/',
-                                'js-footer' => 'uploads/design/js/f/',
-                                'mails'     => 'uploads/design/mails/',
-                                'dev'       => 'uploads/design/dev/'
-                            )[$path];
+                            try {
+                                return array(
+                                    NULL        => $this->json['uploads']['design'],
+                                    'css'       => $this->json['uploads']['design'] . 'css/',
+                                    'js-header' => $this->json['uploads']['design'] . 'js/h/',
+                                    'js-footer' => $this->json['uploads']['design'] . 'js/f/',
+                                    'mails'     => $this->json['uploads']['design'] . 'mails/',
+                                    'dev'       => $this->json['uploads']['design'] . 'dev/'
+                                )[$path];
+                            }
+                            catch (Exception $e) {
+                                throw new Exception("[ArshWell] 2nd parameter of ENV::uploads('design') should be valid ('css', 'js-header', 'js-footer', 'mails', 'dev')");
+                            }
+                            break;
                         }
                         default: {
                             return $this->json['uploads'][$subdirectory];
@@ -169,31 +176,11 @@ final class ENV {
             }
 
             /**
-             * @return (array|static)
+             * @return (array|TableMigration|TableMaintenance)
             */
             function class (string $key) {
-                return $this->json['classes'][$key];
+                return $this->json['class'][$key];
             }
-
-                function translations (): array {
-                    return $this->json['translations'];
-                }
-
-                function migrations (): string {
-                    return $this->json['migrations'];
-                }
-
-                function maintenance (string $key) {
-                    return $this->json['maintenance'][$key];
-                }
-
-            function setMaintenance (bool $active, bool $smart = NULL): void {
-                $this->json['maintenance']['active'] = $active;
-
-                if ($smart !== NULL) {
-                    $this->json['maintenance']['smart'] = $smart;
-                }
-        	}
         };
 
         if (!self::$env) {
@@ -294,9 +281,8 @@ if (!is_dir(Folder::root() . 'errors/')) {
 
 ini_set(
 	'error_log',
-    // Folder::root() . 'errors/'. strtok(strtok(substr(ENV::scriptfile(), (strlen(__DIR__) - 8)), '.'), '/') .'.log'
 	Folder::root() . 'errors/'. strtok(strtok(Folder::shorter(ENV::scriptfile() ?? getcwd()), '.'), '/') .'.log'
-); // setting for saving errors (web.log, download.log, crons.log)
+); // setting for saving errors (index.log, download.log, crons.log)
 
 foreach (glob(Folder::realpath('vendor/arsavinel/arshwell/DevTools/functions/*.php')) as $v) {
     require($v);
@@ -309,15 +295,15 @@ if (!is_file(Folder::root(). '.htaccess')) {
     copy(Folder::root() . 'vendor/arsavinel/arshwell/resources/htaccess/project.htaccess', Folder::root() . '.htaccess');
 }
 
-// uploads/.htaccess file
-if (!is_file(Folder::root() . 'uploads/.htaccess')) {
-    if (!is_dir(Folder::root() . 'uploads/')) {
-        mkdir(Folder::root() . 'uploads/');
+// .htaccess in files folder
+if (!is_file(Folder::root() . ENV::uploads('files') . '.htaccess')) {
+    if (!is_dir(Folder::root() . ENV::uploads('files'))) {
+        mkdir(Folder::root() . ENV::uploads('files'));
     }
-    copy(Folder::root() . 'vendor/arsavinel/arshwell/resources/htaccess/uploads.htaccess', Folder::root() . 'uploads/.htaccess');
+    copy(Folder::root() . 'vendor/arsavinel/arshwell/resources/htaccess/uploads.files.htaccess', Folder::root() . ENV::uploads('files') . '.htaccess');
 }
 
-// uploads/design/.htaccess file
+// .htaccess in design folder
 if (!is_file(Folder::root() . ENV::uploads('design') . '.htaccess')) {
     if (!is_dir(Folder::root() . ENV::uploads('design'))) {
         mkdir(Folder::root() . ENV::uploads('design'));

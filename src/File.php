@@ -2,8 +2,6 @@
 
 namespace Arsavinel\Arshwell;
 
-use Arsavinel\Arshwell\Folder;
-
 /**
  * Class for manipulating files.
  *

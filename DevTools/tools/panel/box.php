@@ -374,8 +374,8 @@ ob_start(); // for adding all content in _html() function
                             <div class="d-flex align-items-center">
                                 Maintenance
                                 <?php
-                                if ((ENV::class('maintenance'))::active()) { ?>
-                                    <div class="spinner-grow spinner-grow-sm ml-auto <?= ((ENV::class('maintenance'))::smart() ? 'text-success' : 'text-danger') ?> float-right" aria-hidden="true"></div>
+                                if ((ENV::class('maintenance'))::isActive()) { ?>
+                                    <div class="spinner-grow spinner-grow-sm ml-auto <?= ((ENV::class('maintenance'))::isSmart() ? 'text-success' : 'text-danger') ?> float-right" aria-hidden="true"></div>
                                 <?php } ?>
                             </div>
                         </a>

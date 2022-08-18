@@ -17,7 +17,7 @@ DB::connect('default');
 Session::set(ENV::url().ENV::db('conn.default.name'));
 
 $urlpath = ltrim(preg_replace('~^'. ENV::root() .'~', '', URL::path()), '/');
-$filepath = ENV::uploads() . $urlpath; // could be outside of project
+$filepath = Folder::root() . $urlpath; // could be outside of project
 
 if (is_file($filepath) && ($matches = File::parsePath($urlpath))
     && call_user_func_array(

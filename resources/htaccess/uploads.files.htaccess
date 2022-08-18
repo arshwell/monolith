@@ -4,4 +4,4 @@ RewriteEngine On
 Satisfy Any # Apache 2.3
 Allow from all # Apache 2.4
 
-RewriteRule ^ ../download.php [END,L]
+RewriteRule ^ ../../download.php [END,L]

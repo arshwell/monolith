@@ -128,7 +128,7 @@ final class Web {
                 return $array;
             };
 
-            $envlangs = $getenvlangs(ENV::class('translation')));
+            $envlangs = $getenvlangs(ENV::class('translation'));
 
             $assoc = function (string $group = NULL, array $routes, $folders) use (&$assoc, &$envlangs) {
                 foreach ($routes as $name => $route) {

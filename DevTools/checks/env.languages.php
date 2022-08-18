@@ -31,5 +31,5 @@ call_user_func(function () {
         }
     };
 
-    $recursively(ENV::class('translation')));
+    $recursively(ENV::class('translation'));
 });
