@@ -3,13 +3,14 @@
 namespace Arsavinel\Arshwell\Table\Files;
 
 use Arsavinel\Arshwell\Table\TableSegment;
-use Arsavinel\Arshwell\Tygh\Upload;
 use Arsavinel\Arshwell\Folder;
 use Arsavinel\Arshwell\File;
 use Arsavinel\Arshwell\Text;
 use Arsavinel\Arshwell\Func;
 use Arsavinel\Arshwell\Web;
 use Arsavinel\Arshwell\ENV;
+
+use Verot\Upload\Upload;
 
 final class Image implements TableSegment {
     private $class;

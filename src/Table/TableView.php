@@ -2,7 +2,6 @@
 
 namespace Arsavinel\Arshwell\Table;
 
-use Arsavinel\Arshwell\Tygh\Upload;
 use Arsavinel\Arshwell\Session;
 use Arsavinel\Arshwell\Folder;
 use Arsavinel\Arshwell\Table;
@@ -12,6 +11,9 @@ use Arsavinel\Arshwell\Web;
 use Arsavinel\Arshwell\ENV;
 use Arsavinel\Arshwell\SQL;
 use Arsavinel\Arshwell\DB;
+
+use Verot\Upload\Upload;
+
 use Exception;
 
 /*

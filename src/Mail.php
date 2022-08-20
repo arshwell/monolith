@@ -8,11 +8,12 @@ use Pelago\Emogrifier\HtmlProcessor\HtmlNormalizer;
 use Pelago\Emogrifier\HtmlProcessor\HtmlPruner;
 
 use Arsavinel\Arshwell\DevTool\DevToolData;
-use Arsavinel\Arshwell\Tygh\Mailer;
 use Arsavinel\Arshwell\Folder;
 use Arsavinel\Arshwell\Layout;
 use Arsavinel\Arshwell\Piece;
 use Arsavinel\Arshwell\ENV;
+
+use PHPMailer\PHPMailer\PHPMailer;
 
 /**
  * PHP Class for sending and displaying mail templates.
@@ -54,8 +55,6 @@ final class Mail {
             7
         );
 
-        require(Folder::realpath("vendor/arsavinel/arshwell/src/Tygh/emogrifier/autoload.php")); // Emogrifier
-
         $cssInliner = CssInliner::fromHtml($html)->inlineCss();
         $domDocument = $cssInliner->getDomDocument();
         HtmlPruner::fromDomDocument($domDocument)
@@ -66,7 +65,7 @@ final class Mail {
         $html = HtmlNormalizer::fromDomDocument($domDocument)->render();
 
         if (ENV::mail('smtp.active')) {
-            $mailer = new Mailer();
+            $mailer = new PHPMailer();
             $mailer->IsSMTP();
 
             $mailer->From     = ENV::mail('from.email');
