@@ -4,9 +4,131 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "681a427824cf6c76c00e7d04bce6bedb",
-    "packages": [],
-    "packages-dev": [
+    "content-hash": "8920feb1bcf2ddc56e482ab20c4a4ee7",
+    "packages": [
+        {
+            "name": "matthiasmullie/minify",
+            "version": "1.3.69",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/matthiasmullie/minify.git",
+                "reference": "a61c949cccd086808063611ef9698eabe42ef22f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/matthiasmullie/minify/zipball/a61c949cccd086808063611ef9698eabe42ef22f",
+                "reference": "a61c949cccd086808063611ef9698eabe42ef22f",
+                "shasum": ""
+            },
+            "require": {
+                "ext-pcre": "*",
+                "matthiasmullie/path-converter": "~1.1",
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "~2.0",
+                "matthiasmullie/scrapbook": "dev-master",
+                "phpunit/phpunit": ">=4.8"
+            },
+            "suggest": {
+                "psr/cache-implementation": "Cache implementation to use with Minify::cache"
+            },
+            "bin": [
+                "bin/minifycss",
+                "bin/minifyjs"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MatthiasMullie\\Minify\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Matthias Mullie",
+                    "email": "minify@mullie.eu",
+                    "homepage": "http://www.mullie.eu",
+                    "role": "Developer"
+                }
+            ],
+            "description": "CSS & JavaScript minifier, in PHP. Removes whitespace, strips comments, combines files (incl. @import statements and small assets in CSS files), and optimizes/shortens a few common programming patterns.",
+            "homepage": "http://www.minifier.org",
+            "keywords": [
+                "JS",
+                "css",
+                "javascript",
+                "minifier",
+                "minify"
+            ],
+            "support": {
+                "issues": "https://github.com/matthiasmullie/minify/issues",
+                "source": "https://github.com/matthiasmullie/minify/tree/1.3.69"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/matthiasmullie",
+                    "type": "github"
+                }
+            ],
+            "time": "2022-08-01T09:00:18+00:00"
+        },
+        {
+            "name": "matthiasmullie/path-converter",
+            "version": "1.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/matthiasmullie/path-converter.git",
+                "reference": "e7d13b2c7e2f2268e1424aaed02085518afa02d9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/matthiasmullie/path-converter/zipball/e7d13b2c7e2f2268e1424aaed02085518afa02d9",
+                "reference": "e7d13b2c7e2f2268e1424aaed02085518afa02d9",
+                "shasum": ""
+            },
+            "require": {
+                "ext-pcre": "*",
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.8"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MatthiasMullie\\PathConverter\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Matthias Mullie",
+                    "email": "pathconverter@mullie.eu",
+                    "homepage": "http://www.mullie.eu",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Relative path converter",
+            "homepage": "http://github.com/matthiasmullie/path-converter",
+            "keywords": [
+                "converter",
+                "path",
+                "paths",
+                "relative"
+            ],
+            "support": {
+                "issues": "https://github.com/matthiasmullie/path-converter/issues",
+                "source": "https://github.com/matthiasmullie/path-converter/tree/1.1.3"
+            },
+            "time": "2019-02-05T23:41:09+00:00"
+        },
         {
             "name": "pelago/emogrifier",
             "version": "v6.0.0",
@@ -86,6 +208,84 @@
             "time": "2021-09-16T16:22:04+00:00"
         },
         {
+            "name": "phpmailer/phpmailer",
+            "version": "v6.6.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PHPMailer/PHPMailer.git",
+                "reference": "9400f305a898f194caff5521f64e5dfa926626f3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/9400f305a898f194caff5521f64e5dfa926626f3",
+                "reference": "9400f305a898f194caff5521f64e5dfa926626f3",
+                "shasum": ""
+            },
+            "require": {
+                "ext-ctype": "*",
+                "ext-filter": "*",
+                "ext-hash": "*",
+                "php": ">=5.5.0"
+            },
+            "require-dev": {
+                "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
+                "doctrine/annotations": "^1.2",
+                "php-parallel-lint/php-console-highlighter": "^1.0.0",
+                "php-parallel-lint/php-parallel-lint": "^1.3.2",
+                "phpcompatibility/php-compatibility": "^9.3.5",
+                "roave/security-advisories": "dev-latest",
+                "squizlabs/php_codesniffer": "^3.6.2",
+                "yoast/phpunit-polyfills": "^1.0.0"
+            },
+            "suggest": {
+                "ext-mbstring": "Needed to send email in multibyte encoding charset or decode encoded addresses",
+                "hayageek/oauth2-yahoo": "Needed for Yahoo XOAUTH2 authentication",
+                "league/oauth2-google": "Needed for Google XOAUTH2 authentication",
+                "psr/log": "For optional PSR-3 debug logging",
+                "stevenmaguire/oauth2-microsoft": "Needed for Microsoft XOAUTH2 authentication",
+                "symfony/polyfill-mbstring": "To support UTF-8 if the Mbstring PHP extension is not enabled (^1.2)"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PHPMailer\\PHPMailer\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-2.1-only"
+            ],
+            "authors": [
+                {
+                    "name": "Marcus Bointon",
+                    "email": "phpmailer@synchromedia.co.uk"
+                },
+                {
+                    "name": "Jim Jagielski",
+                    "email": "jimjag@gmail.com"
+                },
+                {
+                    "name": "Andy Prevost",
+                    "email": "codeworxtech@users.sourceforge.net"
+                },
+                {
+                    "name": "Brent R. Matzelle"
+                }
+            ],
+            "description": "PHPMailer is a full-featured email creation and transfer class for PHP",
+            "support": {
+                "issues": "https://github.com/PHPMailer/PHPMailer/issues",
+                "source": "https://github.com/PHPMailer/PHPMailer/tree/v6.6.3"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/Synchro",
+                    "type": "github"
+                }
+            ],
+            "time": "2022-06-20T09:21:02+00:00"
+        },
+        {
             "name": "sabberworm/php-css-parser",
             "version": "8.4.0",
             "source": {
@@ -139,64 +339,84 @@
             "time": "2021-12-11T13:40:54+00:00"
         },
         {
-            "name": "searchturbine/phpwee-php-minifier",
-            "version": "dev-master",
+            "name": "scssphp/scssphp",
+            "version": "v1.10.5",
             "source": {
                 "type": "git",
-                "url": "https://github.com/searchturbine/phpwee-php-minifier.git",
-                "reference": "cea1a7ae453071176f0469f246ea7b469e056432"
+                "url": "https://github.com/scssphp/scssphp.git",
+                "reference": "6d44282ccf283e133ab70b6282f8e068ff2f9bf9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/searchturbine/phpwee-php-minifier/zipball/cea1a7ae453071176f0469f246ea7b469e056432",
-                "reference": "cea1a7ae453071176f0469f246ea7b469e056432",
+                "url": "https://api.github.com/repos/scssphp/scssphp/zipball/6d44282ccf283e133ab70b6282f8e068ff2f9bf9",
+                "reference": "6d44282ccf283e133ab70b6282f8e068ff2f9bf9",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0"
+                "ext-ctype": "*",
+                "ext-json": "*",
+                "php": ">=5.6.0"
             },
-            "default-branch": true,
+            "require-dev": {
+                "bamarni/composer-bin-plugin": "^1.4",
+                "phpunit/phpunit": "^5.7 || ^6.5 || ^7.5 || ^8.3 || ^9.4",
+                "sass/sass-spec": "*",
+                "squizlabs/php_codesniffer": "~3.5",
+                "symfony/phpunit-bridge": "^5.1",
+                "thoughtbot/bourbon": "^7.0",
+                "twbs/bootstrap": "~5.0",
+                "twbs/bootstrap4": "4.6.1",
+                "zurb/foundation": "~6.5"
+            },
+            "suggest": {
+                "ext-iconv": "Can be used as fallback when ext-mbstring is not available",
+                "ext-mbstring": "For best performance, mbstring should be installed as it is faster than ext-iconv"
+            },
+            "bin": [
+                "bin/pscss"
+            ],
             "type": "library",
+            "extra": {
+                "bamarni-bin": {
+                    "forward-command": false,
+                    "bin-links": false
+                }
+            },
             "autoload": {
-                "files": [
-                    "phpwee.php"
-                ]
+                "psr-4": {
+                    "ScssPhp\\ScssPhp\\": "src/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "BSD"
+                "MIT"
             ],
             "authors": [
                 {
-                    "name": "Search Turbine - Open Source PHP Dev Team",
-                    "email": "community@searchturbine.com",
-                    "homepage": "http://searchturbine.com",
-                    "role": "Developer"
+                    "name": "Anthon Pang",
+                    "email": "apang@softwaredevelopment.ca",
+                    "homepage": "https://github.com/robocoder"
+                },
+                {
+                    "name": "Cédric Morin",
+                    "email": "cedric@yterium.com",
+                    "homepage": "https://github.com/Cerdic"
                 }
             ],
-            "description": "A PHP minifier for HTML, CSS and JS files.",
-            "homepage": "http://searchturbine.com/php/phpwee",
+            "description": "scssphp is a compiler for SCSS written in PHP.",
+            "homepage": "http://scssphp.github.io/scssphp/",
             "keywords": [
-                "CSS3",
-                "HTML5",
-                "JS",
-                "compress",
                 "css",
-                "free",
-                "html",
-                "javascript",
-                "min",
-                "minify",
-                "open source",
-                "php",
-                "php5",
-                "phpwee"
+                "less",
+                "sass",
+                "scss",
+                "stylesheet"
             ],
             "support": {
-                "issues": "https://github.com/searchturbine/phpwee-php-minifier/issues",
-                "source": "https://github.com/searchturbine/phpwee-php-minifier/tree/master"
+                "issues": "https://github.com/scssphp/scssphp/issues",
+                "source": "https://github.com/scssphp/scssphp/tree/v1.10.5"
             },
-            "time": "2015-03-28T08:57:12+00:00"
+            "time": "2022-07-27T15:52:39+00:00"
         },
         {
             "name": "symfony/css-selector",
@@ -346,17 +566,62 @@
                 }
             ],
             "time": "2022-05-10T07:21:04+00:00"
+        },
+        {
+            "name": "verot/class.upload.php",
+            "version": "2.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/verot/class.upload.php.git",
+                "reference": "af33ccc9f5631ca343815c291875e6fd785f32e0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/verot/class.upload.php/zipball/af33ccc9f5631ca343815c291875e6fd785f32e0",
+                "reference": "af33ccc9f5631ca343815c291875e6fd785f32e0",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/class.upload.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "Colin Verot",
+                    "email": "colin@verot.net"
+                }
+            ],
+            "description": "This PHP class uploads files and manipulates images very easily.",
+            "homepage": "http://www.verot.net/php_class_upload.htm",
+            "keywords": [
+                "gd",
+                "upload"
+            ],
+            "support": {
+                "email": "colin@verot.net",
+                "issues": "https://github.com/verot/class.upload.php/issues",
+                "source": "https://github.com/verot/class.upload.php/tree/2.1.1"
+            },
+            "time": "2022-06-13T12:30:13+00:00"
         }
     ],
+    "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "searchturbine/phpwee-php-minifier": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "~7.3.0 || ~7.4.0"
+        "php": "7.4.*"
     },
     "platform-dev": [],
     "plugin-api-version": "2.3.0"
