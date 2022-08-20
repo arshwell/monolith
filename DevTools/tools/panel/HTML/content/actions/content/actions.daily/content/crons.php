@@ -16,7 +16,7 @@ $assoc = function (string $folder, bool $margin = false) use (&$assoc) {
 
             $assoc($f, true);
         }
-        else if (is_file($f) && File::extension($f) == 'php') {
+        else if (is_file($f) && Arsavinel\Arshwell\File::extension($f) == 'php') {
             echo '<li class="list-group-item list-group-item-dark"><a href="'. (Arsavinel\Arshwell\Web::site() . $f) .'" target="_blank">'. basename($f) .'</a></li>';
         }
     }

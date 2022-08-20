@@ -1,5 +1,7 @@
 <?php
 
+use Arsavinel\Arshwell\DevTool\DevToolData;
+
 /**
  * Preparation for development mode actions.
  * These are used for helping developer in his process.
@@ -14,9 +16,7 @@
  * @package https://github.com/arsavinel/ArshWell
  */
 
-require_once("tools/panel/functions.php");
-
-if (!empty($_REQUEST['rshwll']) && $_REQUEST['rshwll'] == substr(md5(DevPanelVersion()), 0, 5)) {
+if (!empty($_REQUEST['rshwll']) && $_REQUEST['rshwll'] == substr(md5(DevToolData::ArshWellVersion()), 0, 5)) {
     call_user_func(function () {
         // DevTool panel action
         if (!empty($_REQUEST['pnl']) && is_file("vendor/arsavinel/arshwell/DevTools/tools/panel/". $_REQUEST['pnl'] .".php")) {

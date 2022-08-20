@@ -8,7 +8,6 @@ use Arsavinel\Arshwell\File;
 use Arsavinel\Arshwell\Time;
 use Arsavinel\Arshwell\Web;
 use Arsavinel\Arshwell\ENV;
-use Arsavinel\Arshwell\DB;
 
 $form = TableValidation::run(array_merge($_POST, $_FILES),
     array(

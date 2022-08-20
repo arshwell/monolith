@@ -65,7 +65,7 @@ foreach (['layouts', 'mails', 'outcomes', 'pieces'] as $folder) {
             <div class="card-body py-1">
                 <?php
                 foreach ($resources['scss'] as $resource => $sources) { ?>
-                    <a><span type="button" data-toggle="tooltip" data-placement="right" data-html="true" title="<div class='text-left'><?= implode('<br>', $sources) ?></div>">
+                    <a><span style="cursor: help;" data-toggle="tooltip" data-placement="right" data-html="true" title="<div class='text-left'><?= implode('<br>', $sources) ?></div>">
                         <small class="text-muted">resources/scss/</small><?= $resource ?>.scss
                     </span></a><br>
                 <?php } ?>
@@ -78,7 +78,7 @@ foreach (['layouts', 'mails', 'outcomes', 'pieces'] as $folder) {
             <div class="card-body py-1">
                 <?php
                 foreach ($resources['js']['header'] as $resource => $sources) { ?>
-                    <a><span type="button" data-toggle="tooltip" data-placement="right" data-html="true" title="<div class='text-left'><?= implode('<br>', $sources) ?></div>">
+                    <a><span style="cursor: help;" data-toggle="tooltip" data-placement="right" data-html="true" title="<div class='text-left'><?= implode('<br>', $sources) ?></div>">
                         <small class="text-muted">resources/js/</small><?= $resource ?>.js
                     </span></a><br>
                 <?php } ?>
@@ -91,7 +91,7 @@ foreach (['layouts', 'mails', 'outcomes', 'pieces'] as $folder) {
             <div class="card-body py-1">
                 <?php
                 foreach ($resources['js']['footer'] as $resource => $sources) { ?>
-                    <a><span type="button" data-toggle="tooltip" data-placement="right" data-html="true" title="<div class='text-left'><?= implode('<br>', $sources) ?></div>">
+                    <a><span style="cursor: help;" data-toggle="tooltip" data-placement="right" data-html="true" title="<div class='text-left'><?= implode('<br>', $sources) ?></div>">
                         <small class="text-muted">resources/js/</small><?= $resource ?>.js
                     </span></a><br>
                 <?php } ?>

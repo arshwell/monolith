@@ -2,8 +2,10 @@
 
 namespace Arsavinel\Arshwell;
 
+use Arsavinel\Arshwell\DevTool\DevToolDebug;
 use Arsavinel\Arshwell\ENV;
 use PDOException;
+use Exception;
 use PDO;
 
 /**
@@ -207,7 +209,7 @@ final class DB {
             }
             catch (PDOException $e) {
                 if (ENV::isCRON() == false) {
-                    _print_pdo_exception($e, $query);
+                    DevToolDebug::print_pdo_exception($e, $query);
                 }
                 else {
                     throw new Exception($e->getMessage(), $e->getCode(), $e);
@@ -233,7 +235,7 @@ final class DB {
             }
             catch (PDOException $e) {
                 if (ENV::isCRON() == false) {
-                    _print_pdo_exception($e, $query, $params);
+                    DevToolDebug::print_pdo_exception($e, $query, $params);
                 }
                 else {
                     throw new Exception($e->getMessage(), $e->getCode(), $e);
@@ -265,7 +267,7 @@ final class DB {
             }
             catch (PDOException $e) {
                 if (ENV::isCRON() == false) {
-                    _print_pdo_exception($e, $query, $params);
+                    DevToolDebug::print_pdo_exception($e, $query, $params);
                 }
                 else {
                     throw new Exception($e->getMessage(), $e->getCode(), $e);
@@ -318,7 +320,7 @@ final class DB {
             }
             catch (PDOException $e) {
                 if (ENV::isCRON() == false) {
-                    _print_pdo_exception($e, $query, $params);
+                    DevToolDebug::print_pdo_exception($e, $query, $params);
                 }
                 else {
                     throw new Exception($e->getMessage(), $e->getCode(), $e);
@@ -349,7 +351,7 @@ final class DB {
             }
             catch (PDOException $e) {
                 if (ENV::isCRON() == false) {
-                    _print_pdo_exception($e, $query, $params);
+                    DevToolDebug::print_pdo_exception($e, $query, $params);
                 }
                 else {
                     throw new Exception($e->getMessage(), $e->getCode(), $e);
@@ -376,7 +378,7 @@ final class DB {
             }
             catch (PDOException $e) {
                 if (ENV::isCRON() == false) {
-                    _print_pdo_exception($e, $query);
+                    DevToolDebug::print_pdo_exception($e, $query);
                 }
                 else {
                     throw new Exception($e->getMessage(), $e->getCode(), $e);
@@ -442,7 +444,7 @@ final class DB {
             }
             catch (PDOException $e) {
                 if (ENV::isCRON() == false) {
-                    _print_pdo_exception($e, $query, $params);
+                    DevToolDebug::print_pdo_exception($e, $query, $params);
                 }
                 else {
                     throw new Exception($e->getMessage(), $e->getCode(), $e);
@@ -483,7 +485,7 @@ final class DB {
             }
             catch (PDOException $e) {
                 if (ENV::isCRON() == false) {
-                    _print_pdo_exception($e, $query, $params);
+                    DevToolDebug::print_pdo_exception($e, $query, $params);
                 }
                 else {
                     throw new Exception($e->getMessage(), $e->getCode(), $e);
@@ -540,7 +542,7 @@ final class DB {
             }
             catch (PDOException $e) {
                 if (ENV::isCRON() == false) {
-                    _print_pdo_exception($e, $query, $params);
+                    DevToolDebug::print_pdo_exception($e, $query, $params);
                 }
                 else {
                     throw new Exception($e->getMessage(), $e->getCode(), $e);
@@ -571,7 +573,7 @@ final class DB {
             }
             catch (PDOException $e) {
                 if (ENV::isCRON() == false) {
-                    _print_pdo_exception($e, $query, $params);
+                    DevToolDebug::print_pdo_exception($e, $query, $params);
                 }
                 else {
                     throw new Exception($e->getMessage(), $e->getCode(), $e);
@@ -590,7 +592,7 @@ final class DB {
             }
             catch (PDOException $e) {
                 if (ENV::isCRON() == false) {
-                    _print_pdo_exception($e, $query);
+                    DevToolDebug::print_pdo_exception($e, $query);
                 }
                 else {
                     throw new Exception($e->getMessage(), $e->getCode(), $e);
@@ -612,7 +614,7 @@ final class DB {
             }
             catch (PDOException $e) {
                 if (ENV::isCRON() == false) {
-                    _print_pdo_exception($e, $query, $params);
+                    DevToolDebug::print_pdo_exception($e, $query, $params);
                 }
                 else {
                     throw new Exception($e->getMessage(), $e->getCode(), $e);
@@ -638,7 +640,7 @@ final class DB {
             }
             catch (PDOException $e) {
                 if (ENV::isCRON() == false) {
-                    _print_pdo_exception($e, $sql);
+                    DevToolDebug::print_pdo_exception($e, $sql);
                 }
                 else {
                     throw new Exception($e->getMessage(), $e->getCode(), $e);
@@ -663,7 +665,7 @@ final class DB {
             }
             catch (PDOException $e) {
                 if (ENV::isCRON() == false) {
-                    _print_pdo_exception($e, $query, $params);
+                    DevToolDebug::print_pdo_exception($e, $query, $params);
                 }
                 else {
                     throw new Exception($e->getMessage(), $e->getCode(), $e);
@@ -709,7 +711,7 @@ final class DB {
             }
             catch (PDOException $e) {
                 if (ENV::isCRON() == false) {
-                    _print_pdo_exception($e, $sql);
+                    DevToolDebug::print_pdo_exception($e, $sql);
                 }
                 else {
                     throw new Exception($e->getMessage(), $e->getCode(), $e);
@@ -731,7 +733,7 @@ final class DB {
             }
             catch (PDOException $e) {
                 if (ENV::isCRON() == false) {
-                    _print_pdo_exception($e, $sql);
+                    DevToolDebug::print_pdo_exception($e, $sql);
                 }
                 else {
                     throw new Exception($e->getMessage(), $e->getCode(), $e);
@@ -753,7 +755,7 @@ final class DB {
             }
             catch (PDOException $e) {
                 if (ENV::isCRON() == false) {
-                    _print_pdo_exception($e, $sql);
+                    DevToolDebug::print_pdo_exception($e, $sql);
                 }
                 else {
                     throw new Exception($e->getMessage(), $e->getCode(), $e);

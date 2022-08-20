@@ -1,5 +1,6 @@
 <?php
 
+use Arsavinel\Arshwell\DevTool\DevToolHTML;
 use Arsavinel\Arshwell\Folder;
 
 /**
@@ -18,10 +19,10 @@ foreach (Folder::all('pieces') as $folder) {
 }
 
 if ($problems) {
-    _html(
+    DevToolHTML::html(
         '<i>pieces/*</i><br>' .
-        _code(implode('<br>', $problems)) .
-        _error(
+        DevToolHTML::code(implode('<br>', $problems)) .
+        DevToolHTML::error(
             "All pieces folders should match <code>$regex</code>.<br>
             That's because these are used in <i>css classes</i> and <i>file links</i>."
         )

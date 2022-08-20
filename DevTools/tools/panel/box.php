@@ -1,5 +1,7 @@
 <?php
 
+use Arsavinel\Arshwell\DevTool\DevToolData;
+use Arsavinel\Arshwell\DevTool\DevToolHTML;
 use Arsavinel\Arshwell\Table\TableValidation;
 use Arsavinel\Arshwell\Session;
 use Arsavinel\Arshwell\Time;
@@ -105,7 +107,7 @@ $warnings = array(
                 $forbidden_files[] = $file;
             }
         }
-        foreach (array('ArshWell','Brain','errors','forks','gates','layouts','mails','outcomes','pieces') as $folder) {
+        foreach (array('errors','forks','gates','layouts','mails','outcomes','pieces') as $folder) {
             foreach (File::rFolder($folder, [NULL]) as $file) {
                 if (basename($file) == '.htaccess') {
                     $forbidden_files[] = $file;
@@ -113,7 +115,7 @@ $warnings = array(
             }
         }
         foreach (File::rFolder('uploads', array(NULL, 'php', 'phtml')) as $file) {
-            if (!in_array($file, ['uploads/.htaccess', ENV::uploads('design').'.htaccess'])
+            if (!in_array($file, [ENV::uploads('files').'.htaccess', ENV::uploads('design').'.htaccess'])
             && (in_array(basename($file), ['.htaccess', '.htpasswd'])
             || in_array(File::extension($file), ['php', 'phtml'])
             || in_array(File::mimeType($file), [NULL, 'text/x-php']))) {
@@ -126,11 +128,6 @@ $warnings = array(
     'wrong_place_files' => call_user_func(function (): array {
         $wrong_place_files = array();
 
-        foreach (File::rFolder('Brain') as $file) {
-            if (File::extension($file) != 'php') {
-                $wrong_place_files[] = $file;
-            }
-        }
         foreach (File::rFolder('crons') as $file) {
             if (File::extension($file) != 'php' && $file != 'crons/.htaccess') {
                 $wrong_place_files[] = $file;
@@ -163,9 +160,7 @@ $warnings = array(
     })
 );
 
-require_once("functions.php");
-
-ob_start(); // for adding all content in _html() function
+ob_start(); // for adding all content in DevToolHTML::html() function
 ?>
 <style type="text/css">
     html,
@@ -335,8 +330,8 @@ ob_start(); // for adding all content in _html() function
                 <i style="text-shadow: 0px 0px 1px #000;" class="pr-1" data-toggle="tooltip" data-placement="right" data-title="Released on 30 August 2019">
                     <span class="text-success">Arsh</span><span class="text-warning">Well</span>
                     <?php
-                    if (Session::panel('active') && DevPanelVersion()) { ?>
-                        <span class="text-danger"><?= DevPanelVersion() ?></span>
+                    if (Session::panel('active') && DevToolData::ArshWellVersion()) { ?>
+                        <span class="text-danger"><?= DevToolData::ArshWellVersion() ?></span>
                     <?php } ?>
                 </i>
             </div>
@@ -1174,4 +1169,4 @@ if (Session::panel('active')) { // load js ?>
 <?php } ?>
 
 <?php
-_html(ob_get_clean(), Session::panel('active'));
+DevToolHTML::html(ob_get_clean(), Session::panel('active'));

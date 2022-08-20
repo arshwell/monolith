@@ -13,8 +13,8 @@ use Arsavinel\Arshwell\ENV;
 */
 abstract class TableAuth extends Table {
     // static
-    final static function exists (string $password) {
-        return (bool)self::count(static::PASSWORD .' = ?', array(password_hash($password)));
+    final static function exists (string $password, int $algorithm) {
+        return (bool)self::count(static::PASSWORD .' = ?', array(password_hash($password, $algorithm)));
     }
 
 

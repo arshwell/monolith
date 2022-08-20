@@ -1,5 +1,8 @@
 <?php
 
+use Arsavinel\Arshwell\DevTool\DevToolDebug;
+use Arsavinel\Arshwell\DevTool\DevToolHTML;
+
 /**
  * Verifies if routes are properly created.
 
@@ -32,7 +35,7 @@ call_user_func(function () {
                     )] = json_decode(file_get_contents($dir .'/'. $file), true);
 
                     if (json_last_error()) {
-                        _json_last_error();
+                        DevToolDebug::throw_json_last_error();
                     }
                 }
             }
@@ -66,15 +69,15 @@ call_user_func(function () {
         // foreach ($routes as $name => $route) {
         //     if (count(array_intersect(explode('|', $route[1]), array('GET', 'AJAX'))) == 2) {
         //         if ($code)
-        //             $code .= _hr();
-        //         $code .= (_string($name) . _result() . _hug('array', _string($route[0]) .', '. _string($route[1]) .', '. _array($route[2])) .',<br>');
+        //             $code .= DevToolHTML::hr();
+        //         $code .= (DevToolHTML::string($name) . DevToolHTML::result() . DevToolHTML::hug('array', DevToolHTML::string($route[0]) .', '. DevToolHTML::string($route[1]) .', '. DevToolHTML::array($route[2])) .',<br>');
         //     }
         // }
         // if ($code) {
-        //     _html(
+        //     DevToolHTML::html(
         //         '<i>ways/web.json</i><br>' .
-        //         _code($code) .
-        //         _error("This combination, of GET and AJAX requests, will spoil things.")
+        //         DevToolHTML::code($code) .
+        //         DevToolHTML::error("This combination, of GET and AJAX requests, will spoil things.")
         //     );
         // }
 
@@ -84,19 +87,19 @@ call_user_func(function () {
         foreach (array_column($routes, 0) as $nth => $folder) {
             if (preg_match("~/.(less|js)(/|$)~", $folder)) {
                 if ($code)
-                    $code .= _hr();
+                    $code .= DevToolHTML::hr();
 
                 $name = array_keys($routes)[$nth];
                 $route = $routes[$name];
 
-                $code .= (_string($name) . _result() . _hug('array', _string($route[0]) .', '. _string($route[1]) .', '. _array($route[2])) .',<br>');
+                $code .= (DevToolHTML::string($name) . DevToolHTML::result() . DevToolHTML::hug('array', DevToolHTML::string($route[0]) .', '. DevToolHTML::string($route[1]) .', '. DevToolHTML::array($route[2])) .',<br>');
             }
         }
         if ($code) {
-            _html(
+            DevToolHTML::html(
                 '<i>ways/web.json</i><br>' .
-                _code($code) .
-                _error("<i>/.less/</i> and <i>/.js/</i> folders are reserved by ArshWell for .less and .js files.")
+                DevToolHTML::code($code) .
+                DevToolHTML::error("<i>/.less/</i> and <i>/.js/</i> folders are reserved by ArshWell for .less and .js files.")
             );
         }
 
@@ -113,14 +116,14 @@ call_user_func(function () {
             $name = array_search(explode(',', $value), $routes);
             $route = $routes[$name];
             if ($code)
-                $code .= _hr();
-            $code .= (_string($name) . _result() . _hug('array', _string($route[0]) .', '. _string($route[1]) .', '. _array($route[2])) .',<br>');
+                $code .= DevToolHTML::hr();
+            $code .= (DevToolHTML::string($name) . DevToolHTML::result() . DevToolHTML::hug('array', DevToolHTML::string($route[0]) .', '. DevToolHTML::string($route[1]) .', '. DevToolHTML::array($route[2])) .',<br>');
         }
         if ($code) {
-            _html(
+            DevToolHTML::html(
                 '<i>ways/web.json</i><br>' .
-                _code($code) .
-                _error((count($duplicates) == 1 ? "This url is" : "These urls are") . " repeated, the same, many times in file.")
+                DevToolHTML::code($code) .
+                DevToolHTML::error((count($duplicates) == 1 ? "This url is" : "These urls are") . " repeated, the same, many times in file.")
             );
         }
 });

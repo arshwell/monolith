@@ -1,7 +1,5 @@
 <?php
 
-// highlighted words: TODO, FIXME, CHANGED, XXX, IDEA, HACK, NOTE, REVIEW, NB and BUG
-
 use Arsavinel\Arshwell\Session;
 use Arsavinel\Arshwell\Module;
 use Arsavinel\Arshwell\Layout;

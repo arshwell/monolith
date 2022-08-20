@@ -3,10 +3,8 @@
 namespace Arsavinel\Arshwell\Table\Files;
 
 use Arsavinel\Arshwell\Table\TableSegment;
-use Arsavinel\Arshwell\Tygh\Upload;
 use Arsavinel\Arshwell\Folder;
 use Arsavinel\Arshwell\File;
-use Arsavinel\Arshwell\Func;
 use Arsavinel\Arshwell\Web;
 use Arsavinel\Arshwell\ENV;
 
@@ -101,7 +99,7 @@ final class DocGroup implements TableSegment {
                 if (is_file($files[$key]) && !in_array($key, $names)) {
                     unlink($files[$key]);
                 }
-                rename($duplicates[$key], $dirname .'/'. $names[$key]);
+                rename($duplicates[$key], dirname($duplicates[$key]) .'/'. $names[$key]);
             }
         }
     }

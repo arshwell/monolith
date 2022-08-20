@@ -806,7 +806,7 @@ final class Layout {
                     $css_file,
                     str_replace(
                         "#arshwell".$time."{color:#57201412}", '',
-                        _signature($url).PHP_EOL.$scss->compile($css).PHP_EOL._signature($url)
+                        self::signature($url).PHP_EOL.$scss->compile($css).PHP_EOL.self::signature($url)
                     ),
                     LOCK_EX
                 );
@@ -1013,9 +1013,9 @@ final class Layout {
 
                 file_put_contents(
                     $jsHeader,
-                    _signature($url).PHP_EOL. $js_web_class .PHP_EOL. implode(PHP_EOL, array_map(function (array $file): string {
+                    self::signature($url).PHP_EOL. $js_web_class .PHP_EOL. implode(PHP_EOL, array_map(function (array $file): string {
                         return JsMin::minify(file_get_contents($file['name']));
-                    }, $files)) .PHP_EOL._signature($url),
+                    }, $files)) .PHP_EOL.self::signature($url),
                     LOCK_EX
                 );
 
@@ -1101,9 +1101,9 @@ final class Layout {
 
                 file_put_contents(
                     $jsFooter,
-                    _signature().PHP_EOL. implode(PHP_EOL, array_map(function ($file) {
+                    self::signature().PHP_EOL. implode(PHP_EOL, array_map(function ($file) {
                         return JsMin::minify(file_get_contents($file['name']));
-                    }, $files)) .PHP_EOL._signature(),
+                    }, $files)) .PHP_EOL.self::signature(),
                     LOCK_EX
                 );
 
@@ -1247,7 +1247,7 @@ final class Layout {
                     $css_file,
                     str_replace(
                         "#arshwell".$time."{color:#57201412}", '',
-                        _signature($url).PHP_EOL.$scss->compile($css).PHP_EOL._signature($url)
+                        self::signature($url).PHP_EOL.$scss->compile($css).PHP_EOL.self::signature($url)
                     ), LOCK_EX);
 
                 $return = true;
@@ -1360,7 +1360,7 @@ final class Layout {
 
                                     if (self::compileSCSS(
                                         $folder, $pieces, $url, $destination, $object,
-                                        serialize($object->{$matches['table']::CUSTOM_SCSS_VARS_COLUMN})
+                                        unserialize($object->{$matches['table']::CUSTOM_SCSS_VARS_COLUMN})
                                     )) {
                                         $compiled++;
                                     }
@@ -1521,7 +1521,7 @@ final class Layout {
 
                                     if (self::compileMailSCSS(
                                         $folder, $pieces, $url, $destination, $object,
-                                        serialize($object->{$matches['table']::CUSTOM_SCSS_VARS_COLUMN})
+                                        unserialize($object->{$matches['table']::CUSTOM_SCSS_VARS_COLUMN})
                                     )) {
                                         $compiled++;
                                     }
@@ -1677,5 +1677,38 @@ final class Layout {
                 return $mediaLinks;
             }
         }
+    }
+
+    /**
+     * Signature added in production final media files (css/js).
+
+     * @return string
+     */
+    private static function signature (string $site = NULL): string {
+        $credits = ENV::credits();
+
+        $text_1 = 'PHP Framework used: https://github.com/arsavinel/ArshWell';
+        $text_2 = 'Website'. ($site ? " ($site)" : '') .' developed by ['. implode(' | ', $credits) .']';
+
+        $len_1 = strlen($text_1);
+        $len_2 = strlen($text_2);
+        $maxlen = max($len_1, $len_2);
+
+        return (
+            '/*****'. str_repeat('*', $maxlen) .'******'. PHP_EOL.
+            '***   '. str_repeat(' ', $maxlen) .'   ***'. PHP_EOL.
+
+            // show PHP framework used
+            '***   '. $text_1 .str_repeat(' ', $maxlen - $len_1).'   ***'. PHP_EOL.
+
+            // empty line
+            ($credits ? ('***   '. str_repeat(' ', $maxlen) .'   ***'.PHP_EOL) : '').
+
+            // show credits for website, if any
+            ($credits ? ('***   '. $text_2 .str_repeat(' ', $maxlen - $len_2).'   ***'. PHP_EOL) : '').
+
+            '***   '. str_repeat(' ', $maxlen) .'   ***'.PHP_EOL.
+            '******'. str_repeat('*', $maxlen) .'*****/'
+        );
     }
 }

@@ -22,7 +22,7 @@ $warnings = array(
                 $forbidden_files[] = $file . " (".File::mimeType($file).")";
             }
         }
-        foreach (array('ArshWell','Brain','errors','forks','gates','layouts','mails','outcomes','pieces') as $folder) {
+        foreach (array('errors','forks','gates','layouts','mails','outcomes','pieces') as $folder) {
             foreach (File::rFolder($folder, [NULL]) as $file) {
                 if (basename($file) == '.htaccess') {
                     $forbidden_files[] = $file;
@@ -30,7 +30,7 @@ $warnings = array(
             }
         }
         foreach (File::rFolder('uploads', array(NULL, 'php', 'phtml')) as $file) {
-            if (!in_array($file, ['uploads/.htaccess', ENV::uploads('design').'.htaccess'])
+            if (!in_array($file, [ENV::uploads('files').'.htaccess', ENV::uploads('design').'.htaccess'])
             && (in_array(basename($file), ['.htaccess', '.htpasswd'])
             || in_array(File::extension($file), ['php', 'phtml'])
             || in_array(File::mimeType($file), [NULL, 'text/x-php']))) {
@@ -43,11 +43,6 @@ $warnings = array(
     'wrong_place_files' => call_user_func(function (): array {
         $wrong_place_files = array();
 
-        foreach (File::rFolder('Brain') as $file) {
-            if (File::extension($file) != 'php') {
-                $wrong_place_files[] = $file;
-            }
-        }
         foreach (File::rFolder('crons') as $file) {
             if (File::extension($file) != 'php' && $file != 'crons/.htaccess') {
                 $wrong_place_files[] = $file;

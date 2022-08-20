@@ -1,13 +1,12 @@
 <?php
 
+use Arsavinel\Arshwell\DevTool\DevToolData;
 use Arsavinel\Arshwell\Session;
 use Arsavinel\Arshwell\Piece;
 use Arsavinel\Arshwell\Func;
 use Arsavinel\Arshwell\Web;
 
-require_once("functions.php");
-
-$hashed_arsh_version = substr(md5(DevPanelVersion()), 0, 5); ?>
+$hashed_arsh_version = substr(md5(DevToolData::ArshWellVersion()), 0, 5); ?>
 
 <!-- - - - - - - - - - - - - - - - - - - - ArshWell | DevPanel - - - - - - - - - - - - - - - - - - - -->
 <script type="text/javascript">
@@ -26,7 +25,7 @@ $hashed_arsh_version = substr(md5(DevPanelVersion()), 0, 5); ?>
             <?php }
             // we listen for keydown password
             else { ?>
-                var pss_vl  = "DEVPANEL<?= DevPanelVersionNumber() ?>";
+                var pss_vl  = "DEVPANEL<?= DevToolData::ArshWellVersionNumber() ?>";
                 var pss_npt = '';
                 var dspld   = false;
 

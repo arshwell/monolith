@@ -6,9 +6,7 @@ use Arsavinel\Arshwell\Folder;
 use Arsavinel\Arshwell\Filter;
 use Arsavinel\Arshwell\Func;
 use ErrorException;
-use PDOException;
 use Exception;
-use Throwable;
 
 set_error_handler(function ($e_code, $text, $file, $line) {
     if (error_reporting() != 0) { // Because for expressions prepended by @ it returns 0 (zero).
@@ -65,7 +63,7 @@ final class ENV {
                     });
 
         			foreach ($this->json as $key => $value) {
-                        if (is_array($value)) {
+                        if (is_array($value) && Func::isAssoc($value)) {
                             // NOTE: array_merge_recursive is not good
                             $this->json[$key] = array_replace_recursive(
                                 $this->json[$key],
@@ -112,6 +110,10 @@ final class ENV {
                     unlink("{$this->path}env.build.json");
                 }
             }
+
+            function credits (): array {
+        		return $this->json['credits'];
+        	}
 
             function board (string $key) {
         		return $this->json['board'][$key];
@@ -176,9 +178,9 @@ final class ENV {
             }
 
             /**
-             * @return (array|TableMigration|TableMaintenance)
-            */
-            function class (string $key) {
+             * @return static
+             */
+            function class (string $key): string {
                 return $this->json['class'][$key];
             }
         };

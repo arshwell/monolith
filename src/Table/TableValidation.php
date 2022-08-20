@@ -824,9 +824,9 @@ abstract class TableValidation extends Table {
                 else if (is_callable($section)) {
                     switch (count(((is_object($section) || (is_string($section) && function_exists($section)) ?
                         new ReflectionFunction($section) :
-                        (is_array($section) ?
-                            new ReflectionMethod($section[0], $section[1]) :
-                            new ReflectionMethod(strstr($section, '::', true), ltrim(strstr($section, '::'), ':'))
+                        (is_string($section) ?
+                            new ReflectionMethod(strstr($section, '::', true), ltrim(strstr($section, '::'), ':')) :
+                            new ReflectionMethod($section[0], $section[1])
                         )
                     ))->getParameters())) {
                         case 1: {

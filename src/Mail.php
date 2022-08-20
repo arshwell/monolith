@@ -7,6 +7,7 @@ use Pelago\Emogrifier\HtmlProcessor\CssToAttributeConverter;
 use Pelago\Emogrifier\HtmlProcessor\HtmlNormalizer;
 use Pelago\Emogrifier\HtmlProcessor\HtmlPruner;
 
+use Arsavinel\Arshwell\DevTool\DevToolData;
 use Arsavinel\Arshwell\Tygh\Mailer;
 use Arsavinel\Arshwell\Folder;
 use Arsavinel\Arshwell\Layout;
@@ -91,7 +92,7 @@ final class Mail {
             $mailer->Body         = $html;
             $mailer->AltBody      = self::prepareText($html);
 
-            $mailer->AddCustomHeader("Organization: " . ENV::mail('from.name') .' '. DevPanelVersion());
+            $mailer->AddCustomHeader("Organization: " . ENV::mail('from.name') .' '. DevToolData::ArshWellVersion());
 
             if ($files) {
                 foreach ($files as $file) {

@@ -2,14 +2,9 @@
 
 namespace Arsavinel\Arshwell\Module\Request\Backend\Action;
 
-use Arsavinel\Arshwell\Table\Files\Image;
-use Arsavinel\Arshwell\Table\Files\ImageGroup;
-use Arsavinel\Arshwell\Table\Files\Doc;
-use Arsavinel\Arshwell\Table\Files\DocGroup;
 use Arsavinel\Arshwell\Table\TableColumn;
 use Arsavinel\Arshwell\Table\TableField;
 use Arsavinel\Arshwell\Table\TableFiles;
-use Arsavinel\Arshwell\Table;
 use Arsavinel\Arshwell\Web;
 use Arsavinel\Arshwell\URL;
 use Arsavinel\Arshwell\DB;
