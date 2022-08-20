@@ -2,7 +2,6 @@
 
 namespace Arsavinel\Arshwell;
 
-use ScssPhp\ScssPhp\Compiler as ScssPhp;
 use Arsavinel\Arshwell\Tygh\Minifier\JsMin;
 use Arsavinel\Arshwell\Session;
 use Arsavinel\Arshwell\Folder;
@@ -12,6 +11,8 @@ use Arsavinel\Arshwell\File;
 use Arsavinel\Arshwell\Func;
 use Arsavinel\Arshwell\ENV;
 use Arsavinel\Arshwell\Web;
+
+use ScssPhp\ScssPhp\Compiler as ScssPhp;
 
 /**
  * Class for compiling scss/js, getting utils and links.
@@ -691,12 +692,10 @@ final class Layout {
             $time   = time();
             $return = false;
 
-            require_once("vendor/arsavinel/arshwell/src/Tygh/SCSS/autoload.php"); // leafo/SCSS
-
             $scss = new ScssPhp();
 
             $cssvars = implode("\n", self::VARify($media['json']['scss']['vars']));
-            $scss->setVariables(array_merge(
+            $scss->addVariables(array_merge(
                 array_map(function ($value) {
                     return (is_array($value) ? self::SASSify($value) : $value);
                 }, $media['json']['scss']['vars']),
@@ -710,7 +709,7 @@ final class Layout {
                     return (is_array($value) ? self::SASSify($value) : $value);
                 }, $vars) : array())
             ));
-            $scss->setFormatter('ScssPhp\\ScssPhp\\Formatter\\Crunched');
+            $scss->setOutputStyle(\ScssPhp\ScssPhp\OutputStyle::COMPRESSED);
 
             $mins = array_unique(array_column(array_merge(array_column($media['files'], 'range')), 'min'));
 
@@ -806,7 +805,7 @@ final class Layout {
                     $css_file,
                     str_replace(
                         "#arshwell".$time."{color:#57201412}", '',
-                        self::signature($url).PHP_EOL.$scss->compile($css).PHP_EOL.self::signature($url)
+                        self::signature($url).PHP_EOL.$scss->compileString($css)->getCss().PHP_EOL.self::signature($url)
                     ),
                     LOCK_EX
                 );
@@ -867,10 +866,10 @@ final class Layout {
                     }
                 }
 
-                $scss->setFormatter('ScssPhp\\ScssPhp\\Formatter\\Expanded');
+                $scss->setOutputStyle(\ScssPhp\ScssPhp\OutputStyle::EXPANDED);
 
                 $files = array_values($media['files']);
-                foreach (preg_split("/#arshwell".$time."\s{\s+color:\s#57201412;\s+}/", $scss->compile($css)) as $nr => $code) {
+                foreach (preg_split("/#arshwell".$time."\s{\s+color:\s#57201412;\s+}/", $scss->compileString($css)->getCss()) as $nr => $code) {
                     $filename = ENV::uploads('design', 'dev');
 
                     // if file has vars, we create unique dev file
@@ -1145,12 +1144,9 @@ final class Layout {
             $return = false;
             $time = time();
 
-            // We need realpath because also crons can use this class
-            require_once(Folder::realpath("vendor/arsavinel/arshwell/src/Tygh/SCSS/autoload.php")); // leafo/SCSS
-
             $scss = new ScssPhp();
 
-            $scss->setVariables(array_merge(
+            $scss->addVariables(array_merge(
                 $media['json']['scss']['vars'],
                 array(
                     'env-statics' => self::SASSify(ENV::statics(), function (string $value) use ($url): string {
@@ -1163,7 +1159,7 @@ final class Layout {
             // We need root because also crons can use this class
             $scss->setImportPaths(Folder::root());
 
-            $scss->setFormatter('ScssPhp\\ScssPhp\\Formatter\\Crunched');
+            $scss->setOutputStyle(\ScssPhp\ScssPhp\OutputStyle::COMPRESSED);
 
             $mins = array_unique(array_column(array_merge(array_column($media['files'], 'range')), 'min'));
 
@@ -1247,7 +1243,7 @@ final class Layout {
                     $css_file,
                     str_replace(
                         "#arshwell".$time."{color:#57201412}", '',
-                        self::signature($url).PHP_EOL.$scss->compile($css).PHP_EOL.self::signature($url)
+                        self::signature($url).PHP_EOL.$scss->compileString($css)->getCss().PHP_EOL.self::signature($url)
                     ), LOCK_EX);
 
                 $return = true;
@@ -1292,10 +1288,10 @@ final class Layout {
                     }
                 }
 
-                $scss->setFormatter('ScssPhp\\ScssPhp\\Formatter\\Expanded');
+                $scss->setOutputStyle(\ScssPhp\ScssPhp\OutputStyle::EXPANDED);
 
                 $files = array_values($media['files']);
-                foreach (preg_split("/#arshwell".$time."\s{\s+color:\s#57201412;\s+}/", $scss->compile($css)) as $nr => $code) {
+                foreach (preg_split("/#arshwell".$time."\s{\s+color:\s#57201412;\s+}/", $scss->compileString($css)->getCss()) as $nr => $code) {
                     $filename = Folder::realpath(ENV::uploads('design', 'dev')). File::name(Folder::shorter($files[$nr]['name']), false) .'.css';
 
                     if (is_dir(dirname($filename)) || mkdir(dirname($filename), 0755, true)) {

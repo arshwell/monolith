@@ -15,7 +15,8 @@
     "require": {
         "php": "~7.3.0 || ~7.4.0",
         "searchturbine/phpwee-php-minifier": "dev-master",
-        "pelago/emogrifier": "6.*"
+        "pelago/emogrifier": "6.*",
+        "scssphp/scssphp": "1.10.*"
     },
     "minimum-stability": "dev",
     "prefer-stable": true
