@@ -13,7 +13,7 @@
         }
     ],
     "require": {
-        "php": "7.3.*",
+        "php": "7.4.*",
         "pelago/emogrifier": "6.*",
         "scssphp/scssphp": "1.10.*",
         "matthiasmullie/minify": "1.3.*"
