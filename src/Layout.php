@@ -2,7 +2,6 @@
 
 namespace Arsavinel\Arshwell;
 
-use Arsavinel\Arshwell\Tygh\Minifier\JsMin;
 use Arsavinel\Arshwell\Session;
 use Arsavinel\Arshwell\Folder;
 use Arsavinel\Arshwell\Piece;
@@ -11,6 +10,10 @@ use Arsavinel\Arshwell\File;
 use Arsavinel\Arshwell\Func;
 use Arsavinel\Arshwell\ENV;
 use Arsavinel\Arshwell\Web;
+
+use Arsavinel\Arshwell\Tygh\Minifier\JsMin;
+
+use MatthiasMullie\Minify;
 
 use ScssPhp\ScssPhp\Compiler as ScssPhp;
 
@@ -992,7 +995,10 @@ final class Layout {
 
                     $route_name  = Web::nameByFolder($folder);
                     $paginations = Web::route($route_name)[3];
-                    $js_web_class = JsMin::minify(preg_replace(
+
+                    $js_minifier = new Minify\JS();
+
+                    $js_minifier->add(preg_replace(
                         array("/Web\.vars\.site;/", "/Web\.vars\.statics;/", "/Web\.vars\.key;/", "/Web\.vars\.route;/", "/Web\.vars\.routes;/"),
                         array(
                             'Web.vars.site = "'. $url .'/";',
@@ -1008,12 +1014,18 @@ final class Layout {
                         ),
                         file_get_contents('vendor/arsavinel/arshwell/DevTools/tools/files/design/js/custom/Web.js')
                     ));
+
+                    $js_web_class = $js_minifier->minify();
                 }
 
                 file_put_contents(
                     $jsHeader,
                     self::signature($url).PHP_EOL. $js_web_class .PHP_EOL. implode(PHP_EOL, array_map(function (array $file): string {
-                        return JsMin::minify(file_get_contents($file['name']));
+                        $js_minifier = new Minify\JS();
+
+                        $js_minifier->add(file_get_contents($file['name']));
+
+                        return $js_minifier->minify();
                     }, $files)) .PHP_EOL.self::signature($url),
                     LOCK_EX
                 );
@@ -1101,7 +1113,11 @@ final class Layout {
                 file_put_contents(
                     $jsFooter,
                     self::signature().PHP_EOL. implode(PHP_EOL, array_map(function ($file) {
-                        return JsMin::minify(file_get_contents($file['name']));
+                        $js_minifier = new Minify\JS();
+
+                        $js_minifier->add(file_get_contents($file['name']));
+
+                        return $js_minifier->minify();
                     }, $files)) .PHP_EOL.self::signature(),
                     LOCK_EX
                 );

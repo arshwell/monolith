@@ -13,10 +13,10 @@
         }
     ],
     "require": {
-        "php": "7.4.*",
-        "searchturbine/phpwee-php-minifier": "dev-master",
+        "php": "~7.3.* || ~7.4.*",
         "pelago/emogrifier": "6.*",
-        "scssphp/scssphp": "1.10.*"
+        "scssphp/scssphp": "1.10.*",
+        "matthiasmullie/minify": "1.3.*"
     },
     "minimum-stability": "dev",
     "prefer-stable": true
