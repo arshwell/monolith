@@ -1,21 +1,24 @@
 {
     "name": "arsavinel/arshwell",
-    "description": "PHP Framework | LAMP Solution stack",
+    "description": "PHP Framework | for LAMP Stack",
+    "keywords": ["PHP", "Framework", "LAMP", "php74", "ArshWell"],
+    "license": "MIT",
     "autoload": {
         "psr-4": {
             "Arsavinel\\Arshwell\\": "src/"
         }
     },
-    "authors": [
-        {
-            "name": "Arshavin",
-            "email": "arsavinwallentyn@gmail.com"
-        }
-    ],
     "require": {
         "php": "7.4.*",
         "pelago/emogrifier": "6.*",
         "scssphp/scssphp": "1.10.*",
         "matthiasmullie/minify": "1.3.*"
-    }
+    },
+    "authors": [
+        {
+            "name": "Arshavin",
+            "email": "arsavinwallentyn@gmail.com",
+            "homepage": "https://github.com/arsavinel"
+        }
+    ]
 }
