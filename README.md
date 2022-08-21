@@ -38,6 +38,7 @@ ArshWell uses next technologies:
        */
       require("vendor/arsavinel/arshwell/resources/php/download.php");
       ```
+- Refresh project from web. So necessary .htaccess files will be created automatically.
 
 ### Features
 
