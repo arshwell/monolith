@@ -1,8 +1,8 @@
 # ArshWell | PHP Framework | for LAMP Stack
 
 Simple to learn and use:
->  ArshWell started from the idea of a fast and clean framework.
->  No MVC: less OOP (at least for now).
+>  ArshWell started from the idea of a fast and clean framework. <br>
+>  No MVC: less OOP *(at least for now)*.
 ---
 
 ### Tech
@@ -20,13 +20,22 @@ ArshWell uses next technologies:
 - Include this package (arsavinel/arshwell) in your project composer;
 - Run `composer install`;
 - Create `index.php`, in root of your project, and include the following code:
+
     - ```php
       <?php
+      /**
+       * Used for web requests towards pages.
+       */
       require("vendor/arsavinel/arshwell/resources/php/index.php");
       ```
 - Create `download.php`, in root of your project, and include the following code:
+
     - ```php
       <?php
+      /**
+       * Used for web requests towards uploaded files (png, jpg, gif, etc).
+       * So access can be restricted in necessary situations.
+       */
       require("vendor/arsavinel/arshwell/resources/php/download.php");
       ```
 
