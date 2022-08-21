@@ -1,7 +1,8 @@
-# ArshWell | PHP Framework | LAMP Solution stack
+# ArshWell | PHP Framework | for LAMP Stack
 
 Simple to learn and use:
 >  ArshWell started from the idea of a fast and clean framework.
+>  No MVC: less OOP (at least for now).
 ---
 
 ### Tech
@@ -9,7 +10,7 @@ Simple to learn and use:
 ArshWell uses next technologies:
 
 - [MySQL] - Package uses SQL
-- [PHP 7.3+] - Also some OOP features (ex: DB)
+- [PHP 7.4] - Also some OOP features (ex: DB)
 - [SASS] - A good fit CSS extension language for ArshWell
 - [JS Vanilla functions] - Built-in helpful functions (ex: Web, Form)
 - [jQuery] - default JS library

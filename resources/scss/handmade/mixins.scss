@@ -47,7 +47,7 @@
     transform-origin:         $transform-origin;
 }
 
-@mixin arsh--transition ($transition) {
+@mixin arsh--transition ($transition...) {
     -webkit-transition: $transition;
     -moz-transition:    $transition;
     -ms-transition:     $transition;
@@ -83,52 +83,19 @@
     transform:          scale($scale);
 }
 
-@mixin arsh--animation ($animation) {
-    -webkit-animation:  $animation;
-    -moz-animation:     $animation;
-    -o-animation:       $animation;
-    animation:          $animation;
-}
-@mixin arsh--animation-2elements ($animation1, $animation2) {
-    -webkit-animation:  $animation1, $animation2;
-    -moz-animation:     $animation1, $animation2;
-    -o-animation:       $animation1, $animation2;
-    animation:          $animation1, $animation2;
-}
-@mixin arsh--animation-3elements ($animation1, $animation2, $animation3) {
-    -webkit-animation:  $animation1, $animation2, $animation3;
-    -moz-animation:     $animation1, $animation2, $animation3;
-    -o-animation:       $animation1, $animation2, $animation3;
-    animation:          $animation1, $animation2, $animation3;
+@mixin arsh--animation ($animations...) {
+    -webkit-animation:  $animations;
+    -moz-animation:     $animations;
+    -o-animation:       $animations;
+    animation:          $animations;
 }
 
-@mixin arsh--linear-gradient-2params ($param1, $param2) {
-    background-image: -webkit-linear-gradient($param1, $param2);
-    background-image: -moz-linear-gradient($param1, $param2);
-    background-image: -ms-linear-gradient($param1, $param2);
-    background-image: -o-linear-gradient($param1, $param2);
-    background-image: linear-gradient($param1, $param2);
-}
-@mixin arsh--linear-gradient-3params ($param1, $param2, $param3) {
-    background-image: -webkit-linear-gradient($param1, $param2, $param3);
-    background-image: -moz-linear-gradient($param1, $param2, $param3);
-    background-image: -ms-linear-gradient($param1, $param2, $param3);
-    background-image: -o-linear-gradient($param1, $param2, $param3);
-    background-image: linear-gradient($param1, $param2, $param3);
-}
-@mixin arsh--linear-gradient-4params ($param1, $param2, $param3, $param4) {
-    background-image: -webkit-linear-gradient($param1, $param2, $param3, $param4);
-    background-image: -moz-linear-gradient($param1, $param2, $param3, $param4);
-    background-image: -ms-linear-gradient($param1, $param2, $param3, $param4);
-    background-image: -o-linear-gradient($param1, $param2, $param3, $param4);
-    background-image: linear-gradient($param1, $param2, $param3, $param4);
-}
-@mixin arsh--linear-gradient-5params ($param1, $param2, $param3, $param4, $param5) {
-    background-image: -webkit-linear-gradient($param1, $param2, $param3, $param4, $param5);
-    background-image: -moz-linear-gradient($param1, $param2, $param3, $param4, $param5);
-    background-image: -ms-linear-gradient($param1, $param2, $param3, $param4, $param5);
-    background-image: -o-linear-gradient($param1, $param2, $param3, $param4, $param5);
-    background-image: linear-gradient($param1, $param2, $param3, $param4, $param5);
+@mixin arsh--linear-gradient ($params...) {
+    background-image: -webkit-linear-gradient($params);
+    background-image: -moz-linear-gradient($params);
+    background-image: -ms-linear-gradient($params);
+    background-image: -o-linear-gradient($params);
+    background-image: linear-gradient($params);
 }
 
 @mixin arsh--display-flex {

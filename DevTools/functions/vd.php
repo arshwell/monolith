@@ -11,11 +11,9 @@ if (function_exists('_vd') == false) {
     * @package https://github.com/arsavinel/ArshWell
     */
     function _vd ($variable, string $description = NULL): void {
-        echo 'here';
         if (ENV::supervisor() == false) {
             return;
         }
-        echo 'here';
 
         $bt = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
         echo PHP_EOL;
