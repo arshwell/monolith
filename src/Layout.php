@@ -11,10 +11,7 @@ use Arsavinel\Arshwell\Func;
 use Arsavinel\Arshwell\ENV;
 use Arsavinel\Arshwell\Web;
 
-use Arsavinel\Arshwell\Tygh\Minifier\JsMin;
-
-use MatthiasMullie\Minify;
-
+use MatthiasMullie\Minify\JS as JsMin;
 use ScssPhp\ScssPhp\Compiler as ScssPhp;
 
 /**
@@ -47,19 +44,14 @@ final class Layout {
         	$return['utils'] = array_merge($return['utils'], $array['utils']);
         	$return['json']['layout'] = $array['json'];
 
-            foreach ($return['json']['layout']['scss']['ArshWell'] as $file) {
-                foreach (glob('vendor/arsavinel/arshwell/resources/scss/'. $file .'.scss') as $f) {
-                    $return['files'][] = array(
-        				'name'	=> (File::name($f, false) .'.'. $extension)
-        			);
-                }
-            }
-
-            foreach ($return['json']['layout']['scss']['project'] as $file) {
-                foreach (glob('resources/scss/'. $file .'.scss') as $f) {
-                    $return['files'][] = array(
-        				'name'	=> (File::name($f, false) .'.'. $extension)
-        			);
+            // find all scss files required by layout from utils
+            foreach ($return['json']['layout']['scss']['files'] as $rsrc_folder => $rsrc_patterns) {
+                foreach ($rsrc_patterns as $rsrc_pattern) {
+                    foreach (glob("$rsrc_folder/scss/$rsrc_pattern.scss") as $rsrc_file) {
+                        $return['files'][] = array(
+                            'name' => (File::name($rsrc_file, false) .'.'. $extension)
+                        );
+                    }
                 }
             }
 
@@ -90,19 +82,14 @@ final class Layout {
                 $files
             );
 
-            foreach ($return['json']['outcome']['scss']['ArshWell'] as $file) {
-                foreach (glob('vendor/arsavinel/arshwell/resources/scss/'. $file .'.scss') as $f) {
-        			$return['files'][] = array(
-        				'name'	=> (File::name($f, false) .'.'. $extension)
-        			);
-                }
-            }
-
-            foreach ($return['json']['outcome']['scss']['project'] as $file) {
-                foreach (glob('resources/scss/'. $file .'.scss') as $f) {
-        			$return['files'][] = array(
-        				'name'	=> (File::name($f, false) .'.'. $extension)
-        			);
+            // find all scss files required by outcome from utils
+            foreach ($return['json']['outcome']['scss']['files'] as $rsrc_folder => $rsrc_patterns) {
+                foreach ($rsrc_patterns as $rsrc_pattern) {
+                    foreach (glob("$rsrc_folder/scss/$rsrc_pattern.scss") as $rsrc_file) {
+                        $return['files'][] = array(
+                            'name' => (File::name($rsrc_file, false) .'.'. $extension)
+                        );
+                    }
                 }
             }
 
@@ -138,19 +125,14 @@ final class Layout {
         		$return['utils'] = array_merge($return['utils'], $array['utils']);
         		$return['json']['pieces'] = array_merge_recursive($return['json']['pieces'], $array['json']);
 
-        		foreach ($array['json']['scss']['ArshWell'] as $file) {
-                    foreach (glob('vendor/arsavinel/arshwell/resources/scss/'. $file .'.scss') as $f) {
-        				$return['files'][] = array(
-        					'name'	=> (File::name($f, false) .'.'. $extension)
-        				);
-                    }
-                }
-
-                foreach ($array['json']['scss']['project'] as $file) {
-                    foreach (glob('resources/scss/'. $file .'.scss') as $f) {
-        				$return['files'][] = array(
-        					'name'	=> (File::name($f, false) .'.'. $extension)
-        				);
+                // find all scss files required by piece from utils
+                foreach ($array['json']['scss']['files'] as $rsrc_folder => $rsrc_patterns) {
+                    foreach ($rsrc_patterns as $rsrc_pattern) {
+                        foreach (glob("$rsrc_folder/scss/$rsrc_pattern.scss") as $rsrc_file) {
+                            $return['files'][] = array(
+                                'name'	=> (File::name($rsrc_file, false) .'.'. $extension)
+                            );
+                        }
                     }
                 }
 
@@ -210,19 +192,19 @@ final class Layout {
         		),
         		'files'	=> array(
                     array(
-                        'name' => 'vendor/arsavinel/arshwell/DevTools/tools/files/design/js/custom/http_build_query.js',
+                        'name' => 'vendor/arsavinel/arshwell/DevTools/tools/files/design/js/ArshWell/http_build_query/v1.js',
                         'range' => array(
                             'min' => 0 // guarantees will compile even if there are no other js files
                         )
                     ),
                     array(
-                        'name' => 'vendor/arsavinel/arshwell/DevTools/tools/files/design/js/custom/Form.js',
+                        'name' => 'vendor/arsavinel/arshwell/DevTools/tools/files/design/js/ArshWell/Form/v2.js',
                         'range' => array(
                             'min' => 0 // guarantees will compile even if there are no other js files
                         )
                     ),
                     array(
-                        'name' => 'vendor/arsavinel/arshwell/DevTools/tools/files/design/js/custom/VanillaJS.js',
+                        'name' => 'vendor/arsavinel/arshwell/DevTools/tools/files/design/js/ArshWell/VanillaJS/v1.js',
                         'range' => array(
                             'min' => 0 // guarantees will compile even if there are no other js files
                         )
@@ -238,19 +220,14 @@ final class Layout {
         	$return['utils'] = array_merge($return['utils'], $array['utils']);
         	$return['json']['layout'] = $array['json'];
 
-            foreach ($return['json']['layout']['js']['header']['ArshWell'] as $file) {
-                foreach (glob('vendor/arsavinel/arshwell/resources/js/'. $file .'.js') as $f) {
-                    $return['files'][] = array(
-        				'name' => $f
-        			);
-                }
-            }
-
-            foreach ($return['json']['layout']['js']['header']['project'] as $file) {
-                foreach (glob('resources/js/'. $file .'.js') as $f) {
-                    $return['files'][] = array(
-        				'name' => $f
-        			);
+            // find all header js files required by layout from utils
+            foreach ($return['json']['layout']['js']['files']['header'] as $rsrc_folder => $rsrc_patterns) {
+                foreach ($rsrc_patterns as $rsrc_pattern) {
+                    foreach (glob("$rsrc_folder/js/$rsrc_pattern.js") as $rsrc_file) {
+                        $return['files'][] = array(
+                            'name' => $rsrc_file
+                        );
+                    }
                 }
             }
 
@@ -281,19 +258,14 @@ final class Layout {
                 $files
             );
 
-            foreach ($return['json']['outcome']['js']['header']['ArshWell'] as $file) {
-                foreach (glob('vendor/arsavinel/arshwell/resources/js/'. $file .'.js') as $f) {
-                    $return['files'][] = array(
-        				'name' => $f
-        			);
-                }
-            }
-
-            foreach ($return['json']['outcome']['js']['header']['project'] as $file) {
-                foreach (glob('resources/js/'. $file .'.js') as $f) {
-                    $return['files'][] = array(
-        				'name' => $f
-        			);
+            // find all header js files required by outcome from utils
+            foreach ($return['json']['outcome']['js']['files']['header'] as $rsrc_folder => $rsrc_patterns) {
+                foreach ($rsrc_patterns as $rsrc_pattern) {
+                    foreach (glob("$rsrc_folder/js/$rsrc_pattern.js") as $rsrc_file) {
+                        $return['files'][] = array(
+                            'name' => $rsrc_file
+                        );
+                    }
                 }
             }
 
@@ -302,19 +274,14 @@ final class Layout {
         		$return['utils'] = array_merge($return['utils'], $array['utils']);
         		$return['json']['pieces'] = array_merge_recursive($return['json']['pieces'], $array['json']);
 
-        		foreach ($array['json']['js']['header']['ArshWell'] as $file) {
-                    foreach (glob('vendor/arsavinel/arshwell/resources/js/'. $file .'.js') as $f) {
-        				$return['files'][] = array(
-        					'name'	=> $f
-        				);
-                    }
-                }
-
-                foreach ($array['json']['js']['header']['project'] as $file) {
-                    foreach (glob('resources/js/'. $file .'.js') as $f) {
-        				$return['files'][] = array(
-        					'name'	=> $f
-        				);
+        		// find all header js files required by piece from utils
+                foreach ($array['json']['js']['files']['header'] as $rsrc_folder => $rsrc_patterns) {
+                    foreach ($rsrc_patterns as $rsrc_pattern) {
+                        foreach (glob("$rsrc_folder/js/$rsrc_pattern.js") as $rsrc_file) {
+                            $return['files'][] = array(
+                                'name' => $rsrc_file
+                            );
+                        }
                     }
                 }
         	}
@@ -340,7 +307,7 @@ final class Layout {
         		),
         		'files'	=> array(
                     array(
-                        'name' => 'vendor/arsavinel/arshwell/DevTools/tools/files/design/js/custom/body.js',
+                        'name' => 'vendor/arsavinel/arshwell/DevTools/tools/files/design/js/ArshWell/body/v1.js',
                         'range' => array(
         	                'min' => 0 // guarantees will compile even if there are no other js files
         				)
@@ -363,43 +330,31 @@ final class Layout {
         		);
         	}
 
-        	foreach ($return['json']['layout']['js']['footer']['ArshWell'] as $file) {
-        		foreach (glob('vendor/arsavinel/arshwell/resources/js/'. $file .'.js') as $f) {
-        			if (!$nonexistent_in_header || !in_array($f, $js_header_files)) {
-        				$return['files'][] = array(
-        					'name' => $f
-        				);
-        			}
-        		}
-        	}
-            foreach ($return['json']['layout']['js']['footer']['project'] as $file) {
-        		foreach (glob('resources/js/'. $file .'.js') as $f) {
-        			if (!$nonexistent_in_header || !in_array($f, $js_header_files)) {
-        				$return['files'][] = array(
-        					'name' => $f
-        				);
-        			}
-        		}
-        	}
+        	// find all footer js files required by layout from utils
+            foreach ($return['json']['layout']['js']['files']['footer'] as $rsrc_folder => $rsrc_patterns) {
+                foreach ($rsrc_patterns as $rsrc_pattern) {
+                    foreach (glob("$rsrc_folder/js/$rsrc_pattern.js") as $rsrc_file) {
+                        if (!$nonexistent_in_header || !in_array($rsrc_file, $js_header_files)) {
+                            $return['files'][] = array(
+                                'name' => $rsrc_file
+                            );
+                        }
+                    }
+                }
+            }
 
-        	foreach ($return['json']['outcome']['js']['footer']['ArshWell'] as $file) {
-        		foreach (glob('vendor/arsavinel/arshwell/resources/js/'. $file .'.js') as $f) {
-        			if (!$nonexistent_in_header || !in_array($f, $js_header_files)) {
-        				$return['files'][] = array(
-        					'name' => $f
-        				);
-        			}
-        		}
-        	}
-            foreach ($return['json']['outcome']['js']['footer']['project'] as $file) {
-        		foreach (glob('resources/js/'. $file .'.js') as $f) {
-        			if (!$nonexistent_in_header || !in_array($f, $js_header_files)) {
-        				$return['files'][] = array(
-        					'name' => $f
-        				);
-        			}
-        		}
-        	}
+        	// find all footer js files required by outcome from utils
+            foreach ($return['json']['outcome']['js']['files']['footer'] as $rsrc_folder => $rsrc_patterns) {
+                foreach ($rsrc_patterns as $rsrc_pattern) {
+                    foreach (glob("$rsrc_folder/js/$rsrc_pattern.js") as $rsrc_file) {
+                        if (!$nonexistent_in_header || !in_array($rsrc_file, $js_header_files)) {
+                            $return['files'][] = array(
+                                'name' => $rsrc_file
+                            );
+                        }
+                    }
+                }
+            }
 
             $files = array();
         	foreach (File::folder('outcomes/'. $folder .'/.js', array('js')) as $resolution) {
@@ -433,22 +388,16 @@ final class Layout {
         		$return['utils'] = array_merge($return['utils'], $array['utils']);
         		$return['json']['pieces'] = array_merge_recursive($return['json']['pieces'], $array['json']);
 
-        		foreach ($array['json']['js']['footer']['ArshWell'] as $file) {
-                    foreach (glob('vendor/arsavinel/arshwell/resources/js/'. $file .'.js') as $f) {
-        				if (!$nonexistent_in_header || !in_array($f, $js_header_files)) {
-        					$return['files'][] = array(
-        						'name'	=> $f
-        					);
-        				}
-                    }
-                }
-                foreach ($array['json']['js']['footer']['project'] as $file) {
-                    foreach (glob('resources/js/'. $file .'.js') as $f) {
-        				if (!$nonexistent_in_header || !in_array($f, $js_header_files)) {
-        					$return['files'][] = array(
-        						'name'	=> $f
-        					);
-        				}
+        		// find all footer js files required by piece from utils
+                foreach ($array['json']['js']['files']['footer'] as $rsrc_folder => $rsrc_patterns) {
+                    foreach ($rsrc_patterns as $rsrc_pattern) {
+                        foreach (glob("$rsrc_folder/js/$rsrc_pattern.js") as $rsrc_file) {
+                            if (!$nonexistent_in_header || !in_array($rsrc_file, $js_header_files)) {
+                                $return['files'][] = array(
+                                    'name' => $rsrc_file
+                                );
+                            }
+                        }
                     }
                 }
 
@@ -514,18 +463,14 @@ final class Layout {
         	$return['utils'] = array_merge($return['utils'], $array['utils']);
         	$return['json']['mail'] = $array['json'];
 
-            foreach ($return['json']['mail']['scss']['ArshWell'] as $file) {
-                foreach (glob(Folder::realpath('vendor/arsavinel/arshwell/resources/scss/'. $file .'.scss')) as $f) {
-        			$return['files'][] = array(
-        				'name'	=> (File::name(Folder::shorter($f), false) .'.'. $extension)
-        			);
-                }
-            }
-            foreach ($return['json']['mail']['scss']['project'] as $file) {
-                foreach (glob(Folder::realpath('resources/scss/'. $file .'.scss')) as $f) {
-        			$return['files'][] = array(
-        				'name'	=> (File::name(Folder::shorter($f), false) .'.'. $extension)
-        			);
+            // find all scss files required by mail from utils
+            foreach ($return['json']['mail']['scss']['files'] as $rsrc_folder => $rsrc_patterns) {
+                foreach ($rsrc_patterns as $rsrc_pattern) {
+                    foreach (glob("$rsrc_folder/scss/$rsrc_pattern.scss") as $rsrc_file) {
+                        $return['files'][] = array(
+                            'name' => (File::name(Folder::shorter($rsrc_file), false) .'.'. $extension)
+                        );
+                    }
                 }
             }
 
@@ -563,18 +508,14 @@ final class Layout {
         		$return['utils'] = array_merge($return['utils'], $array['utils']);
         		$return['json']['pieces'] = array_merge_recursive($return['json']['pieces'], $array['json']);
 
-        		foreach ($array['json']['scss']['ArshWell'] as $file) {
-                    foreach (glob(Folder::realpath('vendor/arsavinel/arshwell/resources/scss/'. $file .'.scss')) as $f) {
-        				$return['files'][] = array(
-        					'name'	=> (File::name($f, false) .'.'. $extension)
-        				);
-                    }
-                }
-                foreach ($array['json']['scss']['project'] as $file) {
-                    foreach (glob(Folder::realpath('resources/scss/'. $file .'.scss')) as $f) {
-        				$return['files'][] = array(
-        					'name'	=> (File::name($f, false) .'.'. $extension)
-        				);
+        		// find all scss files required by piece from utils
+                foreach ($array['json']['scss']['files'] as $rsrc_folder => $rsrc_patterns) {
+                    foreach ($rsrc_patterns as $rsrc_pattern) {
+                        foreach (glob("$rsrc_folder/scss/$rsrc_pattern.scss") as $rsrc_file) {
+                            $return['files'][] = array(
+                                'name' => (File::name(Folder::shorter($rsrc_file), false) .'.'. $extension)
+                            );
+                        }
                     }
                 }
 
@@ -795,7 +736,7 @@ final class Layout {
 
                     if (next($files)) {
                         // It's only a delimiter so we can split css in many dev css files.
-                        $css .= '#arshwell'.$time.'{color:#57201412;}';
+                        $css .= '#arsavinel-arshwell'.$time.'{color:#57201412;}';
                     }
                 }
 
@@ -807,7 +748,7 @@ final class Layout {
                 file_put_contents(
                     $css_file,
                     str_replace(
-                        "#arshwell".$time."{color:#57201412}", '',
+                        "#arsavinel-arshwell".$time."{color:#57201412}", '',
                         self::signature($url).PHP_EOL.$scss->compileString($css)->getCss().PHP_EOL.self::signature($url)
                     ),
                     LOCK_EX
@@ -865,14 +806,14 @@ final class Layout {
 
                     if (next($media['files'])) {
                         // NOTE: It's only a delimiter, so we can split compiled css in many dev css files.
-                        $css .= '#arshwell'.$time.'{color:#57201412;}';
+                        $css .= '#arsavinel-arshwell'.$time.'{color:#57201412;}';
                     }
                 }
 
                 $scss->setOutputStyle(\ScssPhp\ScssPhp\OutputStyle::EXPANDED);
 
                 $files = array_values($media['files']);
-                foreach (preg_split("/#arshwell".$time."\s{\s+color:\s#57201412;\s+}/", $scss->compileString($css)->getCss()) as $nr => $code) {
+                foreach (preg_split("/#arsavinel-arshwell".$time."\s{\s+color:\s#57201412;\s+}/", $scss->compileString($css)->getCss()) as $nr => $code) {
                     $filename = ENV::uploads('design', 'dev');
 
                     // if file has vars, we create unique dev file
@@ -996,7 +937,7 @@ final class Layout {
                     $route_name  = Web::nameByFolder($folder);
                     $paginations = Web::route($route_name)[3];
 
-                    $js_minifier = new Minify\JS();
+                    $js_minifier = new JsMin();
 
                     $js_minifier->add(preg_replace(
                         array("/Web\.vars\.site;/", "/Web\.vars\.statics;/", "/Web\.vars\.key;/", "/Web\.vars\.route;/", "/Web\.vars\.routes;/"),
@@ -1012,7 +953,7 @@ final class Layout {
                             )) .';',
                             'Web.vars.routes = '. json_encode($routes) .';',
                         ),
-                        file_get_contents('vendor/arsavinel/arshwell/DevTools/tools/files/design/js/custom/Web.js')
+                        file_get_contents('vendor/arsavinel/arshwell/DevTools/tools/files/design/js/ArshWell/Web/v2.js')
                     ));
 
                     $js_web_class = $js_minifier->minify();
@@ -1021,7 +962,7 @@ final class Layout {
                 file_put_contents(
                     $jsHeader,
                     self::signature($url).PHP_EOL. $js_web_class .PHP_EOL. implode(PHP_EOL, array_map(function (array $file): string {
-                        $js_minifier = new Minify\JS();
+                        $js_minifier = new JsMin();
 
                         $js_minifier->add(file_get_contents($file['name']));
 
@@ -1113,7 +1054,7 @@ final class Layout {
                 file_put_contents(
                     $jsFooter,
                     self::signature().PHP_EOL. implode(PHP_EOL, array_map(function ($file) {
-                        $js_minifier = new Minify\JS();
+                        $js_minifier = new JsMin();
 
                         $js_minifier->add(file_get_contents($file['name']));
 
@@ -1246,7 +1187,7 @@ final class Layout {
 
                     if (next($files)) {
                         // It's only a delimiter so we can split css in many dev css files.
-                        $css .= '#arshwell'.$time.'{color:#57201412;}';
+                        $css .= '#arsavinel-arshwell'.$time.'{color:#57201412;}';
                     }
                 }
 
@@ -1258,7 +1199,7 @@ final class Layout {
                 file_put_contents(
                     $css_file,
                     str_replace(
-                        "#arshwell".$time."{color:#57201412}", '',
+                        "#arsavinel-arshwell".$time."{color:#57201412}", '',
                         self::signature($url).PHP_EOL.$scss->compileString($css)->getCss().PHP_EOL.self::signature($url)
                     ), LOCK_EX);
 
@@ -1300,14 +1241,14 @@ final class Layout {
 
                     if (next($media['files'])) {
                         // It's only a delimiter so we can split css in many dev css files.
-                        $css .= '#arshwell'.$time.'{color:#57201412;}';
+                        $css .= '#arsavinel-arshwell'.$time.'{color:#57201412;}';
                     }
                 }
 
                 $scss->setOutputStyle(\ScssPhp\ScssPhp\OutputStyle::EXPANDED);
 
                 $files = array_values($media['files']);
-                foreach (preg_split("/#arshwell".$time."\s{\s+color:\s#57201412;\s+}/", $scss->compileString($css)->getCss()) as $nr => $code) {
+                foreach (preg_split("/#arsavinel-arshwell".$time."\s{\s+color:\s#57201412;\s+}/", $scss->compileString($css)->getCss()) as $nr => $code) {
                     $filename = Folder::realpath(ENV::uploads('design', 'dev')). File::name(Folder::shorter($files[$nr]['name']), false) .'.css';
 
                     if (is_dir(dirname($filename)) || mkdir(dirname($filename), 0755, true)) {
@@ -1558,22 +1499,17 @@ final class Layout {
         $utils = array();
         $json  = array(
             'scss' => array(
-                'vars'      => array(),
-                'ArshWell'  => array(),
-                'project'   => array()
+                'vars'  => array(),
+                'files' => array()
             ),
             'js'   => array(
                 'routes' => array(
                     'groups'        => array(),
                     'exceptions'    => array()
                 ),
-                'header' => array(
-                    'ArshWell'  => array(),
-                    'project'   => array()
-                ),
-                'footer' => array(
-                    'ArshWell'  => array(),
-                    'project'   => array()
+                'files' => array(
+                    'header' => array(),
+                    'footer' => array()
                 )
             )
         );

@@ -65,16 +65,34 @@ DevPanel is a built-in panel which has many features, including:
 | Removing dangerous files |
 | Activating maintenance mode |
 
+It can only be accessed by developer and provides so many other helpful tools.
+Don't believe us, see for yourself.
+
 ### Contributing
+
 Thank you for considering contributing to the ArshWell framework!
 
+- Fork the repo, from GitHub
+- Run, from terminal, in the root of your project: <br>
+  `composer require [your-user]/[your-new-fork] --prefer-source`
+    - In that way, you can modify ArshWell directly inside your vendor's project
+    - And after that, just `git commit` & `git push` the ArshWell from you vendor
+- Come back to GitHub ArshWell and create a Pull Request
+    - Explain the problem you've found
+    - Present the solution you've implemented;
+
 ### Code of Conduct
+
 In order to ensure that the ArshWell community is welcoming to all,
 please review and abide by the CODE_OF_CONDUCT.md.
 
 ### Security Vulnerabilities
+
 If you’ve found a security issue in ArshWell, please use the procedure
 described in [SECURITY](https://github.com/arsavinel/ArshWell/security/policy).
 
+In that situation, please, don't create an issue.
+
 ### License
+
 The ArshWell framework is open-sourced software licensed under the MIT license.

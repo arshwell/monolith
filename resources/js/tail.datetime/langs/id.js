@@ -1,4 +1,4 @@
-/*
+/**
  |  tail.datetime - The vanilla way to select dates and times!
  |  @file       ./langs/tail.datetime-in.js
  |  @author     SamBrishes <sam@pytes.net>

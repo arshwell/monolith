@@ -636,7 +636,7 @@ ob_start(); // for adding all content in DevToolHTML::html() function
                         /** ↑ builds ******************************************/
 
                         /** supervisors ***************************************/
-                            $supervisors = count(array_filter(array_column(array_column(array_column($sessions, 'ArshWell'), 'panel'), 'active')));
+                            $supervisors = count(array_filter(array_column(array_column(array_column(array_column($sessions, 'arsavinel'), 'ArshWell'), 'panel'), 'active')));
                             if ($supervisors) { ?>
                                 <span class="pl-1" data-toggle="tooltip" data-placement="left" data-title="Another <?= $supervisors ?> session<?= ($supervisors > 1 ? 's' : '') ?> use DevPanel right now">
                                     <span class="bg-danger border border-dark rounded text-dark d-inline-block text-center"
@@ -658,7 +658,7 @@ if (Session::panel('active')) { // load js ?>
     <script type="text/javascript">
         'use strict';
 
-        var max_microtime_sessions_history = "<?= max(call_user_func_array('array_merge_recursive', array_map('array_keys', array_filter(array_column(array_column($sessions, 'ArshWell'), 'history'))))) ?>";
+        var max_microtime_sessions_history = "<?= max(call_user_func_array('array_merge_recursive', array_map('array_keys', array_filter(array_column(array_column(array_column($sessions, 'arsavinel'), 'ArshWell'), 'history'))))) ?>";
 
         window.onload = function () {
             $('[data-toggle="tooltip"]').tooltip();

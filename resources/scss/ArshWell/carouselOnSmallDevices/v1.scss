@@ -1,0 +1,23 @@
+/**
+ * carouselOnSmallDevices v1 - ArshWell css styles for owl-carousel available only on smaller devices.
+
+ * @author: https://github.com/arsavinel
+ * @license MIT (https://github.com/arsavinel/ArshWell/blob/0.x/LICENSE.md)
+ */
+
+.row.owl-carousel {
+    // mobile
+    &:not(.owl-carousel-off) {
+        margin: 0;
+
+        .item {
+            width: auto;
+            max-width: initial;
+        }
+    }
+
+    // desktop
+    &.owl-carousel-off {
+        display: flex;
+    }
+}

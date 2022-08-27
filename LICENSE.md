@@ -1,6 +1,8 @@
 MIT License
 
-Copyright (c) 2022 arsavinel
+Copyright (c) 2022 arsavinel and other contributors
+
+Project: https://github.com/arsavinel/ArshWell
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

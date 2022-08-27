@@ -20,28 +20,28 @@ abstract class TableAuth extends Table {
 
     // static
     final static function setCookieID (int $id, int $expires): bool {
-        return setcookie("ArshWell[".static::class."]", $id, time() + $expires, ENV::root() ?: '/');
+        return setcookie("arsavinel[ArshWell][".static::class."]", $id, time() + $expires, ENV::root() ?: '/');
     }
     // object
     final function setCookie (int $expires): bool {
-        return setcookie("ArshWell[".static::class."]", $this->id_table, time() + $expires, ENV::root() ?: '/');
+        return setcookie("arsavinel[ArshWell][".static::class."]", $this->id_table, time() + $expires, ENV::root() ?: '/');
     }
 
     // static
     final static function issetCookieID (int $id = 0): bool {
         if (!$id) {
-            return isset($_COOKIE['ArshWell'][static::class]);
+            return isset($_COOKIE['arsavinel']['ArshWell'][static::class]);
         }
-        return isset($_COOKIE['ArshWell'][static::class]) && $_COOKIE['ArshWell'][static::class] == $id;
+        return isset($_COOKIE['arsavinel']['ArshWell'][static::class]) && $_COOKIE['arsavinel']['ArshWell'][static::class] == $id;
     }
     // object
     final function issetCookie (): bool {
-        return isset($_COOKIE['ArshWell'][static::class]) && $_COOKIE['ArshWell'][static::class] == $this->id_table;
+        return isset($_COOKIE['arsavinel']['ArshWell'][static::class]) && $_COOKIE['arsavinel']['ArshWell'][static::class] == $this->id_table;
     }
 
     // static
     final static function getCookieID (): ?int {
-        return $_COOKIE['ArshWell'][static::class] ?? NULL;
+        return $_COOKIE['arsavinel']['ArshWell'][static::class] ?? NULL;
     }
 
 
