@@ -12,7 +12,7 @@ $resources = array(
     )
 );
 
-$utils = Layout::mediaSCSS(Web::folder($_REQUEST['request']['route']), $_REQUEST['request']['pieces'], true)['json'];
+$utils = Layout::mediaSCSS(Web::folder($_REQUEST['request']['route']), $_REQUEST['request']['pieces'] ?? array(), true)['json'];
 
 // scss
 if (!empty($utils['scss']['files']) && is_array($utils['scss']['files'])) {
@@ -44,7 +44,7 @@ if (!empty($utils['js']['files']['footer']) && is_array($utils['js']['files']['f
 $asset  = ENV::root().'/'.ENV::uploads('design', 'dev');
 $time   = substr(str_shuffle("BCDFGHKLMNPQRSTVWXYZ"), 0, 4);
 
-$mediaLinks = Layout::mediaLinks($_REQUEST['request']['route'], $_REQUEST['request']['pieces']); ?>
+$mediaLinks = Layout::mediaLinks($_REQUEST['request']['route'], $_REQUEST['request']['pieces'] ?? array()); ?>
 
 <span class="text-muted mb-2 instance-of-panel"></span> <!-- the link we came from -->
 

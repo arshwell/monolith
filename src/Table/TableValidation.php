@@ -9,6 +9,7 @@ use Arsavinel\Arshwell\Table;
 use Arsavinel\Arshwell\File;
 use Arsavinel\Arshwell\Text;
 use Arsavinel\Arshwell\DB;
+
 use ReflectionFunction;
 use ReflectionMethod;
 use Closure;
@@ -37,7 +38,7 @@ abstract class TableValidation extends Table {
     /**
      * (bool|array) $messages
      */
-    final static function run (array $fields, array $protocols = array(), $messages = true): object {
+    final static function run (array $fields, array $protocols = array(), $messages = true): TableValidationResponse {
         // If there's no form_token or wrong one,
         // could mean non-inside-browser request or new session.
         if (!isset($fields['form_token']) || $fields['form_token'] !== Session::token('form')) {

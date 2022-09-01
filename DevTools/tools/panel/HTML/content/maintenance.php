@@ -4,8 +4,11 @@ use Arsavinel\Arshwell\Session;
 use Arsavinel\Arshwell\ENV;
 use Arsavinel\Arshwell\Web;
 
-// $sessions = Session::all(false, true); // without current session
-$sessions = Session::all(true, true); // TODO: Delete it at the end
+/**
+ * If ENV::board('dev') true, it gets also my session.
+ * Because work env doesn't have traffic.
+ */
+$sessions = Session::all(ENV::board('dev'), true);
 
 ?>
 
@@ -73,14 +76,14 @@ $sessions = Session::all(true, true); // TODO: Delete it at the end
                 Routes accessed in real time
                 <span class="maintenance--smart-configuration collapse <?= ((ENV::class('maintenance'))::isActive() && (ENV::class('maintenance'))::isSmart() ? 'show' : '') ?>">
                     <?php // all sessions with history ?>
-                    (by all ~<?= count(array_filter(array_column(array_column($sessions, 'ArshWell'), 'history'))) ?> sessions)
+                    (by all ~<?= count(array_filter(array_column(array_column(array_column($sessions, 'arsavinel'), 'ArshWell'), 'history'))) ?> sessions)
                 </span>
             </div>
             <div class="card-body py-0">
                 <ul class="list-group list-group-flush maintenance--smart-configuration collapse <?= ((ENV::class('maintenance'))::isActive() && (ENV::class('maintenance'))::isSmart() ? 'show' : '') ?>">
                     <?php
                     foreach ($sessions as $session) {
-                        foreach (array_reverse($session['ArshWell']['history']) as $index => $route) { ?>
+                        foreach (array_reverse($session['arsavinel']['ArshWell']['history']) as $index => $route) { ?>
                             <li type="button" class="list-group-item" data-toggle="collapse" data-target="#maintenance--history-<?= $index ?>" aria-expanded="false">
                                 <div class="row">
                                     <div class="col-3 col-md-3 nowrap">

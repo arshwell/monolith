@@ -1,8 +1,8 @@
 ## Should stay in root of the project ##
 
-# use php7.3
+# use php7.4
 <FilesMatch "\.(php4|php5|php3|php2|php|phtml)$">
-    SetHandler application/x-httpd-alt-php73___lsphp
+    SetHandler application/x-httpd-alt-php74___lsphp
 </FilesMatch>
 
 RewriteOptions inherit

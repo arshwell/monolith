@@ -604,13 +604,13 @@ final class Web {
         return ($_SERVER['HTTP_REFERER'] ?? ($key ? self::url($key, $values, $language, $page, $_get) : NULL));
     }
 
-    static function goBack (string $key = NULL, array $values = NULL, int $page = 0, array $_get = NULL): bool {
+    static function goBack (string $key = NULL, array $values = NULL, string $language = NULL, int $page = 0, array $_get = NULL, int $http_response_code = NULL): bool {
         if (isset($_SERVER['HTTP_REFERER'])) {
             header("Location: ". $_SERVER['HTTP_REFERER']);
             return false;
         }
         if ($key) { // backup if is no referer
-            header("Location: ". self::get($key, $values, $page, $_get));
+            header("Location: ". self::url($key, $values, $language, $page, $_get), true, $http_response_code);
             return true;
         }
         return false;

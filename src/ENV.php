@@ -300,7 +300,7 @@ if (!is_file(Folder::root(). '.htaccess')) {
 // .htaccess in files folder
 if (!is_file(Folder::root() . ENV::uploads('files') . '.htaccess')) {
     if (!is_dir(Folder::root() . ENV::uploads('files'))) {
-        mkdir(Folder::root() . ENV::uploads('files'));
+        mkdir(Folder::root() . ENV::uploads('files'), 0777, true);
     }
     copy(Folder::root() . 'vendor/arsavinel/arshwell/resources/htaccess/uploads.files.htaccess', Folder::root() . ENV::uploads('files') . '.htaccess');
 }
@@ -308,7 +308,7 @@ if (!is_file(Folder::root() . ENV::uploads('files') . '.htaccess')) {
 // .htaccess in design folder
 if (!is_file(Folder::root() . ENV::uploads('design') . '.htaccess')) {
     if (!is_dir(Folder::root() . ENV::uploads('design'))) {
-        mkdir(Folder::root() . ENV::uploads('design'));
+        mkdir(Folder::root() . ENV::uploads('design'), 0777, true);
     }
     copy(Folder::root() . 'vendor/arsavinel/arshwell/resources/htaccess/uploads.design.htaccess', Folder::root() . ENV::uploads('design') . '.htaccess');
 }
