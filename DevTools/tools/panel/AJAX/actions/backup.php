@@ -43,8 +43,7 @@ if ($form->valid()) {
         	    foreach (File::rFolder('.') as $i => $file) {
                     $entryname = substr($file, 2); // local name inside the ZIP archive
 
-                    if (strpos($entryname, 'DevTools/backups/') !== 0
-                    && $zip->locateName($entryname) === false) {
+                    if ($zip->locateName($entryname) === false) {
     					$filesize += filesize($file);
 
     					if ($filesize > 52428800 && $i > 0) { // 50MB

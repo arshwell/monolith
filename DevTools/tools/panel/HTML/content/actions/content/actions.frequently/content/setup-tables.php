@@ -36,7 +36,11 @@
         <label class="form-check-label">
             <input class="form-check-input" type="checkbox" checked disabled />
             Create and update validation tables
-            <small class="d-block">Looking for in Brain/ classes</small>
+            <small class="d-block">
+                Looking for in
+                <?= implode(', ', Arsavinel\Arshwell\Func::arrayFlatten(json_decode(file_get_contents(Arsavinel\Arshwell\Folder::root() . 'composer.json'), true)['autoload'])) ?>
+                classes
+            </small>
         </label>
     </div>
 
