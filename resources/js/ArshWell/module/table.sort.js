@@ -21,4 +21,17 @@ $(document).ready(function () {
             $(form).submit();
         }
     });
+
+    $('.arshmodule .arshmodule-piece-pagination select[name="limit"]').on('change', function () {
+        $('<input>')
+            .attr('type', 'hidden')
+            .attr('name', 'limit')
+            .attr('value', $(this).find('option:selected').val())
+            .appendTo($(container));
+
+        if ($(form).length) {
+            $(form).submit();
+        }
+    });
+
 });

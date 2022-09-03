@@ -23,7 +23,7 @@ class Select {
 
         if ($response['access']) {
             $back['is_translated'] = defined("{$back['DB']['table']}::TRANSLATED");
-            $limit = ($back['actions']['select']['limit'] ?? 20);
+            $limit = ($query['limit'] ?? $back['actions']['select']['limit'] ?? 20);
 
             if (empty($query['search']) || !is_array($query['search'])) {
                 unset($query['search']);
@@ -46,7 +46,6 @@ class Select {
 
             $where = array();
             $order = NULL;
-            $params = array();
 
             if (isset($query['search'])) {
                 $where[] = ('(' . implode(' OR ', call_user_func(function ($search) use ($back) {
@@ -102,6 +101,7 @@ class Select {
             }
 
             $response['count'] = ($back['DB']['table'])::count($where);
+            $response['limit'] = $limit;
             $response['data'] = array_column(DB::select(array(
                 'class'     => $back['DB']['table'],
                 'columns'   => ($back['DB']['table'])::PRIMARY_KEY,

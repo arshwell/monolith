@@ -72,9 +72,9 @@ final class Select {
                 </div>
             	<div class="card-footer">
                     <?= Piece::pagination(array(
-                        'text'      => "înregistrări",
+                        'text'      => "records",
                         'count'     => $module['response']['count'],
-                        'visible'   => $module['back']['actions']['select']['limit'],
+                        'limit'     => $module['response']['limit'],
                         'buttons'   => array(
                             'xs' => 3,
                             'sm' => 4,

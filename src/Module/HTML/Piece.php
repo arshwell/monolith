@@ -493,6 +493,21 @@ final class Piece {
                                                         }
                                                         break;
                                                     }
+                                                    case 'textarea': { ?>
+                                                        <span class="text">
+                                                            <small>
+                                                                <?php
+                                                                if (isset($HTML['preview'])) {
+                                                                    echo $HTML['preview'];
+                                                                }
+                                                                else {
+                                                                    echo ($value ? Text::chars(Text::removeAllTags($value), 150) : '');
+                                                                } ?>
+                                                            </small>
+                                                        </span>
+                                                        <?php
+                                                        break;
+                                                    }
                                                     default: { ?>
                                                         <span class="text">
                                                             <?php
@@ -871,11 +886,11 @@ final class Piece {
             );
 
             $page = Web::page();
-            $nr_of_pages = ceil($config['count'] / $config['visible']); // round up
+            $nr_of_pages = ceil($config['count'] / $config['limit']); // round up
 
             $links = array();
 
-            if ($config['count'] > $config['visible']) {
+            if ($config['count'] > $config['limit']) {
                 $range = function (int $nr_of_links) use ($page, $nr_of_pages) {
                     $nr_of_links = min($nr_of_links, $nr_of_pages);
 
@@ -952,14 +967,38 @@ final class Piece {
 
             <div class="arshmodule-piece-pagination">
                 <div class="row align-items-center">
-                    <div class="col-sm-4 col-xl-2 text-center text-sm-left margin-1st-1st">
-                        <span class="bg-primary text-light p-2 d-inline-block">
-                            <span class="badge badge-light"><?= $config['count'] ?></span>
-                            <?= $config['text'] ?>
-                            <span class="sr-only"><?= $config['count'] ?> <?= $config['text'] ?></span>
-                        </span>
+
+                    <!-- total number of records -->
+                    <div class="col-auto">
+                        <small"><?= $config['count'] ?> <?= $config['text'] ?></small>
                     </div>
-                    <div class="col-sm-8 col-xl-9 margin-1st-1st">
+
+                    <!-- records per page -->
+                    <div class="col-auto">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <select name="limit" class="custom-select w-auto">
+                                    <?php
+                                    $options = array_unique(array(10, 20, 30, 40, 50, 60, $config['limit']));
+                                    sort($options);
+
+                                    foreach ($options as $nr) { ?>
+                                        <option value="<?= $nr ?>" <?= $nr == $config['limit'] ? 'selected' : '' ?>>
+                                            <?= $nr ?>
+                                        </option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                            <div class="input-group-append">
+                                <span class="input-group-text">
+                                    per page
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- pagination - every page -->
+                    <div class="col-auto margin-2nd-2nd">
                         <ul class="pagination justify-content-center">
                             <?php
                             foreach ($links as $link) { ?>
