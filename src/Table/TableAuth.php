@@ -14,7 +14,7 @@ use Arsavinel\Arshwell\ENV;
 abstract class TableAuth extends Table {
     // static
     final static function exists (string $password, int $algorithm) {
-        return (bool)self::count(static::PASSWORD .' = ?', array(password_hash($password, $algorithm)));
+        return (bool)self::count((static::class)::PASSWORD .' = ?', array(password_hash($password, $algorithm)));
     }
 
 
@@ -47,47 +47,47 @@ abstract class TableAuth extends Table {
 
     // static
     final static function loginID (int $id, array $data = array()): void {
-        $data[static::PRIMARY_KEY] = $id;
-        Session::setAuth(static::TABLE, $data);
+        $data[(static::class)::PRIMARY_KEY] = $id;
+        Session::setAuth((static::class)::TABLE, $data);
     }
     // object
     final function login (array $data = array()): void {
-        $data[static::PRIMARY_KEY] = $this->id_table;
-        Session::setAuth(static::TABLE, $data);
+        $data[(static::class)::PRIMARY_KEY] = $this->id_table;
+        Session::setAuth((static::class)::TABLE, $data);
     }
 
 
     // static
     final static function loggedInID (int $id = 0): bool {
         return (
-            Session::auth(static::TABLE) &&
-            ($id == 0 || $id == Session::auth(static::TABLE, static::PRIMARY_KEY))
+            Session::auth((static::class)::TABLE) &&
+            ($id == 0 || $id == Session::auth((static::class)::TABLE, (static::class)::PRIMARY_KEY))
         );
     }
     // object
     final function loggedIn (): bool {
-        return ($this->id_table == Session::auth(static::TABLE, static::PRIMARY_KEY));
+        return ($this->id_table == Session::auth((static::class)::TABLE, (static::class)::PRIMARY_KEY));
     }
 
 
     // static
     final static function auth (string $key = NULL) {
-        return Session::auth(static::TABLE, $key);
+        return Session::auth((static::class)::TABLE, $key);
     }
 
 
     // static
     final static function logoutID (): bool {
-        if (Session::auth(static::TABLE)) {
-            Session::unset('auth', static::TABLE);
+        if (Session::auth((static::class)::TABLE)) {
+            Session::unset('auth', (static::class)::TABLE);
             return true;
         }
         return false;
     }
     // object
     final function logout (): bool {
-        if (Session::auth(static::TABLE, static::PRIMARY_KEY) == $this->id_table) {
-            Session::unset('auth', static::TABLE);
+        if (Session::auth((static::class)::TABLE, (static::class)::PRIMARY_KEY) == $this->id_table) {
+            Session::unset('auth', (static::class)::TABLE);
             return true;
         }
         return false;

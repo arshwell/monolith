@@ -2,13 +2,7 @@
 
 namespace Arsavinel\Arshwell\Module\HTML;
 
-use Arsavinel\Arshwell\Module\HTML\Piece;
-use Arsavinel\Arshwell\Table\Files\ImageGroup;
-use Arsavinel\Arshwell\Table\Files\Image;
-use Arsavinel\Arshwell\Table\Files\Doc;
 use Arsavinel\Arshwell\File;
-use Arsavinel\Arshwell\Func;
-use Arsavinel\Arshwell\Math;
 use Arsavinel\Arshwell\Web;
 use Arsavinel\Arshwell\ENV;
 use Arsavinel\Arshwell\URL;

@@ -86,7 +86,7 @@ abstract class TableView extends Table {
         $result = DB::first(
             array(
                 'class'     => static::class,
-                'columns'   => static::PRIMARY_KEY . ', value:lg as value, vars',
+                'columns'   => (static::class)::PRIMARY_KEY . ', value:lg as value, vars',
                 'where'     => "info = ? AND type = ? AND source = ?"
             ),
             array($info, self::TYPES['sentenceSEO'], $source)
@@ -96,7 +96,7 @@ abstract class TableView extends Table {
             DB::insert(
                 static::class,
                 "source, global, info, type, value:lg, vars, `order`",
-                ":source, 0, :info, :type, ". implode(', ', array_fill(0, count((static::TRANSLATOR)::LANGUAGES), ':value')) .", :vars, ". SQL::nextID(static::TABLE),
+                ":source, 0, :info, :type, ". implode(', ', array_fill(0, count((static::TRANSLATOR)::LANGUAGES), ':value')) .", :vars, ". SQL::nextID((static::class)::TABLE),
                 array(
                     ':lg'       => (static::TRANSLATOR)::LANGUAGES,
                     ':source'   => $source,
@@ -113,9 +113,9 @@ abstract class TableView extends Table {
             static::update(
                 array(
                     'set'   => "vars = ?",
-                    'where' => static::PRIMARY_KEY . " = ?"
+                    'where' => (static::class)::PRIMARY_KEY . " = ?"
                 ),
-                array(count($vars), $result[static::PRIMARY_KEY])
+                array(count($vars), $result[(static::class)::PRIMARY_KEY])
             );
         }
 
@@ -141,7 +141,7 @@ abstract class TableView extends Table {
             );
         }
 
-        Session::setView(static::class, $result[static::PRIMARY_KEY]);
+        Session::setView(static::class, $result[(static::class)::PRIMARY_KEY]);
 
         return $result['value'];
     }
@@ -152,7 +152,7 @@ abstract class TableView extends Table {
         $result = DB::first(
             array(
                 'class'     => static::class,
-                'columns'   => static::PRIMARY_KEY . ', value:lg as value, vars',
+                'columns'   => (static::class)::PRIMARY_KEY . ', value:lg as value, vars',
                 'where'     => "info = ? AND type = ? AND source = ?"
             ),
             array($info, self::TYPES['textSEO'], $source)
@@ -162,7 +162,7 @@ abstract class TableView extends Table {
             DB::insert(
                 static::class,
                 "source, global, info, type, value:lg, vars, `order`",
-                ":source, 0, :info, :type, ". implode(', ', array_fill(0, count((static::TRANSLATOR)::LANGUAGES), ':value')) .", :vars, ". SQL::nextID(static::TABLE),
+                ":source, 0, :info, :type, ". implode(', ', array_fill(0, count((static::TRANSLATOR)::LANGUAGES), ':value')) .", :vars, ". SQL::nextID((static::class)::TABLE),
                 array(
                     ':lg'       => (static::TRANSLATOR)::LANGUAGES,
                     ':source'   => $source,
@@ -179,9 +179,9 @@ abstract class TableView extends Table {
             static::update(
                 array(
                     'set'   => "vars = ?",
-                    'where' => static::PRIMARY_KEY . " = ?"
+                    'where' => (static::class)::PRIMARY_KEY . " = ?"
                 ),
-                array(count($vars), $result[static::PRIMARY_KEY])
+                array(count($vars), $result[(static::class)::PRIMARY_KEY])
             );
         }
 
@@ -207,7 +207,7 @@ abstract class TableView extends Table {
             );
         }
 
-        Session::setView(static::class, $result[static::PRIMARY_KEY]);
+        Session::setView(static::class, $result[(static::class)::PRIMARY_KEY]);
 
         return $result['value'];
     }
@@ -220,7 +220,7 @@ abstract class TableView extends Table {
         $result = DB::first(
             array(
                 'class'     => static::class,
-                'columns'   => static::PRIMARY_KEY,
+                'columns'   => (static::class)::PRIMARY_KEY,
                 'where'     => "info = ? AND type = ? AND source = ?"
             ),
             array($info, self::TYPES['imageSEO'], $source)
@@ -230,9 +230,9 @@ abstract class TableView extends Table {
         $site       = Web::site();
 
         if ($result) {
-            Session::setView(static::class, $result[static::PRIMARY_KEY]);
+            Session::setView(static::class, $result[(static::class)::PRIMARY_KEY]);
 
-            $urlpath = Folder::encode(static::class) .'/'. $result[static::PRIMARY_KEY] .'/value/'. $language .'/'. $width.'x'.$height;
+            $urlpath = Folder::encode(static::class) .'/'. $result[(static::class)::PRIMARY_KEY] .'/value/'. $language .'/'. $width.'x'.$height;
 
             $file = File::first(ENV::uploads('files'). $urlpath);
 
@@ -243,15 +243,15 @@ abstract class TableView extends Table {
             // If no file found, will be created below. Because imageSEO is not optional (any page should have imageSEO).
         }
         else {
-            $result[static::PRIMARY_KEY] = DB::insert(
+            $result[(static::class)::PRIMARY_KEY] = DB::insert(
                 static::class,
                 "source, info, type, `order`",
-                "?, ?, ?, ". SQL::nextID(static::TABLE),
+                "?, ?, ?, ". SQL::nextID((static::class)::TABLE),
                 array($source, $info, self::TYPES['imageSEO'])
             );
         }
 
-        $image_folder = Folder::encode(static::class) .'/'. $result[static::PRIMARY_KEY] .'/value/';
+        $image_folder = Folder::encode(static::class) .'/'. $result[(static::class)::PRIMARY_KEY] .'/value/';
 
         foreach ((static::TRANSLATOR)::LANGUAGES as $lang) {
             $file = File::first(ENV::uploads('files'). $image_folder . $lang .'/'. $width.'x'.$height);
@@ -304,7 +304,7 @@ abstract class TableView extends Table {
         $result = DB::first(
             array(
                 'class'     => static::class,
-                'columns'   => static::PRIMARY_KEY . ', value:lg as value, vars',
+                'columns'   => (static::class)::PRIMARY_KEY . ', value:lg as value, vars',
                 'where'     => "info = ? AND type = ? AND source = ? AND global = ?"
             ),
             array($info, self::TYPES['sentence'], $source, (int)$global)
@@ -314,7 +314,7 @@ abstract class TableView extends Table {
             DB::insert(
                 static::class,
                 "source, global, info, type, value:lg, vars, `order`",
-                ":source, :global, :info, :type, ". implode(', ', array_fill(0, count((static::TRANSLATOR)::LANGUAGES), ':value')) .", :vars, ". SQL::nextID(static::TABLE),
+                ":source, :global, :info, :type, ". implode(', ', array_fill(0, count((static::TRANSLATOR)::LANGUAGES), ':value')) .", :vars, ". SQL::nextID((static::class)::TABLE),
                 array(
                     ':lg'       => (static::TRANSLATOR)::LANGUAGES,
                     ':source'   => $source,
@@ -332,9 +332,9 @@ abstract class TableView extends Table {
             static::update(
                 array(
                     'set'   => "vars = ?",
-                    'where' => static::PRIMARY_KEY . " = ?"
+                    'where' => (static::class)::PRIMARY_KEY . " = ?"
                 ),
-                array(count($vars), $result[static::PRIMARY_KEY])
+                array(count($vars), $result[(static::class)::PRIMARY_KEY])
             );
         }
 
@@ -360,7 +360,7 @@ abstract class TableView extends Table {
             );
         }
 
-        Session::setView(static::class, $result[static::PRIMARY_KEY]);
+        Session::setView(static::class, $result[(static::class)::PRIMARY_KEY]);
 
         return $result['value'];
     }
@@ -371,7 +371,7 @@ abstract class TableView extends Table {
         $result = DB::first(
             array(
                 'class'     => static::class,
-                'columns'   => static::PRIMARY_KEY . ', value:lg as value, vars',
+                'columns'   => (static::class)::PRIMARY_KEY . ', value:lg as value, vars',
                 'where'     => "info = ? AND type = ? AND source = ? AND global = ?"
             ),
             array($info, self::TYPES['text'], $source, (int)$global)
@@ -381,7 +381,7 @@ abstract class TableView extends Table {
             DB::insert(
                 static::class,
                 "source, global, info, type, value:lg, vars, `order`",
-                ":source, :global, :info, :type, ". implode(', ', array_fill(0, count((static::TRANSLATOR)::LANGUAGES), ':value')) .", :vars, ". SQL::nextID(static::TABLE),
+                ":source, :global, :info, :type, ". implode(', ', array_fill(0, count((static::TRANSLATOR)::LANGUAGES), ':value')) .", :vars, ". SQL::nextID((static::class)::TABLE),
                 array(
                     ':lg'       => (static::TRANSLATOR)::LANGUAGES,
                     ':source'   => $source,
@@ -399,9 +399,9 @@ abstract class TableView extends Table {
             static::update(
                 array(
                     'set'   => "vars = ?",
-                    'where' => static::PRIMARY_KEY . " = ?"
+                    'where' => (static::class)::PRIMARY_KEY . " = ?"
                 ),
-                array(count($vars), $result[static::PRIMARY_KEY])
+                array(count($vars), $result[(static::class)::PRIMARY_KEY])
             );
         }
 
@@ -427,7 +427,7 @@ abstract class TableView extends Table {
             );
         }
 
-        Session::setView(static::class, $result[static::PRIMARY_KEY]);
+        Session::setView(static::class, $result[(static::class)::PRIMARY_KEY]);
 
         return $result['value'];
     }
@@ -438,7 +438,7 @@ abstract class TableView extends Table {
         $result = DB::first(
             array(
                 'class'     => static::class,
-                'columns'   => static::PRIMARY_KEY . ', value:lg as value, vars',
+                'columns'   => (static::class)::PRIMARY_KEY . ', value:lg as value, vars',
                 'where'     => "info = ? AND type = ? AND source = ? AND global = ?"
             ),
             array($info, self::TYPES['content'], $source, (int)$global)
@@ -448,7 +448,7 @@ abstract class TableView extends Table {
             DB::insert(
                 static::class,
                 "source, global, info, type, value:lg, vars, `order`",
-                ":source, :global, :info, :type, ". implode(', ', array_fill(0, count((static::TRANSLATOR)::LANGUAGES), ':value')) .", :vars, ". SQL::nextID(static::TABLE),
+                ":source, :global, :info, :type, ". implode(', ', array_fill(0, count((static::TRANSLATOR)::LANGUAGES), ':value')) .", :vars, ". SQL::nextID((static::class)::TABLE),
                 array(
                     ':lg'       => (static::TRANSLATOR)::LANGUAGES,
                     ':source'   => $source,
@@ -466,9 +466,9 @@ abstract class TableView extends Table {
             static::update(
                 array(
                     'set'   => "vars = ?",
-                    'where' => static::PRIMARY_KEY . " = ?"
+                    'where' => (static::class)::PRIMARY_KEY . " = ?"
                 ),
-                array(count($vars), $result[static::PRIMARY_KEY])
+                array(count($vars), $result[(static::class)::PRIMARY_KEY])
             );
         }
 
@@ -494,7 +494,7 @@ abstract class TableView extends Table {
             );
         }
 
-        Session::setView(static::class, $result[static::PRIMARY_KEY]);
+        Session::setView(static::class, $result[(static::class)::PRIMARY_KEY]);
 
         return $result['value'];
     }
@@ -507,7 +507,7 @@ abstract class TableView extends Table {
         $result = DB::first(
             array(
                 'class'     => static::class,
-                'columns'   => static::PRIMARY_KEY,
+                'columns'   => (static::class)::PRIMARY_KEY,
                 'where'     => "info = ? AND type = ? AND source = ? AND global = ?"
             ),
             array($info, self::TYPES['image'], $source, (int)$global)
@@ -517,9 +517,9 @@ abstract class TableView extends Table {
         $site       = Web::site();
 
         if ($result) {
-            Session::setView(static::class, $result[static::PRIMARY_KEY]);
+            Session::setView(static::class, $result[(static::class)::PRIMARY_KEY]);
 
-            $urlpath = Folder::encode(static::class) .'/'. $result[static::PRIMARY_KEY] .'/value/'. $language .'/'. $width.'x'.$height;
+            $urlpath = Folder::encode(static::class) .'/'. $result[(static::class)::PRIMARY_KEY] .'/value/'. $language .'/'. $width.'x'.$height;
 
             $file = File::first(ENV::uploads('files'). $urlpath);
 
@@ -541,15 +541,15 @@ abstract class TableView extends Table {
             return NULL; // If no file found, NULL returned. Because image is optional.
         }
         else {
-            $result[static::PRIMARY_KEY] = DB::insert(
+            $result[(static::class)::PRIMARY_KEY] = DB::insert(
                 static::class,
                 "source, global, info, type, `order`",
-                "?, ?, ?, ?, ". SQL::nextID(static::TABLE),
+                "?, ?, ?, ?, ". SQL::nextID((static::class)::TABLE),
                 array($source, (int)$global, $info, self::TYPES['image'])
             );
         }
 
-        $image_folder = Folder::encode(static::class) .'/'. $result[static::PRIMARY_KEY] .'/value/';
+        $image_folder = Folder::encode(static::class) .'/'. $result[(static::class)::PRIMARY_KEY] .'/value/';
 
         foreach ((static::TRANSLATOR)::LANGUAGES as $lang) {
             // getting name from sibling file
@@ -599,7 +599,7 @@ abstract class TableView extends Table {
         $result = DB::first(
             array(
                 'class'     => static::class,
-                'columns'   => static::PRIMARY_KEY,
+                'columns'   => (static::class)::PRIMARY_KEY,
                 'where'     => "info = ? AND type = ? AND source = ? AND global = ?"
             ),
             array($info, self::TYPES['images'], $source, (int)$global)
@@ -610,9 +610,9 @@ abstract class TableView extends Table {
         $site           = Web::site();
 
         if ($result) {
-            Session::setView(static::class, $result[static::PRIMARY_KEY]);
+            Session::setView(static::class, $result[(static::class)::PRIMARY_KEY]);
 
-            $urlpath = Folder::encode(static::class) .'/'. $result[static::PRIMARY_KEY] .'/value/'. $language .'/'.$width .'x'. $height;
+            $urlpath = Folder::encode(static::class) .'/'. $result[(static::class)::PRIMARY_KEY] .'/value/'. $language .'/'.$width .'x'. $height;
 
             $files = array_map(function ($file) use ($site, $urlpath) {
                 return ($site .ENV::uploads('files'). $urlpath .'/'. basename($file));
@@ -621,15 +621,15 @@ abstract class TableView extends Table {
             return $files;
         }
         else {
-            $result[static::PRIMARY_KEY] = DB::insert(
+            $result[(static::class)::PRIMARY_KEY] = DB::insert(
                 static::class,
                 "source, global, info, type, `order`",
-                "?, ?, ?, ?, ". SQL::nextID(static::TABLE),
+                "?, ?, ?, ?, ". SQL::nextID((static::class)::TABLE),
                 array($source, (int)$global, $info, self::TYPES['images'])
             );
         }
 
-        $image_folder   = $encoded_class .'/'. $result[static::PRIMARY_KEY] .'/value/';
+        $image_folder   = $encoded_class .'/'. $result[(static::class)::PRIMARY_KEY] .'/value/';
         $results        = array();
 
         foreach ((static::TRANSLATOR)::LANGUAGES as $lang) {
@@ -689,7 +689,7 @@ abstract class TableView extends Table {
         $result = DB::first(
             array(
                 'class'     => static::class,
-                'columns'   => static::PRIMARY_KEY . ', value:lg as value',
+                'columns'   => (static::class)::PRIMARY_KEY . ', value:lg as value',
                 'where'     => "info = ? AND type = ? AND source = ? AND global = ?"
             ),
             array($info, self::TYPES['checked'], $source, (int)$global)
@@ -699,7 +699,7 @@ abstract class TableView extends Table {
             DB::insert(
                 static::class,
                 "source, global, info, type, value:lg, vars, `order`",
-                ":source, :global, :info, :type, ". implode(', ', array_fill(0, count((static::TRANSLATOR)::LANGUAGES), ':value')) .", :vars, ". SQL::nextID(static::TABLE),
+                ":source, :global, :info, :type, ". implode(', ', array_fill(0, count((static::TRANSLATOR)::LANGUAGES), ':value')) .", :vars, ". SQL::nextID((static::class)::TABLE),
                 array(
                     ':lg'       => (static::TRANSLATOR)::LANGUAGES,
                     ':source'   => $source,
@@ -714,7 +714,7 @@ abstract class TableView extends Table {
             return 0;
         }
 
-        Session::setView(static::class, $result[static::PRIMARY_KEY]);
+        Session::setView(static::class, $result[(static::class)::PRIMARY_KEY]);
 
         return $result['value'];
     }
@@ -727,7 +727,7 @@ abstract class TableView extends Table {
         $result = DB::first(
             array(
                 'class'     => static::class,
-                'columns'   => static::PRIMARY_KEY,
+                'columns'   => (static::class)::PRIMARY_KEY,
                 'where'     => "info = ? AND type = ? AND source = ? AND global = ?"
             ),
             array($info, self::TYPES['video'], $source, (int)$global)
@@ -737,9 +737,9 @@ abstract class TableView extends Table {
         $site       = Web::site();
 
         if ($result) {
-            Session::setView(static::class, $result[static::PRIMARY_KEY]);
+            Session::setView(static::class, $result[(static::class)::PRIMARY_KEY]);
 
-            $urlpath = Folder::encode(static::class) .'/'. $result[static::PRIMARY_KEY] .'/value/'. $language;
+            $urlpath = Folder::encode(static::class) .'/'. $result[(static::class)::PRIMARY_KEY] .'/value/'. $language;
 
             $file = File::first(ENV::uploads('files'). $urlpath);
 
@@ -748,15 +748,15 @@ abstract class TableView extends Table {
             }
         }
         else {
-            $result[static::PRIMARY_KEY] = DB::insert(
+            $result[(static::class)::PRIMARY_KEY] = DB::insert(
                 static::class,
                 "source, global, info, type, `order`",
-                "?, ?, ?, ?, ". SQL::nextID(static::TABLE),
+                "?, ?, ?, ?, ". SQL::nextID((static::class)::TABLE),
                 array($source, (int)$global, $info, self::TYPES['video'])
             );
         }
 
-        $image_folder = Folder::encode(static::class) .'/'. $result[static::PRIMARY_KEY] .'/value/';
+        $image_folder = Folder::encode(static::class) .'/'. $result[(static::class)::PRIMARY_KEY] .'/value/';
 
         foreach ((static::TRANSLATOR)::LANGUAGES as $lang) {
             $basename = basename(self::$source['image']);

@@ -8,7 +8,7 @@ use Arsavinel\Arshwell\Language;
 use Arsavinel\Arshwell\ENV;
 use Arsavinel\Arshwell\DB;
 
-/*
+/**
  * Table class for manipulating certain table and its columns.
 */
 abstract class Table {
@@ -55,22 +55,22 @@ abstract class Table {
         if (!isset(self::$structures[static::class])) {
             // Used only by objects, for removing unnecesary data from array before inserting/updating.
             self::$structures[static::class] = array_flip(array_column(self::columns(), 'COLUMN_NAME'));
-            if (static::PRIMARY_KEY) {
-                unset(self::$structures[static::class][static::PRIMARY_KEY]);
+            if ((static::class)::PRIMARY_KEY) {
+                unset(self::$structures[static::class][(static::class)::PRIMARY_KEY]);
             }
         }
 
         if ($columns) {
-            if (static::PRIMARY_KEY) {
-                $this->id_table = $columns[static::PRIMARY_KEY];
-                unset($columns[static::PRIMARY_KEY]);
+            if ((static::class)::PRIMARY_KEY) {
+                $this->id_table = $columns[(static::class)::PRIMARY_KEY];
+                unset($columns[(static::class)::PRIMARY_KEY]);
             }
             $this->columns = $columns;
 
             if (defined(static::class ."::TRANSLATOR") && defined(static::class ."::TRANSLATED")) {
                 $languages = (static::TRANSLATOR)::LANGUAGES;
 
-                foreach (static::TRANSLATED as $column) {
+                foreach ((static::class)::TRANSLATED as $column) {
                     foreach ($languages as $language) {
                         $values = array();
 
@@ -119,12 +119,12 @@ abstract class Table {
         return (DB::update(array(
             'class' => static::class,
             'set'   => implode(' = ?, ', array_keys($columns)) .' = ?',
-            'where' => static::PRIMARY_KEY .' = '. $this->id_table
+            'where' => (static::class)::PRIMARY_KEY .' = '. $this->id_table
         ), array_values($columns)) > 0);
     }
 
     final function remove (): bool {
-        return (DB::delete(static::class, static::PRIMARY_KEY ." = ?", array($this->id_table)) > 0);
+        return (DB::delete(static::class, (static::class)::PRIMARY_KEY ." = ?", array($this->id_table)) > 0);
     }
 
     function translations (string $column): array {
@@ -155,7 +155,7 @@ abstract class Table {
     final function toArray (bool $add_primary_key = false): array {
         if ($add_primary_key) {
             return array_merge(
-                array(static::PRIMARY_KEY => $this->id_table),
+                array((static::class)::PRIMARY_KEY => $this->id_table),
                 $this->columns
             );
         }
@@ -164,7 +164,7 @@ abstract class Table {
     final function toJSON (bool $add_primary_key = false): string {
         if ($add_primary_key) {
             return json_encode(array_merge(
-                array(static::PRIMARY_KEY => $this->id_table),
+                array((static::class)::PRIMARY_KEY => $this->id_table),
                 $this->columns
             ));
         }
@@ -180,9 +180,12 @@ abstract class Table {
 
     /* DLQ (Data Query Language) */
 
+        /**
+         * @return ?static
+         */
         final static function get (int $id, string $columns = NULL): ?Table {
-            if (trim($columns) != '*' && static::PRIMARY_KEY && !preg_match("/(^(\s+)?|.+,(\s+)?)". static::PRIMARY_KEY ."((\s+)?,.+|$)/", $columns)) {
-                $columns = (trim($columns) ? (static::PRIMARY_KEY .', '. $columns) : static::PRIMARY_KEY);
+            if (trim($columns) != '*' && (static::class)::PRIMARY_KEY && !preg_match("/(^(\s+)?|.+,(\s+)?)". (static::class)::PRIMARY_KEY ."((\s+)?,.+|$)/", $columns)) {
+                $columns = (trim($columns) ? ((static::class)::PRIMARY_KEY .', '. $columns) : (static::class)::PRIMARY_KEY);
             }
             if (in_array('Arsavinel\Arshwell\Traits\Languages', class_uses(static::class))) {
                 $columns = preg_replace("/([^\s]):lng(\s|,|$)/", '$1'.ENV::language().' ', $columns);
@@ -201,14 +204,17 @@ abstract class Table {
             return DB::field(static::class, $column, $where, $params);
         }
 
+        /**
+         * @return ?static
+         */
         final static function first (array $sql, array $params = NULL): ?Table {
             $sql['class'] = static::class;
 
-            if (trim($sql['columns']) != '*' && static::PRIMARY_KEY && !preg_match("/(^(\s+)?|.+,(\s+)?)". static::PRIMARY_KEY ."((\s+)?,.+|$)/", $sql['columns'])) {
-                $sql['columns'] = static::PRIMARY_KEY .', '. $sql['columns'];
+            if (trim($sql['columns']) != '*' && (static::class)::PRIMARY_KEY && !preg_match("/(^(\s+)?|.+,(\s+)?)". (static::class)::PRIMARY_KEY ."((\s+)?,.+|$)/", $sql['columns'])) {
+                $sql['columns'] = (static::class)::PRIMARY_KEY .', '. $sql['columns'];
 
                 if (!empty($sql['join'])) {
-                    $sql['columns'] = static::TABLE .'.'. $sql['columns'];
+                    $sql['columns'] = (static::class)::TABLE .'.'. $sql['columns'];
                 }
             }
             if (!isset($sql['files']) || !is_bool($sql['files'])) {
@@ -225,8 +231,8 @@ abstract class Table {
         }
 
         final static function all (string $columns = NULL, string $order = NULL): array {
-            if (trim($columns) != '*' && static::PRIMARY_KEY && !preg_match("/(^(\s+)?|.+,(\s+)?)". static::PRIMARY_KEY ."((\s+)?,.+|$)/", $columns)) {
-                $columns = static::PRIMARY_KEY . ($columns ? (', '. $columns) : '');
+            if (trim($columns) != '*' && (static::class)::PRIMARY_KEY && !preg_match("/(^(\s+)?|.+,(\s+)?)". (static::class)::PRIMARY_KEY ."((\s+)?,.+|$)/", $columns)) {
+                $columns = (static::class)::PRIMARY_KEY . ($columns ? (', '. $columns) : '');
             }
 
             return (array_map(function ($row) use ($columns) {
@@ -237,11 +243,11 @@ abstract class Table {
         final static function select (array $sql, array $params = NULL): array {
             $sql['class'] = static::class;
 
-            if (trim($sql['columns']) != '*' && static::PRIMARY_KEY && !preg_match("/(^(\s+)?|.+,(\s+)?)". static::PRIMARY_KEY ."((\s+)?,.+|$)/", $sql['columns'])) {
-                $sql['columns'] = static::PRIMARY_KEY . ($sql['columns'] ? (', '. $sql['columns']) : '');
+            if (trim($sql['columns']) != '*' && (static::class)::PRIMARY_KEY && !preg_match("/(^(\s+)?|.+,(\s+)?)". (static::class)::PRIMARY_KEY ."((\s+)?,.+|$)/", $sql['columns'])) {
+                $sql['columns'] = (static::class)::PRIMARY_KEY . ($sql['columns'] ? (', '. $sql['columns']) : '');
 
                 if (!empty($sql['join'])) {
-                    $sql['columns'] = static::TABLE .'.'. $sql['columns'];
+                    $sql['columns'] = (static::class)::TABLE .'.'. $sql['columns'];
                 }
             }
             if (!isset($sql['files']) || !is_bool($sql['files'])) {
@@ -283,10 +289,10 @@ abstract class Table {
     /* DDL (Data Definition Language) */
 
         final static function columns (bool $add_primary_key = false): array {
-            return DB::columnsTable(static::TABLE, $add_primary_key);
+            return DB::columnsTable((static::class)::TABLE, $add_primary_key);
         }
 
         final static function truncate () {
-            DB::truncateTable(static::TABLE);
+            DB::truncateTable((static::class)::TABLE);
         }
 }
