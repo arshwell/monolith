@@ -40,7 +40,7 @@ final class Order {
         else {
             $form->message = array(
                 'type' => 'danger',
-                'text' => "Câmpuri completate greșit"
+                'text' => "Fields filled in incorrectly"
             );
         }
 

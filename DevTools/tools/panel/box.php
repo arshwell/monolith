@@ -400,7 +400,7 @@ ob_start(); // for adding all content in DevToolHTML::html() function
 
                                 </div>
 
-                                <!-- info site -->
+                                <!-- info website -->
                                 <div id="info-site" HTML="info/content/site"
                                 class="tab-pane fade py-2 <?= (Session::panel('box.tab.info') == 'site' ? 'show active' : '') ?>">
 
@@ -422,7 +422,7 @@ ob_start(); // for adding all content in DevToolHTML::html() function
 
                                 </div>
 
-                                <!-- resources site -->
+                                <!-- resources website -->
                                 <div id="resources-site" HTML="resources/content/site"
                                 class="tab-pane fade py-2 <?= (Session::panel('box.tab.resources') == 'site' ? 'show active' : '') ?>">
 

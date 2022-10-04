@@ -31,7 +31,7 @@ final class Update {
                         <div class="col-lg-8">
                             <div class="card mb-3">
                                 <h6 class="card-header">
-                                    Editare
+                                    Editing
                                     <?php
                                     if (($module['back']['DB']['table'])::isTranslated()) { ?>
                                         <div style="position: absolute; right: 15px; top: 0;">
@@ -95,10 +95,10 @@ final class Update {
                 <form class="arshmodule-form">
                     <div class="card mb-3">
                         <h6 class="card-header">
-                            Nu am găsit înregistrarea
+                            The record was not found
                         </h6>
                         <div class="card-body py-2">
-                            Cel mai probabil această înregistrare a fost ștearsă
+                            This record has most likely been deleted
                         </div>
                     </div>
                 </form>

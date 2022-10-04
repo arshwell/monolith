@@ -63,10 +63,10 @@ $(document).ready(function () {
     $('select[multiple][js-plugin-multiselect="true"]').multiselect({
         buttonWidth: '100%',
         buttonTextAlignment: 'left',
-        nonSelectedText: 'Selectează',
-        nSelectedText: ' selectate',
+        nonSelectedText: 'Select',
+        nSelectedText: ' selected',
         enableFiltering: true,
-        filterPlaceholder: 'Caută...',
+        filterPlaceholder: 'Search for...',
         enableCaseInsensitiveFiltering: true,
         includeFilterClearBtn: false,
         delimiterText: '|'
@@ -231,12 +231,12 @@ $(document).ready(function () {
                 $(event.trigger).attr('data-original-title', $(event.trigger).data('title'));
             }, 1500);
         });
-        clipboards.on('error', function (e) {
+        clipboards.on('error', function (event) {
             if ($(event.trigger).attr('data-original-title') == undefined) {
                 $(event.trigger).tooltip();
             }
 
-            $(event.trigger).attr('data-original-title', 'Tastează CTRL+C').tooltip('show');
+            $(event.trigger).attr('data-original-title', 'Type CTRL+C').tooltip('show');
 
             setTimeout(function () {
                 $(event.trigger).attr('data-original-title', $(event.trigger).data('title'));

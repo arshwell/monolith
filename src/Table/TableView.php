@@ -18,7 +18,7 @@ use Exception;
 
 /*
  * Static methods, for getting (and auto-setting) View content from DB,
- * used for a better organization of the content in the site.
+ * used for a better organization of the content in the website.
 */
 abstract class TableView extends Table {
     const FILES = array(
@@ -254,8 +254,11 @@ abstract class TableView extends Table {
         $image_folder = Folder::encode(static::class) .'/'. $result[static::PRIMARY_KEY] .'/value/';
 
         foreach ((static::TRANSLATOR)::LANGUAGES as $lang) {
+            $file = File::first(ENV::uploads('files'). $image_folder . $lang .'/'. $width.'x'.$height);
+            $basename = basename($file);
+
             // if this language doesn't have the file
-            if (File::first(ENV::uploads('files'). $image_folder . $lang .'/'. $width.'x'.$height) == NULL) {
+            if ($file == NULL) {
                 $image = (
                     File::findBiggestSibling(ENV::uploads('files'). $image_folder . $lang .'/'. $width.'x'.$height.'/foo.bar')
                     ?:
@@ -284,11 +287,11 @@ abstract class TableView extends Table {
                 $resizer->image_ratio_crop   = true;
 
                 $resizer->process(ENV::uploads('files'). $image_folder . $lang .'/'. $width .'x'. $height .'/');
+            }
 
-                // remember url file, for current language
-                if ($lang == $language) {
-                    $file = ($site .ENV::uploads('files'). $image_folder . $language .'/'. $width .'x'. $height .'/'. $basename);
-                }
+            // remember url file, for current language
+            if ($lang == $language) {
+                $file = ($site .ENV::uploads('files'). $image_folder . $language .'/'. $width .'x'. $height .'/'. $basename);
             }
         }
 

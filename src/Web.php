@@ -176,7 +176,7 @@ final class Web {
                         else {
                             $links = array();
                             foreach ($route[2] as $lg => $input) {
-                                // saving for langs site is using for now
+                                // saving for langs website is using for now
                                 if (in_array($lg, $languages)) {
                                     $links[$lg] = (array)$input;
                                 }

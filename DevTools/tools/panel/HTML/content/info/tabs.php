@@ -5,6 +5,6 @@
 </li>
 <li class="nav-item">
     <a class="nav-link <?= (Arsavinel\Arshwell\Session::panel('box.tab.info') == 'site' ? 'active' : '') ?>" data-toggle="tab" href="#info-site">
-        About site
+        About website
     </a>
 </li>

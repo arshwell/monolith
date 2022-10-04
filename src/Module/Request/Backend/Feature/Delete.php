@@ -33,13 +33,13 @@ final class Delete {
             $form->remove = 'tr';
             $form->message = array(
                 'type' => 'success',
-                'text' => "Șters cu succes"
+                'text' => "Deleted successfully"
             );
         }
         else {
             $form->message = array(
                 'type' => 'danger',
-                'text' => "Câmpuri completate greșit"
+                'text' => "Fields filled in incorrectly"
             );
         }
 

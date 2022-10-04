@@ -203,7 +203,7 @@ final class Insert {
 
             $form->message = array(
                 'type' => "success",
-                'text' => "Adăugat cu succes"
+                'text' => "Added successfully"
             );
 
             switch ($form->value('after')) {
@@ -222,7 +222,7 @@ final class Insert {
         else {
             $form->message = array(
                 'type' => "danger",
-                'text' => "Câmpuri completate greșit"
+                'text' => "Fields filled in incorrectly"
             );
         }
 

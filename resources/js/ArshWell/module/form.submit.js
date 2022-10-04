@@ -3,7 +3,7 @@ $(document).ready(function () {
         var parent = $(form).closest('.arshmodule').find('.arshmodule-html-piece-dialog').eq(0);
 
         if (parent.length == 0) {
-            alert("Niciun dialog modal găsit.\nInclude-l din piesele modulelor!");
+            alert("No modal dialog found. \nInclude it from module pieces \n(Arsavinel\\Arshwell\\Module\\HTML\\Piece::dialog())!");
             return;
         }
 
@@ -107,7 +107,7 @@ $(document).ready(function () {
                             valid: false,
                             message: {
                                 type: 'warning',
-                                text: "Nu încărca fișiere foarte mari"
+                                text: "Do not upload very large files (less than 200 MB)"
                             },
                             errors: []
                         });
@@ -236,8 +236,8 @@ $(document).ready(function () {
                         valid: false,
                         message: {
                             type: 'warning',
-                            text: "Posibilă problemă de conexiune",
-                            info: "Verifică conexiunea la internet."
+                            text: "Possible connection problem",
+                            info: "Check your internet connection."
                         }
                     });
                     setTimeout(function () {
@@ -254,7 +254,7 @@ $(document).ready(function () {
                     }, 100);
                 }
                 else if (response.status == 401 || response.status == 403) {
-                    alert("Sesiune expirată");
+                    alert("Session timed out");
                 }
                 else {
                     communicate($(form.dom), {
@@ -262,7 +262,7 @@ $(document).ready(function () {
                         valid: false,
                         message: {
                             type: 'warning',
-                            text: "S-a întâmplat ceva neașteptat"
+                            text: "Something wrong occurred"
                         }
                     });
                 }

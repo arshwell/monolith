@@ -28,7 +28,7 @@ final class Insert {
                     <div class="col-lg-8">
                         <div class="card mb-3">
                             <h6 class="card-header">
-                                Adăugare
+                                Adding
                                 <?php
                                 if (($module['back']['DB']['table'])::isTranslated()) { ?>
                                     <div style="position: absolute; right: 15px; top: 0;">

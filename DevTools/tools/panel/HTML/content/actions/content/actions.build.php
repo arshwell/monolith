@@ -42,7 +42,7 @@ if (!is_file('env.build.json')) { ?>
         <h5 class="alert-heading">What is the facility?</h5>
         <p class="mb-0">
             If you first create a demo project (using a dev domain),
-            you can prepare the env that site will using on live.
+            you can prepare the env that website will using on live.
             In that way, you can copy your project with correct env data (url, database, etc)
             every time you wanna update the live project.
         </p>

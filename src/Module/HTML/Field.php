@@ -58,7 +58,7 @@ final class Field {
                                         <input type="hidden" name="filetools[delete]<?= $piece['filetools']['name'] ?>" value="1" disabled />
                                         <span class="info info-red text-light" form-error="filetools.delete.<?= $piece['filetools']['identifier'] ?>"></span>
 
-                                        <button type="button" class="action-delete mb-1 mr-1 btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="Șterge imaginea">
+                                        <button type="button" class="action-delete mb-1 mr-1 btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="Delete the image">
                                             <i class="fa fa-fw fa-trash-alt"></i>
                                         </button>
                                         <button type="button" href="<?= $image->biggest($language) ?>"
@@ -68,10 +68,10 @@ final class Field {
                                         data-toggle="tooltip" data-placement="top" title="Zoom">
                                             <i class="fa fa-fw fa-search-plus"></i>
                                         </button>
-                                        <button type="button" class="action-rename mb-1 mr-1 btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="Editează numele">
+                                        <button type="button" class="action-rename mb-1 mr-1 btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="Edit the name">
                                             <i class="fa fa-fw fa-edit" data-toggle="fa-edit fa-file-signature"></i>
                                         </button>
-                                        <div class="btn-group dropright align-top" data-toggle="tooltip" data-placement="top" title="Descarcă">
+                                        <div class="btn-group dropright align-top" data-toggle="tooltip" data-placement="top" title="Download">
                                             <button type="button" class="dropdown-toggle btn btn-light btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 <i class="fa fa-fw fa-download"></i>
                                             </button>
@@ -131,7 +131,7 @@ final class Field {
                         <?= (($config['HTML']['id'] ?? false) ? 'id="'.$config['HTML']['id'].'"' : '') ?> />
                         <label class="custom-file-label"
                         <?= (($config['HTML']['id'] ?? false) ? 'for="'.$config['HTML']['id'].'"' : '') ?>>
-                            Alege fișier
+                            Choose file
                         </label>
                     </div>
                 </div>
@@ -141,9 +141,9 @@ final class Field {
                         $config['HTML']['notes'],
                         call_user_func(function () use ($image) {
                             ob_start(); ?>
-                                *Cea mai mică dimensiune potrivită:
+                                *Smallest suitable size:
                                 <u data-toggle="tooltip" data-placement="left" data-html="true"
-                                title="<span style='font-size: smaller'>Rezoluțiile finale:<br><?= implode(', ', array_map(function (array $size) {
+                                title="<span style='font-size: smaller'>Final resolutions:<br><?= implode(', ', array_map(function (array $size) {
                                     return (
                                         implode('×', array_map(function (array $side) {
                                             if ($side[0] == $side[1]) {
@@ -236,16 +236,16 @@ final class Field {
                                             <input type="hidden" name="filetools[delete]<?= $piece['filetools']['name'] ?>[<?= $basename ?>]" value="1" disabled />
                                             <span class="info info-red text-light" form-error="filetools.delete.<?= $piece['filetools']['identifier'] ?>.<?= $basename ?>"></span>
 
-                                            <button type="button" class="action-delete mb-1 mr-1 btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="Șterge imaginea">
+                                            <button type="button" class="action-delete mb-1 mr-1 btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="Delete the image">
                                                 <i class="fa fa-fw fa-trash-alt"></i>
                                             </button>
                                             <button type="button" data-caption="<?= $basename ?>" href="<?= $biggest[$i] ?>" data-thumb="<?= $smallest[$i] ?>" data-protect="true" data-fancybox="<?= $piece['selector']['identifier'] ?>" class="action-zoom mb-1 mr-1 btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="Zoom">
                                                 <i class="fa fa-fw fa-search-plus"></i>
                                             </button>
-                                            <button type="button" class="action-rename mb-1 mr-1 btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="Editează numele">
+                                            <button type="button" class="action-rename mb-1 mr-1 btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="Edit the name">
                                                 <i class="fa fa-fw fa-edit" data-toggle="fa-edit fa-file-signature"></i>
                                             </button>
-                                            <div class="btn-group dropright align-top" data-toggle="tooltip" data-placement="top" title="Descarcă">
+                                            <div class="btn-group dropright align-top" data-toggle="tooltip" data-placement="top" title="Download">
                                                 <button type="button" class="dropdown-toggle btn btn-light btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                     <i class="fa fa-fw fa-download"></i>
                                                 </button>
@@ -290,16 +290,16 @@ final class Field {
                                     <button type="button" class="action-crop mb-1 mr-1 btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="Crop">
                                         <i class="fa fa-fw fa-crop"></i>
                                     </button>
-                                    <button type="button" class="d-none action-delete mb-1 mr-1 btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="Șterge imaginea">
+                                    <button type="button" class="d-none action-delete mb-1 mr-1 btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="Delete the image">
                                         <i class="fa fa-fw fa-trash-alt" data-toggle="fa-trash-alt fa-trash-restore-alt"></i>
                                     </button>
                                     <button type="button" href data-fancybox class="d-none action-zoom mb-1 mr-1 btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="Zoom">
                                         <i class="fa fa-fw fa-search-plus"></i>
                                     </button>
-                                    <button type="button" class="d-none action-rename mb-1 mr-1 btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="Editează numele">
+                                    <button type="button" class="d-none action-rename mb-1 mr-1 btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="Edit the name">
                                         <i class="fa fa-fw fa-edit" data-toggle="fa-edit fa-file-signature"></i>
                                     </button>
-                                    <div class="d-none btn-group dropright align-top" data-toggle="tooltip" data-placement="top" title="Descarcă">
+                                    <div class="d-none btn-group dropright align-top" data-toggle="tooltip" data-placement="top" title="Download">
                                         <button type="button" class="dropdown-toggle btn btn-light btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <i class="fa fa-fw fa-download"></i>
                                         </button>
@@ -333,7 +333,7 @@ final class Field {
                         <?= (($config['HTML']['id'] ?? false) ? 'id="'.$config['HTML']['id'].'"' : '') ?> />
                         <label class="custom-file-label"
                         <?= (($config['HTML']['id'] ?? false) ? 'for="'.$config['HTML']['id'].'"' : '') ?>>
-                            Alege fișiere
+                            Choose files
                         </label>
                     </div>
                 </div>
@@ -343,9 +343,9 @@ final class Field {
                         $config['HTML']['notes'],
                         call_user_func(function () use ($images) {
                             ob_start(); ?>
-                                *Cea mai mică dimensiune potrivită:
+                                *Smallest suitable size:
                                 <u data-toggle="tooltip" data-placement="left" data-html="true"
-                                title="<span style='font-size: smaller'>Rezoluțiile finale:<br><?= implode(', ', array_map(function (array $ranges) {
+                                title="<span style='font-size: smaller'>Final resolutions:<br><?= implode(', ', array_map(function (array $ranges) {
                                     return (
                                         ($ranges['width'][0] != $ranges['width'][1] || $ranges['height'][0] != $ranges['height'][1] ? '<br>' : '') .
                                         implode('x', array_map(function (array $side) {
@@ -374,7 +374,7 @@ final class Field {
                             <?php
                             return ob_get_clean();
                         }),
-                        "*Imaginile vor fi afișate în ordine alfabetică"
+                        "*Images will be displayed in alphabetical order"
                     );
                 }
                 foreach (($config['HTML']['notes'] ?? array()) as $note) { ?>
@@ -435,15 +435,15 @@ final class Field {
                                         <input type="hidden" name="filetools[delete]<?= $piece['filetools']['name'] ?>" value="1" disabled />
                                         <span class="info info-red text-light" form-error="filetools.delete.<?= $piece['filetools']['identifier'] ?>"></span>
 
-                                        <button type="button" class="action-delete mb-1 mr-1 btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="Șterge fișierul">
+                                        <button type="button" class="action-delete mb-1 mr-1 btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="Delete the file">
                                             <i class="fa fa-fw fa-trash-alt" data-toggle="fa-trash-alt fa-trash-restore-alt"></i>
                                         </button>
                                         <a href="<?= $doc->url($language) ?>" target="_blank"
                                         class="action-zoom mb-1 mr-1 btn btn-light btn-sm"
-                                        data-toggle="tooltip" data-placement="top" title="Vezi fișierul">
+                                        data-toggle="tooltip" data-placement="top" title="View the file">
                                             <i class="fa fa-fw fa-download"></i>
                                         </a>
-                                        <button type="button" class="action-rename mb-1 mr-1 btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="Editează numele">
+                                        <button type="button" class="action-rename mb-1 mr-1 btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="Edit the name">
                                             <i class="fa fa-fw fa-edit" data-toggle="fa-edit fa-file-signature"></i>
                                         </button>
                                     </div>
@@ -488,7 +488,7 @@ final class Field {
                         <?= (($config['HTML']['id'] ?? false) ? 'id="'.$config['HTML']['id'].'"' : '') ?> />
                         <label class="custom-file-label"
                         <?= (($config['HTML']['id'] ?? false) ? 'for="'.$config['HTML']['id'].'"' : '') ?>>
-                            Alege fișier
+                            Choose file
                         </label>
                     </div>
                 </div>
@@ -541,7 +541,7 @@ final class Field {
                             <div class="box">
                                 <video muted>
                                     <source src="<?= $video->url($language) ?>" />
-                                    Browser-ul tău nu suportă HTML5 video.
+                                    Your browser does not support HTML5 video.
                                 </video>
 
                                 <div class="video"
@@ -552,7 +552,7 @@ final class Field {
                                         <input type="hidden" name="filetools[delete]<?= $piece['filetools']['name'] ?>" value="1" disabled />
                                         <span class="info info-red text-light" form-error="filetools.delete.<?= $piece['filetools']['identifier'] ?>"></span>
 
-                                        <button type="button" class="action-delete mb-1 mr-1 btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="Șterge imaginea">
+                                        <button type="button" class="action-delete mb-1 mr-1 btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="Delete the image">
                                             <i class="fa fa-fw fa-trash-alt" data-toggle="fa-trash-alt fa-trash-restore-alt"></i>
                                         </button>
                                         <button type="button" class="action-play mb-1 mr-1 btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="Play">
@@ -561,13 +561,13 @@ final class Field {
                                         <button type="button" class="action-replay mb-1 mr-1 btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="Replay">
                                             <i class="fas fa-fw fa-history"></i>
                                         </button>
-                                        <button type="button" class="action-volume mb-1 mr-1 btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="Sunet">
+                                        <button type="button" class="action-volume mb-1 mr-1 btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="Sound">
                                             <i class="fas fa-fw fa-volume-mute" data-toggle="fa-volume-mute fa-volume-up"></i>
                                         </button>
-                                        <button type="button" class="action-rename mb-1 mr-1 btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="Editează numele">
+                                        <button type="button" class="action-rename mb-1 mr-1 btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="Edit the name">
                                             <i class="fa fa-fw fa-edit" data-toggle="fa-edit fa-file-signature"></i>
                                         </button>
-                                        <a href="<?= $video->url($language) ?>" target="_blank" class="mb-1 mr-1 btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="Descarcă">
+                                        <a href="<?= $video->url($language) ?>" target="_blank" class="mb-1 mr-1 btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="Download">
                                             <i class="fa fa-fw fa-download"></i>
                                         </a>
                                     </div>
@@ -590,7 +590,7 @@ final class Field {
                         <div class="box video-uploaded d-none">
                             <video muted>
                                 <source />
-                                Browser-ul tău nu suportă HTML5 video.
+                                Your browser does not support HTML5 video.
                             </video>
                             <div class="video">
                                 <div class="video-actions px-2">
@@ -600,7 +600,7 @@ final class Field {
                                     <button type="button" class="action-replay mb-1 mr-1 btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="Replay">
                                         <i class="fas fa-fw fa-history"></i>
                                     </button>
-                                    <button type="button" class="action-volume mb-1 mr-1 btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="Sunet">
+                                    <button type="button" class="action-volume mb-1 mr-1 btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="Sound">
                                         <i class="fas fa-fw fa-volume-mute" data-toggle="fa-volume-mute fa-volume-up"></i>
                                     </button>
                                 </div>
@@ -621,7 +621,7 @@ final class Field {
                             <?= (($config['HTML']['id'] ?? false) ? 'id="'.$config['HTML']['id'].'"' : '') ?> />
                             <label class="custom-file-label"
                             <?= (($config['HTML']['id'] ?? false) ? 'for="'.$config['HTML']['id'].'"' : '') ?>>
-                                Alege fișier
+                                Choose file
                             </label>
                         </div>
                     </div>
@@ -1022,7 +1022,7 @@ final class Field {
 
                 <select class="custom-select input-group-prepend">
                     <option value="page" <?= (empty($config['HTML']['value']) || Web::exists($config['HTML']['value']) ? 'selected' : '') ?>>
-                        Pagină
+                        Page
                     </option>
                     <option value="link" <?= (!empty($config['HTML']['value']) && !Web::exists($config['HTML']['value']) ? 'selected' : '') ?>>
                         Link
@@ -1034,7 +1034,7 @@ final class Field {
                 <?= (($config['HTML']['id'] ?? false) ? 'id="'.$config['HTML']['id'].'"' : '') ?>
                 <?= (($config['HTML']['disabled'] ?? false) ? 'disabled="disabled"' : '') ?>
                 <?= (($config['HTML']['readonly'] ?? false) ? 'readonly="readonly"' : '') ?>>
-                    <option value="" selected>Nicio pagină</option>
+                    <option value="" selected>No page selected</option>
                     <?php
                     foreach ($config['HTML']['values'] as $key => $text) { ?>
                         <option value="<?= $key ?>" <?= ($key == $config['HTML']['value'] ? 'selected' : '') ?>>
@@ -1054,10 +1054,10 @@ final class Field {
                 />
 
                 <!-- <div class="input-group-append">
-                    <input type="text" title="parametri opționali..."
+                    <input type="text" title="optional parameters..."
                     class="form-control input-group-text <?= $config['HTML']['class'] ?? '' ?>"
                     <?= (($config['HTML']['id'] ?? false) ? 'id="'.$config['HTML']['id'].'"' : '') ?>
-                    placeholder="parametri..."
+                    placeholder="parameters..."
                     value="<?= substr($config['HTML']['value'], strpos($config['HTML']['value'], '-') + 1) ?>"
                     form-valid-update="false"
                     <?= (($config['HTML']['disabled'] ?? false) ? 'disabled="disabled"' : '') ?>

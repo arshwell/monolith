@@ -5,11 +5,8 @@ namespace Arsavinel\Arshwell\Module\HTML;
 use Arsavinel\Arshwell\Table\TableSegment;
 use Arsavinel\Arshwell\Table\TableColumn;
 use Arsavinel\Arshwell\Table\TableField;
-use Arsavinel\Arshwell\Table\TableFiles;
-use Arsavinel\Arshwell\Table;
 use Arsavinel\Arshwell\Text;
 use Arsavinel\Arshwell\File;
-use Arsavinel\Arshwell\Func;
 use Arsavinel\Arshwell\URL;
 use Arsavinel\Arshwell\Web;
 
@@ -101,7 +98,7 @@ final class Piece {
 
                     <div class="row">
                         <div class="col-sm mb-1 mb-sm-0">
-                            <input type="text" class="form-control h-100" placeholder="Caută...">
+                            <input type="text" class="form-control h-100" placeholder="Search for...">
                         </div>
                         <div class="col">
                             <select class="custom-select h-100">
@@ -112,7 +109,7 @@ final class Piece {
                                         case 'textarea':
                                         case 'number': { ?>
                                             <option value="<?= $key ?>">
-                                                în <?= $field['HTML']['label'] ?>
+                                                in <?= $field['HTML']['label'] ?>
                                             </option>
                                             <?php
                                             break;
@@ -122,7 +119,7 @@ final class Piece {
                             </select>
                         </div>
                         <div class="col-auto text-right">
-                            <button class="btn btn-danger" title="Caută">
+                            <button class="btn btn-danger" title="Search">
                                 <i class="fa fa-fw fa-search"></i>
                             </button>
                         </div>
@@ -133,7 +130,7 @@ final class Piece {
                     <div class="card-footer">
                         <?php
                         if (!isset($query['search'])) {
-                            echo "<i>Nicio căutare adăugată.</i>";
+                            echo "<i>No search added.</i>";
                         }
                         else {
                             foreach ($query['search'] as $field => $values) {
@@ -176,8 +173,8 @@ final class Piece {
 
                     <div class="row">
                         <div class="col-sm mb-1 mb-sm-0">
-                            <select class="custom-select h-100" title="Filtrează după">
-                                <option selected hidden>Filtrează după</option>
+                            <select class="custom-select h-100" title="Filter by">
+                                <option selected hidden>Filter by</option>
                                 <?php
                                 foreach ($fields as $key => $field) {
                                     if (in_array($field['HTML']['type'], array('select', 'radio'))) { ?>
@@ -203,7 +200,7 @@ final class Piece {
                             } ?>
                         </div>
                         <div class="col-auto text-right">
-                            <button type="submit" class="btn btn-danger" title="Filtrează">
+                            <button type="submit" class="btn btn-danger" title="Filter">
                                 <i class="fa fa-fw fa-search"></i>
                             </button>
                         </div>
@@ -215,7 +212,7 @@ final class Piece {
                 <div class="card-footer">
                     <?php
                     if (!isset($query['filter'])) {
-                        echo "<i>Niciun filtru adăugat.</i>";
+                        echo "<i>No filter added.</i>";
                     }
                     else {
                         foreach ($query['filter'] as $key => $values) {
@@ -242,8 +239,8 @@ final class Piece {
             <div class="arshmodule-addon-columns">
                 <div class="dropdown btn pl-0 pr-0 pb-0 ml-0 mr-0 mb-0">
                     <button class="btn btn-sm <?= (count($fields) == count($visible) ? 'btn-dark' : 'btn-secondary') ?> dropdown-toggle"
-                    type="button" title="Câmpuri vizibile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-offset="0,5">
-                        Câmpuri
+                    type="button" title="Visible fields" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-offset="0,5">
+                        Fields
                     </button>
                     <div class="dropdown-menu dropdown-menu-right">
                         <?php
@@ -260,7 +257,7 @@ final class Piece {
                         <div class="dropdown-divider"></div>
                         <div class="dropdown-item">
                             <button type="submit" class="btn btn-sm btn-primary">
-                                Afișează
+                                Display
                             </button>
                         </div>
                     </div>
@@ -331,7 +328,7 @@ final class Piece {
                                                 break;
                                             }
                                             default: { ?>
-                                                <span type="button" data-key="<?= $key ?>" title="Sortează"
+                                                <span type="button" data-key="<?= $key ?>" title="Sort"
                                                 data-sort="<?= (!isset($query['sort'][$key]) || $query['sort'][$key] == 'd' ? 'a' : 'd') ?>">
                                                     <?= $HTMLs[$key]['label'] ?>
                                                     <i class="fa fa-fw fa-sort"></i>
@@ -355,7 +352,7 @@ final class Piece {
                                     </td>
                                 <?php } ?>
                                 <td class="text-right border-top-0">
-                                    Acțiuni
+                                    Actions
                                 </td>
                             </tr>
                         </thead>
@@ -409,7 +406,7 @@ final class Piece {
                                                 <?php
                                                 switch ($HTML['type']) {
                                                     case 'image': {
-                                                        if ($value->urls()) {
+                                                        if ($value && $value->urls()) {
                                                             $smallest = $value->smallest($lg);
                                                             $biggest  = $value->biggest($lg); ?>
 
@@ -425,7 +422,7 @@ final class Piece {
                                                         break;
                                                     }
                                                     case 'images': {
-                                                        if ($value->urls()) {
+                                                        if ($value && $value->urls()) {
                                                             $smallest = $value->smallest($lg);
                                                             $biggest  = $value->biggest($lg); ?>
 
@@ -465,14 +462,14 @@ final class Piece {
                                                             <a href="<?= $value->url() ?>" target="_blank">
                                                                 <video preload="metadata">
                                                                     <source src="<?= $value->url() ?>" />
-                                                                    Browser-ul tău nu suportă HTML5 video.
+                                                                    Your browser does not support HTML5 video.
                                                                 </video>
                                                             </a>
                                                         <?php }
                                                         break;
                                                     }
                                                     case 'icon': { ?>
-                                                        <i class="<?= $value ?> fa-fw fa-2x"></i>
+                                                        <i class="<?= $value ?> fa-fw d-block"></i>
                                                         <?php
                                                         break;
                                                     }
@@ -534,7 +531,7 @@ final class Piece {
                     </table>
                     <?php
                     if (empty($data)) { ?>
-                        <small class="text-muted">Nicio înregistrare</small>
+                        <small class="text-muted">No record</small>
                     <?php } ?>
                 </div>
             </div>
@@ -756,33 +753,33 @@ final class Piece {
 
             <div class="arshmodule-html asrhmodule-html-piece arshmodule-html-piece-saver">
                 <div class="card mb-3">
-                    <h6 class="card-header">Salvare</h6>
+                    <h6 class="card-header">Save</h6>
                     <div class="card-body pt-3">
                         <?php
                         if ($afters) { ?>
-                            <small>După salvare:</small>
+                            <small>After saving:</small>
                         <?php } ?>
                         <div class="row align-items-center">
                             <?php
                             if ($afters) { ?>
                                 <div class="col-sm-auto col-lg-12">
-                                    <select class="custom-select" name="after" title="După salvare...">
+                                    <select class="custom-select" name="after" title="After saving...">
                                         <?php
                                         foreach (array_unique($afters) as $key) {
                                             if (!is_int($key)) {
                                                 switch ($key) {
                                                     case 'select': { ?>
-                                                        <option value="<?= $key ?>">Mergi la vizualizare</option>
+                                                        <option value="<?= $key ?>">Go to table view</option>
                                                         <?php
                                                         break;
                                                     }
                                                     case 'update': { ?>
-                                                        <option value="<?= $key ?>" selected>Editează această înregistrare</option>
+                                                        <option value="<?= $key ?>" selected>After adding, edit this record</option>
                                                         <?php
                                                         break;
                                                     }
                                                     case 'insert': { ?>
-                                                        <option value="<?= $key ?>">Adaugă o nouă înregistrare</option>
+                                                        <option value="<?= $key ?>">Add a new record</option>
                                                         <?php
                                                         break;
                                                     }
@@ -804,13 +801,13 @@ final class Piece {
                                         form-valid-update="false"
                                         />
                                         <label class="custom-control-label d-flex" style="padding-top: 2px;" for="arshmodule-form-preservation">
-                                            Păstrează câmpurile după salvare
+                                            Keep fields after saving
                                         </label>
                                     </div>
                                 </div>
                             <?php } ?>
                             <div class="col-sm-auto my-1 col-lg-12 ml-auto text-right">
-                                <input type="submit" class="btn btn-sm" value="Salvează" />
+                                <input type="submit" class="btn btn-sm" value="Save now" />
                             </div>
                         </div>
                     </div>
@@ -825,7 +822,7 @@ final class Piece {
         ob_start(); ?>
 
             <div class="modal fade arshmodule-html arshmodule-html-piece arshmodule-html-piece-dialog" tabindex="-1">
-                <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                     <div class="modal-content border-0 bg-dark text-light">
                         <div class="modal-header border-secondary">
                             <h6 class="modal-title"></h6>
@@ -836,37 +833,37 @@ final class Piece {
                         <div class="modal-body">
                             <div class="arshmodule-modal-info"></div>
                             <div class="arshmodule-modal-errors">
-                                Rezolvă mențiunile:
+                                <small>Solve the mentions:</small>
                                 <ul class="list-group list-group-flush mt-1 text-break">
                                     <li class="list-group-item list-group-item-warning d-none"></li>
                                 </ul>
                             </div>
                             <div class="arshmodule-modal-bug">
-                                Au apărut niște erori neașteptate.<br>Încearcă pe rând, în ordine, următorii pași:
+                                Some unexpected errors occurred.<br>Try the following steps in order:
                                 <ul class="list-group mt-1">
                                     <li class="media d-flex list-group-item list-group-item-danger">
                                         1.
                                         <div class="media-body ml-1">
-                                            <b>Reîncarcă pagina</b> și completează din nou. Merge?
+                                            <b>Reload the page</b> and fill in again. It worked?
                                         </div>
                                     </li>
                                     <li class="media d-flex list-group-item list-group-item-danger">
                                         2.
                                         <div class="media-body ml-1">
-                                            Sunt șanse să editeze și altcineva același conținut în acest moment?
+                                            Are there chances that someone else is editing the same content right now?
                                         </div>
                                     </li>
                                     <li class="media d-flex list-group-item list-group-item-danger">
                                         3.
                                         <div class="media-body ml-1">
-                                            <u>Tot nu merge?</u> Anunță dezvoltatorul site-ului.
+                                            <u>Still not working?</u> Notify the website developer.
                                         </div>
                                     </li>
                                 </ul>
                             </div>
                         </div>
                         <div class="modal-footer border-secondary text-light">
-                            <small>În limbile: <span class="arshmodule-modal-languages"></span></small>
+                            <small><small>Warnings in these languages:</small> <span class="arshmodule-modal-languages"></span></small>
                         </div>
                     </div>
                 </div>
@@ -963,6 +960,8 @@ final class Piece {
             return $links;
         });
 
+        $config_hash = password_hash(serialize($config), PASSWORD_DEFAULT);
+
         ob_start(); ?>
 
             <div class="arshmodule-piece-pagination">
@@ -977,7 +976,7 @@ final class Piece {
                     <div class="col-auto">
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <select name="limit" class="custom-select w-auto">
+                                <select name="limit" class="custom-select w-auto" id="limit-<?= $config_hash ?>">
                                     <?php
                                     $options = array_unique(array(10, 20, 30, 40, 50, 60, $config['limit']));
                                     sort($options);
@@ -990,9 +989,9 @@ final class Piece {
                                 </select>
                             </div>
                             <div class="input-group-append">
-                                <span class="input-group-text">
+                                <label for="limit-<?= $config_hash ?>" class="input-group-text m-0">
                                     per page
-                                </span>
+                                </label>
                             </div>
                         </div>
                     </div>
