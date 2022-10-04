@@ -17,10 +17,11 @@ final class ImageGroup implements TableSegment {
     private $filekey;
     private $folder;
     private $config = array();
+    private $paths = array(); // filepaths
+    private $urls = array(); // urls
     private $smallest = array(); // urls
     private $biggest = array(); // urls
     private $sizes = array();
-    private $urls = array();
 
     function __construct (string $class, int $id_table = NULL, string $filekey) {
         $this->class    = $class;
@@ -204,9 +205,12 @@ final class ImageGroup implements TableSegment {
                     // if files found
                     if (isset($files[$language][$size][0])) {
                         foreach ($files[$language][$size] as $filename) {
-                            $this->sizes[$language][$size][] = getimagesize(ENV::uploads('files') . $this->folder .'/'. $language .'/'. $size .'/'. $filename);
+                            $path = (ENV::uploads('files'). $this->folder .'/'. $language .'/'. $size .'/'. $filename);
 
-                            $this->urls[$language][$size][] = ($site .ENV::uploads('files'). $this->folder .'/'. $language .'/'. $size .'/'. $filename);
+                            $this->paths[$language][$size][] = $path;
+
+                            $this->sizes[$language][$size][] = getimagesize(ENV::uploads('files') . $path);
+                            $this->urls[$language][$size][] = ($site .ENV::uploads('files') . $path);
                         }
                     }
                 }
@@ -228,6 +232,17 @@ final class ImageGroup implements TableSegment {
 
     function isTranslated (): bool {
         return true;
+    }
+
+    function value (string $size = NULL, string $lang = NULL): ?array {
+        if ($lang == NULL) {
+            $lang = (($this->class)::TRANSLATOR)::get();
+        }
+        if ($size == NULL) {
+            $size = array_key_first($this->paths[$lang]);
+        }
+
+        return array_map('file_get_contents', $this->paths[$lang][$size]) ?? NULL;
     }
 
     function urls (string $lang = NULL): array {

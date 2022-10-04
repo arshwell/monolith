@@ -13,6 +13,7 @@ final class Doc implements TableSegment {
     private $id_table = NULL;
     private $filekey;
     private $folder;
+    private $paths = array(); // filepaths
     private $urls = NULL; // if no files in uploads/
 
     function __construct (string $class, int $id_table = NULL, string $filekey) {
@@ -36,7 +37,9 @@ final class Doc implements TableSegment {
                 }
 
                 if (!empty($files[$language])) {
-                    $this->urls[$language] = ($site .ENV::uploads('files'). $this->folder .'/'. $language .'/'. array_values($files[$language])[0]);
+                    $this->paths[$language] = (ENV::uploads('files') . $this->folder .'/'. $language .'/'. array_values($files[$language])[0]);
+
+                    $this->urls[$language] = ($site . $this->paths[$language]);
                 }
             }
         }
@@ -56,6 +59,14 @@ final class Doc implements TableSegment {
 
     function isTranslated (): bool {
         return true;
+    }
+
+    function value (string $lang = NULL): ?string {
+        if ($lang == NULL) {
+            $lang = (($this->class)::TRANSLATOR)::get();
+        }
+
+        return file_get_contents($this->paths[$lang]) ?? NULL;
     }
 
     function url (string $lang = NULL): ?string {

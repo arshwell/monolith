@@ -18,10 +18,11 @@ final class Image implements TableSegment {
     private $filekey;
     private $folder;
     private $config = array();
+    private $paths = array(); // filepaths
+    private $urls = array(); // urls
     private $smallest = array(); // urls
     private $biggest = array(); // urls
     private $sizes = array();
-    private $urls = array();
 
     function __construct (string $class, int $id_table = NULL, string $filekey) {
         $this->class    = $class;
@@ -194,9 +195,10 @@ final class Image implements TableSegment {
 
                     // if file found
                     if (isset($files[$language][$size][0])) {
-                        $this->sizes[$language][$size] = getimagesize(ENV::uploads('files') . $this->folder .'/'. $language .'/'. $size .'/'. $files[$language][$size][0]);
+                        $this->paths[$language][$size] = (ENV::uploads('files') . $this->folder .'/'. $language .'/'. $size .'/'. $files[$language][$size][0]);
 
-                        $this->urls[$language][$size] = ($site .ENV::uploads('files'). $this->folder .'/'. $language .'/'. $size .'/'. $files[$language][$size][0]);
+                        $this->sizes[$language][$size] = getimagesize($this->paths[$language][$size]);
+                        $this->urls[$language][$size] = ($site . $this->paths[$language][$size]);
                     }
                 }
             }
@@ -221,6 +223,17 @@ final class Image implements TableSegment {
 
     function isTranslated (): bool {
         return true;
+    }
+
+    function value (string $size = NULL, string $lang = NULL): ?string {
+        if ($lang == NULL) {
+            $lang = (($this->class)::TRANSLATOR)::get();
+        }
+        if ($size == NULL) {
+            $size = array_key_first($this->paths[$lang]);
+        }
+
+        return file_get_contents($this->paths[$lang][$size]) ?? NULL;
     }
 
     function urls (string $lang = NULL): array {

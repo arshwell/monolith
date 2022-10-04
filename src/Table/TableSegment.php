@@ -10,4 +10,11 @@ interface TableSegment {
     function key (): string;
 
     function isTranslated (): bool;
+
+    /**
+     * Returns columns value (TableColumn) or file content (TableFiles)
+     *
+     * @return array|string|null
+     */
+    function value ();
 }

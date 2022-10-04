@@ -13,6 +13,7 @@ final class DocGroup implements TableSegment {
     private $id_table = NULL;
     private $filekey;
     private $folder;
+    private $paths = array(); // filepaths
     private $urls = array(); // if no files in uploads/
 
     function __construct (string $class, int $id_table = NULL, string $filekey) {
@@ -35,7 +36,9 @@ final class DocGroup implements TableSegment {
                 }
 
                 foreach ($files[$language] as $filename) {
-                    $this->urls[$language][] = ($site .ENV::uploads('files'). $this->folder .'/'. $language .'/'. $filename);
+                    $this->paths[$language][] = (ENV::uploads('files'). $this->folder .'/'. $language .'/'. $filename);
+
+                    $this->urls[$language][] = ($site . ENV::uploads('files'). $this->folder .'/'. $language .'/'. $filename);
                 }
             }
         }
@@ -55,6 +58,14 @@ final class DocGroup implements TableSegment {
 
     function isTranslated (): bool {
         return true;
+    }
+
+    function value (string $lang = NULL): ?array {
+        if ($lang == NULL) {
+            $lang = (($this->class)::TRANSLATOR)::get();
+        }
+
+        return array_map('file_get_contents', $this->paths[$lang]) ?? NULL;
     }
 
     function urls (string $lang = NULL): array {
