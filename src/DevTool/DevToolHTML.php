@@ -102,8 +102,12 @@ final class DevToolHTML
             "</span>";
     }
 
-    // red
-    static function int(int $int): string
+    /**
+     * @param string (because some numbers are too long)
+     *
+     * @return string (red text)
+     */
+    static function int(string $int): string
     {
         return "<span style='color: #DA564A;'>" . $int . "</span>";
     }

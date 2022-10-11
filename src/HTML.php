@@ -16,7 +16,7 @@ final class HTML {
     * Made to be used in form, against CSRF attacks.
     * It uses a Session token, which will be searched for, at validation time.
 
-    * @return input (a hidden one), with token value
+    * @return string (a hidden input), with token value
     */
     public static function formToken (): string {
         return '<input type="hidden" name="form_token" value="'. Session::token('form') .'" />';

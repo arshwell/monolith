@@ -37,6 +37,8 @@ abstract class TableValidation extends Table {
 
     /**
      * (bool|array) $messages
+     *
+     * @return TableValidationResponse
      */
     final static function run (array $fields, array $protocols = array(), $messages = true): TableValidationResponse {
         // If there's no form_token or wrong one,
