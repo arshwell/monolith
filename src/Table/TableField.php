@@ -104,7 +104,7 @@ final class TableField implements TableSegment {
     }
 
     function value (string $language = NULL): ?string {
-        return $this->values[($language ?? ($this->translated ? (($this->class)::TRANSLATOR)::get() : $this->key))];
+        return $this->values[($language ?? ($this->translated ? (($this->class)::TRANSLATOR)::get() : $this->key))] ?? NULL;
     }
 
     function set (string &$value = NULL, string $language = NULL): void {

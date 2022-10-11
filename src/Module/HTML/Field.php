@@ -52,9 +52,14 @@ final class Field {
                                         <input type="hidden" name="filetools[delete]<?= $piece['filetools']['name'] ?>" value="1" disabled />
                                         <span class="info info-red text-light" form-error="filetools.delete.<?= $piece['filetools']['identifier'] ?>"></span>
 
-                                        <button type="button" class="action-delete mb-1 mr-1 btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="Delete the image">
-                                            <i class="fa fa-fw fa-trash-alt"></i>
-                                        </button>
+                                        <?php
+                                        // hide DELETE if input disabled
+                                        if (empty($config['HTML']['disabled']) && empty($config['HTML']['readonly'])) { ?>
+                                            <button type="button" class="action-delete mb-1 mr-1 btn btn-light btn-sm" data-toggle="tooltip" data-placement="top" title="Delete the image">
+                                                <i class="fa fa-fw fa-trash-alt"></i>
+                                            </button>
+                                        <?php } ?>
+
                                         <button type="button" href="<?= $image->biggest($language) ?>"
                                         data-caption="<?= $basename ?>" data-fancybox="<?= $piece['selector']['identifier'] ?>"
                                         data-thumb="<?= $image->smallest($language) ?>"
@@ -122,7 +127,10 @@ final class Field {
                     <div class="custom-file">
                         <input type="file" class="custom-file-input" accept="image/*"
                         <?= (($config['HTML']['name'] ?? false) ? 'name="'.$config['HTML']['name'].'"' : '') ?>
-                        <?= (($config['HTML']['id'] ?? false) ? 'id="'.$config['HTML']['id'].'"' : '') ?> />
+                        <?= (($config['HTML']['id'] ?? false) ? 'id="'.$config['HTML']['id'].'"' : '') ?>
+                        <?= (($config['HTML']['disabled'] ?? false) ? 'disabled="disabled"' : '') ?>
+                        <?= (($config['HTML']['readonly'] ?? false) ? 'readonly="readonly"' : '') ?> />
+
                         <label class="custom-file-label"
                         <?= (($config['HTML']['id'] ?? false) ? 'for="'.$config['HTML']['id'].'"' : '') ?>>
                             Choose file

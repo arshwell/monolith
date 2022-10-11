@@ -961,10 +961,8 @@ final class Layout {
 
                 file_put_contents(
                     $jsHeader,
-                    self::signature($url).PHP_EOL. $js_web_class .PHP_EOL. implode(PHP_EOL, array_map(function (array $file): string {
-                        $js_minifier = new JsMin();
-
-                        $js_minifier->add(file_get_contents($file['name']));
+                    self::signature($url).PHP_EOL. $js_web_class .PHP_EOL. implode(';'.PHP_EOL.PHP_EOL, array_map(function (array $file): string {
+                        $js_minifier = new JsMin($file['name']);
 
                         return $js_minifier->minify();
                     }, $files)) .PHP_EOL.self::signature($url),
@@ -1053,10 +1051,8 @@ final class Layout {
 
                 file_put_contents(
                     $jsFooter,
-                    self::signature().PHP_EOL. implode(PHP_EOL, array_map(function ($file) {
-                        $js_minifier = new JsMin();
-
-                        $js_minifier->add(file_get_contents($file['name']));
+                    self::signature().PHP_EOL. implode(';'.PHP_EOL.PHP_EOL, array_map(function ($file) {
+                        $js_minifier = new JsMin($file['name']);
 
                         return $js_minifier->minify();
                     }, $files)) .PHP_EOL.self::signature(),
