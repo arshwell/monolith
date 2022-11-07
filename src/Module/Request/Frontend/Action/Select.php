@@ -4,6 +4,7 @@ namespace Arsavinel\Arshwell\Module\Request\Frontend\Action;
 
 use Arsavinel\Arshwell\Module\HTML\Piece;
 use Arsavinel\Arshwell\URL;
+use Arsavinel\Arshwell\Web;
 
 final class Select {
 
@@ -49,6 +50,28 @@ final class Select {
                         </div>
                     </div>
                 </div>
+
+                <?php
+                if (Web::page() > 1) {
+                    echo Piece::pagination(array(
+                        'text'      => "records",
+                        'count'     => $module['response']['count'],
+                        'limit'     => $module['response']['limit'],
+                        'buttons'   => array(
+                            'xs' => 3,
+                            'sm' => 4,
+                            'md' => 5,
+                            'lg' => 8,
+                            'xl' => 12
+                        ),
+                        'icons' => array(
+                            'first' => 'angle-double-left',
+                            'left'  => 'angle-left',
+                            'right' => 'angle-right',
+                            'last'  => 'angle-double-right'
+                        )
+                    ));
+                } ?>
 
                 <div class="card border-bottom-0 rounded-0">
                 	<div class="card-body pt-1 pb-0">
