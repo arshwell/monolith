@@ -54,12 +54,10 @@ final class ENV {
                         );
                     }
 
-                    array_walk_recursive($this->json['statics'], function (string &$value): void {
-                        $value = trim('statics/'.$value, '/') . '/'; // having one, and only one, slash at the end
-                    });
-
-                    array_walk_recursive($this->json['uploads'], function (string &$value): void {
-                        $value = trim('uploads/'.$value, '/') . '/'; // having one, and only one, slash at the end
+                    array_walk_recursive($this->json['paths'], function (string &$folder = NULL): void {
+                        if ($folder) {
+                            $folder = trim($folder, '/') . '/'; // having one, and only one, slash at the end
+                        }
                     });
 
         			foreach ($this->json as $key => $value) {
@@ -139,43 +137,18 @@ final class ENV {
         		return $this->json['mail'][$key];
         	}
 
-            /**
-             * @return array|string
-             */
-            function statics (string $subdirectory = NULL) {
-        		return ($subdirectory ? $this->json['statics'][$subdirectory] : $this->json['statics']);
+            function paths (): array {
+                return $this->json['paths'];
         	}
 
-            /**
-             * @return array|string
-             */
-            function uploads (string $subdirectory = NULL, string $path = NULL) {
-                if ($subdirectory) {
-                    switch ($subdirectory) {
-                        case 'design': {
-                            try {
-                                return array(
-                                    NULL        => $this->json['uploads']['design'],
-                                    'css'       => $this->json['uploads']['design'] . 'css/',
-                                    'js-header' => $this->json['uploads']['design'] . 'js/h/',
-                                    'js-footer' => $this->json['uploads']['design'] . 'js/f/',
-                                    'mails'     => $this->json['uploads']['design'] . 'mails/',
-                                    'dev'       => $this->json['uploads']['design'] . 'dev/'
-                                )[$path];
-                            }
-                            catch (Exception $e) {
-                                throw new Exception("[ArshWell] 2nd parameter of ENV::uploads('design') should be valid ('css', 'js-header', 'js-footer', 'mails', 'dev')");
-                            }
-                            break;
-                        }
-                        default: {
-                            return $this->json['uploads'][$subdirectory];
-                        }
-                    }
+            function path (string $folder, bool $append_folder = true): string {
+                try {
+                    return $this->json['paths'][$folder] . ($append_folder ? "$folder/" : '');
                 }
-
-                return $this->json['uploads'];
-            }
+                catch (Exception $e) {
+                    throw new Exception("|ArshWell| env.json should contain ['paths'][$folder] with string value. Contains the optional path to your $folder/ folder, or NULL for default path.");
+                }
+        	}
 
             /**
              * @return static
@@ -298,19 +271,19 @@ if (!is_file(Folder::root(). '.htaccess')) {
 }
 
 // .htaccess in files folder
-if (!is_file(Folder::root() . ENV::uploads('files') . '.htaccess')) {
-    if (!is_dir(Folder::root() . ENV::uploads('files'))) {
-        mkdir(Folder::root() . ENV::uploads('files'), 0777, true);
+if (!is_file(Folder::root() . 'uploads/files/.htaccess')) {
+    if (!is_dir(Folder::root() . 'uploads/files/')) {
+        mkdir(Folder::root() . 'uploads/files/', 0777, true);
     }
-    copy(Folder::root() . 'vendor/arsavinel/arshwell/resources/htaccess/uploads.files.htaccess', Folder::root() . ENV::uploads('files') . '.htaccess');
+    copy(Folder::root() . 'vendor/arsavinel/arshwell/resources/htaccess/uploads.files.htaccess', Folder::root() . 'uploads/files/.htaccess');
 }
 
 // .htaccess in design folder
-if (!is_file(Folder::root() . ENV::uploads('design') . '.htaccess')) {
-    if (!is_dir(Folder::root() . ENV::uploads('design'))) {
-        mkdir(Folder::root() . ENV::uploads('design'), 0777, true);
+if (!is_file(Folder::root() . 'uploads/design/.htaccess')) {
+    if (!is_dir(Folder::root() . 'uploads/design/')) {
+        mkdir(Folder::root() . 'uploads/design/', 0777, true);
     }
-    copy(Folder::root() . 'vendor/arsavinel/arshwell/resources/htaccess/uploads.design.htaccess', Folder::root() . ENV::uploads('design') . '.htaccess');
+    copy(Folder::root() . 'vendor/arsavinel/arshwell/resources/htaccess/uploads.design.htaccess', Folder::root() . 'uploads/design/.htaccess');
 }
 
 if (strstr(Folder::shorter(getcwd()), '/', true) == 'crons' && !ENV::isCRON()

@@ -234,10 +234,10 @@ abstract class TableView extends Table {
 
             $urlpath = Folder::encode(static::class) .'/'. $result[(static::class)::PRIMARY_KEY] .'/value/'. $language .'/'. $width.'x'.$height;
 
-            $file = File::first(ENV::uploads('files'). $urlpath);
+            $file = File::first(ENV::path('uploads') . 'files/'. $urlpath);
 
             if ($file) {
-                return ($site . ENV::uploads('files') . $urlpath . '/'. basename($file));
+                return ($site . ENV::path('uploads') . 'files/' . $urlpath . '/'. basename($file));
             }
 
             // If no file found, will be created below. Because imageSEO is not optional (any page should have imageSEO).
@@ -254,13 +254,13 @@ abstract class TableView extends Table {
         $image_folder = Folder::encode(static::class) .'/'. $result[(static::class)::PRIMARY_KEY] .'/value/';
 
         foreach ((static::TRANSLATOR)::LANGUAGES as $lang) {
-            $file = File::first(ENV::uploads('files'). $image_folder . $lang .'/'. $width.'x'.$height);
+            $file = File::first(ENV::path('uploads') . 'files/'. $image_folder . $lang .'/'. $width.'x'.$height);
             $basename = basename($file);
 
             // if this language doesn't have the file
             if ($file == NULL) {
                 $image = (
-                    File::findBiggestSibling(ENV::uploads('files'). $image_folder . $lang .'/'. $width.'x'.$height.'/foo.bar')
+                    File::findBiggestSibling(ENV::path('uploads') . 'files/'. $image_folder . $lang .'/'. $width.'x'.$height.'/foo.bar')
                     ?:
                     self::$source['image']
                 );
@@ -270,28 +270,33 @@ abstract class TableView extends Table {
 
                 $resizer = new Upload($image);
 
-                if (!$resizer->uploaded) {
+            if (!$resizer->uploaded) {
+                if (ENV::board('dev')) {
                     throw new Exception($resizer->error);
                 }
+                else {
+                    error_log($resizer->error);
+                }
+            }
 
-                $resizer->file_new_name_body        = $image_name;
-                $resizer->file_overwrite            = true;
-                $resizer->file_name_body_lowercase  = true;
-                $resizer->jpeg_quality              = self::FILES['value']['quality'];
+            $resizer->file_new_name_body        = $image_name;
+            $resizer->file_overwrite            = true;
+            $resizer->file_name_body_lowercase  = true;
+            $resizer->jpeg_quality              = self::FILES['value']['quality'];
 
-                $resizer->file_safe_name    = false;
-                $resizer->image_resize      = true;
+            $resizer->file_safe_name    = false;
+            $resizer->image_resize      = true;
 
-                $resizer->image_x            = $width;
-                $resizer->image_y            = $height;
-                $resizer->image_ratio_crop   = true;
+            $resizer->image_x            = $width;
+            $resizer->image_y            = $height;
+            $resizer->image_ratio_crop   = true;
 
-                $resizer->process(ENV::uploads('files'). $image_folder . $lang .'/'. $width .'x'. $height .'/');
+                $resizer->process(ENV::path('uploads') . 'files/'. $image_folder . $lang .'/'. $width .'x'. $height .'/');
             }
 
             // remember url file, for current language
             if ($lang == $language) {
-                $file = ($site .ENV::uploads('files'). $image_folder . $language .'/'. $width .'x'. $height .'/'. $basename);
+                $file = ($site .ENV::path('uploads') . 'files/'. $image_folder . $language .'/'. $width .'x'. $height .'/'. $basename);
             }
         }
 
@@ -521,13 +526,13 @@ abstract class TableView extends Table {
 
             $urlpath = Folder::encode(static::class) .'/'. $result[(static::class)::PRIMARY_KEY] .'/value/'. $language .'/'. $width.'x'.$height;
 
-            $file = File::first(ENV::uploads('files'). $urlpath);
+            $file = File::first(ENV::path('uploads') . 'files/'. $urlpath);
 
             if ($file) {
-                return $site .ENV::uploads('files'). $urlpath .'/'. basename($file);
+                return $site .'uploads/files/'. $urlpath .'/'. basename($file);
             }
 
-            $dirpath = ENV::uploads('files') . $urlpath .'/'. dirname($file);
+            $dirpath = ENV::path('uploads') . 'files/' . $urlpath .'/'. dirname($file);
 
             /**
              * Creating its directory no matter what.
@@ -554,7 +559,7 @@ abstract class TableView extends Table {
         foreach ((static::TRANSLATOR)::LANGUAGES as $lang) {
             // getting name from sibling file
             $image = (
-                File::findBiggestSibling(ENV::uploads('files'). $image_folder . $lang .'/'. $width.'x'.$height.'/foo.bar')
+                File::findBiggestSibling(ENV::path('uploads') . 'files/'. $image_folder . $lang .'/'. $width.'x'.$height.'/foo.bar')
                 ?:
                 self::$source['image']
             );
@@ -580,11 +585,11 @@ abstract class TableView extends Table {
             $resizer->image_y            = $height;
             $resizer->image_ratio_crop   = true;
 
-            $resizer->process(ENV::uploads('files'). $image_folder . $lang .'/'. $width .'x'. $height .'/');
+            $resizer->process(ENV::path('uploads') . 'files/'. $image_folder . $lang .'/'. $width .'x'. $height .'/');
 
             // remember url file, for current language
             if ($lang == $language) {
-                $file = ($site .ENV::uploads('files'). $image_folder . $language .'/'. $width .'x'. $height .'/'. $basename);
+                $file = ($site .'uploads/files/'. $image_folder . $language .'/'. $width .'x'. $height .'/'. $basename);
             }
         }
 
@@ -615,8 +620,8 @@ abstract class TableView extends Table {
             $urlpath = Folder::encode(static::class) .'/'. $result[(static::class)::PRIMARY_KEY] .'/value/'. $language .'/'.$width .'x'. $height;
 
             $files = array_map(function ($file) use ($site, $urlpath) {
-                return ($site .ENV::uploads('files'). $urlpath .'/'. basename($file));
-            }, File::folder(ENV::uploads('files'). $urlpath));
+                return ($site .'uploads/files/'. $urlpath .'/'. basename($file));
+            }, File::folder(ENV::path('uploads') . 'files/'. $urlpath));
 
             return $files;
         }
@@ -634,7 +639,7 @@ abstract class TableView extends Table {
 
         foreach ((static::TRANSLATOR)::LANGUAGES as $lang) {
             unset($max); // because $max is used many times in this foreach
-            foreach (Folder::children(ENV::uploads('files'). $image_folder . $lang, true) as $size) {
+            foreach (Folder::children(ENV::path('uploads') . 'files/'. $image_folder . $lang, true) as $size) {
                 list($w, $h) = explode('x', $size);
                 $value = ($w*$h);
 
@@ -645,7 +650,7 @@ abstract class TableView extends Table {
             }
 
             $images = (isset($biggest) ?
-                File::folder(ENV::uploads('files'). $image_folder . $lang .'/'. $biggest)
+                File::folder(ENV::path('uploads') . 'files/'. $image_folder . $lang .'/'. $biggest)
                 :
                 array(self::$source['image'])
             );
@@ -672,10 +677,10 @@ abstract class TableView extends Table {
                 $resizer->image_y            = $height;
                 $resizer->image_ratio_crop   = true;
 
-                $resizer->process(ENV::uploads('files'). $image_folder . $lang .'/'. $width .'x'. $height .'/');
+                $resizer->process(ENV::path('uploads') . 'files/'. $image_folder . $lang .'/'. $width .'x'. $height .'/');
 
                 if ($lang == $language) {
-                    $results[] = ($site .ENV::uploads('files'). $image_folder . $lang .'/'. $width .'x'. $height .'/'. $basename);
+                    $results[] = ($site .'uploads/files/'. $image_folder . $lang .'/'. $width .'x'. $height .'/'. $basename);
                 }
             }
         }
@@ -741,10 +746,10 @@ abstract class TableView extends Table {
 
             $urlpath = Folder::encode(static::class) .'/'. $result[(static::class)::PRIMARY_KEY] .'/value/'. $language;
 
-            $file = File::first(ENV::uploads('files'). $urlpath);
+            $file = File::first(ENV::path('uploads') . 'files/'. $urlpath);
 
             if ($file) {
-                return ($site . ENV::uploads('files') . $urlpath . '/'. basename($file));
+                return ($site . 'uploads/files/' . $urlpath . '/'. basename($file));
             }
         }
         else {
@@ -761,8 +766,8 @@ abstract class TableView extends Table {
         foreach ((static::TRANSLATOR)::LANGUAGES as $lang) {
             $basename = basename(self::$source['image']);
 
-            $dirpath = ENV::uploads('files') . $image_folder . $language; // could be outside of project
-            $urlpath = ENV::uploads('files'). $image_folder . $language;
+            $dirpath = ENV::path('uploads') . 'files/' . $image_folder . $language; // could be outside of project
+            $urlpath = 'uploads/files/'. $image_folder . $language;
 
             if (!is_dir($dirpath)) {
                 mkdir($dirpath, 0755, true);

@@ -8,7 +8,7 @@ use Arsavinel\Arshwell\Folder;
 
 $max_attempts = array(
     'recompile-css-js' => call_user_func(function () {
-        $files = File::tree(ENV::uploads('design', 'css'));
+        $files = File::tree('uploads/design/css/');
 
         $route_counter = 0;
         $max_route_files = 0;

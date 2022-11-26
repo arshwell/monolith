@@ -705,13 +705,13 @@ abstract class TableValidation extends Table {
                                     $sizes = ($params[0])::FILES[$filekey]['sizes'];
 
                                     foreach ($sizes as $size => $ranges) {
-                                        $ranges['width'] = array_values((array)($ranges['width']));
+                                        $ranges['width'] = array_values((array)($ranges['width']) ?: array(0));
 
                                             if (array_key_exists(1, $ranges['width']) == false) {
                                                 $ranges['width'][1] = $ranges['width'][0];
                                             }
 
-                                        $ranges['height'] = array_values((array)($ranges['height']));
+                                        $ranges['height'] = array_values((array)($ranges['height']) ?: array(0));
 
                                             if (array_key_exists(1, $ranges['height']) == false) {
                                                 $ranges['height'][1] = $ranges['height'][0];

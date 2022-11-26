@@ -6,7 +6,7 @@
  */
 
 @mixin arsh--background-image ($image) {
-    background-image: url('#{map-get($env-statics, "images")}/#{$image}');
+    background-image: url('#{map-get($arshwell--web-paths, "statics")}images/#{$image}');
 }
 @mixin arsh--background-size ($size) {
     -webkit-background-size: $size;

@@ -41,7 +41,7 @@ if (!empty($utils['js']['files']['footer']) && is_array($utils['js']['files']['f
     }
 }
 
-$asset  = ENV::root().'/'.ENV::uploads('design', 'dev');
+$asset  = ENV::root().'/'.'uploads/design/dev/';
 $time   = substr(str_shuffle("BCDFGHKLMNPQRSTVWXYZ"), 0, 4);
 
 $mediaLinks = Layout::mediaLinks($_REQUEST['request']['route'], $_REQUEST['request']['pieces'] ?? array()); ?>

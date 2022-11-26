@@ -3,7 +3,7 @@
  * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
  */
 
-$fa-font-path: "#{map-get($env-statics, 'fonts')}/fontawesome";
+$fa-font-path: "#{map-get($arshwell--web-paths, 'statics')}fonts/fontawesome";
 
 $font-awesome-utilities-path: "v5/";
 

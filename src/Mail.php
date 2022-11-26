@@ -31,7 +31,7 @@ final class Mail {
             return ob_get_clean();
         });
 
-        $asset          = ENV::uploads('design');
+        $asset          = 'uploads/design/';
         $pieces         = Piece::used($template); // pieces used inside this mail template
         $pieces_path    = NULL;
 
@@ -126,7 +126,7 @@ final class Mail {
 
         // Supervisors see all resources separately.
         if (ENV::board('dev') && ENV::supervisor()) {
-            $asset  = ENV::root().'/'.ENV::uploads('design');
+            $asset  = ENV::root().'/'.'uploads/design/';
             $time   = substr(str_shuffle("BCDFGHKLMNPQRSTVWXYZ"), 0, 4);
 
             $link = $asset.'dev/'.implode(
@@ -137,7 +137,7 @@ final class Mail {
             ).'?v='.$time;
         }
         else {
-            $asset          = ENV::uploads('design');
+            $asset          = 'uploads/design/';
             $pieces_path    = NULL;
 
             if ($pieces) {

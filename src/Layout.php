@@ -574,7 +574,7 @@ final class Layout {
                 }
                 else {
                     if ($fn) {
-                        $value = $fn($value);
+                        $value = $fn($value, $key);
                     }
                     if (is_string($value) && !preg_match("/^#[0-9A-F]{6}$/i", $value)
                     && !preg_match("/[a-zA-Z][a-zA-Z0-9-]+[a-zA-Z0-9]\(.*\)/", $value)) { // isn't color
@@ -601,7 +601,7 @@ final class Layout {
                 }
                 else {
                     if ($fn) {
-                        $value = $fn($value);
+                        $value = $fn($value, $key);
                     }
                     if (is_string($value) && !preg_match("/^#[0-9A-F]{6}$/i", $value)
                     && !preg_match("/[a-zA-Z][a-zA-Z0-9-]+[a-zA-Z0-9]\(.*\)/", $value)) { // isn't color
@@ -625,10 +625,10 @@ final class Layout {
             if ($pieces) {
                 sort($pieces);
 
-                $css_file_path = ($destination.ENV::uploads('design', 'css').$folder .'/.p/'. strtolower(implode('/.p/', $pieces)) .'/');
+                $css_file_path = ($destination.'uploads/design/css/'.$folder .'/.p/'. strtolower(implode('/.p/', $pieces)) .'/');
             }
             else {
-                $css_file_path = ($destination.ENV::uploads('design', 'css').$folder .'/');
+                $css_file_path = ($destination.'uploads/design/css/'.$folder .'/');
             }
             if (!$url) {
                 $url = ENV::url();
@@ -644,9 +644,10 @@ final class Layout {
                     return (is_array($value) ? self::SASSify($value) : $value);
                 }, $media['json']['scss']['vars']),
                 array(
-                    'env-root' => trim((strstr($url, '/') ?: ''), '/'),
-                    'env-statics' => self::SASSify(ENV::statics(), function (string $value) use ($url): string {
-                        return ('//'. $url .'/'. substr($value, 0, -1));
+                    'arshwell--env-root' => trim((strstr($url, '/') ?: ''), '/'), // the url path for root project
+                    'arshwell--web-paths' => self::SASSify(ENV::paths(), function (string $path = NULL, string $folder) use ($url): string {
+                        // in url we use only folder, not real path
+                        return ('//'. $url .'/'. trim($folder, '/') . '/'); // having one, and only one, slash at the end
                     })
                 ),
                 ($vars ? array_map(function ($value) {
@@ -681,7 +682,7 @@ final class Layout {
                         }
                         foreach ($files as $file) {
                             if (filemtime($file['name']) >= $last_update
-                            || (!$row && !is_file(ENV::uploads('design', 'dev'). File::name($file['name'], false) .'.css'))) {
+                            || (!$row && !is_file('uploads/design/dev/'. File::name($file['name'], false) .'.css'))) {
                                 break 2; // go to compile
                             }
                         }
@@ -814,7 +815,7 @@ final class Layout {
 
                 $files = array_values($media['files']);
                 foreach (preg_split("/#arsavinel-arshwell".$time."\s{\s+color:\s#57201412;\s+}/", $scss->compileString($css)->getCss()) as $nr => $code) {
-                    $filename = ENV::uploads('design', 'dev');
+                    $filename = 'uploads/design/dev/';
 
                     // if file has vars, we create unique dev file
                     if (!empty($media['json']['scss']['vars']) && array_filter(array_keys($media['json']['scss']['vars']), function ($var) use ($files, $nr) {
@@ -844,10 +845,10 @@ final class Layout {
             if ($pieces) {
                 sort($pieces);
 
-                $jsHeader_path = ($destination.ENV::uploads('design', 'js-header').$folder .'/.p/'. strtolower(implode('/.p/', $pieces)) .'/');
+                $jsHeader_path = ($destination.'uploads/design/js/h/'.$folder .'/.p/'. strtolower(implode('/.p/', $pieces)) .'/');
             }
             else {
-                $jsHeader_path = ($destination.ENV::uploads('design', 'js-header').$folder .'/');
+                $jsHeader_path = ($destination.'uploads/design/js/h/'.$folder .'/');
             }
             if (!$url) {
                 $url = ENV::url();
@@ -875,7 +876,7 @@ final class Layout {
                 do {
                     if (is_file($jsHeader) && ($last_update = filemtime($jsHeader))
                     && (!$destination || !is_file($destination.'env.json') || $last_update > filemtime($destination.'env.json'))) {
-                        if (!is_file(ENV::uploads('design', 'dev') .'dynamic/'. $folder .'/web.js')
+                        if (!is_file('uploads/design/dev/' .'dynamic/'. $folder .'/web.js')
                         || ($forksmtime >= $last_update)) {
                             break; // go to compile
                         }
@@ -887,7 +888,7 @@ final class Layout {
                         }
                         foreach ($files as $file) {
                             if (filemtime($file['name']) >= $last_update
-                            || !is_file(ENV::uploads('design', 'dev').$file['name'])) {
+                            || !is_file('uploads/design/dev/'.$file['name'])) {
                                 break 2; // go to compile
                             }
                         }
@@ -943,9 +944,9 @@ final class Layout {
                         array("/Web\.vars\.site;/", "/Web\.vars\.statics;/", "/Web\.vars\.key;/", "/Web\.vars\.route;/", "/Web\.vars\.routes;/"),
                         array(
                             'Web.vars.site = "'. $url .'/";',
-                            'Web.vars.statics = '. json_encode(array_map(function ($static) use ($url) {
-                                return $url .'/'. $static;
-                            }, ENV::statics())) .';',
+                            'Web.vars.paths = '. json_encode(array_map(function ($folder) use ($url) {
+                                return $url .'/'. $folder;
+                            }, array_keys(ENV::paths()))) .';',
                             'Web.vars.key = "'. $route_name .'";',
                             'Web.vars.route = '. json_encode(array(
                                 'url'           => preg_replace('/\/{2,}$/', '/', $url .'/'. Web::pattern($route_name)),
@@ -976,14 +977,14 @@ final class Layout {
                 ini_set('max_execution_time', ini_get('max_execution_time') + 1);
 
                 foreach ($media['files'] as $file) {
-                    $dirname = dirname(ENV::uploads('design', 'dev'). $file['name']);
+                    $dirname = dirname('uploads/design/dev/'. $file['name']);
 
                     if (is_dir($dirname) || mkdir($dirname, 0755, true)) {
-                        file_put_contents(ENV::uploads('design', 'dev'). $file['name'], '"use strict"; ' . file_get_contents($file['name']));
+                        file_put_contents('uploads/design/dev/'. $file['name'], '"use strict"; ' . file_get_contents($file['name']));
                     }
                 }
 
-                $js_web_class_file = ENV::uploads('design', 'dev') .'dynamic/'. $folder .'/web.js';
+                $js_web_class_file = 'uploads/design/dev/' .'dynamic/'. $folder .'/web.js';
                 if (is_dir(dirname($js_web_class_file)) || mkdir(dirname($js_web_class_file), 0755, true)) {
                     file_put_contents($js_web_class_file, $js_web_class, LOCK_EX);
                 }
@@ -1002,10 +1003,10 @@ final class Layout {
             if ($pieces) {
                 sort($pieces);
 
-                $jsFooter_path = ($destination.ENV::uploads('design', 'js-footer').$folder .'/.p/'. strtolower(implode('/.p/', $pieces)) .'/');
+                $jsFooter_path = ($destination.'uploads/design/js/f/'.$folder .'/.p/'. strtolower(implode('/.p/', $pieces)) .'/');
             }
             else {
-                $jsFooter_path = ($destination.ENV::uploads('design', 'js-footer').$folder .'/');
+                $jsFooter_path = ($destination.'uploads/design/js/f/'.$folder .'/');
             }
             $return = false;
 
@@ -1035,7 +1036,7 @@ final class Layout {
                         }
                         foreach ($files as $file) {
                             if (filemtime($file['name']) >= $last_update
-                            || !is_file(ENV::uploads('design', 'dev'). $file['name'])) {
+                            || !is_file('uploads/design/dev/'. $file['name'])) {
                                 break 2; // go to compile
                             }
                         }
@@ -1066,10 +1067,10 @@ final class Layout {
                 ini_set('max_execution_time', ini_get('max_execution_time') + 1);
 
                 foreach ($media['files'] as $file) {
-                    $dirname = dirname(ENV::uploads('design', 'dev'). $file['name']);
+                    $dirname = dirname('uploads/design/dev/'. $file['name']);
 
                     if (is_dir($dirname) || mkdir($dirname, 0755, true)) {
-                        file_put_contents(ENV::uploads('design', 'dev'). $file['name'], '"use strict"; ' . file_get_contents($file['name']), LOCK_EX);
+                        file_put_contents('uploads/design/dev/'. $file['name'], '"use strict"; ' . file_get_contents($file['name']), LOCK_EX);
                     }
                 }
             }
@@ -1089,10 +1090,10 @@ final class Layout {
             if ($pieces) {
                 sort($pieces);
 
-                $css_file_path = Folder::realpath($destination).ENV::uploads('design', 'mails').$folder .'/.p/'. strtolower(implode('/.p/', $pieces)) .'/';
+                $css_file_path = Folder::realpath($destination).'uploads/design/mails/'.$folder .'/.p/'. strtolower(implode('/.p/', $pieces)) .'/';
             }
             else {
-                $css_file_path = Folder::realpath($destination).ENV::uploads('design', 'mails').$folder .'/';
+                $css_file_path = Folder::realpath($destination).'uploads/design/mails/'.$folder .'/';
             }
             $return = false;
             $time = time();
@@ -1102,7 +1103,7 @@ final class Layout {
             $scss->addVariables(array_merge(
                 $media['json']['scss']['vars'],
                 array(
-                    'env-statics' => self::SASSify(ENV::statics(), function (string $value) use ($url): string {
+                    'env-statics' => self::SASSify(ENV::path('statics'), function (string $value) use ($url): string {
                         return ('//'. $url .'/'. substr($value, 0, -1));
                     })
                 ),
@@ -1141,7 +1142,7 @@ final class Layout {
                         }
                         foreach ($files as $file) {
                             if (filemtime(Folder::realpath($file['name'])) >= $last_update
-                            || !is_file(Folder::realpath(ENV::uploads('design', 'dev')). File::name($file['name'], false) .'.css')) {
+                            || !is_file(Folder::realpath('uploads/design/dev/'). File::name($file['name'], false) .'.css')) {
                                 break 2; // go to compile
                             }
                         }
@@ -1245,7 +1246,7 @@ final class Layout {
 
                 $files = array_values($media['files']);
                 foreach (preg_split("/#arsavinel-arshwell".$time."\s{\s+color:\s#57201412;\s+}/", $scss->compileString($css)->getCss()) as $nr => $code) {
-                    $filename = Folder::realpath(ENV::uploads('design', 'dev')). File::name(Folder::shorter($files[$nr]['name']), false) .'.css';
+                    $filename = Folder::realpath('uploads/design/dev/'). File::name(Folder::shorter($files[$nr]['name']), false) .'.css';
 
                     if (is_dir(dirname($filename)) || mkdir(dirname($filename), 0755, true)) {
                         file_put_contents($filename, $code, LOCK_EX);
@@ -1258,7 +1259,7 @@ final class Layout {
 
     /* recompile */
         static function recompileSCSS (string $dirname = NULL, Table $row = NULL, array $vars = NULL, string $url = NULL, string $destination = NULL): int {
-            $path       = ENV::uploads('design', 'css');
+            $path       = 'uploads/design/css/';
             $compiled   = 0;
 
             if ($dirname) {
@@ -1331,7 +1332,7 @@ final class Layout {
         }
 
         static function recompileJSHeader (string $dirname = NULL, string $url = NULL, string $destination = NULL): int {
-            $path       = ENV::uploads('design', 'js-header');
+            $path       = 'uploads/design/js/h/';
             $compiled   = 0;
 
             if ($dirname) {
@@ -1376,7 +1377,7 @@ final class Layout {
         }
 
         static function recompileJSFooter (string $dirname = NULL, string $destination = NULL): int {
-            $path       = ENV::uploads('design', 'js-footer');
+            $path       = 'uploads/design/js/f/';
             $compiled   = 0;
 
             if ($dirname) {
@@ -1421,7 +1422,7 @@ final class Layout {
         }
 
         static function recompileMailSCSS (string $dirname = NULL, Table $row = NULL, array $vars = NULL, string $url = NULL, string $destination = NULL): int {
-            $path       = ENV::uploads('design', 'mails');
+            $path       = 'uploads/design/mails/';
             $compiled   = 0;
 
             if ($dirname) {
@@ -1545,13 +1546,13 @@ final class Layout {
     }
 
     static function devFiles (string $route = NULL, array $pieces = NULL): array {
-        $path   = ENV::root().'/'.ENV::uploads('design', 'dev');
+        $path   = ENV::root() . '/uploads/design/dev/';
         $pieces = array_unique($pieces ?? Piece::used());
         $folder = Web::folder($route);
 
         $links = array(
             'css'   => array_map(function (array $file) use ($folder, $path) {
-                    if (is_file(ENV::uploads('design', 'dev').'forks/'.$folder.'/'.$file['name'])) {
+                    if (is_file('uploads/design/dev/forks/'.$folder.'/'.$file['name'])) {
                         return $path.'forks/'.$folder.'/'.$file['name'];
                     }
                     return $path.$file['name'];
@@ -1589,8 +1590,8 @@ final class Layout {
             $pieces_path = ('.p/'. strtolower(implode('/.p/', $pieces)) .'/');
         }
 
-        $css_files  = File::folder(ENV::uploads('design', 'css'). $folder .'/'. $pieces_path, array('css'), false, false);
-        $css_path   = ENV::uploads('design', 'css'). $folder .'/'. $pieces_path . (Session::design() ? Func::closestDown(Session::design(), $css_files) : max($css_files));
+        $css_files  = File::folder('uploads/design/css/'. $folder .'/'. $pieces_path, array('css'), false, false);
+        $css_path   = 'uploads/design/css/'. $folder .'/'. $pieces_path . (Session::design() ? Func::closestDown(Session::design(), $css_files) : max($css_files));
 
         foreach (self::$css_suffixes as $suffix) {
             if (is_file($css_path . $suffix . '.css')) {
@@ -1599,14 +1600,14 @@ final class Layout {
                         'css'   => $css_path . $suffix . '.css',
                         'js'    => array(
                             'header' => call_user_func(function (array $js_header_files) use ($site, $folder, $pieces_path) {
-                                    return (ENV::uploads('design', 'js-header'). $folder .'/'. $pieces_path . (Session::design() ? Func::closestDown(Session::design(), $js_header_files) : max($js_header_files)) .'.js');
+                                    return ('uploads/design/js/h/'. $folder .'/'. $pieces_path . (Session::design() ? Func::closestDown(Session::design(), $js_header_files) : max($js_header_files)) .'.js');
                                 },
-                                File::folder(ENV::uploads('design', 'js-header'). $folder .'/'. $pieces_path, array('js'), false, false)
+                                File::folder('uploads/design/js/h/'. $folder .'/'. $pieces_path, array('js'), false, false)
                             ),
                             'footer' => call_user_func(function (array $js_footer_files) use ($site, $folder, $pieces_path) {
-                                    return (ENV::uploads('design', 'js-footer'). $folder .'/'. $pieces_path . (Session::design() ? Func::closestDown(Session::design(), $js_footer_files) : max($js_footer_files)) .'.js');
+                                    return ('uploads/design/js/f/'. $folder .'/'. $pieces_path . (Session::design() ? Func::closestDown(Session::design(), $js_footer_files) : max($js_footer_files)) .'.js');
                                 },
-                                File::folder(ENV::uploads('design', 'js-footer'). $folder .'/'. $pieces_path, array('js'), false, false)
+                                File::folder('uploads/design/js/f/'. $folder .'/'. $pieces_path, array('js'), false, false)
                             )
                         )
                     )

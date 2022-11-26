@@ -184,7 +184,7 @@ $hashed_arsh_version = substr(md5(DevToolData::ArshWellVersion()), 0, 5); ?>
         };
     };
 </script>
-<button type="button" style="display: none !important; position: fixed !important;
+<button type="button" style="display: none !important; cursor: pointer !important; position: fixed !important;
 border: 1px solid #000; font-family: serif !important;
 top: <?= Session::panel('button.position.top') ?> !important;
 bottom: <?= Session::panel('button.position.bottom') ?> !important;

@@ -27,7 +27,7 @@ if ($form->valid()) {
         1 => array() // dirs
     ); // we dont use keys for nice display in DevPanel
 
-    foreach (File::rFolder(ENV::uploads('files')) as $file) {
+    foreach (File::rFolder(ENV::path('uploads') . 'files/') as $file) {
         if (is_file($file) && ($matches = File::parsePath($file))) {
             $class = Folder::decode($matches['class']);
 
@@ -37,9 +37,9 @@ if ($form->valid()) {
             // class doesn't exist || table row doesn't exist || class don't have files
             else if (!class_exists($class) || !($class)::get($matches['id_table']) || !defined("{$class}::FILES")) {
                 $path = $matches['class'] .'/'. $matches['id_table'];
-                $count = count(File::rFolder(ENV::uploads('files') . $path));
+                $count = count(File::rFolder(ENV::path('uploads') . 'files/' . $path));
 
-                if (Folder::remove(ENV::uploads('files') . $path)) {
+                if (Folder::remove(ENV::path('uploads') . 'files/' . $path)) {
                     $removed[0] += $count;
                     $removed[1][] = $path . ' <small class="text-muted text-monospace">('.$count.')</small>';
                 }
@@ -47,9 +47,9 @@ if ($form->valid()) {
             // class files don't have this certain filekey
             else if (!isset(($class)::FILES[$matches['filekey']])) {
                 $path = $matches['class'] .'/'. $matches['id_table'] .'/'. $matches['filekey'];
-                $count = count(File::rFolder(ENV::uploads('files') . $path));
+                $count = count(File::rFolder(ENV::path('uploads') . 'files/' . $path));
 
-                if (Folder::remove(ENV::uploads('files') . $path)) {
+                if (Folder::remove(ENV::path('uploads') . 'files/' . $path)) {
                     $removed[0] += $count;
                     $removed[1][] = $path . ' <small class="text-muted text-monospace">('.$count.')</small>';
                 }
@@ -57,9 +57,9 @@ if ($form->valid()) {
             // remove lg - if not used by class
             else if ($form->value('remove-lg') && !in_array($matches['language'], (($class)::TRANSLATOR)::LANGUAGES)) {
                 $path = $matches['class'] .'/'. $matches['id_table'] .'/'. $matches['filekey'] .'/'. $matches['language'];
-                $count = count(File::rFolder(ENV::uploads('files') . $path));
+                $count = count(File::rFolder(ENV::path('uploads') . 'files/' . $path));
 
-                if (Folder::remove(ENV::uploads('files') . $path)) {
+                if (Folder::remove(ENV::path('uploads') . 'files/' . $path)) {
                     $removed[0] += $count;
                     $removed[1][] = $path . ' <small class="text-muted text-monospace">('.$count.')</small>';
                 }
@@ -67,9 +67,9 @@ if ($form->valid()) {
             else if (!empty(($class)::FILES[$matches['filekey']]['sizes']) // avoiding removing TableView files
             && !isset(($class)::FILES[$matches['filekey']]['sizes'][$matches['size']])) {
                 $path = $matches['class'] .'/'. $matches['id_table'] .'/'. $matches['filekey'] .'/'. $matches['language'] .'/'. $matches['size'];
-                $count = count(File::rFolder(ENV::uploads('files') . $path));
+                $count = count(File::rFolder(ENV::path('uploads') . 'files/' . $path));
 
-                if (Folder::remove(ENV::uploads('files') . $path)) {
+                if (Folder::remove(ENV::path('uploads') . 'files/' . $path)) {
                     $removed[0] += $count;
                     $removed[1][] = $path . ' <small class="text-muted text-monospace">('.$count.')</small>';
                 }
@@ -81,7 +81,7 @@ if ($form->valid()) {
              * We need those folders for TableView files, so TableFiles classes can know the required filesizes.
              */
             if (!is_subclass_of($class, TableView::class)) {
-                Folder::removeEmpty(ENV::uploads('files') . $matches['class']);
+                Folder::removeEmpty(ENV::path('uploads') . 'files/' . $matches['class']);
             }
         }
     }

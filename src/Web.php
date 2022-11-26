@@ -637,12 +637,4 @@ final class Web {
     static function site (bool $protocol = true): string {
         return (($protocol ? (self::$protocol .'://') : '') . self::$site .'/');
     }
-
-    static function statics (string $name = NULL): string {
-        return (self::$protocol .'://'. self::$site .'/'. ($name ? ENV::statics($name) : 'statics/'));
-    }
-
-    static function uploads (string $name = NULL): string {
-        return (self::$protocol .'://'. self::$site .'/'. ($name ? ENV::uploads($name) : 'uploads/'));
-    }
 }
