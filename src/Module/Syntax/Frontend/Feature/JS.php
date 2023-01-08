@@ -11,9 +11,11 @@ final class JS {
         return $tooltip;
     }
 
-    static function confirmation (array $confirmation): array {
-        $confirmation['placement']   = ($confirmation['placement'] ?? 'top');
-        $confirmation['boundary']    = ($confirmation['boundary'] ?? 'viewport');
+    static function confirmation (array $confirmation = NULL): ?array {
+        if ($confirmation) {
+            $confirmation['placement']   = ($confirmation['placement'] ?? 'top');
+            $confirmation['boundary']    = ($confirmation['boundary'] ?? 'viewport');
+        }
 
         return $confirmation;
     }

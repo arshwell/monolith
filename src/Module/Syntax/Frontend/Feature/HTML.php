@@ -30,7 +30,7 @@ final class HTML {
         return $name;
     }
 
-    static function title (string $title): string {
+    static function title (string $title = NULL): ?string {
         return $title;
     }
 

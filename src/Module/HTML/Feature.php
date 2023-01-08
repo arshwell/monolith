@@ -135,6 +135,7 @@ final class Feature {
                         }, array_keys($feature['JS']['clipboard']), $feature['JS']['clipboard']));
                     } ?>
                     <?= (!empty($feature['HTML']['title']) ? 'title="'.$feature['HTML']['title'].'"' : '') ?>
+                    <?= (($feature['HTML']['disabled'] ?? false) ? 'disabled' : '') ?>
                     class="<?= $feature['HTML']['class'] ?>">
                         <?php
                         if ($feature['HTML']['icon']) {

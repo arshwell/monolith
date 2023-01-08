@@ -315,42 +315,45 @@ final class Piece {
                                     <th class="th-id-table">ID</th>
                                 <?php }
 
-                                foreach ($query['columns'] as $key) { ?>
-                                    <td>
-                                        <?php
-                                        switch ($HTMLs[$key]['type']) {
-                                            case 'image':
-                                            case 'images':
-                                            case 'doc':
-                                            case 'docs':
-                                            case 'icon': {
-                                                echo $HTMLs[$key]['label'];
-                                                break;
-                                            }
-                                            default: { ?>
-                                                <span type="button" data-key="<?= $key ?>" title="Sort"
-                                                data-sort="<?= (!isset($query['sort'][$key]) || $query['sort'][$key] == 'd' ? 'a' : 'd') ?>">
-                                                    <?= $HTMLs[$key]['label'] ?>
-                                                    <i class="fa fa-fw fa-sort"></i>
-                                                </span>
-
-                                                <?php
-                                                if (isset($query['sort'][$key])) { ?>
-                                                    <i type="button" class="fa fa-fw fa-times-circle text-danger" data-key="<?= $key ?>"></i>
+                                foreach ($query['columns'] as $key) {
+                                    // check if it doesn't exist anymore
+                                    if (!empty($HTMLs[$key]['type'])) { ?>
+                                        <td>
+                                            <?php
+                                            switch ($HTMLs[$key]['type']) {
+                                                case 'image':
+                                                case 'images':
+                                                case 'doc':
+                                                case 'docs':
+                                                case 'icon': {
+                                                    echo $HTMLs[$key]['label'];
+                                                    break;
+                                                }
+                                                default: { ?>
+                                                    <span type="button" data-key="<?= $key ?>" title="Sort"
+                                                    data-sort="<?= (!isset($query['sort'][$key]) || $query['sort'][$key] == 'd' ? 'a' : 'd') ?>">
+                                                        <?= $HTMLs[$key]['label'] ?>
+                                                        <i class="fa fa-fw fa-sort"></i>
+                                                    </span>
 
                                                     <?php
-                                                    if ($query['sort'][$key] == 'a') { ?>
-                                                        <i class="fa fa-fw fa-sort-up text-danger"></i>
-                                                    <?php }
-                                                    else if ($query['sort'][$key] == 'd') { ?>
-                                                        <i class="fa fa-fw fa-sort-down text-danger"></i>
-                                                    <?php }
+                                                    if (isset($query['sort'][$key])) { ?>
+                                                        <i type="button" class="fa fa-fw fa-times-circle text-danger" data-key="<?= $key ?>"></i>
+
+                                                        <?php
+                                                        if ($query['sort'][$key] == 'a') { ?>
+                                                            <i class="fa fa-fw fa-sort-up text-danger"></i>
+                                                        <?php }
+                                                        else if ($query['sort'][$key] == 'd') { ?>
+                                                            <i class="fa fa-fw fa-sort-down text-danger"></i>
+                                                        <?php }
+                                                    }
+                                                    break;
                                                 }
-                                                break;
-                                            }
-                                        } ?>
-                                    </td>
-                                <?php } ?>
+                                            } ?>
+                                        </td>
+                                    <?php }
+                                } ?>
                                 <td class="text-right border-top-0">
                                     Actions
                                 </td>
