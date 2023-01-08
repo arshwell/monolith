@@ -90,7 +90,7 @@ class Form { // helps you with any need about JS forms
                 }
 
                 // Used by ArshWell to return the properly css/js files for every device.
-                array.push("mxdvcwdthflg=" + Math.max(
+                array.push("arsavinel-arshwell-mxdvcwdthflg=" + Math.max(
                     window.screen.availWidth || screen.width || window.outerWidth || window.innerWidth,
                     window.screen.availHeight || screen.height || window.outerHeight || window.innerHeight
                 ));
@@ -127,7 +127,7 @@ class Form { // helps you with any need about JS forms
                 }
 
                 // Used by ArshWell to return the properly css/js files.
-                array['mxdvcwdthflg'] = Math.max(
+                array['arsavinel-arshwell-mxdvcwdthflg'] = Math.max(
                     window.screen.availWidth || screen.width || window.outerWidth || window.innerWidth,
                     window.screen.availHeight || screen.height || window.outerHeight || window.innerHeight
                 );

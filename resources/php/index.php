@@ -60,8 +60,8 @@ if (Web::isType('AJAX')) {
         exit;
     }
 
-    if (ENV::board('dev') == false && !empty($_POST['mxdvcwdthflg'])) { // max device width flag
-        Session::setDesign($_POST['mxdvcwdthflg']);
+    if (ENV::board('dev') == false && !empty($_POST['arsavinel-arshwell-mxdvcwdthflg'])) { // max device width flag
+        Session::setDesign($_POST['arsavinel-arshwell-mxdvcwdthflg']);
     }
 }
 

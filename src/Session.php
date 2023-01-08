@@ -61,7 +61,7 @@ final class Session {
 
 	static private function default (): array {
 		return array(
-			'design'	=> 0, // is modified by mxdvcwdthflg (comes from AJAX)
+			'design'	=> 0, // it's modified by arsavinel-arshwell-mxdvcwdthflg (which comes from AJAX)
 			'languages'	=> array(),
 			'form'		=> array(),
 			'auth'		=> array(),
