@@ -230,6 +230,9 @@ abstract class Table {
             return DB::count(static::class, $where, $params);
         }
 
+        /**
+         * @return static[]
+         */
         final static function all (string $columns = NULL, string $order = NULL): array {
             if (trim($columns) != '*' && (static::class)::PRIMARY_KEY && !preg_match("/(^(\s+)?|.+,(\s+)?)". (static::class)::PRIMARY_KEY ."((\s+)?,.+|$)/", $columns)) {
                 $columns = (static::class)::PRIMARY_KEY . ($columns ? (', '. $columns) : '');
@@ -240,6 +243,9 @@ abstract class Table {
             }, DB::all(static::class, $columns, $order)) ?? array());
         }
 
+        /**
+         * @return static[]
+         */
         final static function select (array $sql, array $params = NULL): array {
             $sql['class'] = static::class;
 

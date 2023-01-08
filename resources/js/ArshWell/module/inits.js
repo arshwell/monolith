@@ -3,13 +3,17 @@ $(document).ready(function () {
         container: 'body'
     });
     $('[data-confirmation="true"]').confirmation({
-        btnOkLabel:     'DA',
-        btnCancelLabel: 'Nu',
+        btnOkLabel:     'Yes',
+        btnCancelLabel: 'NO',
+        btnOkClass: 'btn-secondary',
+        btnCancelClass: 'btn-info',
+        content: "Are you sure?",
         singleton:  true,
         popout:     true,
         rootSelector: '[data-confirmation="true"]'
     });
 
+    // setup jQuery Ordering
     $('.arshmodule-html-piece-tbody [data-key="order"]').each(function () {
         $(this).closest('tbody').sortable({
             items:      'tr',
@@ -52,7 +56,7 @@ $(document).ready(function () {
                         form_token: Form.token('form'),
                         ftr: 'order',
                         ids: $(ui.item).closest('.ui-sortable').find('[data-key="order"]').map(function () {
-                            return this.getAttribute('data-id-table');
+                            return this.getAttribute('data-id-table'); // row ids
                         }).get()
                     }
                 });
