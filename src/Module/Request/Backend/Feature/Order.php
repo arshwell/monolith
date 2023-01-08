@@ -2,6 +2,8 @@
 
 namespace Arsavinel\Arshwell\Module\Request\Backend\Feature;
 
+use Arsavinel\Arshwell\DB;
+
 final class Order {
 
     static function AJAX (array $back, array $query): string {
@@ -19,17 +21,54 @@ final class Order {
         ));
 
         if ($form->valid()) {
-            $start = ($back['DB']['table'])::count(
-                ($back['DB']['table'])::PRIMARY_KEY." <= ?",
-                array(min($form->value('ids')))
+            $orderings = ($back['DB']['table'])::column(
+                "`order`",
+                ($back['DB']['table'])::PRIMARY_KEY." IN (". implode(',', $form->value('ids')) .")"
             );
-            foreach ($form->value('ids') as $index => $id) {
+
+            $orderings_with_nr_zero = array_filter($orderings, function ($o) {return $o == 0;});
+
+            /**
+             * Min order from which we start the reordering.
+             *
+             * If some rows have 0 order, we want also them to get a real order.
+             * So we start ordering from their needed order value.
+             */
+            $order_start = max(1, min($orderings) - count($orderings_with_nr_zero));
+
+            $ids = $form->value('ids');
+
+            /**
+             * If we'll give order values to zero ordering values,
+             * we need to reorder all the following rows.
+             *
+             * Because we'll use some ordering values already used by the following rows.
+             */
+            if ($orderings_with_nr_zero) {
+                $ids_of_following_rows = DB::select(
+                    array(
+                        'class'     => $back['DB']['table'],
+                        'columns'   => ($back['DB']['table'])::PRIMARY_KEY,
+                        'where'     => "`{$back['features']['order']['column']}` > ?",
+                        'order'     => "`{$back['features']['order']['column']}` ASC, ".($back['DB']['table'])::PRIMARY_KEY." DESC",
+                    ),
+                    array(max($orderings))
+                );
+
+                $ids = array_merge($ids, array_column($ids_of_following_rows, ($back['DB']['table'])::PRIMARY_KEY));
+            }
+
+            /**
+             * We don't reorder the entire table.
+             * But we only reorder, with given ids, their existing order values.
+             */
+            foreach ($ids as $index => $id) {
                 ($back['DB']['table'])::update(
                     array(
-                        'set'   => "`".$back['features']['order']['column']."` = ?",
+                        'set'   => "`{$back['features']['order']['column']}` = ?",
                         'where' => ($back['DB']['table'])::PRIMARY_KEY . " = ?"
                     ),
-                    array($start + $index, $id)
+                    array($order_start + $index, $id)
                 );
             }
 
