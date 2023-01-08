@@ -1099,7 +1099,7 @@ final class Field {
                 placeholder="<?= $config['HTML']['placeholder'] ?? '' ?>"
                 <?= (($config['HTML']['id'] ?? false) ? 'id="'.$config['HTML']['id'].'"' : '') ?>
                 <?= (($config['HTML']['name'] ?? false) ? 'name="'.$config['HTML']['name'].'"' : '') ?>
-                value="<?= date('Y-m-d', $config['HTML']['value']) ?>"
+                value="<?= $config['HTML']['value'] ? date('Y-m-d', $config['HTML']['value']) : '' ?>"
                 form-valid-update="<?= (empty($config['JS']['update']) ? 'false' : 'true') ?>"
                 <?= (($config['HTML']['disabled'] ?? false) ? 'disabled="disabled"' : '') ?>
                 <?= (($config['HTML']['readonly'] ?? false) ? 'readonly="readonly"' : '') ?>

@@ -88,7 +88,10 @@ abstract class TableValidation extends Table {
                     }
                     break;
                 case 'date':
-                    if (is_numeric($value) || !empty($value)) {
+                    if ($value == '') {
+                        $value = NULL; // for blank input date
+                    }
+                    else if (is_numeric($value) || !empty($value)) {
                         $string_date = date("m/d/Y", strtotime($value));
                         $array_date = explode('/', $string_date);
                         if (!checkdate($array_date[0], $array_date[1], $array_date[2]) || $string_date == "01/01/1970") {
