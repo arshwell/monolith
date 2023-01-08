@@ -525,7 +525,8 @@ final class DB {
                         $result->bindValue(
                             is_int($key) ? ($key)+1 : $key,
                             $param,
-                            is_numeric($param) ? PDO::PARAM_INT : PDO::PARAM_STR
+                            // really check if integer, because very long digits crash
+                            (is_numeric($param) && $param == (int)$param) ? PDO::PARAM_INT : PDO::PARAM_STR
                         );
                     }
                 }

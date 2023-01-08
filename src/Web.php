@@ -312,8 +312,8 @@ final class Web {
             }
 
             self::$routes_by_request['AJAX'] = array_merge(
-                self::$routes_by_request['AJAX'],
-                self::$routes_by_request['GET']
+                self::$routes_by_request['AJAX'] ?? array(),
+                self::$routes_by_request['GET'] ?? array()
             );
 
             Cache::store('vendor/arsavinel/arshwell/forks', array(
@@ -340,9 +340,7 @@ final class Web {
         }
 
         $object = new class ($url_path, $method) {
-            private $protocol = NULL;
             private $url_path = NULL;
-            private $site     = NULL;
             private $params   = NULL;
             private $page     = NULL;
             private $language = NULL;
@@ -550,10 +548,22 @@ final class Web {
 
         if ($values) {
             foreach ($values as $name => $value) {
-                $path = preg_replace(
-                    array("/\[". $name .":[^\[\]]+\]\??/", "/\[". $name .":\(.*?\)\]\??/"),
-                    Text::slug($value), $path
-                );
+                if (empty($value)) {
+                    /**
+                     * It means we don't want this placeholder in url.
+                     * If the placeholder is optional (ends with ?), remove it from path.
+                     */
+                    $path = preg_replace(
+                        array("/\[". $name .":[^\[\]]+\]\?\/?/", "/\[". $name .":\(.*?\)\]\?\/?/"),
+                        "", $path
+                    );
+                }
+                else {
+                    $path = preg_replace(
+                        array("/\[". $name .":[^\[\]]+\]\??/", "/\[". $name .":\(.*?\)\]\??/"),
+                        Text::slug($value), $path
+                    );
+                }
             }
         }
 
