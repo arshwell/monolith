@@ -8,7 +8,7 @@
 @mixin arsh--background-image ($image) {
     background-image: url('#{map-get($arshwell--web-paths, "statics")}images/#{$image}');
 }
-@mixin arsh--background-size ($size) {
+@mixin arsh--background-size ($size...) {
     -webkit-background-size: $size;
     -moz-background-size:    $size;
     -o-background-size:      $size;
@@ -24,7 +24,7 @@
         clear: both;
     }
 }
-@mixin arsh--box-shadow ($shadow) {
+@mixin arsh--box-shadow ($shadow...) {
     -webkit-box-shadow: $shadow;
     -moz-box-shadow:    $shadow;
     box-shadow:         $shadow;
