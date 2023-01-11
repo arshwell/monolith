@@ -23,19 +23,38 @@ $form = TableValidation::run($_POST,
 if ($form->valid()) {
     DB::beginTransaction();
 
-        // Sync modules with DB
-        foreach (File::rFolder('outcomes') as $file) {
-            if (basename($file) == 'back.module.php') {
-                $back = call_user_func(function () use ($file) {
-                    return require($file);
-                });
+        $catched_errors = array();
 
-                if (!empty($back['DB']) && is_array($back['DB']) && class_exists($back['DB']['table'])
-                && !empty($back['fields']) && is_array($back['fields'])) {
-                    Backend::buildDB($back['DB'], $back['features'], $back['fields'], ($form->value('remove-lg') ? true : false));
+        try {
+            // Sync modules with DB
+            foreach (File::rFolder('outcomes') as $file) {
+                if (basename($file) == 'back.module.php') {
+                    $back = call_user_func(function () use ($file) {
+                        return require($file);
+                    });
+
+                    if (!empty($back['DB']) && is_array($back['DB']) && class_exists($back['DB']['table'])
+                    && !empty($back['fields']) && is_array($back['fields'])) {
+                        Backend::buildDB($back['DB'], $back['features'], $back['fields'], ($form->value('remove-lg') ? true : false));
+                    }
                 }
             }
         }
+        catch (Error $e) { // we need this because Fatal Errors (like wrong defined classes) aren't catched
+            $catched_errors[dirname($file)] = array(
+                'status'    => get_class($e),
+                'from'      => Folder::shorter($e->getFile()) .':'. $e->getLine(),
+                'message'   => $e->getMessage()
+            );
+        }
+        catch (Exception $e) {
+            $catched_errors[dirname($file)] = array(
+                'status'    => get_class($e) . " Error",
+                'from'      => Folder::shorter($e->getFile()) .':'. $e->getLine(),
+                'message'   => $e->getMessage()
+            );
+        }
+
 
         $arshwell_errors = require("vendor/arsavinel/arshwell/DevTools/tools/validation.errors.php");
         $validation_tables = array();
@@ -102,8 +121,9 @@ if ($form->valid()) {
     DB::commit();
 
     $form->info = array(
-        'Validation tables' => $validation_tables,
-        'PHP'               => Time::readableTime((microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']) * 1000)
+        'Errors'    => $catched_errors ?: NULL,
+        'Tables'    => $validation_tables,
+        'PHP'       => Time::readableTime((microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']) * 1000)
     );
 }
 else if ($form->expired()) {

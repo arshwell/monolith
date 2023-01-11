@@ -45,6 +45,11 @@ if (!is_file('env.build.json')) { ?>
             you can prepare the env that website will using on live.
             In that way, you can copy your project with correct env data (url, database, etc)
             every time you wanna update the live project.
+
+            <br><br>
+
+            It also compiles the CSS/JS using env data from env.build.json
+            <span class="nowrap">(ex: correct url in .css files).</span>
         </p>
     </div>
 
