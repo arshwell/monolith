@@ -1,16 +1,16 @@
 <?php
 
 use Arsavinel\Arshwell\Table\TableValidation;
+use Arsavinel\Arshwell\ENV\ENVComponent;
 use Arsavinel\Arshwell\Layout;
 use Arsavinel\Arshwell\Folder;
-use Arsavinel\Arshwell\ENV;
 
 $form = TableValidation::run($_POST, array(), false);
 
 if ($form->valid()) {
     $build_dir = sys_get_temp_dir().'/vendor/arsavinel/arshwell/builds/sess_'.session_id().'/';
 
-    $env = ENV::fetch($build_dir);
+    $env = new ENVComponent($build_dir);
 
     try { // because could be thrown SCSS errors
         Layout::recompileSCSS(NULL, NULL, NULL, $env->url(), $build_dir);

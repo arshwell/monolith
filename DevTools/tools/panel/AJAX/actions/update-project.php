@@ -3,11 +3,12 @@
 use Arsavinel\Arshwell\Table\TableValidation;
 use Arsavinel\Arshwell\Module\Backend;
 use Arsavinel\Arshwell\Table\TableMigration;
+use Arsavinel\Arshwell\ENV\ENVComponent;
 use Arsavinel\Arshwell\Folder;
 use Arsavinel\Arshwell\File;
 use Arsavinel\Arshwell\Time;
-use Arsavinel\Arshwell\Web;
 use Arsavinel\Arshwell\ENV;
+use Arsavinel\Arshwell\Web;
 
 $form = TableValidation::run(array_merge($_POST, $_FILES),
     array(
@@ -20,9 +21,9 @@ $form = TableValidation::run(array_merge($_POST, $_FILES),
         ),
         'archive' => array(
             function ($key, $value) {
-                $env = ENV::fetch();
+                $env = new ENVComponent();
 
-                if (!$env->maintenance('active') || $env->maintenance('smart')) {
+                if (!($env->class('maintanance'))::isActive() || ($env->class('maintanance'))::isSmart()) {
                     return "Setup an <b>Instant Maintenance</b> before updating project";
                 }
 

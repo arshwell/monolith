@@ -1,9 +1,9 @@
 <?php
 
 use Arsavinel\Arshwell\Table\TableValidation;
+use Arsavinel\Arshwell\ENV\ENVComponent;
 use Arsavinel\Arshwell\Folder;
 use Arsavinel\Arshwell\File;
-use Arsavinel\Arshwell\ENV;
 use Arsavinel\Arshwell\URL;
 
 $form = TableValidation::run($_POST, array(), false);
@@ -44,7 +44,7 @@ if ($form->valid()) {
 	            $getcwd = dirname($getcwd);
 	        } while ($getcwd != '/'); // creating path to tmp folder
 
-			$env = ENV::fetch($build_dir);
+			$env = new ENVComponent($build_dir);
 
 			$zipsize = filesize($build_zip);
 

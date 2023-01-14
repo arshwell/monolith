@@ -2,9 +2,11 @@
 
 namespace Arsavinel\Arshwell;
 
+use Arsavinel\Arshwell\ENV\ENVComponent;
 use Arsavinel\Arshwell\Folder;
 use Arsavinel\Arshwell\Filter;
 use Arsavinel\Arshwell\Func;
+
 use ErrorException;
 use Exception;
 
@@ -23,171 +25,81 @@ final class ENV {
     private static $client_ip   = NULL; // on CRON Jobs, it is not set
     private static $supervisor  = false; // on CRON Jobs, it is false
 
-	static function fetch (string $path = NULL, bool $merge_env_build = false): object {
-        $object = new class ($path, $merge_env_build) {
-            private $path            = NULL;
-            private $merge_env_build = NULL;
-            private $json = NULL;
-            private $site = NULL;
-            private $root = NULL;
+    static function set (ENVComponent $env) {
+        self::$env = $env;
 
-            function __construct (string $path = NULL, bool $merge_env_build) {
-                if (!$path || $path[0] != '/') {
-                    $path = Folder::root() . $path; // default (our ArshWell project)
-                }
-                if (substr($path, -1) != '/') {
-                    $path .= '/';
-                }
+        self::$is_cron = (in_array(php_sapi_name(), ['cgi', 'cgi-fcgi', 'cli']) && !isset($_SERVER['TERM']));
 
-                $merge_env_build = ($merge_env_build && is_file($path.'env.build.json'));
-
-                Cache::setProject($path ?: Folder::root()); // where to look for caches
-
-                if (!is_file(Cache::file('vendor/arsavinel/arshwell/env')) || !Cache::fetch('vendor/arsavinel/arshwell/env')
-                || $merge_env_build || filemtime("{$path}env.json") >= Cache::filemtime('vendor/arsavinel/arshwell/env')) {
-        			$this->json = json_decode(file_get_contents("{$path}env.json"), true, 512, JSON_THROW_ON_ERROR);
-
-                    if ($merge_env_build) {
-                        $this->json = array_replace_recursive(
-                            $this->json,
-                            json_decode(file_get_contents($path.'env.build.json'), true, 512, JSON_THROW_ON_ERROR)
-                        );
-                    }
-
-                    array_walk_recursive($this->json['paths'], function (string &$folder = NULL): void {
-                        if ($folder) {
-                            $folder = trim($folder, '/') . '/'; // having one, and only one, slash at the end
-                        }
-                    });
-
-        			foreach ($this->json as $key => $value) {
-                        if (is_array($value) && Func::isAssoc($value)) {
-                            // NOTE: array_merge_recursive is not good
-                            $this->json[$key] = array_replace_recursive(
-                                $this->json[$key],
-                                Func::arrayFlattenTree($value, NULL, '.', true)
-                            );
-                        }
-        			}
-
-                    if (!empty($this->json['board']['supervisors'])) {
-                        // NOTE: We need flattining also subarrays of IPs
-                        // Exception: arrayFlattenTree() can't make yet that.
-                        $this->json['board']['supervisors'] = array_replace_recursive(
-                            $this->json['board']['supervisors'],
-                            Func::arrayFlattenTree($this->json['board']['supervisors'], NULL, '.', true)
-                        );
-                    }
-                }
-        		else {
-        			$this->json = Cache::fetch('vendor/arsavinel/arshwell/env');
-        		}
-
-                $this->merge_env_build  = $merge_env_build;
-                $this->path             = $path;
-
-                $this->site = (strstr($this->json['URL'], '/', true) ?: $this->json['URL']);
-                $this->root = (strstr($this->json['URL'], '/') ?: '');
-            }
-
-            function cache (): void {
-                // Changes you've made are cached.
-                // NOTE: But env source stay the same.
-                Cache::store('vendor/arsavinel/arshwell/env', $this->json);
-
-                if ($this->merge_env_build) {
-                    // merge env with env.build
-                    file_put_contents("{$this->path}env.json", json_encode(
-                        array_replace_recursive(
-                            json_decode(file_get_contents("{$this->path}env.json"), true),
-                            json_decode(file_get_contents("{$this->path}env.build.json"), true)
-                        ),
-                        JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE
-                        // makes is readable | encodes characters correctly
-                    ));
-                    unlink("{$this->path}env.build.json");
-                }
-            }
-
-            function credits (): array {
-        		return $this->json['credits'];
-        	}
-
-            function board (string $key) {
-        		return $this->json['board'][$key];
-        	}
-
-        	function url (): string {
-        		return $this->json['URL'];
-        	}
-
-        	function site (): string {
-        		return $this->site;
-        	}
-
-            function root (): string {
-        		return $this->root;
-        	}
-
-        	function db (string $key) {
-        		return $this->json['db'][$key];
-        	}
-
-        	function mail (string $key) {
-        		return $this->json['mail'][$key];
-        	}
-
-            function paths (): array {
-                return $this->json['paths'];
-        	}
-
-            function path (string $folder, bool $append_folder = true): string {
-                try {
-                    return $this->json['paths'][$folder] . ($append_folder ? "$folder/" : '');
-                }
-                catch (Exception $e) {
-                    throw new Exception("|ArshWell| env.json should contain ['paths'][$folder] with string value. Contains the optional path to your $folder/ folder, or NULL for default path.");
-                }
-        	}
-
-            /**
-             * @return static
-             */
-            function class (string $key): string {
-                return $this->json['class'][$key];
-            }
-        };
-
-        if (!self::$env) {
-            self::$is_cron = (in_array(php_sapi_name(), ['cgi', 'cgi-fcgi', 'cli']) && !isset($_SERVER['TERM']));
-
-            if (self::$is_cron == true) {
-                if (empty($_SERVER['SCRIPT_FILENAME'])) {
-                    foreach (debug_backtrace() as $trace) {
-                        if (!empty($trace['file']) && !empty($trace['function']) && $trace['function'] == 'require') {
-                            $_SERVER['SCRIPT_FILENAME'] = $trace['file'];
-                            exit;
-                        }
+        if (self::$is_cron == true) {
+            if (empty($_SERVER['SCRIPT_FILENAME'])) {
+                foreach (debug_backtrace() as $trace) {
+                    if (!empty($trace['file']) && !empty($trace['function']) && $trace['function'] == 'require') {
+                        $_SERVER['SCRIPT_FILENAME'] = $trace['file'];
+                        exit;
                     }
                 }
             }
-            else {
-                self::$client_ip = (Filter::isIP(($_SERVER['HTTP_CLIENT_IP'] ?? '')) ? $_SERVER['HTTP_CLIENT_IP'] : (Filter::isIP(($_SERVER['HTTP_X_FORWARDED_FOR'] ?? '')) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR']));
-
-                // check for '::ffff:' prepended in IP
-                if (strpos(self::$client_ip, '::') === 0) {
-                    self::$client_ip = substr(self::$client_ip, strrpos(self::$client_ip, ':') + 1);
-                }
-
-                self::$supervisor = in_array(self::$client_ip, Func::arrayFlatten($object->board('supervisors')));
-            }
-
-            self::$env = $object;
-            self::$env->cache();
         }
+        else {
+            self::$client_ip = (Filter::isIP(($_SERVER['HTTP_CLIENT_IP'] ?? '')) ? $_SERVER['HTTP_CLIENT_IP'] : (Filter::isIP(($_SERVER['HTTP_X_FORWARDED_FOR'] ?? '')) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR']));
 
-        return $object;
+            // check for '::ffff:' prepended in IP
+            if (strpos(self::$client_ip, '::') === 0) {
+                self::$client_ip = substr(self::$client_ip, strrpos(self::$client_ip, ':') + 1);
+            }
+
+            self::$supervisor = in_array(self::$client_ip, Func::arrayFlatten(self::$env->board('supervisors')));
+        }
     }
+
+	static function credits (): array {
+        return self::$env->credits();
+    }
+
+    static function board (string $key) {
+        return self::$env->board($key);
+    }
+
+    static function url (): string {
+        return self::$env->url();
+    }
+
+    static function site (): string {
+        return self::$env->site();
+    }
+
+    static function root (): string {
+        return self::$env->root();
+    }
+
+    static function db (string $key) {
+        return self::$env->db($key);
+    }
+
+    static function mail (string $key) {
+        return self::$env->mail($key);
+    }
+
+    static function paths (): array {
+        return self::$env->paths();
+    }
+
+    static function path (string $folder, bool $append_folder = true): string {
+        try {
+            return self::$env->path($folder, $append_folder);
+        }
+        catch (Exception $e) {
+            throw new Exception("|ArshWell| env.json should contain ['paths'][$folder] with string value. It contains the optional path to your $folder/ folder, or NULL for default path.");
+        }
+    }
+
+    /**
+     * @return string
+     */
+    static function class (string $key): string {
+        return self::$env->class($key);
+    }
+
 
 	static function clientIP (): ?string {
         return self::$client_ip;
@@ -213,13 +125,6 @@ final class ENV {
             return ($document_root . $domain_path);
         }
         return NULL;
-    }
-
-    public static function __callStatic (string $method, array $args) {
-        return call_user_func_array(
-            array(self::$env, $method),
-            $args
-        );
     }
 }
 
@@ -263,7 +168,7 @@ foreach (glob(Folder::realpath('vendor/arsavinel/arshwell/DevTools/functions/*.p
     require($v);
 }
 
-ENV::fetch();
+ENV::set(new ENVComponent(Folder::root()));
 
 // .htaccess file
 if (!is_file(Folder::root(). '.htaccess')) {
