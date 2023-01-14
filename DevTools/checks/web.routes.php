@@ -2,6 +2,7 @@
 
 use Arsavinel\Arshwell\DevTool\DevToolDebug;
 use Arsavinel\Arshwell\DevTool\DevToolHTML;
+use Arsavinel\Arshwell\Func;
 
 /**
  * Verifies if routes are properly created.
@@ -107,8 +108,7 @@ call_user_func(function () {
     /* Checking Route urls */
 
         $duplicates = array_filter(array_count_values(array_map(function ($route) {
-            $route[2] = implode(',', $route[2]);
-            return implode(',', $route);
+            return implode(',', Func::arrayFlatten($route));
         }, $routes)), function ($count) {
             return ($count > 1);
         });

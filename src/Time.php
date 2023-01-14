@@ -27,6 +27,22 @@ final class Time {
         return round($hours, $precision).$separator.($units[3] ?? 'h');
     }
 
+    /**
+     * Returns shorter date if about today.
+     */
+    static function readableDate (int $time, array $translate = array()): string {
+        return str_replace(
+            array_keys($translate),
+            array_values($translate),
+            date(
+                (date('Ymd', $time) != date('Ymd') ? "d F " : '') .
+                (date('Y', $time) != date('Y') ? "Y " : '') .
+                (date('Ymd H:i', $time) != date('Ymd H:i') ? "H:i" : '\n\o\w'),
+                $time
+            )
+        );
+    }
+
     static function secondsToDate (int $seconds): string {
         return self::readableTime($seconds.'000');
     }

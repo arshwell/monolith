@@ -224,9 +224,6 @@ ob_start(); // for adding all content in DevToolHTML::html() function
         body .card .card-body .tab-content.scrollable .tab-pane::-webkit-scrollbar-corner {
             background-color: transparent;
         }
-            body .card .card-body .tab-content.scrollable > .tab-pane > .tab-content {
-                /* display: inline-block; /* for correct horizontal scrollbar */
-            }
 
     body .card .card-body .nav.nav-pills .nav-link {
         margin-bottom: 5px;
@@ -927,7 +924,7 @@ if (Session::panel('active')) { // load js ?>
                     var advices = [
                         "<b>DevPanel</b> has <i>many tools</i> for developing a good project.",
                         "<b>Reminder:</b> Never forget about the <u><i>404</i></u> and <u><i>maintenance</i></u> pages.",
-                        "<b>Important:</b> Don't change PHP class positions, if they have files.",
+                        "<b>Important:</b> Don't change PHP class positions in file tree, if they have files.",
                         "<b>Important:</b> Don't change GET ROUTE names, because they use TableView class.",
                         "<b>Advice:</b> Set always best width ranges, in css/js filenames.",
                         "<b>Advice:</b> Don't close DevPanel during an action.",
@@ -954,13 +951,8 @@ if (Session::panel('active')) { // load js ?>
                                     '<span'+ (window.location.pathname.length > 1 ? ' class="d-none d-lg-inline"' : '') +'>'+ (window.location.host || window.location.hostname) +'</span>' +
                                     window.location.pathname +
                                 "</a> (from "+
-                                "<?= date(
-                                        (date('Ymd', $info->value('time')) != date('Ymd') ? "d F " : '') .
-                                        (date('Y', $info->value('time')) != date('Y') ? "Y " : '') .
-                                        (date('Ymd H:i', $info->value('time')) != date('Ymd H:i') ? "H:i" : '\n\o\w'),
-                                        $info->value('time')
-                                    )
-                                ?>" + ")</b>"
+                                "<?= Time::readableDate($info->value('time')) ?>" +
+                            ")</b>"
                         ).fadeIn(700);
                 }
             },
