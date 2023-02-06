@@ -16,6 +16,41 @@ $hashed_arsh_version = substr(md5(DevToolData::ArshWellVersion()), 0, 5); ?>
     window.onload = function () {
         var body = document.querySelector('html > body');
 
+        <?php // KeyDown DevPanel Password ?>
+        function KDwnDvPnlPswrd (event) {
+            if (displayed) {
+                document.removeEventListener("keydown", KDwnDvPnlPswrd);
+            }
+
+            if (event.key == "Enter" || event.key == " ") {
+
+                if (displayed) {
+                    script.nextElementSibling.children[0].click(); // open DevPanel Box
+                }
+                else if (pass.length > 8) {
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('POST', window.location);
+                    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+                    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                    xhr.responseType = 'json';
+                    xhr.onreadystatechange = function () {
+                        if (xhr.readyState === 4 && xhr.status === 200) {
+                            if (('valid' in xhr.response) && xhr.response['valid'] == true) {
+                                displayed = true;
+                                VanillaJS.fadeIn(script.nextElementSibling, 'flex'); // display DevPanel Button
+                            }
+                        }
+                    };
+                    xhr.send('rshwll=<?= $hashed_arsh_version ?>&form_token='+Form.token('form')+'&pass='+pass.toLowerCase()+'&'+Form.token('form')+'&pnl=AJAX/panel.activate');
+                }
+
+                pass = ''; // clear
+            }
+            else {
+                pass += event.key;
+            }
+        }
+
         <?php // if we are on desktop, we fadeIn the button ?>
         if (body.getAttribute('mobile') == '0' && body.getAttribute('tablet') != 'true') {
             <?php
@@ -25,42 +60,8 @@ $hashed_arsh_version = substr(md5(DevToolData::ArshWellVersion()), 0, 5); ?>
             <?php }
             // we listen for keydown password
             else { ?>
-                var pss_vl  = "DEVPANEL<?= DevToolData::ArshWellVersionNumber() ?>";
-                var pss_npt = '';
-                var dspld   = false;
-
-                <?php // KeyDown DevPanel Password ?>
-                function KDwnDvPnlPswrd (event) {
-                    pss_npt += event.key;
-
-                    if (pss_vl.toLowerCase() == pss_npt.toLowerCase()) {
-                        var xhr = new XMLHttpRequest();
-                        xhr.open('POST', window.location);
-                        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-                        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-                        xhr.responseType = 'json';
-                        xhr.onreadystatechange = function () {
-                            if (xhr.readyState === 4 && xhr.status === 200) {
-                                if (('valid' in xhr.response) && xhr.response['valid'] == true) {
-                                    dspld = true;
-                                    VanillaJS.fadeIn(script.nextElementSibling, 'flex');
-                                }
-                                else {
-                                    document.removeEventListener("keydown", KDwnDvPnlPswrd);
-                                }
-                            }
-                        };
-                        xhr.send('rshwll=<?= $hashed_arsh_version ?>&form_token='+Form.token('form')+'&pnl=AJAX/panel.activate');
-                    }
-                    else if (dspld) {
-                        if (event.key == "Enter") {
-                            script.nextElementSibling.children[0].click();
-                        }
-                        document.removeEventListener("keydown", KDwnDvPnlPswrd);
-                    }
-
-                    pss_npt = pss_npt.substr(-1 * (pss_vl.length - 1));
-                }
+                var pass = '';
+                var displayed = false;
 
                 document.addEventListener("keydown", KDwnDvPnlPswrd);
             <?php } ?>
@@ -126,7 +127,8 @@ $hashed_arsh_version = substr(md5(DevToolData::ArshWellVersion()), 0, 5); ?>
         };
 
         button_text.onclick = function () {
-            button.disabled = true
+            button.disabled = true;
+
             setTimeout(function() {
                 button.removeAttribute("disabled");
             }, 750);
@@ -139,6 +141,8 @@ $hashed_arsh_version = substr(md5(DevToolData::ArshWellVersion()), 0, 5); ?>
                 button_text.innerHTML        = "DevPanel";
             }
             else {
+                document.removeEventListener("keydown", KDwnDvPnlPswrd);
+
                 iframe = document.createElement('iframe');
 
                 iframe.style.backgroundColor= "rgba(0, 0, 0, 0.25)";
