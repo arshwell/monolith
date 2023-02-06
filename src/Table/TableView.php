@@ -21,6 +21,8 @@ use Exception;
  * used for a better organization of the content in the website.
 */
 abstract class TableView extends Table {
+    const PRIMARY_KEY = 'id_view'; // default
+
     const FILES = array(
         'value' => array(
             'quality' => 100, // %
@@ -42,6 +44,7 @@ abstract class TableView extends Table {
         'video'         => 8,  // created on 01/2021
         'textSEO'       => 9,  // created on 04/2021
         'imageSEO'      => 10, // created on 04/2021
+        'href'          => 11, // created on 01/2023
     );
 
     private static $source = array(
@@ -234,10 +237,10 @@ abstract class TableView extends Table {
 
             $urlpath = Folder::encode(static::class) .'/'. $result[(static::class)::PRIMARY_KEY] .'/value/'. $language .'/'. $width.'x'.$height;
 
-            $file = File::first(ENV::path('uploads') . 'files/'. $urlpath);
+            $file = File::first(ENV::path('uploads') .'files/'. $urlpath);
 
             if ($file) {
-                return ($site . ENV::path('uploads') . 'files/' . $urlpath . '/'. basename($file));
+                return ($site .'uploads/files/'. $urlpath .'/'. basename($file));
             }
 
             // If no file found, will be created below. Because imageSEO is not optional (any page should have imageSEO).
@@ -279,10 +282,9 @@ abstract class TableView extends Table {
                 }
             }
 
-            $resizer->file_new_name_body        = $image_name;
-            $resizer->file_overwrite            = true;
-            $resizer->file_name_body_lowercase  = true;
-            $resizer->jpeg_quality              = self::FILES['value']['quality'];
+            $resizer->file_new_name_body    = strtolower($image_name);
+            $resizer->file_overwrite        = true;
+            $resizer->jpeg_quality          = self::FILES['value']['quality'];
 
             $resizer->file_safe_name    = false;
             $resizer->image_resize      = true;
@@ -526,7 +528,7 @@ abstract class TableView extends Table {
 
             $urlpath = Folder::encode(static::class) .'/'. $result[(static::class)::PRIMARY_KEY] .'/value/'. $language .'/'. $width.'x'.$height;
 
-            $file = File::first(ENV::path('uploads') . 'files/'. $urlpath);
+            $file = File::first(ENV::path('uploads') .'files/'. $urlpath);
 
             if ($file) {
                 return $site .'uploads/files/'. $urlpath .'/'. basename($file);
@@ -573,10 +575,9 @@ abstract class TableView extends Table {
                 throw new Exception($resizer->error);
             }
 
-            $resizer->file_new_name_body        = $image_name;
-            $resizer->file_overwrite            = true;
-            $resizer->file_name_body_lowercase  = true;
-            $resizer->jpeg_quality              = self::FILES['value']['quality'];
+            $resizer->file_new_name_body    = strtolower($image_name);
+            $resizer->file_overwrite        = true;
+            $resizer->jpeg_quality          = self::FILES['value']['quality'];
 
             $resizer->file_safe_name    = false;
             $resizer->image_resize      = true;
@@ -665,10 +666,9 @@ abstract class TableView extends Table {
                     throw new Exception($resizer->error);
                 }
 
-                $resizer->file_new_name_body        = $image_name;
-                $resizer->file_overwrite            = true;
-                $resizer->file_name_body_lowercase  = true;
-                $resizer->jpeg_quality              = self::FILES['value']['quality'];
+                $resizer->file_new_name_body    = strtolower($image_name);
+                $resizer->file_overwrite        = true;
+                $resizer->jpeg_quality          = self::FILES['value']['quality'];
 
                 $resizer->file_safe_name    = false;
                 $resizer->image_resize      = true;
@@ -780,5 +780,72 @@ abstract class TableView extends Table {
         }
 
         return $file;
+    }
+
+    final static function href (string $info, array $vars = NULL, bool $global = false): string {
+        $source = self::source($global);
+
+        $result = DB::first(
+            array(
+                'class'     => static::class,
+                'columns'   => (static::class)::PRIMARY_KEY . ', value:lg as value, vars',
+                'where'     => "info = ? AND type = ? AND source = ? AND global = ?"
+            ),
+            array($info, self::TYPES['href'], $source, (int)$global)
+        );
+
+        if (!$result) {
+            DB::insert(
+                static::class,
+                "source, global, info, type, value:lg, vars, `order`",
+                ":source, :global, :info, :type, ". implode(', ', array_fill(0, count((static::TRANSLATOR)::LANGUAGES), ':value')) .", :vars, ". SQL::nextID((static::class)::TABLE),
+                array(
+                    ':lg'       => (static::TRANSLATOR)::LANGUAGES,
+                    ':source'   => $source,
+                    ':global'   => (int)$global,
+                    ':info'     => $info,
+                    ':type'     => self::TYPES['href'],
+                    ':value'    => ($vars ? '{{ '.$info.' ['.count($vars).'] }}' : '{{ '.$info.' }}'),
+                    ':vars'     => ($vars ? count($vars) : 0)
+                )
+            );
+
+            return ($vars ? '{{ '.$info.' ['.count($vars).'] }}' : '{{ '.$info.' }}');
+        }
+        else if ($vars && $result['vars'] != count($vars)) {
+            static::update(
+                array(
+                    'set'   => "vars = ?",
+                    'where' => (static::class)::PRIMARY_KEY . " = ?"
+                ),
+                array(count($vars), $result[(static::class)::PRIMARY_KEY])
+            );
+        }
+
+        if ($vars) {
+            if (Func::isAssoc($vars)) {
+                // replace assoc placeholders (ex: {$name})
+                $result['value'] = str_replace(
+                    array_map(function ($key) {
+                        return "{\$".($key)."}";
+                    }, array_keys($vars)),
+                    $vars,
+                    $result['value']
+                );
+            }
+
+            // replace index placeholders (ex: {$1})
+            $result['value'] = str_replace(
+                array_map(function ($nr) {
+                    return "{\$".($nr)."}";
+                }, range(1, count($vars))),
+                $vars,
+                $result['value']
+            );
+        }
+
+        Session::setView(static::class, $result[(static::class)::PRIMARY_KEY]);
+
+        return $result['value'];
     }
 }
