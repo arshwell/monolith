@@ -939,13 +939,13 @@ abstract class TableValidation extends Table {
         $keyword = str_replace(' ', '', $keyword);
 
         // get custom message from DB (form table)
-        $message = self::field('message_'.(static::TRANSLATOR)::get(), "error LIKE ?", array($keyword));
+        $message = static::field('message_'.(static::TRANSLATOR)::get(), "error LIKE ?", array($keyword));
 
         if (!$message) {
             $languages = (static::TRANSLATOR)::LANGUAGES;
             $message   = "{{ Error: ". $keyword ." }}";
 
-            self::insert(
+            static::insert(
                 "error, vars, message_". implode(', message_', $languages),
                 ':error, :vars'. str_repeat(', :message', count($languages)),
                 array(

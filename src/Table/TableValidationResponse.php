@@ -46,7 +46,7 @@ final class TableValidationResponse {
         return $this->data['valid'];
     }
     final function invalid (): bool {
-        return !$this->data['invalid'];
+        return !$this->data['valid'];
     }
 
     final function errors (array $keys = NULL): array {
