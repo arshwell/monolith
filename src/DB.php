@@ -223,7 +223,6 @@ final class DB {
             $query = "SELECT ". $column ." FROM ".self::$tb_prefixes[self::$key].($class)::TABLE;
 
             if ($where) {
-                // $query .= " WHERE ". preg_replace("/(^|\s)(\w+[.]\w+)|(\w+[.\*])($|\s)/", self::$tb_prefixes[self::$key]."$1$2", $where);
                 $query .= " WHERE ". self::prefix($where, true);
             }
 
@@ -249,12 +248,6 @@ final class DB {
             $query = "SELECT ". $column ." FROM ".self::$tb_prefixes[self::$key].($class)::TABLE;
 
             if ($where) {
-                /* ex:
-                    1. FROM table   => FROM pr_table
-                    2. table.column => pr_table.column
-                    3. table.*      => pr_table.*
-                */
-                // $query .= " WHERE ". preg_replace("/(FROM\s) | (^|\(|\s|,)  (\w+\.\w+) | (\w+\.\*)  (\s|\)|$)/x", '$1$2'.self::$tb_prefixes[self::$key].'$3$4', $where);
                 $query .= " WHERE ". self::prefix($where, true);
             }
             $query .= " LIMIT 1;";
@@ -280,7 +273,6 @@ final class DB {
         }
 
         final static function first (array $sql, array $params = NULL): ?array {
-            // $sql['columns'] = preg_replace("/(\w+[.]\w+)|(\w+[.\*])/", self::$tb_prefixes[self::$key]."$1$2", $sql['columns']);
             $sql['columns'] = self::prefix($sql['columns']);
 
             $query = "SELECT ".$sql['columns']." FROM ".self::$tb_prefixes[self::$key].($sql['class'])::TABLE;
@@ -294,20 +286,10 @@ final class DB {
             }
 
             if (isset($sql['where'])) {
-                /* ex:
-                    1. FROM table   => FROM pr_table
-                    2. table.column => pr_table.column
-                    3. table.*      => pr_table.*
-                */
-                // $query .= " WHERE ". preg_replace("/(FROM\s) | (^|\(|\s|,)  (\w+\.\w+) | (\w+\.\*)  (\s|\)|$)/x", '$1$2'.self::$tb_prefixes[self::$key].'$3$4', $sql['where']);
                 $query .= " WHERE ". self::prefix($sql['where'], true);
             }
 
             if (isset($sql['order'])) {
-                /* ex:
-                    1. table.column => pr_table.column
-                */
-                // $query .= " ORDER BY ". preg_replace("/(^|\(|\s|,) (\w+\.\w+) (\s|\)|$)/x", '$1$2'.self::$tb_prefixes[self::$key].'$3$4', $sql['order']);
                 $query .= " ORDER BY ". self::prefix($sql['order']);
             }
             $query .= " LIMIT 1;";
@@ -334,12 +316,6 @@ final class DB {
             $query = "SELECT COUNT(*) FROM ". self::$tb_prefixes[self::$key].($class)::TABLE;
 
             if ($where) {
-                /* ex:
-                    1. FROM table   => FROM pr_table
-                    2. table.column => pr_table.column
-                    3. table.*      => pr_table.*
-                */
-                // $query .= " WHERE ". preg_replace("/(FROM\s) | (^|\(|\s|,)  (\w+\.\w+) | (\w+\.\*)  (\s|\)|$)/x", '$1$2'.self::$tb_prefixes[self::$key].'$3$4', $where);
                 $query .= " WHERE ". self::prefix($where, true);
             }
 
@@ -392,11 +368,7 @@ final class DB {
             if (trim($sql['columns']) != '*' && isset($sql['sort']) && !preg_match("/(^(\s+)?|.+,(\s+)?)". $sql['sort'] ."((\s+)?,.+|$)/", $sql['columns'])) {
                 $sql['columns'] = $sql['columns'] .', '. $sql['sort'];
             }
-            /* ex:
-                1. table.column => pr_table.column
-                2. table.*      => pr_table.*
-            */
-            // $sql['columns'] = preg_replace("/(\w+\.\w+(?::lg)?) | (\w+\.\*)/x", self::$tb_prefixes[self::$key]."$1$2", $sql['columns']);
+
             $sql['columns'] = self::prefix($sql['columns']);
 
             $query = "SELECT ".$sql['columns']." FROM ".self::$tb_prefixes[self::$key].($sql['class'])::TABLE;
@@ -405,28 +377,18 @@ final class DB {
                 $join = $sql;
                 while (isset($join['join'])) {
                     $join = $join['join'];
-                    // $query .= " ".$join[0]." JOIN ". self::$tb_prefixes[self::$key] . $join[1]." ON ".preg_replace("/(\w+[.]\w+)/", self::$tb_prefixes[self::$key]."$1", $join[2]);
+
                     $query .= " ".$join[0]." JOIN ". self::$tb_prefixes[self::$key] . $join[1]." ON ".self::prefix($join[2]);
                 }
             }
 
             if (isset($sql['where'])) {
-                /* ex:
-                    1. FROM table   => FROM pr_table
-                    2. table.column => pr_table.column
-                    3. table.*      => pr_table.*
-                */
-                // $query .= " WHERE ". preg_replace("/(FROM\s) | (^|\(|\s|,)  (\w+\.\w+) | (\w+\.\*)  (\s|\)|$)/x", '$1$2'.self::$tb_prefixes[self::$key].'$3$4', $sql['where']);
                 $query .= " WHERE ". self::prefix($sql['where'], true);
             }
             if (isset($sql['group'])) {
                 $query .= " GROUP BY ".self::prefix($sql['group']);
             }
             if (isset($sql['order'])) {
-                /* ex:
-                    1. table.column => pr_table.column
-                */
-                // $query .= " ORDER BY ". preg_replace("/(\w+\.(?:`)?\w+(?::lg)?(?:`)?)/", self::$tb_prefixes[self::$key].'$1', $sql['order']);
                 $query .= " ORDER BY ". self::prefix($sql['order']);
             }
             if (isset($sql['limit'])) {
@@ -506,12 +468,6 @@ final class DB {
             TODO: Don't delete this comment 'till you are sure that used preg_replace() is perfect always */
 
             if (isset($sql['where'])) {
-                /* ex:
-                    1. FROM table   => FROM pr_table
-                    2. table.column => pr_table.column
-                    3. table.*      => pr_table.*
-                */
-                // $query .= " WHERE ". preg_replace("/(FROM\s) | (^|\(|\s|,)  (\w+\.\w+) | (\w+\.\*)  (\s|\)|$)/x", '$1$2'.self::$tb_prefixes[self::$key].'$3$4', $sql['where']);
                 $query .= " WHERE ". self::prefix($sql['where'], true);
             }
 

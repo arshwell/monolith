@@ -187,9 +187,6 @@ abstract class Table {
             if (trim($columns) != '*' && (static::class)::PRIMARY_KEY && !preg_match("/(^(\s+)?|.+,(\s+)?)". (static::class)::PRIMARY_KEY ."((\s+)?,.+|$)/", $columns)) {
                 $columns = (trim($columns) ? ((static::class)::PRIMARY_KEY .', '. $columns) : (static::class)::PRIMARY_KEY);
             }
-            if (in_array('Arsavinel\Arshwell\Traits\Languages', class_uses(static::class))) {
-                $columns = preg_replace("/([^\s]):lng(\s|,|$)/", '$1'.ENV::language().' ', $columns);
-            }
 
             $result = DB::get(static::class, $id, $columns);
 
