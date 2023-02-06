@@ -44,7 +44,7 @@ final class Image implements TableSegment {
         );
 
         if (empty($this->config['sizes'])) { // if no sizes, like TableView
-            foreach (Folder::children(ENV::path('uploads') . 'files/'. $this->folder .'/'. ($class::TRANSLATOR)::get(), true) as $size) {
+            foreach (Folder::children(ENV::path('uploads') .'files/'. $this->folder .'/'. ($class::TRANSLATOR)::get(), true) as $size) {
                 list($width, $height) = explode('x', $size);
 
                 $this->config['sizes'][$size]['width'] = array($width, $width);
@@ -91,11 +91,11 @@ final class Image implements TableSegment {
         $this->biggest  = array();
         $this->urls     = array();
 
-        $files = File::tree(ENV::path('uploads') . 'files/'. $this->folder, NULL, false, true);
+        $files = File::tree(ENV::path('uploads') .'files/'. $this->folder, NULL, false, true);
 
         if ($files) {
-            foreach (Folder::children(ENV::path('uploads') . 'files/'. $this->folder, true) as $lg) {
-                $lg_files = File::rFolder(ENV::path('uploads') . 'files/'. $this->folder .'/'. $lg, NULL, true, true);
+            foreach (Folder::children(ENV::path('uploads') .'files/'. $this->folder, true) as $lg) {
+                $lg_files = File::rFolder(ENV::path('uploads') .'files/'. $this->folder .'/'. $lg, NULL, true, true);
 
                 if ($lg_files) {
                     $lg_sized_files = array_map(function ($file) {
@@ -114,7 +114,7 @@ final class Image implements TableSegment {
                     $first_lang = array_key_first($files);
 
                     $files[$language] = $files[$first_lang];
-                    Folder::copy(ENV::path('uploads') . 'files/'. $this->folder .'/'. $first_lang, ENV::path('uploads') . 'files/'. $this->folder .'/'. $language);
+                    Folder::copy(ENV::path('uploads') .'files/'. $this->folder .'/'. $first_lang, ENV::path('uploads') .'files/'. $this->folder .'/'. $language);
                 }
 
                 foreach ($this->config['sizes'] as $size => $ranges) {
@@ -123,7 +123,7 @@ final class Image implements TableSegment {
 
                         // biggest language size from existent ones
                         if (!empty($files[$language])) {
-                            $lg_files = File::rFolder(ENV::path('uploads') . 'files/'. $this->folder .'/'. $language, NULL, true, true);
+                            $lg_files = File::rFolder(ENV::path('uploads') .'files/'. $this->folder .'/'. $language, NULL, true, true);
 
                             if ($lg_files) {
                                 $biggest = File::parsePath($lg_files[Func::keyFromBiggest(array_map(function ($file) {
@@ -155,17 +155,17 @@ final class Image implements TableSegment {
                             $filepath = $lg .'/'. $sz .'/'. $files[$lg][$sz][0];
                         }
 
-                        $imagesize = getimagesize(ENV::path('uploads') . 'files/'. $this->folder .'/'. $filepath);
+                        $imagesize = getimagesize(ENV::path('uploads') .'files/'. $this->folder .'/'. $filepath);
 
                         if (($ranges['width'][1] != NULL && $imagesize[0] > $ranges['width'][1]) || ($ranges['height'][1] != NULL && $imagesize[1] > $ranges['height'][1])) {
-                            $resizer = new Upload(ENV::path('uploads') . 'files/'. $this->folder .'/'. $filepath);
+                            $resizer = new Upload(ENV::path('uploads') .'files/'. $this->folder .'/'. $filepath);
 
-                            $resizer->file_new_name_body        = File::name(basename($filepath));
-                            $resizer->file_overwrite            = true;
-                            $resizer->file_name_body_lowercase  = true;
-                            $resizer->png_compression           = 9; // (slow but smaller files)
-                            $resizer->webp_quality              = 100;
-                            $resizer->jpeg_quality              = 100;
+                            $resizer->file_new_name_body    = strtolower(File::name($filepath));
+                            $resizer->file_overwrite        = true;
+
+                            $resizer->png_compression   = 9; // (slow but smaller files)
+                            $resizer->webp_quality      = 100;
+                            $resizer->jpeg_quality      = 100;
 
                             $resizer->file_safe_name    = false;
                             $resizer->image_resize      = true;
@@ -186,10 +186,10 @@ final class Image implements TableSegment {
                                 $resizer->image_ratio_crop = true;
                             }
 
-                            $resizer->process(ENV::path('uploads') . 'files/'. $this->folder .'/'. $language .'/'. $size);
+                            $resizer->process(ENV::path('uploads') .'files/'. $this->folder .'/'. $language .'/'. $size);
                         }
-                        else if (is_dir(ENV::path('uploads') . 'files/'.$this->folder.'/'.$language.'/'.$size) || mkdir(ENV::path('uploads') . 'files/'.$this->folder.'/'.$language.'/'.$size, 0755, true)) {
-                            copy(ENV::path('uploads') . 'files/'.$this->folder.'/'.$filepath, ENV::path('uploads') . 'files/'.$this->folder.'/'.$language.'/'.$size.'/'.basename($filepath));
+                        else if (is_dir(ENV::path('uploads') .'files/'.$this->folder.'/'.$language.'/'.$size) || mkdir(ENV::path('uploads') .'files/'.$this->folder.'/'.$language.'/'.$size, 0755, true)) {
+                            copy(ENV::path('uploads') .'files/'.$this->folder.'/'.$filepath, ENV::path('uploads') .'files/'.$this->folder.'/'.$language.'/'.$size.'/'.basename($filepath));
                         }
                     }
 
@@ -281,10 +281,10 @@ final class Image implements TableSegment {
     function rename (string $name, string $language = NULL): string {
         $language = ($language ?: (($this->class)::TRANSLATOR)::default());
 
-        $file_ext = ('.'. File::extension(File::rFirst(ENV::path('uploads') . 'files/'. $this->folder .'/'. $language)));
+        $file_ext = ('.'. File::extension(File::rFirst(ENV::path('uploads') .'files/'. $this->folder .'/'. $language)));
         $name = Text::slug($name);
 
-        foreach (File::rFolder(ENV::path('uploads') . 'files/'. $this->folder .'/'. $language) as $file) {
+        foreach (File::rFolder(ENV::path('uploads') .'files/'. $this->folder .'/'. $language) as $file) {
             rename($file, dirname($file) .'/'. $name . $file_ext);
         }
 
@@ -308,19 +308,18 @@ final class Image implements TableSegment {
         foreach ($this->config['sizes'] as $size => $ranges) {
             ini_set('memory_limit', ini_get('memory_limit') + 1048600); // + 1MB
 
-            Folder::remove(ENV::path('uploads') . 'files/'.$this->folder.'/'.$language.'/'.$size);
+            Folder::remove(ENV::path('uploads') .'files/'.$this->folder.'/'.$language.'/'.$size);
 
             // width OR height is not NULL - so a resize is needed
             if (($ranges['width'][1] != NULL && $imagesize[0] > $ranges['width'][1]) || ($ranges['height'][1] != NULL && $imagesize[1] > $ranges['height'][1])) {
                 $resizer = new Upload($data['tmp_name']);
 
-                $resizer->file_new_name_body        = File::name($data['name']);
-                $resizer->file_overwrite            = true;
-                $resizer->file_name_body_lowercase  = true;
+                $resizer->file_new_name_body    = strtolower(File::name($data['name']));
+                $resizer->file_overwrite        = true;
 
-                $resizer->png_compression           = 9; // (slow but smaller files)
-                $resizer->webp_quality              = ($ranges['quality'] ?? $this->config['quality']);
-                $resizer->jpeg_quality              = ($ranges['quality'] ?? $this->config['quality']);
+                $resizer->png_compression   = 9; // (slow but smaller files)
+                $resizer->webp_quality      = ($ranges['quality'] ?? $this->config['quality']);
+                $resizer->jpeg_quality      = ($ranges['quality'] ?? $this->config['quality']);
 
                 // size custom watermark
                 if (!empty($ranges['watermark'])) {
@@ -357,15 +356,15 @@ final class Image implements TableSegment {
                     $resizer->image_ratio_crop = true;
                 }
 
-                $resizer->process(ENV::path('uploads') . 'files/'. $this->folder .'/'. $language .'/'. $size);
+                $resizer->process(ENV::path('uploads') .'files/'. $this->folder .'/'. $language .'/'. $size);
 
                 if ($resizer->processed == false) {
                     throw new \ErrorException($resizer->error);
                 }
             }
             // no resize needed
-            else if (is_dir(ENV::path('uploads') . 'files/'.$this->folder.'/'.$language.'/'.$size) || mkdir(ENV::path('uploads') . 'files/'.$this->folder.'/'.$language.'/'.$size, 0755, true)) {
-                copy($data['tmp_name'], ENV::path('uploads') . 'files/'.$this->folder.'/'.$language.'/'.$size.'/'.$data['name']);
+            else if (is_dir(ENV::path('uploads') .'files/'.$this->folder.'/'.$language.'/'.$size) || mkdir(ENV::path('uploads') .'files/'.$this->folder.'/'.$language.'/'.$size, 0755, true)) {
+                copy($data['tmp_name'], ENV::path('uploads') .'files/'.$this->folder.'/'.$language.'/'.$size.'/'.$data['name']);
             }
         }
 
@@ -373,12 +372,12 @@ final class Image implements TableSegment {
     }
 
     function delete (string $language = NULL, bool $removeEmpty = true): bool {
-        if (Folder::remove(ENV::path('uploads') . 'files/'. $this->folder .'/'. ($language ?? ''), $removeEmpty)) {
+        if (Folder::remove(ENV::path('uploads') .'files/'. $this->folder .'/'. ($language ?? ''), $removeEmpty)) {
             $this->setup();
         }
 
         if ($removeEmpty) {
-            Folder::removeEmpty(ENV::path('uploads') . 'files/'. dirname($this->folder));
+            Folder::removeEmpty(ENV::path('uploads') .'files/'. dirname($this->folder));
         }
 
         return true;
