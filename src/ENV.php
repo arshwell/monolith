@@ -17,13 +17,21 @@ set_error_handler(function ($e_code, $text, $file, $line) {
 });
 
 final class ENV {
-	/******************************************************************************
-        All vars are NULL so we get error if we don't fetch() before anything.
-    ******************************************************************************/
-    private static $env         = NULL; // our env object
-    private static $is_cron     = NULL;
-    private static $client_ip   = NULL; // on CRON Jobs, it is not set
-    private static $supervisor  = false; // on CRON Jobs, it is false
+    /******************************************************************************
+     All vars are NULL so we get error if we don't fetch() before anything.
+     ******************************************************************************/
+
+    /** @var ENVComponent */
+    private static $env = NULL;
+
+    /** @var bool */
+    private static $is_cron = NULL;
+
+    /** @var string */
+    private static $client_ip = NULL; // on CRON Jobs, it is not set
+
+    /** @var bool */
+    private static $supervisor = false; // on CRON Jobs, it is false
 
     static function set (ENVComponent $env) {
         self::$env = $env;

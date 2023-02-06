@@ -775,13 +775,13 @@ abstract class TableValidation extends Table {
                 default: {
                     // Assuming, the keyword, is a php, default or defined, function.
                     if (is_numeric($value) || !empty($value)) {
-                        // if oposite
+                        // if opposite
                         if (strpos($rule, '!') === 0) {
-                            if (substr($rule, 1)($value) == true) {
+                            if (substr($rule, 1)($value) == true) { // run function
                                 return ($message ?? self::message($rule));
                             }
                         }
-                        else if ($rule($value) == false) {
+                        else if ($rule($value) == false) { // run function
                             return ($message ?? self::message($rule));
                         }
                     }
