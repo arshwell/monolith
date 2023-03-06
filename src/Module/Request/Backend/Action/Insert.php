@@ -52,7 +52,7 @@ final class Insert {
 
                     $join = array_shift($field['DB']['joins']);
 
-                    $sql = \Arsavinel\Arshwell\SQL::joinsField2joinsQuery(
+                    $sql = \ArshWell\Monolith\SQL::joinsField2joinsQuery(
                         $join['table'], $join['column'], $field['DB']['joins'], $lgs
                     );
 

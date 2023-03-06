@@ -141,7 +141,7 @@ class Select {
                                         $column
                                     );
 
-                                    $sql = \Arsavinel\Arshwell\SQL::joinsField2joinsQuery(
+                                    $sql = \ArshWell\Monolith\SQL::joinsField2joinsQuery(
                                         $back['DB']['table'], $field['DB']['column'], $field['DB']['joins'], $lgs
                                     );
 
@@ -221,7 +221,7 @@ class Select {
 
                     $join = array_shift($field['DB']['joins']);
 
-                    $sql = \Arsavinel\Arshwell\SQL::joinsField2joinsQuery(
+                    $sql = \ArshWell\Monolith\SQL::joinsField2joinsQuery(
                         $join['table'], $join['column'], $field['DB']['joins'], $lgs
                     );
 

@@ -783,7 +783,7 @@ final class Field {
                     <?php }
 
                     // optgroups with options
-                    if (\Arsavinel\Arshwell\Func::isAssoc($config['HTML']['values'], false)) {
+                    if (\ArshWell\Monolith\Func::isAssoc($config['HTML']['values'], false)) {
                         foreach ($config['HTML']['values'] as $optgroup_name => $values) { ?>
                             <optgroup label="<?= $optgroup_name ?>">
                                 <?php
