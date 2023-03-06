@@ -27,11 +27,11 @@ final class Update {
 
             if (($back['DB']['table'])::count(($back['DB']['table'])::PRIMARY_KEY .' = '. $query['id'])) {
                 foreach ($back['fields'] as $key => $field) {
-                    $class  = ($field['DB']['from']['table'] ?? $back['DB']['table']);
-                    $column = ($field['DB']['from']['column'] ?? $field['DB']['column'] ?? NULL);
+                    $class  = ($field['DB']['join']['table'] ?? $back['DB']['table']);
+                    $column = ($field['DB']['join']['column'] ?? $field['DB']['column'] ?? NULL);
 
                     if ($column) {
-                        if (empty($field['DB']['from']) == false) {
+                        if (empty($field['DB']['join']) == false) {
                             if (empty($field['DB']['one2many'])) {
                                 $id = ($back['DB']['table'])::field(
                                     $field['DB']['column'] . (defined("{$back['DB']['table']}::TRANSLATED") && in_array($field['DB']['column'], ($back['DB']['table'])::TRANSLATED) ? ':lg' : ''),
@@ -60,20 +60,83 @@ final class Update {
                     }
                 }
 
+                /**
+                 * $response['options'] is used in frontend by <select> elements.
+                 *
+                 * @param array $response['options'] with values from database.
+                 *
+                 *    variant 1 | key->value options:
+                 *
+                 *        $response['options'] = [
+                 *            (int) primary key => (string) value,
+                 *            (int) primary key => (string) value,
+                 *            (int) primary key => (string) value,
+                 *            ...
+                 *        ]
+                 *
+                 *    variant 2 | optgroup->values options:
+                 *
+                 *        $response['options'] = [
+                 *            (string) optgroup name => [
+                 *                (int) primary key => (string) value,
+                 *                (int) primary key => (string) value,
+                 *                (int) primary key => (string) value,
+                 *                ...
+                 *            ]
+                 *            (string) optgroup name => [
+                 *                (int) primary key => (string) value,
+                 *                (int) primary key => (string) value,
+                 *                ...
+                 *            ]
+                 *        ]
+                 */
                 foreach ($back['fields'] as $key => $field) {
-                    if (isset($field['DB']['from'])) {
-                        $suffix = (defined("{$field['DB']['from']['table']}::TRANSLATED") && in_array($field['DB']['from']['column'], ($field['DB']['from']['table'])::TRANSLATED) ? ':lg' : '');
+
+                    // one single join
+                    if (isset($field['DB']['join'])) {
+                        $suffix = (($field['DB']['join']['table'])::translationTimes($field['DB']['join']['column']) ? ':lg' : '');
 
                         $response['options'][$key] = array_column(
                             DB::select(
                                 array(
-                                    'class'     => $field['DB']['from']['table'],
-                                    'columns'   => ($field['DB']['from']['table'])::PRIMARY_KEY .', '. $field['DB']['from']['column'].$suffix .' AS '. $field['DB']['from']['column']
+                                    'class'     => $field['DB']['join']['table'],
+                                    'columns'   => ($field['DB']['join']['table'])::PRIMARY_KEY .', '. $field['DB']['join']['column'].$suffix .' AS '. $field['DB']['join']['column']
                                 ),
-                                (defined("{$field['DB']['from']['table']}::TRANSLATED") ? array(':lg' => (($field['DB']['from']['table'])::TRANSLATOR)::default()) : array())
+                                (($back['DB']['table'])::translationTimes() > 1 ? array(':lg' => (($back['DB']['table'])::TRANSLATOR)::default()) : array())
                             ),
-                            $field['DB']['from']['column'], ($field['DB']['from']['table'])::PRIMARY_KEY
+                            $field['DB']['join']['column'], ($field['DB']['join']['table'])::PRIMARY_KEY
                         );
+                    }
+
+                    // multiple joins
+                    else if (isset($field['DB']['joins'])) {
+                        $optgroup_columns = array_map(function ($value) {
+                            return ($value['table'])::TABLE .'_'. $value['column'];
+                        }, $field['DB']['joins']);
+
+                        $option_column = array_shift($optgroup_columns);
+
+                        $optgroup_columns = array_reverse(array_flip($optgroup_columns));
+
+                        $join = array_shift($field['DB']['joins']);
+
+                        $sql = \Arsavinel\Arshwell\SQL::joinsField2joinsQuery(
+                            $join['table'], $join['column'], $field['DB']['joins'], $lgs
+                        );
+
+                        $rows = DB::select(
+                            $sql, array(':lg' => $lgs)
+                        );
+
+                        $options = [];
+
+                        foreach ($rows as $row) {
+                            $optgroup_name = implode(' > ', array_replace($optgroup_columns, array_intersect_key($row, $optgroup_columns)));
+
+                            $options[$optgroup_name][$row[$field['DB']['column']]] = $row[$option_column];
+                        }
+
+                        $response['options'][$key] = $options;
                     }
                 }
             }

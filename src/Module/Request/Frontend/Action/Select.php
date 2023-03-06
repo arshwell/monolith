@@ -28,10 +28,10 @@ final class Select {
                         ) ?>
                     </div>
 
-                    <div class="col order-1 col-sm-3 order-sm-0 <?= (($module['back']['DB']['table'])::isTranslated() ? 'col-lg-auto' : 'd-lg-none') ?> order-lg-last card">
+                    <div class="col order-1 col-sm-3 order-sm-0 <?= (($module['back']['DB']['table'])::translationTimes() > 1 ? 'col-lg-auto' : 'd-lg-none') ?> order-lg-last card">
                         <div class="card-body text-sm-right py-3">
                             <?php
-                            if (($module['back']['DB']['table'])::isTranslated()) {
+                            if (($module['back']['DB']['table'])::translationTimes() > 1) {
                                 echo Piece::languages((($module['back']['DB']['table'])::TRANSLATOR)::LANGUAGES, $module['query']['lg']);
                             } ?>
                         </div>

@@ -4,20 +4,16 @@ namespace Arsavinel\Arshwell;
 
 use Arsavinel\Arshwell\Table\TableField;
 use Arsavinel\Arshwell\Table\TableFiles;
-use Arsavinel\Arshwell\Language;
-use Arsavinel\Arshwell\ENV;
 use Arsavinel\Arshwell\DB;
 
 /**
  * Table class for manipulating certain table and its columns.
 */
 abstract class Table {
-    const IMAGE         = 1;
-    const IMAGE_GROUP   = 2;
-    const DOC           = 3;
-    const DOC_GROUP     = 4;
-
-    const TRANSLATOR = Language::class;
+    const FILE_IMAGE        = 1;
+    const FILE_IMAGE_GROUP  = 2;
+    const FILE_DOC          = 3;
+    const FILE_DOC_GROUP    = 4;
 
     private static $structures = array();
 
@@ -29,14 +25,36 @@ abstract class Table {
     private $load_files = false; // settled by object constructor
     private $need_files = false; // settled by children's class FILES constant
 
-    final static function isTranslated (): bool {
-        return (
+    /**
+     * Get number of translation times of the table or a certain column.
+     *
+     * Also it lets the user know if a table has translated columns.
+     */
+    final static function translationTimes (string $column = NULL): int {
+        $count = 0;
+
+        $isTableTranslated = (
             defined(static::class . '::TRANSLATOR') &&
-            !empty(((static::class)::TRANSLATOR)::LANGUAGES) &&
-            count(((static::class)::TRANSLATOR)::LANGUAGES) > 1 &&
-            defined(static::class . '::TRANSLATED') &&
-            !empty((static::class)::TRANSLATED)
+            !empty(((static::class)::TRANSLATOR)::LANGUAGES)
         );
+
+        if ($isTableTranslated) {
+            $count = count(((static::class)::TRANSLATOR)::LANGUAGES);
+
+            if ($column != NULL) {
+                $isColumnTranslated = (
+                    defined(static::class . '::TRANSLATED') &&
+                    !empty((static::class)::TRANSLATED) &&
+                    in_array($column, (static::class)::TRANSLATED)
+                );
+
+                if ($isColumnTranslated == false) {
+                    return 0;
+                }
+            }
+        }
+
+        return $count;
     }
 
     final function files (): ?TableFiles {
@@ -68,7 +86,7 @@ abstract class Table {
             $this->columns = $columns;
 
             if (defined(static::class ."::TRANSLATOR") && defined(static::class ."::TRANSLATED")) {
-                $languages = (static::TRANSLATOR)::LANGUAGES;
+                $languages = ((static::class)::TRANSLATOR)::LANGUAGES;
 
                 foreach ((static::class)::TRANSLATED as $column) {
                     foreach ($languages as $language) {
@@ -132,7 +150,7 @@ abstract class Table {
     }
 
     function translation (string $column, string $language = NULL): ?string {
-        return ($this->translations[$column])->value(($language ?? (static::TRANSLATOR)::get()));
+        return ($this->translations[$column])->value(($language ?? ((static::class)::TRANSLATOR)::get()));
     }
 
     function translate (string $column, string $language, string $value = NULL): void {

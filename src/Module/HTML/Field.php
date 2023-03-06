@@ -782,14 +782,35 @@ final class Field {
                         <option value="" selected hidden><?= $config['HTML']['placeholder'] ?: 'Alege...' ?></option>
                     <?php }
 
-                    foreach ($config['HTML']['values'] as $value => $text) { ?>
-                        <option
-                        value="<?= $value ?>"
-                        <?= ($config['HTML']['readonly'] ? 'disabled="disabled"' : '') ?>
-                        <?= (in_array($value, $config['HTML']['value']) ? 'selected' : '') ?>>
-                            <?= $text ?>
-                        </option>
-                    <?php } ?>
+                    // optgroups with options
+                    if (\Arsavinel\Arshwell\Func::isAssoc($config['HTML']['values'], false)) {
+                        foreach ($config['HTML']['values'] as $optgroup_name => $values) { ?>
+                            <optgroup label="<?= $optgroup_name ?>">
+                                <?php
+                                foreach ($values as $value => $text) { ?>
+                                    <option
+                                    value="<?= $value ?>"
+                                    <?= ($config['HTML']['readonly'] ? 'disabled="disabled"' : '') ?>
+                                    <?= (in_array($value, $config['HTML']['value']) ? 'selected' : '') ?>>
+                                        <?= $text ?>
+                                    </option>
+                                <?php } ?>
+                            </optgroup>
+                        <?php }
+                    }
+
+                    // simple options
+                    else {
+                        foreach ($config['HTML']['values'] as $value => $text) { ?>
+                            <option
+                            value="<?= $value ?>"
+                            <?= ($config['HTML']['readonly'] ? 'disabled="disabled"' : '') ?>
+                            <?= (in_array($value, $config['HTML']['value']) ? 'selected' : '') ?>>
+                                <?= $text ?>
+                            </option>
+                        <?php }
+                    } ?>
+
                 </select>
             </div>
             <?php
