@@ -12,6 +12,8 @@ use Arsavinel\Arshwell\ENV;
 
 use Verot\Upload\Upload;
 
+use Exception;
+
 final class Image implements TableSegment {
     private $class;
     private $id_table = NULL;
@@ -107,6 +109,10 @@ final class Image implements TableSegment {
                     $this->smallest[$lg] = $site . ltrim(preg_replace('~^'. ENV::path('uploads', false) .'~', '', $lg_files[Func::keyFromSmallest($lg_sized_files)]), '/');
                     $this->biggest[$lg] = $site . ltrim(preg_replace('~^'. ENV::path('uploads', false) .'~', '', $lg_files[Func::keyFromBiggest($lg_sized_files)]), '/');
                 }
+            }
+
+            if (!defined($this->class .'::TRANSLATOR')) {
+                throw new Exception("|ArshWell| {$this->class} has FILES; so should contain const TRANSLATOR");
             }
 
             foreach ((($this->class)::TRANSLATOR)::LANGUAGES as $language) {

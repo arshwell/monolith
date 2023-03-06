@@ -94,10 +94,12 @@ final class Func {
                     $value = array_values($value);
                 }
 
-                $result = array_merge($result, self::arrayFlatten($value));
+                // NOTE: array_merge is not good (it doesn't preserve keys)
+                $result = array_replace($result, self::arrayFlatten($value, $preserve_keys));
             }
             else {
-                $result = array_merge($result, array($key => $value));
+                // NOTE: array_merge is not good (it doesn't preserve keys)
+                $result = array_replace($result, array($key => $value));
             }
         }
         return $result;
@@ -139,8 +141,12 @@ final class Func {
         return $array;
     }
 
-    static function isAssoc (array $array): bool {
-        return (array_keys($array) !== range(0, count($array) - 1));
+    static function isAssoc (array $array, bool $check_if_zero_indexed = true): bool {
+        if ($check_if_zero_indexed) {
+            return (array_keys($array) !== range(0, count($array) - 1));
+        }
+
+        return count(array_filter(array_keys($array), 'is_string')) > 0;
     }
 
     static function hasValidJSON (string $file): bool {

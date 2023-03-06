@@ -146,7 +146,20 @@ final class DB {
 
             if (preg_match($regex, $query, $matches)) {
                 $nr_langs_per_column = array(); // for replacing ?:lg with real count of placeholders
-                $languages = (empty($params[':lg']) ? array((($class)::TRANSLATOR)::get()) : NULL);
+
+                $languages = NULL;
+
+                if (empty($params[':lg'])) {
+                    if (($class)::translationTimes() > 0) {
+                        $languages = array((($class)::TRANSLATOR)::get());
+                    }
+                    else {
+                        throw new Exception(
+                            "|ArshWell| ".static::class."::languages() query can't replace :lg placeholders;
+                            Should be send as params or fetched from your class const TRANSLATOR"
+                        );
+                    }
+                }
 
                 $query = preg_replace_callback(
                     $regex,
@@ -284,6 +297,11 @@ final class DB {
                     $query .= " ".$join[0]." JOIN ". self::$tb_prefixes[self::$key] . $join[1]." ON ".preg_replace("/(\w+[.]\w+)/", self::$tb_prefixes[self::$key]."$1", $join[2]);
                 }
             }
+            else if (!empty($sql['joins'])) {
+                foreach ($sql['joins'] as $join) {
+                    $query .= " ".$join['type']." JOIN ". self::$tb_prefixes[self::$key] . $join['table']." ON ".self::prefix($join['on']);
+                }
+            }
 
             if (isset($sql['where'])) {
                 $query .= " WHERE ". self::prefix($sql['where'], true);
@@ -379,6 +397,11 @@ final class DB {
                     $join = $join['join'];
 
                     $query .= " ".$join[0]." JOIN ". self::$tb_prefixes[self::$key] . $join[1]." ON ".self::prefix($join[2]);
+                }
+            }
+            else if (!empty($sql['joins'])) {
+                foreach ($sql['joins'] as $join) {
+                    $query .= " ".$join['type']." JOIN ". self::$tb_prefixes[self::$key] . $join['table']." ON ".self::prefix($join['on']);
                 }
             }
 

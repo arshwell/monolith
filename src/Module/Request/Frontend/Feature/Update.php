@@ -33,7 +33,7 @@ final class Update {
                                 <h6 class="card-header">
                                     Editing
                                     <?php
-                                    if (($module['back']['DB']['table'])::isTranslated()) { ?>
+                                    if (($module['back']['DB']['table'])::translationTimes() > 1) { ?>
                                         <div style="position: absolute; right: 15px; top: 0;">
                                             <?= Piece::languages(
                                                 (($module['back']['DB']['table'])::TRANSLATOR)::LANGUAGES,

@@ -24,20 +24,54 @@ final class Insert {
             $response['data'] = array();
 
             foreach ($back['fields'] as $key => $field) {
-                if (isset($field['DB']['from'])) {
-                    $suffix = (defined("{$field['DB']['from']['table']}::TRANSLATED") && in_array($field['DB']['from']['column'], ($field['DB']['from']['table'])::TRANSLATED) ? ':lg' : '');
+                // one single join
+                if (isset($field['DB']['join'])) {
+                    $suffix = (($field['DB']['join']['table'])::translationTimes($field['DB']['join']['column']) ? ':lg' : '');
 
                     $response['options'][$key] = array_column(
                         DB::select(
                             array(
-                                'class'     => $field['DB']['from']['table'],
-                                'columns'   => ($field['DB']['from']['table'])::PRIMARY_KEY .', '. $field['DB']['from']['column'].$suffix .' AS '. $field['DB']['from']['column']
+                                'class'     => $field['DB']['join']['table'],
+                                'columns'   => ($field['DB']['join']['table'])::PRIMARY_KEY .', '. $field['DB']['join']['column'].$suffix .' AS '. $field['DB']['join']['column']
                             ),
-                            (defined("{$field['DB']['from']['table']}::TRANSLATED") ? array(':lg' => (($field['DB']['from']['table'])::TRANSLATOR)::default()) : array())
+                            (($back['DB']['table'])::translationTimes() > 1 ? array(':lg' => (($back['DB']['table'])::TRANSLATOR)::default()) : array())
                         ),
-                        $field['DB']['from']['column'], ($field['DB']['from']['table'])::PRIMARY_KEY
+                        $field['DB']['join']['column'], ($field['DB']['join']['table'])::PRIMARY_KEY
                     );
                 }
+
+                // multiple joins
+                else if (isset($field['DB']['joins'])) {
+                    $optgroup_columns = array_map(function ($value) {
+                        return ($value['table'])::TABLE .'_'. $value['column'];
+                    }, $field['DB']['joins']);
+
+                    $option_column = array_shift($optgroup_columns);
+
+                    $optgroup_columns = array_reverse(array_flip($optgroup_columns));
+
+                    $join = array_shift($field['DB']['joins']);
+
+                    $sql = \Arsavinel\Arshwell\SQL::joinsField2joinsQuery(
+                        $join['table'], $join['column'], $field['DB']['joins'], $lgs
+                    );
+
+                    $rows = DB::select(
+                        $sql, array(':lg' => $lgs)
+                    );
+
+                    $options = [];
+
+                    foreach ($rows as $row) {
+                        $optgroup_name = implode(' > ', array_replace($optgroup_columns, array_intersect_key($row, $optgroup_columns)));
+
+                        $options[$optgroup_name][$row[$field['DB']['column']]] = $row[$option_column];
+                    }
+
+                    $response['options'][$key] = $options;
+                }
+
+                // is file
                 else if (empty($field['DB'])) {
                     if (!isset($files[$key])) {
                         $files[$key] = new TableFiles($back['DB']['table'], NULL);
