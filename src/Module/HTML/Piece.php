@@ -6,6 +6,7 @@ use ArshWell\Monolith\Table\TableSegment;
 use ArshWell\Monolith\Table\TableColumn;
 use ArshWell\Monolith\Table\TableField;
 use ArshWell\Monolith\Text;
+use ArshWell\Monolith\Func;
 use ArshWell\Monolith\File;
 use ArshWell\Monolith\URL;
 use ArshWell\Monolith\Web;
@@ -192,9 +193,28 @@ final class Piece {
                                 if (in_array($field['HTML']['type'], array('select', 'radio'))) { ?>
                                     <select class="custom-select h-100 d-none" data-key="<?= $key ?>">
                                         <?php
-                                        foreach (($options[$key] ?? $field['HTML']['values'] ?? array()) as $index => $value) { ?>
-                                            <option value="<?= $index ?>"><?= $value ?></option>
-                                        <?php } ?>
+                                        $select = ($options[$key] ?? $field['HTML']['values'] ?? array());
+
+                                        if ($select) {
+                                            // optgroups with options
+                                            if (\ArshWell\Monolith\Func::isAssoc($select, false)) {
+                                                foreach ($select as $optgroup_name => $values) { ?>
+                                                    <optgroup label="<?= $optgroup_name ?>">
+                                                        <?php
+                                                        foreach ($values as $index => $value) { ?>
+                                                            <option value="<?= $index ?>"><?= $value ?></option>
+                                                        <?php } ?>
+                                                    </optgroup>
+                                                <?php }
+                                            }
+
+                                            // simple options
+                                            else {
+                                                foreach (($options[$key] ?? $field['HTML']['values'] ?? array()) as $index => $value) { ?>
+                                                    <option value="<?= $index ?>"><?= $value ?></option>
+                                                <?php }
+                                            }
+                                        } ?>
                                     </select>
                                 <?php }
                             } ?>
@@ -216,6 +236,10 @@ final class Piece {
                     }
                     else {
                         foreach ($query['filter'] as $key => $values) {
+                            if (!empty($options[$key]) && Func::isAssoc($options[$key], false)) {
+                                $options[$key] = Func::arrayFlatten($options[$key], true);
+                            }
+
                             foreach ($values as $value) { ?>
                                 <span class="nowrap mr-3" data-field="<?= $key ?>" data-value="<?= $value ?>">
                                     <b><?= $fields[$key]['HTML']['label'] ?>:</b>
@@ -387,6 +411,7 @@ final class Piece {
 
                                             $lg = NULL;
                                             $value = $row[$key];
+                                            $suptitle = NULL;
 
                                             if (is_object($value)) {
                                                 $lg = ($row[$key])->isTranslated() ? ($query['lg'] ?? NULL) : NULL;
@@ -394,6 +419,9 @@ final class Piece {
                                                 switch (get_class($value)) {
                                                     case TableField::class:
                                                     case TableColumn::class: {
+                                                        if (property_exists($value, 'suptitle')) {
+                                                            $suptitle = $value->suptitle;
+                                                        }
                                                         $value = $value->value($lg);
                                                     }
                                                 }
@@ -406,6 +434,13 @@ final class Piece {
                                             }); ?>
 
                                             <td>
+                                                <?php
+                                                if ($suptitle) { ?>
+                                                    <div class="lh-12"><small class="lh-12"><small class="text-muted lh-12">
+                                                        <?= $suptitle ?>
+                                                    </small></small></div>
+                                                <?php } ?>
+
                                                 <?php
                                                 switch ($HTML['type']) {
                                                     case 'image': {

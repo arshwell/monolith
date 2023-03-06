@@ -13,20 +13,20 @@ final class TableFiles {
 
     function __construct (string $class, int $id_table = NULL) {
         foreach (($class)::FILES as $filekey => $info) {
-            switch (($info['type'] ?? Table::IMAGE)) {
-                case Table::IMAGE: {
+            switch (($info['type'] ?? Table::FILE_IMAGE)) {
+                case Table::FILE_IMAGE: {
                     $this->files[$filekey] = new Image($class, $id_table, $filekey);
                     break;
                 }
-                case Table::IMAGE_GROUP: {
+                case Table::FILE_IMAGE_GROUP: {
                     $this->files[$filekey] = new ImageGroup($class, $id_table, $filekey);
                     break;
                 }
-                case Table::DOC: {
+                case Table::FILE_DOC: {
                     $this->files[$filekey] = new Doc($class, $id_table, $filekey);
                     break;
                 }
-                case Table::DOC_GROUP: {
+                case Table::FILE_DOC_GROUP: {
                     $this->files[$filekey] = new DocGroup($class, $id_table, $filekey);
                     break;
                 }
