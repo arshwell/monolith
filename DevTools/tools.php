@@ -1,6 +1,6 @@
 <?php
 
-use Arsavinel\Arshwell\DevTool\DevToolData;
+use ArshWell\Monolith\DevTool\DevToolData;
 
 /**
  * Preparation for development mode actions.
@@ -13,26 +13,26 @@ use Arsavinel\Arshwell\DevTool\DevToolData;
  * fl       -> file
  ***** just removed vowels *****
 
- * @package https://github.com/arsavinel/ArshWell
+ * @package https://github.com/arshwell/monolith
  */
 
 if (!empty($_REQUEST['rshwll']) && $_REQUEST['rshwll'] == substr(md5(DevToolData::ArshWellVersion()), 0, 5)) {
     call_user_func(function () {
         // DevTool panel action
-        if (!empty($_REQUEST['pnl']) && is_file("vendor/arsavinel/arshwell/DevTools/tools/panel/". $_REQUEST['pnl'] .".php")) {
+        if (!empty($_REQUEST['pnl']) && is_file("vendor/arshwell/monolith/DevTools/tools/panel/". $_REQUEST['pnl'] .".php")) {
             http_response_code(200);
-            require("vendor/arsavinel/arshwell/DevTools/tools/panel/". $_REQUEST['pnl'] .".php");
+            require("vendor/arshwell/monolith/DevTools/tools/panel/". $_REQUEST['pnl'] .".php");
             exit;
         }
 
         // DevTool file
-        if (!empty($_GET['hdr']) && !empty($_GET['fl']) && is_file("vendor/arsavinel/arshwell/DevTools/tools/files/". $_GET['fl'])) {
+        if (!empty($_GET['hdr']) && !empty($_GET['fl']) && is_file("vendor/arshwell/monolith/DevTools/tools/files/". $_GET['fl'])) {
             ini_set('memory_limit', '-1');
             http_response_code(200);
             header("Content-Type: ". $_GET['hdr']);
-            echo file_get_contents("vendor/arsavinel/arshwell/DevTools/tools/files/". $_GET['fl']);
+            echo file_get_contents("vendor/arshwell/monolith/DevTools/tools/files/". $_GET['fl']);
             if (!empty($_GET['dlt']) && $_GET['dlt'] == '1') {
-                unlink("vendor/arsavinel/arshwell/DevTools/tools/files/". $_GET['fl']);
+                unlink("vendor/arshwell/monolith/DevTools/tools/files/". $_GET['fl']);
             }
             exit;
         }

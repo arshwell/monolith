@@ -1,8 +1,8 @@
 <?php
 
-namespace Arsavinel\Arshwell\Module\Request\Backend\Feature;
+namespace ArshWell\Monolith\Module\Request\Backend\Feature;
 
-use Arsavinel\Arshwell\DB;
+use ArshWell\Monolith\DB;
 
 final class Order {
 

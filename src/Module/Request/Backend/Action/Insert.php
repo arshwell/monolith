@@ -1,11 +1,11 @@
 <?php
 
-namespace Arsavinel\Arshwell\Module\Request\Backend\Action;
+namespace ArshWell\Monolith\Module\Request\Backend\Action;
 
-use Arsavinel\Arshwell\Table\TableFiles;
-use Arsavinel\Arshwell\File;
-use Arsavinel\Arshwell\URL;
-use Arsavinel\Arshwell\DB;
+use ArshWell\Monolith\Table\TableFiles;
+use ArshWell\Monolith\File;
+use ArshWell\Monolith\URL;
+use ArshWell\Monolith\DB;
 
 final class Insert {
 
@@ -187,12 +187,12 @@ final class Insert {
                         $file = $table->file($key);
 
                         switch (get_class($file)) {
-                            case 'Arsavinel\Arshwell\Table\Files\Doc':
-                            case 'Arsavinel\Arshwell\Table\Files\Image': {
+                            case 'ArshWell\Monolith\Table\Files\Doc':
+                            case 'ArshWell\Monolith\Table\Files\Image': {
                                 $file->update($value, $column ?: NULL); // $column is lg
                                 break;
                             }
-                            case 'Arsavinel\Arshwell\Table\Files\ImageGroup': {
+                            case 'ArshWell\Monolith\Table\Files\ImageGroup': {
                                 $file->insert($value, $column ?: NULL); // $column is lg
                                 break;
                             }

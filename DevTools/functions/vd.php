@@ -1,14 +1,14 @@
 <?php
 
-use Arsavinel\Arshwell\Folder;
-use Arsavinel\Arshwell\ENV;
+use ArshWell\Monolith\Folder;
+use ArshWell\Monolith\ENV;
 
 // verify because could be already user-defined
 if (function_exists('_vd') == false) {
     /**
      * It prints received variable in the proper way.
 
-    * @package https://github.com/arsavinel/ArshWell
+    * @package https://github.com/arshwell/monolith
     */
     function _vd ($variable, string $description = NULL): void {
         if (ENV::supervisor() == false) {

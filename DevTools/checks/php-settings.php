@@ -1,13 +1,13 @@
 <?php
 
-use Arsavinel\Arshwell\DevTool\DevToolData;
-use Arsavinel\Arshwell\DevTool\DevToolHTML;
-use Arsavinel\Arshwell\Folder;
+use ArshWell\Monolith\DevTool\DevToolData;
+use ArshWell\Monolith\DevTool\DevToolHTML;
+use ArshWell\Monolith\Folder;
 
 /**
  * Verifies if the minimum PHP requirements are met.
 
- * @package https://github.com/arsavinel/ArshWell
+ * @package https://github.com/arshwell/monolith
  */
 if (version_compare(PHP_VERSION, '7.3') == -1) {
     DevToolHTML::html(

@@ -1,11 +1,11 @@
 <?php
 
-use Arsavinel\Arshwell\Table\TableValidation;
-use Arsavinel\Arshwell\Module\Backend;
-use Arsavinel\Arshwell\Folder;
-use Arsavinel\Arshwell\File;
-use Arsavinel\Arshwell\Time;
-use Arsavinel\Arshwell\DB;
+use ArshWell\Monolith\Table\TableValidation;
+use ArshWell\Monolith\Module\Backend;
+use ArshWell\Monolith\Folder;
+use ArshWell\Monolith\File;
+use ArshWell\Monolith\Time;
+use ArshWell\Monolith\DB;
 
 $form = TableValidation::run($_POST,
     array(
@@ -56,7 +56,7 @@ if ($form->valid()) {
         }
 
 
-        $arshwell_errors = require("vendor/arsavinel/arshwell/DevTools/tools/validation.errors.php");
+        $arshwell_errors = require("vendor/arshwell/monolith/DevTools/tools/validation.errors.php");
         $validation_tables = array();
 
         $composer = json_decode(file_get_contents(Folder::root() . 'composer.json'), true);

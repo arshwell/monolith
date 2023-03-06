@@ -1,11 +1,11 @@
 <?php
 
-namespace Arsavinel\Arshwell;
+namespace ArshWell\Monolith;
 
 /**
  * Helper class for organizing meta tags from <head> section of html.
 
- * @package https://github.com/arsavinel/ArshWell
+ * @package https://github.com/arshwell/monolith
 */
 final class Meta {
     private static $metas = array();

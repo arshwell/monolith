@@ -1,11 +1,11 @@
 <?php
 
-namespace Arsavinel\Arshwell;
+namespace ArshWell\Monolith;
 
-use Arsavinel\Arshwell\ENV\ENVComponent;
-use Arsavinel\Arshwell\Folder;
-use Arsavinel\Arshwell\Filter;
-use Arsavinel\Arshwell\Func;
+use ArshWell\Monolith\ENV\ENVComponent;
+use ArshWell\Monolith\Folder;
+use ArshWell\Monolith\Filter;
+use ArshWell\Monolith\Func;
 
 use ErrorException;
 use Exception;
@@ -172,7 +172,7 @@ ini_set(
 	Folder::root() . 'errors/'. strtok(strtok(Folder::shorter(ENV::scriptfile() ?? getcwd()), '.'), '/') .'.log'
 ); // setting for saving errors (index.log, download.log, crons.log)
 
-foreach (glob(Folder::realpath('vendor/arsavinel/arshwell/DevTools/functions/*.php')) as $v) {
+foreach (glob(Folder::realpath('vendor/arshwell/monolith/DevTools/functions/*.php')) as $v) {
     require($v);
 }
 
@@ -180,7 +180,7 @@ ENV::set(new ENVComponent(Folder::root()));
 
 // .htaccess file
 if (!is_file(Folder::root(). '.htaccess')) {
-    copy(Folder::root() . 'vendor/arsavinel/arshwell/resources/htaccess/project.htaccess', Folder::root() . '.htaccess');
+    copy(Folder::root() . 'vendor/arshwell/monolith/resources/htaccess/project.htaccess', Folder::root() . '.htaccess');
 }
 
 // .htaccess in files folder
@@ -188,7 +188,7 @@ if (!is_file(Folder::root() . 'uploads/files/.htaccess')) {
     if (!is_dir(Folder::root() . 'uploads/files/')) {
         mkdir(Folder::root() . 'uploads/files/', 0777, true);
     }
-    copy(Folder::root() . 'vendor/arsavinel/arshwell/resources/htaccess/uploads.files.htaccess', Folder::root() . 'uploads/files/.htaccess');
+    copy(Folder::root() . 'vendor/arshwell/monolith/resources/htaccess/uploads.files.htaccess', Folder::root() . 'uploads/files/.htaccess');
 }
 
 // .htaccess in design folder
@@ -196,7 +196,7 @@ if (!is_file(Folder::root() . 'uploads/design/.htaccess')) {
     if (!is_dir(Folder::root() . 'uploads/design/')) {
         mkdir(Folder::root() . 'uploads/design/', 0777, true);
     }
-    copy(Folder::root() . 'vendor/arsavinel/arshwell/resources/htaccess/uploads.design.htaccess', Folder::root() . 'uploads/design/.htaccess');
+    copy(Folder::root() . 'vendor/arshwell/monolith/resources/htaccess/uploads.design.htaccess', Folder::root() . 'uploads/design/.htaccess');
 }
 
 if (strstr(Folder::shorter(getcwd()), '/', true) == 'crons' && !ENV::isCRON()

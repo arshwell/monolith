@@ -1,14 +1,14 @@
 <?php
 
-namespace Arsavinel\Arshwell\Table\Files;
+namespace ArshWell\Monolith\Table\Files;
 
-use Arsavinel\Arshwell\Table\TableSegment;
-use Arsavinel\Arshwell\Folder;
-use Arsavinel\Arshwell\File;
-use Arsavinel\Arshwell\Text;
-use Arsavinel\Arshwell\Func;
-use Arsavinel\Arshwell\Web;
-use Arsavinel\Arshwell\ENV;
+use ArshWell\Monolith\Table\TableSegment;
+use ArshWell\Monolith\Folder;
+use ArshWell\Monolith\File;
+use ArshWell\Monolith\Text;
+use ArshWell\Monolith\Func;
+use ArshWell\Monolith\Web;
+use ArshWell\Monolith\ENV;
 
 use Verot\Upload\Upload;
 

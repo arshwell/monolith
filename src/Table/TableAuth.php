@@ -1,10 +1,10 @@
 <?php
 
-namespace Arsavinel\Arshwell\Table;
+namespace ArshWell\Monolith\Table;
 
-use Arsavinel\Arshwell\Session;
-use Arsavinel\Arshwell\Table;
-use Arsavinel\Arshwell\ENV;
+use ArshWell\Monolith\Session;
+use ArshWell\Monolith\Table;
+use ArshWell\Monolith\ENV;
 
 /*
  * Static and non-static methods, for manipulating MySQL DB tables,

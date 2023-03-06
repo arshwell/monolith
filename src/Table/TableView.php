@@ -1,16 +1,16 @@
 <?php
 
-namespace Arsavinel\Arshwell\Table;
+namespace ArshWell\Monolith\Table;
 
-use Arsavinel\Arshwell\Session;
-use Arsavinel\Arshwell\Folder;
-use Arsavinel\Arshwell\Table;
-use Arsavinel\Arshwell\File;
-use Arsavinel\Arshwell\Func;
-use Arsavinel\Arshwell\Web;
-use Arsavinel\Arshwell\ENV;
-use Arsavinel\Arshwell\SQL;
-use Arsavinel\Arshwell\DB;
+use ArshWell\Monolith\Session;
+use ArshWell\Monolith\Folder;
+use ArshWell\Monolith\Table;
+use ArshWell\Monolith\File;
+use ArshWell\Monolith\Func;
+use ArshWell\Monolith\Web;
+use ArshWell\Monolith\ENV;
+use ArshWell\Monolith\SQL;
+use ArshWell\Monolith\DB;
 
 use Verot\Upload\Upload;
 
@@ -48,8 +48,8 @@ abstract class TableView extends Table {
     );
 
     private static $source = array(
-        'image' => "vendor/arsavinel/arshwell/resources/images/views/default-image-view.png",
-        'video' => "vendor/arsavinel/arshwell/resources/images/views/default-video-view.mp4"
+        'image' => "vendor/arshwell/monolith/resources/images/views/default-image-view.png",
+        'video' => "vendor/arshwell/monolith/resources/images/views/default-video-view.mp4"
     );
 
     private static function source (bool &$global): string {
@@ -71,8 +71,8 @@ abstract class TableView extends Table {
 
                 foreach (debug_backtrace(0) as $trace) {
                     if (!empty($trace['class']) && !empty($trace['function'])
-                    && (($trace['class'] == 'Arsavinel\Arshwell\Piece' && $trace['function'] == 'html')
-                    || ($trace['class'] == 'Arsavinel\Arshwell\Mail' && in_array($trace['function'], ['send', 'html'])))) {
+                    && (($trace['class'] == 'ArshWell\Monolith\Piece' && $trace['function'] == 'html')
+                    || ($trace['class'] == 'ArshWell\Monolith\Mail' && in_array($trace['function'], ['send', 'html'])))) {
                         $source = strtolower(substr($trace['class'], strrpos($trace['class'], '\\') + 1)) .'s/'. $trace['args'][0];
                         break;
                     }

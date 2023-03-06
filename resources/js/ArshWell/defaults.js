@@ -2,7 +2,7 @@
  * --vh - custom js variable, as a backup if css vh variable is broken (on certain devices).
 
  * @author: https://github.com/arsavinel
- * @license MIT (https://github.com/arsavinel/ArshWell/blob/0.x/LICENSE.md)
+ * @license MIT (https://github.com/arshwell/monolith/blob/0.x/LICENSE.md)
  */
 (function () {
     // get the viewport height and we multiple it by 1% to get a value for a vh unit
@@ -25,7 +25,7 @@
  * @example: $('#app *:attrStartsWith(ajax-)')
 
  * @author: https://github.com/arsavinel
- * @license MIT (https://github.com/arsavinel/ArshWell/blob/0.x/LICENSE.md)
+ * @license MIT (https://github.com/arshwell/monolith/blob/0.x/LICENSE.md)
  */
 jQuery.extend(jQuery.expr[':'], {
     "attrStartsWith": function (el, i, p, n) {

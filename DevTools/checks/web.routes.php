@@ -1,13 +1,13 @@
 <?php
 
-use Arsavinel\Arshwell\DevTool\DevToolDebug;
-use Arsavinel\Arshwell\DevTool\DevToolHTML;
-use Arsavinel\Arshwell\Func;
+use ArshWell\Monolith\DevTool\DevToolDebug;
+use ArshWell\Monolith\DevTool\DevToolHTML;
+use ArshWell\Monolith\Func;
 
 /**
  * Verifies if routes are properly created.
 
- * @package https://github.com/arsavinel/ArshWell
+ * @package https://github.com/arshwell/monolith
  */
 call_user_func(function () {
     $code = '';

@@ -1,12 +1,12 @@
 <?php
 
-namespace Arsavinel\Arshwell\Table;
+namespace ArshWell\Monolith\Table;
 
-use Arsavinel\Arshwell\Table\Files\Image;
-use Arsavinel\Arshwell\Table\Files\ImageGroup;
-use Arsavinel\Arshwell\Table\Files\Doc;
-use Arsavinel\Arshwell\Table\Files\DocGroup;
-use Arsavinel\Arshwell\Table;
+use ArshWell\Monolith\Table\Files\Image;
+use ArshWell\Monolith\Table\Files\ImageGroup;
+use ArshWell\Monolith\Table\Files\Doc;
+use ArshWell\Monolith\Table\Files\DocGroup;
+use ArshWell\Monolith\Table;
 
 final class TableFiles {
     private $files = array(); // has files - images & docs

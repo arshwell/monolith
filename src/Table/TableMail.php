@@ -1,8 +1,8 @@
 <?php
 
-namespace Arsavinel\Arshwell\Table;
+namespace ArshWell\Monolith\Table;
 
-use Arsavinel\Arshwell\Table;
+use ArshWell\Monolith\Table;
 
 abstract class TableMail extends Table {
     const MAILS_PER_DELIVERING = 100;

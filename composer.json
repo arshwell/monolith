@@ -1,11 +1,11 @@
 {
-    "name": "arsavinel/arshwell",
+    "name": "arshwell/monolith",
     "description": "PHP Framework | for LAMP Stack",
     "keywords": ["PHP", "Framework", "LAMP", "php74", "ArshWell"],
 
     "autoload": {
         "psr-4": {
-            "Arsavinel\\Arshwell\\": "src/"
+            "ArshWell\\Monolith\\": "src/"
         }
     },
 

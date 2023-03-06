@@ -2,7 +2,7 @@ MIT License
 
 Copyright (c) 2022 arsavinel and other contributors
 
-Project: https://github.com/arsavinel/ArshWell
+Project: https://github.com/arshwell/monolith
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

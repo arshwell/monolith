@@ -1,6 +1,6 @@
 <?php
 
-namespace Arsavinel\Arshwell\Table;
+namespace ArshWell\Monolith\Table;
 
 interface TableSegment {
     function class (): string;

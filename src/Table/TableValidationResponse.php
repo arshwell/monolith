@@ -1,14 +1,14 @@
 <?php
 
-namespace Arsavinel\Arshwell\Table;
+namespace ArshWell\Monolith\Table;
 
-use Arsavinel\Arshwell\Session;
-use Arsavinel\Arshwell\Web;
+use ArshWell\Monolith\Session;
+use ArshWell\Monolith\Web;
 
 /**
  * Object class for working with table validation response.
 
- * @package https://github.com/arsavinel/ArshWell
+ * @package https://github.com/arshwell/monolith
 */
 final class TableValidationResponse {
     private $data = array(

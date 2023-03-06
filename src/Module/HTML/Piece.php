@@ -1,14 +1,14 @@
 <?php
 
-namespace Arsavinel\Arshwell\Module\HTML;
+namespace ArshWell\Monolith\Module\HTML;
 
-use Arsavinel\Arshwell\Table\TableSegment;
-use Arsavinel\Arshwell\Table\TableColumn;
-use Arsavinel\Arshwell\Table\TableField;
-use Arsavinel\Arshwell\Text;
-use Arsavinel\Arshwell\File;
-use Arsavinel\Arshwell\URL;
-use Arsavinel\Arshwell\Web;
+use ArshWell\Monolith\Table\TableSegment;
+use ArshWell\Monolith\Table\TableColumn;
+use ArshWell\Monolith\Table\TableField;
+use ArshWell\Monolith\Text;
+use ArshWell\Monolith\File;
+use ArshWell\Monolith\URL;
+use ArshWell\Monolith\Web;
 
 final class Piece {
 
@@ -73,7 +73,7 @@ final class Piece {
         $action['HTML']['href'] = URL::get(true, false, $action['HTML']['href']) .'?ctn='. $key;
 
         return array(
-            'Arsavinel\Arshwell\Module\HTML\Action',
+            'ArshWell\Monolith\Module\HTML\Action',
             $action['HTML']['type']
         )($key, $action);
     }
@@ -583,7 +583,7 @@ final class Piece {
 
         foreach ($feature as $category => $attributes) {
             foreach ($attributes as $attr => $value) {
-                $feature[$category][$attr] = ("Arsavinel\Arshwell\Module\Syntax\Frontend\Feature\\{$category}")::{$attr}($value);
+                $feature[$category][$attr] = ("ArshWell\Monolith\Module\Syntax\Frontend\Feature\\{$category}")::{$attr}($value);
             }
         }
 
@@ -591,7 +591,7 @@ final class Piece {
         $feature['HTML']['href'] = URL::get(true, false, $feature['HTML']['href']) .'?'.($query ? $query.'&' : '').'ftr='. $key .'&id=' . $id_table;
 
         return array(
-            'Arsavinel\Arshwell\Module\HTML\Feature',
+            'ArshWell\Monolith\Module\HTML\Feature',
             $feature['HTML']['type']
         )($key, $feature, $id_table);
     }
@@ -742,7 +742,7 @@ final class Piece {
                     }
 
                     echo array(
-                        'Arsavinel\Arshwell\Module\HTML\Field',
+                        'ArshWell\Monolith\Module\HTML\Field',
                         $field['HTML']['type']
                     )($field, $lg); ?>
                 </div>

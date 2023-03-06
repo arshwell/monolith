@@ -1,10 +1,10 @@
 <?php
 
-use Arsavinel\Arshwell\DevTool\DevToolData;
-use Arsavinel\Arshwell\Session;
-use Arsavinel\Arshwell\Piece;
-use Arsavinel\Arshwell\Func;
-use Arsavinel\Arshwell\Web;
+use ArshWell\Monolith\DevTool\DevToolData;
+use ArshWell\Monolith\Session;
+use ArshWell\Monolith\Piece;
+use ArshWell\Monolith\Func;
+use ArshWell\Monolith\Web;
 
 $hashed_arsh_version = substr(md5(DevToolData::ArshWellVersion()), 0, 5); ?>
 

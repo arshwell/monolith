@@ -1,6 +1,6 @@
 <ul class="list-group">
     <?php
-    foreach (array_reverse(Arsavinel\Arshwell\Session::history()) as $index => $route) { ?>
+    foreach (array_reverse(ArshWell\Monolith\Session::history()) as $index => $route) { ?>
         <li type="button" class="list-group-item" data-toggle="collapse" data-target="#history--<?= $index ?>" aria-expanded="false">
             <div class="row">
                 <div class="col-2 col-md-1 nowrap">
@@ -22,10 +22,10 @@
                         <table class="table table-sm table-bordered table-dark m-0 mt-2">
                             <?php
                             // Routes can be changed during development.
-                            if (Arsavinel\Arshwell\Web::exists($route['key'])) { ?>
+                            if (ArshWell\Monolith\Web::exists($route['key'])) { ?>
                                 <tr>
                                     <th class="w-25">URL</th>
-                                    <td class="w-75 break-word"><?= Arsavinel\Arshwell\Web::url($route['key'], $route['params'], $route['language'], $route['page'], $route['$_GET']) ?></td>
+                                    <td class="w-75 break-word"><?= ArshWell\Monolith\Web::url($route['key'], $route['params'], $route['language'], $route['page'], $route['$_GET']) ?></td>
                                 </tr>
                             <?php }
                             if ($route['language']) { // only if has language ?>

@@ -1,15 +1,15 @@
 <?php
 
-namespace Arsavinel\Arshwell;
+namespace ArshWell\Monolith;
 
-use Arsavinel\Arshwell\File;
+use ArshWell\Monolith\File;
 
 /**
  * Class for manipulating folders.
  *
  * It has routine functions.
 
- * @package https://github.com/arsavinel/ArshWell
+ * @package https://github.com/arshwell/monolith
 */
 final class Folder {
     const MODE = 0755;
@@ -184,7 +184,7 @@ final class Folder {
 
     static function root (): string {
         // NOTE: returns the path of the project
-        return substr(__DIR__, 0, -1 * strlen("vendor/arsavinel/arshwell/src"));
+        return substr(__DIR__, 0, -1 * strlen("vendor/arshwell/monolith/src"));
     }
 
     static function realpath (string $path): string {
@@ -203,7 +203,7 @@ final class Folder {
 
     static function shorter (string $path): string {
         if ($path[0] == '/' && strpos($path, sys_get_temp_dir()) !== 0) {
-            $path = substr($path, strlen(__DIR__) - strlen("vendor/arsavinel/arshwell/src")); // remove root
+            $path = substr($path, strlen(__DIR__) - strlen("vendor/arshwell/monolith/src")); // remove root
         }
         return $path;
     }

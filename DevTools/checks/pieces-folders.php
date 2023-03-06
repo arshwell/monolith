@@ -1,12 +1,12 @@
 <?php
 
-use Arsavinel\Arshwell\DevTool\DevToolHTML;
-use Arsavinel\Arshwell\Folder;
+use ArshWell\Monolith\DevTool\DevToolHTML;
+use ArshWell\Monolith\Folder;
 
 /**
  * Verifies if all pieces have correct name pattern.
 
- * @package https://github.com/arsavinel/ArshWell
+ * @package https://github.com/arshwell/monolith
  */
 
 $regex = '/[a-z]+[a-z0-9-]*/';

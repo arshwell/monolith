@@ -1,6 +1,6 @@
 <?php
 
-namespace Arsavinel\Arshwell\Module\Syntax\Frontend\Field;
+namespace ArshWell\Monolith\Module\Syntax\Frontend\Field;
 
 class JS {
 

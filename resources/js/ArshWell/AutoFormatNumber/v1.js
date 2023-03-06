@@ -29,7 +29,7 @@
 
  * @package AutoFormatNumber v1
  * @author: https://github.com/arsavinel
- * @license MIT (https://github.com/arsavinel/ArshWell/blob/0.x/LICENSE.md)
+ * @license MIT (https://github.com/arshwell/monolith/blob/0.x/LICENSE.md)
  */
 
 !function(a) {

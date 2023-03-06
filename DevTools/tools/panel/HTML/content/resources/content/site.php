@@ -10,7 +10,7 @@ $resources = array(
 foreach (['layouts', 'mails', 'outcomes', 'pieces'] as $folder) {
     $json_filename = 'utils.'.substr($folder, 0, -1).'.json';
 
-    foreach (Arsavinel\Arshwell\File::rFolder($folder, ['json']) as $json_file) {
+    foreach (ArshWell\Monolith\File::rFolder($folder, ['json']) as $json_file) {
         if (basename($json_file) == $json_filename) {
             $utils = json_decode(file_get_contents($json_file), true);
             $json_file = preg_replace(

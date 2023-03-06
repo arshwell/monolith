@@ -1,6 +1,6 @@
 <?php
 
-namespace Arsavinel\Arshwell\Module\Syntax\Backend\Field;
+namespace ArshWell\Monolith\Module\Syntax\Backend\Field;
 
 final class DB {
 

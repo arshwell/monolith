@@ -3,11 +3,11 @@
  * It helps you with any need about JS forms.
 
  * @author: https://github.com/arsavinel
- * @license MIT (https://github.com/arsavinel/ArshWell/blob/0.x/LICENSE.md)
+ * @license MIT (https://github.com/arshwell/monolith/blob/0.x/LICENSE.md)
 
  * This file is used at least by:
- *      - Arsavinel\Arshwell\Layout::compileJSFooter()
- *      - Arsavinel\Arshwell\DevTool\DevToolHTML::html()
+ *      - ArshWell\Monolith\Layout::compileJSFooter()
+ *      - ArshWell\Monolith\DevTool\DevToolHTML::html()
  */
 function Form (form, response = null) { // the form is required
 

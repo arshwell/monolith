@@ -1,9 +1,9 @@
 <?php
 
-namespace Arsavinel\Arshwell;
+namespace ArshWell\Monolith;
 
-use Arsavinel\Arshwell\DevTool\DevToolDebug;
-use Arsavinel\Arshwell\ENV;
+use ArshWell\Monolith\DevTool\DevToolDebug;
+use ArshWell\Monolith\ENV;
 use PDOException;
 use Exception;
 use PDO;
@@ -11,7 +11,7 @@ use PDO;
 /**
  * DB class for sending queries to MySQL server.
 
- * @package https://github.com/arsavinel/ArshWell
+ * @package https://github.com/arshwell/monolith
 */
 final class DB {
     private static $pdos        = array();

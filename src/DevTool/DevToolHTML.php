@@ -1,14 +1,14 @@
 <?php
 
-namespace Arsavinel\Arshwell\DevTool;
+namespace ArshWell\Monolith\DevTool;
 
-use Arsavinel\Arshwell\Session;
-use Arsavinel\Arshwell\URL;
+use ArshWell\Monolith\Session;
+use ArshWell\Monolith\URL;
 
 /**
  * Static class for printing debuging and DevTools data in development phase.
 
- * @package https://github.com/arsavinel/ArshWell
+ * @package https://github.com/arshwell/monolith
  */
 final class DevToolHTML
 {
@@ -181,7 +181,7 @@ final class DevToolHTML
         ?>
             <div class="markdown-body p-4">
                 <h1 dir="auto">
-                    <a href="https://github.com/arsavinel/ArshWell" target="_blank" aria-hidden="true">
+                    <a href="https://github.com/arshwell/monolith" target="_blank" aria-hidden="true">
                         Contributing <small>to ArshWell <small>on GitHub project</small></small>
                     </a>
                 </h1>
@@ -192,7 +192,7 @@ final class DevToolHTML
                     <li>
                         <p dir="auto">
                             Fork the repo, from
-                            <a href="https://github.com/arsavinel/ArshWell" target="_blank" aria-hidden="true">
+                            <a href="https://github.com/arshwell/monolith" target="_blank" aria-hidden="true">
                                 GitHub
                             </a>
                         </p>

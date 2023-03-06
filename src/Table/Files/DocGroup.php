@@ -1,12 +1,12 @@
 <?php
 
-namespace Arsavinel\Arshwell\Table\Files;
+namespace ArshWell\Monolith\Table\Files;
 
-use Arsavinel\Arshwell\Table\TableSegment;
-use Arsavinel\Arshwell\Folder;
-use Arsavinel\Arshwell\File;
-use Arsavinel\Arshwell\Web;
-use Arsavinel\Arshwell\ENV;
+use ArshWell\Monolith\Table\TableSegment;
+use ArshWell\Monolith\Folder;
+use ArshWell\Monolith\File;
+use ArshWell\Monolith\Web;
+use ArshWell\Monolith\ENV;
 
 final class DocGroup implements TableSegment {
     private $class;

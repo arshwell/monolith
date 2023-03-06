@@ -17,7 +17,7 @@ ArshWell uses next technologies:
 
 ### Installation & Use
 
-- Include this package (arsavinel/arshwell) in your project composer;
+- Include this package (arshwell/monolith) in your project composer;
 - Run `composer install`;
 - Create `index.php`, in root of your project, and include the following code:
 
@@ -26,7 +26,7 @@ ArshWell uses next technologies:
       /**
        * Used for web requests towards pages.
        */
-      require("vendor/arsavinel/arshwell/resources/php/index.php");
+      require("vendor/arshwell/monolith/resources/php/index.php");
       ```
 - Create `download.php`, in root of your project, and include the following code:
 
@@ -36,7 +36,7 @@ ArshWell uses next technologies:
        * Used for web requests towards uploaded files (png, jpg, gif, etc).
        * So access can be restricted in necessary situations.
        */
-      require("vendor/arsavinel/arshwell/resources/php/download.php");
+      require("vendor/arshwell/monolith/resources/php/download.php");
       ```
 - Refresh project from web. So necessary .htaccess files will be created automatically.
 
@@ -89,7 +89,7 @@ please review and abide by the CODE_OF_CONDUCT.md.
 ### Security Vulnerabilities
 
 If you’ve found a security issue in ArshWell, please use the procedure
-described in [SECURITY](https://github.com/arsavinel/ArshWell/security/policy).
+described in [SECURITY](https://github.com/arshwell/monolith/security/policy).
 
 In that situation, please, don't create an issue.
 
