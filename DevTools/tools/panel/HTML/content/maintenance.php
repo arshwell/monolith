@@ -1,8 +1,8 @@
 <?php
 
-use Arsavinel\Arshwell\Session;
-use Arsavinel\Arshwell\ENV;
-use Arsavinel\Arshwell\Web;
+use ArshWell\Monolith\Session;
+use ArshWell\Monolith\ENV;
+use ArshWell\Monolith\Web;
 
 /**
  * If ENV::board('dev') true, it gets also my session.

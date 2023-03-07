@@ -2,7 +2,7 @@
  * carouselOnSmallDevices v1 - ArshWell js function for owl-carousel available only on smaller devices.
 
  * @author: https://github.com/arsavinel
- * @license MIT (https://github.com/arsavinel/ArshWell/blob/0.x/LICENSE.md)
+ * @license MIT (https://github.com/arshwell/monolith/blob/0.x/LICENSE.md)
 
  * @param integer maxWidthDevice
  * @param string maxWidthDevice

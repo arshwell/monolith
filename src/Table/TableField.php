@@ -1,9 +1,9 @@
 <?php
 
-namespace Arsavinel\Arshwell\Table;
+namespace ArshWell\Monolith\Table;
 
-use Arsavinel\Arshwell\Table\TableSegment;
-use Arsavinel\Arshwell\DB;
+use ArshWell\Monolith\Table\TableSegment;
+use ArshWell\Monolith\DB;
 
 final class TableField implements TableSegment {
     private $class      = NULL;

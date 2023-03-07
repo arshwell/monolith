@@ -15,7 +15,7 @@ body:
       placeholder: |
         Please use the ArshWell Discussions section for questions:
 
-        https://github.com/arsavinel/ArshWell/discussions
+        https://github.com/arshwell/monolith/discussions
     validations:
       required: true
   - type: textarea

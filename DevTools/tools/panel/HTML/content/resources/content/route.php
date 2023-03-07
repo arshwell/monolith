@@ -1,8 +1,8 @@
 <?php
 
-use Arsavinel\Arshwell\Layout;
-use Arsavinel\Arshwell\Web;
-use Arsavinel\Arshwell\ENV;
+use ArshWell\Monolith\Layout;
+use ArshWell\Monolith\Web;
+use ArshWell\Monolith\ENV;
 
 $resources = array(
     'scss' => array(),

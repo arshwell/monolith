@@ -1,9 +1,9 @@
 <?php
 
-namespace Arsavinel\Arshwell\Module\Request\Frontend\Action;
+namespace ArshWell\Monolith\Module\Request\Frontend\Action;
 
-use Arsavinel\Arshwell\Module\HTML\Piece;
-use Arsavinel\Arshwell\URL;
+use ArshWell\Monolith\Module\HTML\Piece;
+use ArshWell\Monolith\URL;
 
 final class Insert {
 

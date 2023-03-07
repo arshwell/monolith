@@ -1,10 +1,10 @@
 <?php
 
-namespace Arsavinel\Arshwell;
+namespace ArshWell\Monolith;
 
-use Arsavinel\Arshwell\Table\TableField;
-use Arsavinel\Arshwell\Table\TableFiles;
-use Arsavinel\Arshwell\DB;
+use ArshWell\Monolith\Table\TableField;
+use ArshWell\Monolith\Table\TableFiles;
+use ArshWell\Monolith\DB;
 
 /**
  * Table class for manipulating certain table and its columns.

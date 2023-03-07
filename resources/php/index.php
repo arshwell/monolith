@@ -1,27 +1,27 @@
 <?php
 
-use Arsavinel\Arshwell\Session;
-use Arsavinel\Arshwell\Module;
-use Arsavinel\Arshwell\Layout;
-use Arsavinel\Arshwell\Piece;
-use Arsavinel\Arshwell\Meta;
-use Arsavinel\Arshwell\ENV;
-use Arsavinel\Arshwell\URL;
-use Arsavinel\Arshwell\Web;
-use Arsavinel\Arshwell\DB;
+use ArshWell\Monolith\Session;
+use ArshWell\Monolith\Module;
+use ArshWell\Monolith\Layout;
+use ArshWell\Monolith\Piece;
+use ArshWell\Monolith\Meta;
+use ArshWell\Monolith\ENV;
+use ArshWell\Monolith\URL;
+use ArshWell\Monolith\Web;
+use ArshWell\Monolith\DB;
 
 session_start();
 
 require("vendor/autoload.php");
 
-require("vendor/arsavinel/arshwell/src/ENV.php");
+require("vendor/arshwell/monolith/src/ENV.php");
 
 DB::connect('default');
 Session::set(ENV::url().ENV::db('conn.default.name'));
 
 // Supervisors are alerted if there are problems.
 if (ENV::board('dev') && ENV::supervisor() && $_SERVER['REQUEST_METHOD'] == 'GET') {
-    require("vendor/arsavinel/arshwell/DevTools/checks.php");
+    require("vendor/arshwell/monolith/DevTools/checks.php");
 }
 
 Web::fetch()::prepare(
@@ -33,7 +33,7 @@ Web::fetch()::prepare(
 // Supervisors can use DevPanel and access DevFiles.
 if (ENV::supervisor()) {
     // NOTE: We do it here, before Session::memorize(), for not saving DevTools actions in Session.
-    require("vendor/arsavinel/arshwell/DevTools/tools.php");
+    require("vendor/arshwell/monolith/DevTools/tools.php");
 }
 
 if (!Web::warning(Web::WRNNG_NONE) && $_SERVER['REQUEST_METHOD'] == 'GET') {
@@ -208,7 +208,7 @@ unset($v); // NOTE: used by gates/ and ENV.php ↑
 
         // Supervisors can see DevPanel (if they write down current version).
         if (ENV::supervisor()) {
-            require("vendor/arsavinel/arshwell/DevTools/tools/panel/button.php"); // NOTE: it uses the $compiled variable
+            require("vendor/arshwell/monolith/DevTools/tools/panel/button.php"); // NOTE: it uses the $compiled variable
         }
 
         // Empty outdated forms data.

@@ -1,12 +1,12 @@
 <?php
 
-namespace Arsavinel\Arshwell;
+namespace ArshWell\Monolith;
 
-use Arsavinel\Arshwell\Module\HTML\Piece;
-use Arsavinel\Arshwell\Module\Backend;
-use Arsavinel\Arshwell\ENV;
-use Arsavinel\Arshwell\Web;
-use Arsavinel\Arshwell\DB;
+use ArshWell\Monolith\Module\HTML\Piece;
+use ArshWell\Monolith\Module\Backend;
+use ArshWell\Monolith\ENV;
+use ArshWell\Monolith\Web;
+use ArshWell\Monolith\DB;
 
 final class Module {
 
@@ -20,7 +20,7 @@ final class Module {
         if (ENV::board('dev') && ENV::supervisor()) {
             // syntax validation
             foreach ($back as $key => $value) {
-                $back[$key] = ("Arsavinel\Arshwell\Module\Syntax\Backend")::{$key}($value);
+                $back[$key] = ("ArshWell\Monolith\Module\Syntax\Backend")::{$key}($value);
             }
 
             Backend::buildDB($back['DB'], $back['features'], $back['fields']);
@@ -29,16 +29,16 @@ final class Module {
         DB::connect($back['DB']['conn']);
 
         if (!empty($query['ctn']) && isset($back['actions'][$query['ctn']])
-        && method_exists("Arsavinel\Arshwell\Module\Request\Backend\Action\\". ucfirst($query['ctn']), Web::request())) {
-            $callable = array("Arsavinel\Arshwell\Module\Request\Backend\Action\\". ucfirst($query['ctn']), Web::request());
+        && method_exists("ArshWell\Monolith\Module\Request\Backend\Action\\". ucfirst($query['ctn']), Web::request())) {
+            $callable = array("ArshWell\Monolith\Module\Request\Backend\Action\\". ucfirst($query['ctn']), Web::request());
         }
         else if (!empty($query['ftr']) && isset($back['features'][$query['ftr']])
         && ((!empty($query['id']) && is_numeric($query['id']) && is_int($query['id'] + 0)) || (!empty($query['ids']) && is_array($query['ids'])))
-        && method_exists("Arsavinel\Arshwell\Module\Request\Backend\Feature\\". ucfirst($query['ftr']), Web::request())) {
-            $callable = array("Arsavinel\Arshwell\Module\Request\Backend\Feature\\". ucfirst($query['ftr']), Web::request());
+        && method_exists("ArshWell\Monolith\Module\Request\Backend\Feature\\". ucfirst($query['ftr']), Web::request())) {
+            $callable = array("ArshWell\Monolith\Module\Request\Backend\Feature\\". ucfirst($query['ftr']), Web::request());
         }
         else if (Web::request() == 'GET') {
-            $callable = array("Arsavinel\Arshwell\Module\Request\Backend\Action\Select", 'GET');
+            $callable = array("ArshWell\Monolith\Module\Request\Backend\Action\Select", 'GET');
         }
         else {
             http_response_code(404);
@@ -52,20 +52,20 @@ final class Module {
         if (ENV::board('dev') && ENV::supervisor()) {
             // syntax validation
             foreach ($front as $key => $value) {
-                $front[$key] = ("Arsavinel\Arshwell\Module\Syntax\Frontend")::{$key}($value);
+                $front[$key] = ("ArshWell\Monolith\Module\Syntax\Frontend")::{$key}($value);
             }
         }
 
         if (!empty($module['query']['ctn'])
-        && method_exists("Arsavinel\Arshwell\Module\Request\Frontend\Action\\". ucfirst($module['query']['ctn']), Web::request())) {
-            $callable = array("Arsavinel\Arshwell\Module\Request\Frontend\Action\\". ucfirst($module['query']['ctn']), Web::request());
+        && method_exists("ArshWell\Monolith\Module\Request\Frontend\Action\\". ucfirst($module['query']['ctn']), Web::request())) {
+            $callable = array("ArshWell\Monolith\Module\Request\Frontend\Action\\". ucfirst($module['query']['ctn']), Web::request());
         }
         else if (!empty($module['query']['ftr']) && !empty($module['query']['id']) && is_numeric($module['query']['id']) && is_int($module['query']['id'] + 0)
-        && method_exists("Arsavinel\Arshwell\Module\Request\Frontend\Feature\\". ucfirst($module['query']['ftr']), Web::request())) {
-            $callable = array("Arsavinel\Arshwell\Module\Request\Frontend\Feature\\". ucfirst($module['query']['ftr']), Web::request());
+        && method_exists("ArshWell\Monolith\Module\Request\Frontend\Feature\\". ucfirst($module['query']['ftr']), Web::request())) {
+            $callable = array("ArshWell\Monolith\Module\Request\Frontend\Feature\\". ucfirst($module['query']['ftr']), Web::request());
         }
         else if (Web::request() == 'GET') {
-            $callable = array("Arsavinel\Arshwell\Module\Request\Frontend\Action\Select", 'GET');
+            $callable = array("ArshWell\Monolith\Module\Request\Frontend\Action\Select", 'GET');
         }
 
         ob_start(); ?>

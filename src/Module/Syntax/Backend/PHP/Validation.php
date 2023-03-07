@@ -1,6 +1,6 @@
 <?php
 
-namespace Arsavinel\Arshwell\Module\Syntax\Backend\PHP;
+namespace ArshWell\Monolith\Module\Syntax\Backend\PHP;
 
 use closure;
 

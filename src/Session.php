@@ -1,13 +1,13 @@
 <?php
 
-namespace Arsavinel\Arshwell;
+namespace ArshWell\Monolith;
 
-use Arsavinel\Arshwell\Web;
+use ArshWell\Monolith\Web;
 
 /**
  * Class for backend programming which has routine functions.
 
- * @package https://github.com/arsavinel/ArshWell
+ * @package https://github.com/arshwell/monolith
 */
 final class Session {
 	private static $session	= NULL;

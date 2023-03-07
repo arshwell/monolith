@@ -1,13 +1,13 @@
 <?php
 
-namespace Arsavinel\Arshwell\DevTool;
+namespace ArshWell\Monolith\DevTool;
 
-use Arsavinel\Arshwell\Folder;
+use ArshWell\Monolith\Folder;
 
 /**
  * Static class about ArshWell framework.
 
- * @package https://github.com/arsavinel/ArshWell
+ * @package https://github.com/arshwell/monolith
  */
 final class DevToolData {
 
@@ -21,7 +21,7 @@ final class DevToolData {
         $installed = json_decode(file_get_contents(Folder::root() . 'vendor/composer/installed.json'), true);
 
         foreach ($installed["packages"] as $package) {
-            if (trim($package['name']) == "arsavinel/arshwell") {
+            if (trim($package['name']) == "arshwell/monolith") {
                 return $package['version'];
             }
         }

@@ -1,14 +1,14 @@
 <?php
 
-use Arsavinel\Arshwell\Table\TableValidation;
-use Arsavinel\Arshwell\Module\Backend;
-use Arsavinel\Arshwell\Table\TableMigration;
-use Arsavinel\Arshwell\ENV\ENVComponent;
-use Arsavinel\Arshwell\Folder;
-use Arsavinel\Arshwell\File;
-use Arsavinel\Arshwell\Time;
-use Arsavinel\Arshwell\ENV;
-use Arsavinel\Arshwell\Web;
+use ArshWell\Monolith\Table\TableValidation;
+use ArshWell\Monolith\Module\Backend;
+use ArshWell\Monolith\Table\TableMigration;
+use ArshWell\Monolith\ENV\ENVComponent;
+use ArshWell\Monolith\Folder;
+use ArshWell\Monolith\File;
+use ArshWell\Monolith\Time;
+use ArshWell\Monolith\ENV;
+use ArshWell\Monolith\Web;
 
 $form = TableValidation::run(array_merge($_POST, $_FILES),
     array(
@@ -54,7 +54,7 @@ $form = TableValidation::run(array_merge($_POST, $_FILES),
 
 if ($form->valid()) {
     $archive = $form->value('archive');
-    $zipfile = sys_get_temp_dir().'/vendor/arsavinel/arshwell/updates/sess_'.session_id().'/time_'.$form->value('time').'.zip';
+    $zipfile = sys_get_temp_dir().'/vendor/arshwell/monolith/updates/sess_'.session_id().'/time_'.$form->value('time').'.zip';
 
     if ($form->value('attempt') == 1 || !is_file($zipfile)) {
         if (!is_dir(dirname($zipfile))) {
@@ -98,12 +98,12 @@ if ($form->valid()) {
                 // in not existing conflicts during update attempts.
                 $zip_folders = array(
                     // NOTE: Exceptions which don't create conflicts
-                    'vendor/arsavinel/arshwell/src/Tygh/.+',
-                    'vendor/arsavinel/arshwell/DevTools/tools/files/',
-                    preg_quote(Folder::shorter(__DIR__), '~').'/(?!'.preg_quote(basename(__FILE__), '~').'$)', // vendor/arsavinel/arshwell/DevTools/panel/AJAX/actions/*
+                    'vendor/arshwell/monolith/src/Tygh/.+',
+                    'vendor/arshwell/monolith/DevTools/tools/files/',
+                    preg_quote(Folder::shorter(__DIR__), '~').'/(?!'.preg_quote(basename(__FILE__), '~').'$)', // vendor/arshwell/monolith/DevTools/panel/AJAX/actions/*
 
-                    '(?!\.htaccess$|env\.json$|web\.php$|vendor/arsavinel/arshwell/src/.+|vendor/arsavinel/arshwell/DevTools/.+)', // everything else
-                    '.+' // .htaccess, web.php, vendor/arsavinel/arshwell/src/, vendor/arsavinel/arshwell/DevTools/ (which create coflicts)
+                    '(?!\.htaccess$|env\.json$|web\.php$|vendor/arshwell/monolith/src/.+|vendor/arshwell/monolith/DevTools/.+)', // everything else
+                    '.+' // .htaccess, web.php, vendor/arshwell/monolith/src/, vendor/arshwell/monolith/DevTools/ (which create coflicts)
                 );
 
                 uasort($zip_files, function ($file_1, $file_2) use ($zip_folders) {
@@ -193,8 +193,8 @@ if ($form->valid()) {
                     }
                 }
 
-                if (is_file('caches/vendor/arsavinel/arshwell/env.json')) {
-                    touch('caches/vendor/arsavinel/arshwell/env.json'); // so is up-to-date with env.json
+                if (is_file('caches/vendor/arshwell/monolith/env.json')) {
+                    touch('caches/vendor/arshwell/monolith/env.json'); // so is up-to-date with env.json
                 }
             }
             catch (Exception $e) {

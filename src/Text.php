@@ -1,11 +1,11 @@
 <?php
 
-namespace Arsavinel\Arshwell;
+namespace ArshWell\Monolith;
 
 /**
  * Class for backend programming which has routine functions.
 
- * @package https://github.com/arsavinel/ArshWell
+ * @package https://github.com/arshwell/monolith
 */
 final class Text {
     static function removeAllTags (string $string, string $allow = NULL) {

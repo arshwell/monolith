@@ -1,11 +1,11 @@
 <?php
 
-namespace Arsavinel\Arshwell;
+namespace ArshWell\Monolith;
 
 /**
  * Class for time converting.
 
- * @package https://github.com/arsavinel/ArshWell
+ * @package https://github.com/arshwell/monolith
 */
 final class Time {
     static function readableTime (int $ms, int $precision = 2, string $separator = '', $units = array('ms','s','m','h')): string {

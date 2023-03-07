@@ -1,6 +1,6 @@
 <?php
 
-use Arsavinel\Arshwell\Session;
+use ArshWell\Monolith\Session;
 
 Session::setPanel('button.position.top',	$_POST['tp']);
 Session::setPanel('button.position.bottom',	'unset');

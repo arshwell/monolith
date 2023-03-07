@@ -1,17 +1,17 @@
 <?php
 
-namespace Arsavinel\Arshwell\DevTool;
+namespace ArshWell\Monolith\DevTool;
 
-use Arsavinel\Arshwell\Folder;
-use Arsavinel\Arshwell\ENV;
-use Arsavinel\Arshwell\Text;
-use Arsavinel\Arshwell\DB;
+use ArshWell\Monolith\Folder;
+use ArshWell\Monolith\ENV;
+use ArshWell\Monolith\Text;
+use ArshWell\Monolith\DB;
 use Exception;
 
 /**
  * Static class for debuging website in development phase.
 
- * @package https://github.com/arsavinel/ArshWell
+ * @package https://github.com/arshwell/monolith
  */
 final class DevToolDebug {
 
@@ -114,7 +114,7 @@ final class DevToolDebug {
     /**
      * It prints the sql query and its parameters nicer.
      *
-     * This function is used at least by try-catch from Arsavinel\Arshwell\Table class methods.
+     * This function is used at least by try-catch from ArshWell\Monolith\Table class methods.
      */
     static function print_pdo_exception (object $exception, string $sql_query, array $params = NULL): void {
         DB::rollBack();
@@ -218,7 +218,7 @@ final class DevToolDebug {
     /**
      * It prints the sql query and its parameters nicer.
      *
-     * This function is used at least by try-catch from Arsavinel\Arshwell\Table class methods.
+     * This function is used at least by try-catch from ArshWell\Monolith\Table class methods.
      */
     static function print_sql_query ($sql, $columns = array()): void {
         if (ENV::supervisor() == false) {

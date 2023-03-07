@@ -1,12 +1,12 @@
 <?php
 
-namespace Arsavinel\Arshwell\ENV;
+namespace ArshWell\Monolith\ENV;
 
-use Arsavinel\Arshwell\Folder;
-use Arsavinel\Arshwell\Cache;
-use Arsavinel\Arshwell\Func;
-use Arsavinel\Arshwell\ENV;
-use Arsavinel\Arshwell\URL;
+use ArshWell\Monolith\Folder;
+use ArshWell\Monolith\Cache;
+use ArshWell\Monolith\Func;
+use ArshWell\Monolith\ENV;
+use ArshWell\Monolith\URL;
 
 use Exception;
 
@@ -28,7 +28,7 @@ final class ENVComponent {
 
         Cache::setProject($path ?: Folder::root()); // where to look for caches
 
-        if (!Cache::fetch('vendor/arsavinel/arshwell/env') || $this->sourceWasUpdated()) {
+        if (!Cache::fetch('vendor/arshwell/monolith/env') || $this->sourceWasUpdated()) {
             $this->json = json_decode(file_get_contents("{$path}env.json"), true, 512, JSON_THROW_ON_ERROR);
 
             // merge env with env.dynamic
@@ -119,7 +119,7 @@ final class ENVComponent {
             }
         }
         else {
-            $this->json = Cache::fetch('vendor/arsavinel/arshwell/env');
+            $this->json = Cache::fetch('vendor/arshwell/monolith/env');
         }
 
         $this->site = (strstr($this->json['URL'], '/', true) ?: $this->json['URL']);
@@ -131,7 +131,7 @@ final class ENVComponent {
         $env_dynamic_mtime = is_file("{$this->path}env.dynamic.json") ? filemtime("{$this->path}env.dynamic.json") : 0;
 
         return (
-            max($env_mtime, $env_dynamic_mtime) >= Cache::filemtime('vendor/arsavinel/arshwell/env')
+            max($env_mtime, $env_dynamic_mtime) >= Cache::filemtime('vendor/arshwell/monolith/env')
         );
     }
 
@@ -152,7 +152,7 @@ final class ENVComponent {
     function cache (): void {
         // Changes you've made are cached.
         // NOTE: But env source stay the same.
-        Cache::store('vendor/arsavinel/arshwell/env', $this->json);
+        Cache::store('vendor/arshwell/monolith/env', $this->json);
     }
 
     function mergeSourceFileWithEnvBuild () {

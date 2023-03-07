@@ -1,9 +1,9 @@
 <?php
 
-namespace Arsavinel\Arshwell\Table;
+namespace ArshWell\Monolith\Table;
 
-use Arsavinel\Arshwell\Table;
-use Arsavinel\Arshwell\Cache;
+use ArshWell\Monolith\Table;
+use ArshWell\Monolith\Cache;
 
 /*
  * Class used for maintenance configuration.
@@ -13,7 +13,7 @@ abstract class TableMaintenance extends Table {
     abstract static function route (): string;
 
     static function setActive (bool $active) {
-        if (!is_file(Cache::file('vendor/arsavinel/arshwell/maintenance')) || !Cache::fetch('vendor/arsavinel/arshwell/maintenance')) {
+        if (!is_file(Cache::file('vendor/arshwell/monolith/maintenance')) || !Cache::fetch('vendor/arshwell/monolith/maintenance')) {
             $maintenance = array(
                 'route' => static::route(),
                 'active' => $active,
@@ -21,16 +21,16 @@ abstract class TableMaintenance extends Table {
             );
         }
         else {
-            $maintenance = Cache::fetch('vendor/arsavinel/arshwell/maintenance');
+            $maintenance = Cache::fetch('vendor/arshwell/monolith/maintenance');
 
             $maintenance['active'] = $active;
         }
 
-        Cache::store('vendor/arsavinel/arshwell/maintenance', $maintenance);
+        Cache::store('vendor/arshwell/monolith/maintenance', $maintenance);
     }
 
     static function setSmart (bool $smart) {
-        if (!is_file(Cache::file('vendor/arsavinel/arshwell/maintenance')) || !Cache::fetch('vendor/arsavinel/arshwell/maintenance')) {
+        if (!is_file(Cache::file('vendor/arshwell/monolith/maintenance')) || !Cache::fetch('vendor/arshwell/monolith/maintenance')) {
             $maintenance = array(
                 'route' => static::route(),
                 'active' => false,
@@ -38,41 +38,41 @@ abstract class TableMaintenance extends Table {
             );
         }
         else {
-            $maintenance = Cache::fetch('vendor/arsavinel/arshwell/maintenance');
+            $maintenance = Cache::fetch('vendor/arshwell/monolith/maintenance');
 
             $maintenance['smart'] = $smart;
         }
 
-        Cache::store('vendor/arsavinel/arshwell/maintenance', $maintenance);
+        Cache::store('vendor/arshwell/monolith/maintenance', $maintenance);
     }
 
     static function isActive (): bool {
-        $maintenance = Cache::fetch('vendor/arsavinel/arshwell/maintenance');
+        $maintenance = Cache::fetch('vendor/arshwell/monolith/maintenance');
 
-        if (!is_file(Cache::file('vendor/arsavinel/arshwell/maintenance')) || !$maintenance) {
+        if (!is_file(Cache::file('vendor/arshwell/monolith/maintenance')) || !$maintenance) {
             $maintenance = array(
                 'route' => static::route(),
                 'active' => false,
                 'smart' => false
             );
 
-            Cache::store('vendor/arsavinel/arshwell/maintenance', $maintenance);
+            Cache::store('vendor/arshwell/monolith/maintenance', $maintenance);
         }
 
         return $maintenance['active'];
     }
 
     static function isSmart (): bool {
-        $maintenance = Cache::fetch('vendor/arsavinel/arshwell/maintenance');
+        $maintenance = Cache::fetch('vendor/arshwell/monolith/maintenance');
 
-        if (!is_file(Cache::file('vendor/arsavinel/arshwell/maintenance')) || !$maintenance) {
+        if (!is_file(Cache::file('vendor/arshwell/monolith/maintenance')) || !$maintenance) {
             $maintenance = array(
                 'route' => static::route(),
                 'active' => false,
                 'smart' => false
             );
 
-            Cache::store('vendor/arsavinel/arshwell/maintenance', $maintenance);
+            Cache::store('vendor/arshwell/monolith/maintenance', $maintenance);
         }
 
         return $maintenance['smart'];

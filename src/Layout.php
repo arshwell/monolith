@@ -1,15 +1,15 @@
 <?php
 
-namespace Arsavinel\Arshwell;
+namespace ArshWell\Monolith;
 
-use Arsavinel\Arshwell\Session;
-use Arsavinel\Arshwell\Folder;
-use Arsavinel\Arshwell\Piece;
-use Arsavinel\Arshwell\Table;
-use Arsavinel\Arshwell\File;
-use Arsavinel\Arshwell\Func;
-use Arsavinel\Arshwell\ENV;
-use Arsavinel\Arshwell\Web;
+use ArshWell\Monolith\Session;
+use ArshWell\Monolith\Folder;
+use ArshWell\Monolith\Piece;
+use ArshWell\Monolith\Table;
+use ArshWell\Monolith\File;
+use ArshWell\Monolith\Func;
+use ArshWell\Monolith\ENV;
+use ArshWell\Monolith\Web;
 
 use MatthiasMullie\Minify\JS as JsMin;
 use ScssPhp\ScssPhp\Compiler as ScssPhp;
@@ -17,7 +17,7 @@ use ScssPhp\ScssPhp\Compiler as ScssPhp;
 /**
  * Class for compiling scss/js, getting utils and links.
 
- * @package https://github.com/arsavinel/ArshWell
+ * @package https://github.com/arshwell/monolith
 */
 final class Layout {
     private static $css_suffixes = array(''); // ex: for certain users
@@ -192,19 +192,19 @@ final class Layout {
         		),
         		'files'	=> array(
                     array(
-                        'name' => 'vendor/arsavinel/arshwell/DevTools/tools/files/design/js/ArshWell/http_build_query/v1.js',
+                        'name' => 'vendor/arshwell/monolith/DevTools/tools/files/design/js/ArshWell/http_build_query/v1.js',
                         'range' => array(
                             'min' => 0 // guarantees will compile even if there are no other js files
                         )
                     ),
                     array(
-                        'name' => 'vendor/arsavinel/arshwell/DevTools/tools/files/design/js/ArshWell/Form/v2.js',
+                        'name' => 'vendor/arshwell/monolith/DevTools/tools/files/design/js/ArshWell/Form/v2.js',
                         'range' => array(
                             'min' => 0 // guarantees will compile even if there are no other js files
                         )
                     ),
                     array(
-                        'name' => 'vendor/arsavinel/arshwell/DevTools/tools/files/design/js/ArshWell/VanillaJS/v1.js',
+                        'name' => 'vendor/arshwell/monolith/DevTools/tools/files/design/js/ArshWell/VanillaJS/v1.js',
                         'range' => array(
                             'min' => 0 // guarantees will compile even if there are no other js files
                         )
@@ -307,7 +307,7 @@ final class Layout {
         		),
         		'files'	=> array(
                     array(
-                        'name' => 'vendor/arsavinel/arshwell/DevTools/tools/files/design/js/ArshWell/body/v1.js',
+                        'name' => 'vendor/arshwell/monolith/DevTools/tools/files/design/js/ArshWell/body/v1.js',
                         'range' => array(
         	                'min' => 0 // guarantees will compile even if there are no other js files
         				)
@@ -954,7 +954,7 @@ final class Layout {
                             )) .';',
                             'Web.vars.routes = '. json_encode($routes) .';',
                         ),
-                        file_get_contents('vendor/arsavinel/arshwell/DevTools/tools/files/design/js/ArshWell/Web/v2.js')
+                        file_get_contents('vendor/arshwell/monolith/DevTools/tools/files/design/js/ArshWell/Web/v2.js')
                     ));
 
                     $js_web_class = $js_minifier->minify();
@@ -1632,7 +1632,7 @@ final class Layout {
     private static function signature (string $site = NULL): string {
         $credits = ENV::credits();
 
-        $text_1 = 'PHP Framework used: https://github.com/arsavinel/ArshWell';
+        $text_1 = 'PHP Framework used: https://github.com/arshwell/monolith';
         $text_2 = 'Website'. ($site ? " ($site)" : '') .' developed by ['. implode(' | ', $credits) .']';
 
         $len_1 = strlen($text_1);

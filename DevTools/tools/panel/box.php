@@ -1,14 +1,14 @@
 <?php
 
-use Arsavinel\Arshwell\DevTool\DevToolData;
-use Arsavinel\Arshwell\DevTool\DevToolHTML;
-use Arsavinel\Arshwell\Table\TableValidation;
-use Arsavinel\Arshwell\Session;
-use Arsavinel\Arshwell\Time;
-use Arsavinel\Arshwell\File;
-use Arsavinel\Arshwell\ENV;
-use Arsavinel\Arshwell\URL;
-use Arsavinel\Arshwell\Web;
+use ArshWell\Monolith\DevTool\DevToolData;
+use ArshWell\Monolith\DevTool\DevToolHTML;
+use ArshWell\Monolith\Table\TableValidation;
+use ArshWell\Monolith\Session;
+use ArshWell\Monolith\Time;
+use ArshWell\Monolith\File;
+use ArshWell\Monolith\ENV;
+use ArshWell\Monolith\URL;
+use ArshWell\Monolith\Web;
 
 $info = TableValidation::run(
     array_merge(

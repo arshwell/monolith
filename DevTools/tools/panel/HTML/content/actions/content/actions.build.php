@@ -1,10 +1,10 @@
 <?php
 
-use Arsavinel\Arshwell\ENV;
-use Arsavinel\Arshwell\Web;
-use Arsavinel\Arshwell\File;
-use Arsavinel\Arshwell\Func;
-use Arsavinel\Arshwell\Folder;
+use ArshWell\Monolith\ENV;
+use ArshWell\Monolith\Web;
+use ArshWell\Monolith\File;
+use ArshWell\Monolith\Func;
+use ArshWell\Monolith\Folder;
 
 $max_attempts = array(
     'recompile-css-js' => call_user_func(function () {

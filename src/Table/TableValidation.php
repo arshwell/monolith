@@ -1,14 +1,14 @@
 <?php
 
-namespace Arsavinel\Arshwell\Table;
+namespace ArshWell\Monolith\Table;
 
-use Arsavinel\Arshwell\Table\TableValidationResponse;
-use Arsavinel\Arshwell\Session;
-use Arsavinel\Arshwell\Filter;
-use Arsavinel\Arshwell\Table;
-use Arsavinel\Arshwell\File;
-use Arsavinel\Arshwell\Text;
-use Arsavinel\Arshwell\DB;
+use ArshWell\Monolith\Table\TableValidationResponse;
+use ArshWell\Monolith\Session;
+use ArshWell\Monolith\Filter;
+use ArshWell\Monolith\Table;
+use ArshWell\Monolith\File;
+use ArshWell\Monolith\Text;
+use ArshWell\Monolith\DB;
 
 use ReflectionFunction;
 use ReflectionMethod;
@@ -19,7 +19,7 @@ use Closure;
  * Made especially for html forms.
  * It also allows you to create custom validation rules, in TableValidation::message().
 
- * @package https://github.com/arsavinel/ArshWell
+ * @package https://github.com/arshwell/monolith
 */
 abstract class TableValidation extends Table {
     const PRIMARY_KEY   = NULL;
@@ -398,7 +398,7 @@ abstract class TableValidation extends Table {
 
                             $dataimage = getimagesize($value['tmp_name']);
 
-                            // NOTE: Arsavinel\Arshwell\Table\TableView doesn't have sizes set
+                            // NOTE: ArshWell\Monolith\Table\TableView doesn't have sizes set
                             if (isset(($params[0])::FILES[$filekey]['sizes'])) {
                                 $sizes = ($params[0])::FILES[$filekey]['sizes'];
 
@@ -703,7 +703,7 @@ abstract class TableValidation extends Table {
                             foreach ($value['tmp_name'] as $k => $tmp_name) {
                                 $dataimage = getimagesize($value['tmp_name'][$k]);
 
-                                // NOTE: Arsavinel\Arshwell\Table\TableView doesn't have sizes set
+                                // NOTE: ArshWell\Monolith\Table\TableView doesn't have sizes set
                                 if (isset(($params[0])::FILES[$filekey]['sizes'])) {
                                     $sizes = ($params[0])::FILES[$filekey]['sizes'];
 

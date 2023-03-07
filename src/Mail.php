@@ -1,24 +1,24 @@
 <?php
 
-namespace Arsavinel\Arshwell;
+namespace ArshWell\Monolith;
 
 use Pelago\Emogrifier\CssInliner;
 use Pelago\Emogrifier\HtmlProcessor\CssToAttributeConverter;
 use Pelago\Emogrifier\HtmlProcessor\HtmlNormalizer;
 use Pelago\Emogrifier\HtmlProcessor\HtmlPruner;
 
-use Arsavinel\Arshwell\DevTool\DevToolData;
-use Arsavinel\Arshwell\Folder;
-use Arsavinel\Arshwell\Layout;
-use Arsavinel\Arshwell\Piece;
-use Arsavinel\Arshwell\ENV;
+use ArshWell\Monolith\DevTool\DevToolData;
+use ArshWell\Monolith\Folder;
+use ArshWell\Monolith\Layout;
+use ArshWell\Monolith\Piece;
+use ArshWell\Monolith\ENV;
 
 use PHPMailer\PHPMailer\PHPMailer;
 
 /**
  * PHP Class for sending and displaying mail templates.
 
- * @package https://github.com/arsavinel/ArshWell
+ * @package https://github.com/arshwell/monolith
 */
 final class Mail {
 

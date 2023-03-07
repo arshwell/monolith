@@ -1,13 +1,13 @@
 <?php
 
-namespace Arsavinel\Arshwell;
+namespace ArshWell\Monolith;
 
 /**
  * Class for math functions and calculations.
  *
  * It has routine functions.
 
- * @package https://github.com/arsavinel/ArshWell
+ * @package https://github.com/arshwell/monolith
 */
 final class Math {
     static function factorial (int $number): int {

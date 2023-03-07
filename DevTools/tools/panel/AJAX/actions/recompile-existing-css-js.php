@@ -1,13 +1,13 @@
 <?php
 
-use Arsavinel\Arshwell\Table\TableValidation;
-use Arsavinel\Arshwell\Session;
-use Arsavinel\Arshwell\Layout;
-use Arsavinel\Arshwell\Folder;
-use Arsavinel\Arshwell\Cache;
-use Arsavinel\Arshwell\Time;
-use Arsavinel\Arshwell\ENV;
-use Arsavinel\Arshwell\Web;
+use ArshWell\Monolith\Table\TableValidation;
+use ArshWell\Monolith\Session;
+use ArshWell\Monolith\Layout;
+use ArshWell\Monolith\Folder;
+use ArshWell\Monolith\Cache;
+use ArshWell\Monolith\Time;
+use ArshWell\Monolith\ENV;
+use ArshWell\Monolith\Web;
 
 $form = TableValidation::run($_POST,
     array(

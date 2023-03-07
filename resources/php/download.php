@@ -1,17 +1,17 @@
 <?php
 
-use Arsavinel\Arshwell\Session;
-use Arsavinel\Arshwell\Folder;
-use Arsavinel\Arshwell\File;
-use Arsavinel\Arshwell\ENV;
-use Arsavinel\Arshwell\URL;
-use Arsavinel\Arshwell\DB;
+use ArshWell\Monolith\Session;
+use ArshWell\Monolith\Folder;
+use ArshWell\Monolith\File;
+use ArshWell\Monolith\ENV;
+use ArshWell\Monolith\URL;
+use ArshWell\Monolith\DB;
 
 session_start();
 
 require("vendor/autoload.php");
 
-require("vendor/arsavinel/arshwell/src/ENV.php");
+require("vendor/arshwell/monolith/src/ENV.php");
 
 DB::connect('default');
 Session::set(ENV::url().ENV::db('conn.default.name'));

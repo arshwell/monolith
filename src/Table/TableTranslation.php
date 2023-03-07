@@ -1,8 +1,8 @@
 <?php
 
-namespace Arsavinel\Arshwell\Table;
+namespace ArshWell\Monolith\Table;
 
-use Arsavinel\Arshwell\Table;
+use ArshWell\Monolith\Table;
 
 /*
  * Class used for maintenance configuration.

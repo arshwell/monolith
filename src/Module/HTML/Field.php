@@ -1,11 +1,11 @@
 <?php
 
-namespace Arsavinel\Arshwell\Module\HTML;
+namespace ArshWell\Monolith\Module\HTML;
 
-use Arsavinel\Arshwell\File;
-use Arsavinel\Arshwell\Web;
-use Arsavinel\Arshwell\ENV;
-use Arsavinel\Arshwell\URL;
+use ArshWell\Monolith\File;
+use ArshWell\Monolith\Web;
+use ArshWell\Monolith\ENV;
+use ArshWell\Monolith\URL;
 
 final class Field {
 
@@ -783,7 +783,7 @@ final class Field {
                     <?php }
 
                     // optgroups with options
-                    if (\Arsavinel\Arshwell\Func::isAssoc($config['HTML']['values'], false)) {
+                    if (\ArshWell\Monolith\Func::isAssoc($config['HTML']['values'], false)) {
                         foreach ($config['HTML']['values'] as $optgroup_name => $values) { ?>
                             <optgroup label="<?= $optgroup_name ?>">
                                 <?php

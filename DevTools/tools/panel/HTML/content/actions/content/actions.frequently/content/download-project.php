@@ -1,4 +1,4 @@
-<form action="download-project" max-attempts="<?= ceil(Arsavinel\Arshwell\Folder::size('.') / 26214400) /* 25MB */ ?>">
+<form action="download-project" max-attempts="<?= ceil(ArshWell\Monolith\Folder::size('.') / 26214400) /* 25MB */ ?>">
     <button type="submit" class="btn btn-success loader py-1">Download project</button>
     <div class="row align-items-center text-muted my-2">
         <div class="col-3 col-md-2 nowrap">Source:</div>
@@ -9,7 +9,7 @@
     <div class="row align-items-center text-muted">
         <div class="col-3 col-md-2 nowrap">Archive:</div>
         <div class="col-9 col-md-10">
-            <?= trim(Arsavinel\Arshwell\ENV::root() ?: Arsavinel\Arshwell\ENV::site(), '/') ?>
+            <?= trim(ArshWell\Monolith\ENV::root() ?: ArshWell\Monolith\ENV::site(), '/') ?>
             <span class="nowrap"><u>date("d.m.Y H-i")</u>.zip</span>
         </div>
     </div>
@@ -18,7 +18,7 @@
             <div class="form-check py-2">
                 <label class="form-check-label text-danger" for="actions-frequently-download--delete" data-toggle="tooltip" data-placement="left" title="Be careful!">
                     <input class="form-check-input" disabled type="checkbox" name="delete" id="actions-frequently-download--delete" value="1" />
-                    And delete it from source: <span class="nowrap"><?= Arsavinel\Arshwell\ENV::url() ?><span>
+                    And delete it from source: <span class="nowrap"><?= ArshWell\Monolith\ENV::url() ?><span>
                 </label>
             </div>
         </div>

@@ -1,11 +1,11 @@
 <?php
 
-namespace Arsavinel\Arshwell;
+namespace ArshWell\Monolith;
 
 /**
  * Helper class for adding certain pieces of HTML.
 
- * @package https://github.com/arsavinel/ArshWell
+ * @package https://github.com/arshwell/monolith
 */
 final class HTML {
     static function iFrame (string $url): string {

@@ -1,8 +1,8 @@
 <?php
 
-namespace Arsavinel\Arshwell\Module;
+namespace ArshWell\Monolith\Module;
 
-use Arsavinel\Arshwell\DB;
+use ArshWell\Monolith\DB;
 
 final class Backend {
 
