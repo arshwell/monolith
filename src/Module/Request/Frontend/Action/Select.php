@@ -1,10 +1,10 @@
 <?php
 
-namespace ArshWell\Monolith\Module\Request\Frontend\Action;
+namespace Arshwell\Monolith\Module\Request\Frontend\Action;
 
-use ArshWell\Monolith\Module\HTML\Piece;
-use ArshWell\Monolith\URL;
-use ArshWell\Monolith\Web;
+use Arshwell\Monolith\Module\HTML\Piece;
+use Arshwell\Monolith\URL;
+use Arshwell\Monolith\Web;
 
 final class Select {
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace ArshWell\Monolith;
+namespace Arshwell\Monolith;
 
 /**
  * PHP Template Engin.
@@ -23,7 +23,7 @@ final class Piece {
         do {
             // Looking if this piece is used inside a mail template.
             foreach (debug_backtrace(0) as $trace) {
-                if (!empty($trace['class']) && $trace['class'] == 'ArshWell\Monolith\Mail'
+                if (!empty($trace['class']) && $trace['class'] == 'Arshwell\Monolith\Mail'
                 && !empty($trace['function']) && in_array($trace['function'], ['send', 'html'])) {
                     self::$pieces_used_in_mails[$trace['args'][0]][] = $folder;
                     break 2;

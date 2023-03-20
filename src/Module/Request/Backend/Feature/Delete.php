@@ -1,6 +1,6 @@
 <?php
 
-namespace ArshWell\Monolith\Module\Request\Backend\Feature;
+namespace Arshwell\Monolith\Module\Request\Backend\Feature;
 
 final class Delete {
 

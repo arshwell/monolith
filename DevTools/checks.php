@@ -1,6 +1,6 @@
 <?php
 
-use ArshWell\Monolith\File;
+use Arshwell\Monolith\File;
 
 /**
  * We are including all helpful functions for development mode.

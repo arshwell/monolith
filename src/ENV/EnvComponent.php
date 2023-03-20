@@ -1,12 +1,12 @@
 <?php
 
-namespace ArshWell\Monolith\ENV;
+namespace Arshwell\Monolith\ENV;
 
-use ArshWell\Monolith\Folder;
-use ArshWell\Monolith\Cache;
-use ArshWell\Monolith\Func;
-use ArshWell\Monolith\ENV;
-use ArshWell\Monolith\URL;
+use Arshwell\Monolith\Folder;
+use Arshwell\Monolith\Cache;
+use Arshwell\Monolith\Func;
+use Arshwell\Monolith\ENV;
+use Arshwell\Monolith\URL;
 
 use Exception;
 
@@ -18,7 +18,7 @@ final class ENVComponent {
 
     function __construct (string $path = NULL) {
         if (!$path || $path[0] != '/') {
-            $path = Folder::root() . $path; // default (our ArshWell project)
+            $path = Folder::root() . $path; // default (our Arshwell project)
         }
         if (substr($path, -1) != '/') {
             $path .= '/';
@@ -51,7 +51,7 @@ final class ENVComponent {
                  *         }
                  *     }
                  *
-                 * @see env.dynamic.json file from the root of a project which uses ArshWell.
+                 * @see env.dynamic.json file from the root of a project which uses Arshwell.
                  *
                  * Available parameters in env.dynamic 👇
                  *
@@ -71,7 +71,7 @@ final class ENVComponent {
                     $conditions = str_replace(array_keys($params), array_values($params), explode('|', $rule), $count);
 
                     if (array_diff(explode('|', $rule), array_keys($params))) {
-                        throw new Exception("|ArshWell| env.dynamic.json has invalid conditions at rule \"{$rule}\".");
+                        throw new Exception("|Arshwell| env.dynamic.json has invalid conditions at rule \"{$rule}\".");
                     }
 
                     foreach ($envs as $value => $env) {
@@ -79,7 +79,7 @@ final class ENVComponent {
                         $values = explode('|', $value);
 
                         if (count($conditions) != count($values) || count($values) != $count) {
-                            throw new Exception("|ArshWell| env.dynamic.json has invalid structure at rule \"{$rule}\", condition: \"{$value}\".");
+                            throw new Exception("|Arshwell| env.dynamic.json has invalid structure at rule \"{$rule}\", condition: \"{$value}\".");
                         }
 
                         // merge env for satisfied conditions
@@ -202,7 +202,7 @@ final class ENVComponent {
             return $this->json['paths'][$folder] . ($append_folder ? "$folder/" : '');
         }
         catch (Exception $e) {
-            throw new Exception("|ArshWell| env.json should contain ['paths'][$folder] with string value. It represents the optional path to your $folder/ folder, or NULL for default path.");
+            throw new Exception("|Arshwell| env.json should contain ['paths'][$folder] with string value. It represents the optional path to your $folder/ folder, or NULL for default path.");
         }
     }
 

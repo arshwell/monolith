@@ -1,7 +1,7 @@
 <?php
 
-use ArshWell\Monolith\Table\TableValidation;
-use ArshWell\Monolith\ENV\ENVComponent;
+use Arshwell\Monolith\Table\TableValidation;
+use Arshwell\Monolith\ENV\ENVComponent;
 
 $form = TableValidation::run($_POST, array(), false);
 

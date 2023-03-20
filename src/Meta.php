@@ -1,6 +1,6 @@
 <?php
 
-namespace ArshWell\Monolith;
+namespace Arshwell\Monolith;
 
 /**
  * Helper class for organizing meta tags from <head> section of html.

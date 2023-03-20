@@ -1,9 +1,9 @@
 <?php
 
-namespace ArshWell\Monolith\Module\Request\Frontend\Action;
+namespace Arshwell\Monolith\Module\Request\Frontend\Action;
 
-use ArshWell\Monolith\Module\HTML\Piece;
-use ArshWell\Monolith\URL;
+use Arshwell\Monolith\Module\HTML\Piece;
+use Arshwell\Monolith\URL;
 
 final class Insert {
 

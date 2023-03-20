@@ -1,13 +1,13 @@
 <?php
 
-namespace ArshWell\Monolith;
+namespace Arshwell\Monolith;
 
-use ArshWell\Monolith\Folder;
-use ArshWell\Monolith\File;
+use Arshwell\Monolith\Folder;
+use Arshwell\Monolith\File;
 use Exception;
 
 final class Cache {
-    static private $project = NULL; // ArshWell project
+    static private $project = NULL; // Arshwell project
     static private $folder = 'caches/';
 
     static function project (): ?string {

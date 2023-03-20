@@ -1,15 +1,15 @@
 <?php
 
-namespace ArshWell\Monolith\Module\HTML;
+namespace Arshwell\Monolith\Module\HTML;
 
-use ArshWell\Monolith\Table\TableSegment;
-use ArshWell\Monolith\Table\TableColumn;
-use ArshWell\Monolith\Table\TableField;
-use ArshWell\Monolith\Text;
-use ArshWell\Monolith\Func;
-use ArshWell\Monolith\File;
-use ArshWell\Monolith\URL;
-use ArshWell\Monolith\Web;
+use Arshwell\Monolith\Table\TableSegment;
+use Arshwell\Monolith\Table\TableColumn;
+use Arshwell\Monolith\Table\TableField;
+use Arshwell\Monolith\Text;
+use Arshwell\Monolith\Func;
+use Arshwell\Monolith\File;
+use Arshwell\Monolith\URL;
+use Arshwell\Monolith\Web;
 
 final class Piece {
 
@@ -74,7 +74,7 @@ final class Piece {
         $action['HTML']['href'] = URL::get(true, false, $action['HTML']['href']) .'?ctn='. $key;
 
         return array(
-            'ArshWell\Monolith\Module\HTML\Action',
+            'Arshwell\Monolith\Module\HTML\Action',
             $action['HTML']['type']
         )($key, $action);
     }
@@ -197,7 +197,7 @@ final class Piece {
 
                                         if ($select) {
                                             // optgroups with options
-                                            if (\ArshWell\Monolith\Func::isAssoc($select, false)) {
+                                            if (\Arshwell\Monolith\Func::isAssoc($select, false)) {
                                                 foreach ($select as $optgroup_name => $values) { ?>
                                                     <optgroup label="<?= $optgroup_name ?>">
                                                         <?php
@@ -618,7 +618,7 @@ final class Piece {
 
         foreach ($feature as $category => $attributes) {
             foreach ($attributes as $attr => $value) {
-                $feature[$category][$attr] = ("ArshWell\Monolith\Module\Syntax\Frontend\Feature\\{$category}")::{$attr}($value);
+                $feature[$category][$attr] = ("Arshwell\Monolith\Module\Syntax\Frontend\Feature\\{$category}")::{$attr}($value);
             }
         }
 
@@ -626,7 +626,7 @@ final class Piece {
         $feature['HTML']['href'] = URL::get(true, false, $feature['HTML']['href']) .'?'.($query ? $query.'&' : '').'ftr='. $key .'&id=' . $id_table;
 
         return array(
-            'ArshWell\Monolith\Module\HTML\Feature',
+            'Arshwell\Monolith\Module\HTML\Feature',
             $feature['HTML']['type']
         )($key, $feature, $id_table);
     }
@@ -777,7 +777,7 @@ final class Piece {
                     }
 
                     echo array(
-                        'ArshWell\Monolith\Module\HTML\Field',
+                        'Arshwell\Monolith\Module\HTML\Field',
                         $field['HTML']['type']
                     )($field, $lg); ?>
                 </div>

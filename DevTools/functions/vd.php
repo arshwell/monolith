@@ -1,7 +1,7 @@
 <?php
 
-use ArshWell\Monolith\Folder;
-use ArshWell\Monolith\ENV;
+use Arshwell\Monolith\Folder;
+use Arshwell\Monolith\ENV;
 
 // verify because could be already user-defined
 if (function_exists('_vd') == false) {

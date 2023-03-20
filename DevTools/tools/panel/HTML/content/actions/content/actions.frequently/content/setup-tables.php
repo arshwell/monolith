@@ -38,7 +38,7 @@
             Create and update validation tables
             <small class="d-block">
                 Looking for in
-                <?= implode(', ', ArshWell\Monolith\Func::arrayFlatten(json_decode(file_get_contents(ArshWell\Monolith\Folder::root() . 'composer.json'), true)['autoload'])) ?>
+                <?= implode(', ', Arshwell\Monolith\Func::arrayFlatten(json_decode(file_get_contents(Arshwell\Monolith\Folder::root() . 'composer.json'), true)['autoload'])) ?>
                 classes
             </small>
         </label>

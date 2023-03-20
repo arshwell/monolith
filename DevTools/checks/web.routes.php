@@ -1,8 +1,8 @@
 <?php
 
-use ArshWell\Monolith\DevTool\DevToolDebug;
-use ArshWell\Monolith\DevTool\DevToolHTML;
-use ArshWell\Monolith\Func;
+use Arshwell\Monolith\DevTool\DevToolDebug;
+use Arshwell\Monolith\DevTool\DevToolHTML;
+use Arshwell\Monolith\Func;
 
 /**
  * Verifies if routes are properly created.
@@ -100,7 +100,7 @@ call_user_func(function () {
             DevToolHTML::html(
                 '<i>ways/web.json</i><br>' .
                 DevToolHTML::code($code) .
-                DevToolHTML::error("<i>/.less/</i> and <i>/.js/</i> folders are reserved by ArshWell for .less and .js files.")
+                DevToolHTML::error("<i>/.less/</i> and <i>/.js/</i> folders are reserved by Arshwell for .less and .js files.")
             );
         }
 

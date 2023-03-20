@@ -1,8 +1,8 @@
 <?php
 
-namespace ArshWell\Monolith;
+namespace Arshwell\Monolith;
 
-use ArshWell\Monolith\File;
+use Arshwell\Monolith\File;
 
 /**
  * Class for manipulating folders.

@@ -1,14 +1,14 @@
 <?php
 
-namespace ArshWell\Monolith\Table\Files;
+namespace Arshwell\Monolith\Table\Files;
 
-use ArshWell\Monolith\Table\TableSegment;
-use ArshWell\Monolith\Folder;
-use ArshWell\Monolith\File;
-use ArshWell\Monolith\Text;
-use ArshWell\Monolith\Func;
-use ArshWell\Monolith\Web;
-use ArshWell\Monolith\ENV;
+use Arshwell\Monolith\Table\TableSegment;
+use Arshwell\Monolith\Folder;
+use Arshwell\Monolith\File;
+use Arshwell\Monolith\Text;
+use Arshwell\Monolith\Func;
+use Arshwell\Monolith\Web;
+use Arshwell\Monolith\ENV;
 
 use Verot\Upload\Upload;
 
@@ -112,7 +112,7 @@ final class Image implements TableSegment {
             }
 
             if (!defined($this->class .'::TRANSLATOR')) {
-                throw new Exception("|ArshWell| {$this->class} has FILES; so should contain const TRANSLATOR");
+                throw new Exception("|Arshwell| {$this->class} has FILES; so should contain const TRANSLATOR");
             }
 
             foreach ((($this->class)::TRANSLATOR)::LANGUAGES as $language) {

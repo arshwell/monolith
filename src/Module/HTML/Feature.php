@@ -1,8 +1,8 @@
 <?php
 
-namespace ArshWell\Monolith\Module\HTML;
+namespace Arshwell\Monolith\Module\HTML;
 
-use ArshWell\Monolith\URL;
+use Arshwell\Monolith\URL;
 
 final class Feature {
 

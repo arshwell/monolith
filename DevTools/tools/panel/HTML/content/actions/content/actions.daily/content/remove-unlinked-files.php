@@ -3,7 +3,7 @@
     <div class="form-check mt-2">
         <input class="form-check-input" type="checkbox" checked disabled />
         <label class="form-check-label">
-            From <?= ArshWell\Monolith\ENV::path('uploads') . 'files/' ?>
+            From <?= Arshwell\Monolith\ENV::path('uploads') . 'files/' ?>
         </label>
     </div>
     <div class="form-check mb-2">

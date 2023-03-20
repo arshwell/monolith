@@ -1,6 +1,6 @@
 /**
  * Creating a few functions for JS Vanilla.
- * Helpful for ArshWell core.
+ * Helpful for Arshwell core.
 
  * What is JS Vanilla?
  * It is plain JavaScript without any additional libraries, like jQuery.
@@ -9,8 +9,8 @@
  * @license MIT (https://github.com/arshwell/monolith/blob/0.x/LICENSE.md)
 
  * This file is used at least by:
- *      - ArshWell\Monolith\Layout::compileJSFooter()
- *      - ArshWell\Monolith\DevTool\DevToolHTML::html()
+ *      - Arshwell\Monolith\Layout::compileJSFooter()
+ *      - Arshwell\Monolith\DevTool\DevToolHTML::html()
  */
 
 // insertAfter doesn't exist in Javascript Vanilla

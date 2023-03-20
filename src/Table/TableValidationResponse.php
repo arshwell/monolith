@@ -1,9 +1,9 @@
 <?php
 
-namespace ArshWell\Monolith\Table;
+namespace Arshwell\Monolith\Table;
 
-use ArshWell\Monolith\Session;
-use ArshWell\Monolith\Web;
+use Arshwell\Monolith\Session;
+use Arshwell\Monolith\Web;
 
 /**
  * Object class for working with table validation response.

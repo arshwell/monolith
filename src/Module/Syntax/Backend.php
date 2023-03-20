@@ -1,12 +1,12 @@
 <?php
 
-namespace ArshWell\Monolith\Module\Syntax;
+namespace Arshwell\Monolith\Module\Syntax;
 
 final class Backend {
 
     static function DB (array $db): array {
         foreach ($db as $key => $value) {
-            $db[$key] = ("ArshWell\Monolith\Module\Syntax\Backend\DB::{$key}")($value);
+            $db[$key] = ("Arshwell\Monolith\Module\Syntax\Backend\DB::{$key}")($value);
         }
 
         return $db;
@@ -14,7 +14,7 @@ final class Backend {
 
     static function PHP (array $php): array {
         foreach ($php as $key => $value) {
-            $php[$key] = ("ArshWell\Monolith\Module\Syntax\Backend\PHP::{$key}")($value);
+            $php[$key] = ("Arshwell\Monolith\Module\Syntax\Backend\PHP::{$key}")($value);
         }
 
         return $php;

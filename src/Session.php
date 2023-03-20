@@ -1,8 +1,8 @@
 <?php
 
-namespace ArshWell\Monolith;
+namespace Arshwell\Monolith;
 
-use ArshWell\Monolith\Web;
+use Arshwell\Monolith\Web;
 
 /**
  * Class for backend programming which has routine functions.
@@ -24,17 +24,17 @@ final class Session {
 		if (!isset(self::$session)) {
 			self::$key = $key;
 
-			if (!isset($_SESSION[$key]['App']) || !isset($_SESSION[$key]['arsavinel']['ArshWell'])) {
+			if (!isset($_SESSION[$key]['App']) || !isset($_SESSION[$key]['arsavinel']['Arshwell'])) {
 				$_SESSION[$key] = array(
 					'arsavinel' => array(
-                        'ArshWell' => self::default()
+                        'Arshwell' => self::default()
                     ),
 					'App' => array()
 				);
 
 				self::$is_new = true;
 			}
-			self::$session = &$_SESSION[$key]['arsavinel']['ArshWell'];
+			self::$session = &$_SESSION[$key]['arsavinel']['Arshwell'];
 
 			if (!empty(self::$session['views'])) {
 				foreach (self::$session['views'] as $class => $views) {
@@ -186,7 +186,7 @@ final class Session {
 		return true;
 	}
 	static function empty (): void {
-		// reinit ArshWell session
+		// reinit Arshwell session
 	    self::$session = self::default();
 
 	    // empty App session
@@ -214,7 +214,7 @@ final class Session {
 			        session_id($name);
 			        session_start();
 
-					if (!empty($_SESSION[self::$key]['arsavinel']['ArshWell'])) {
+					if (!empty($_SESSION[self::$key]['arsavinel']['Arshwell'])) {
 						$sessions[$name] = ($also_arshwell_session ? $_SESSION[self::$key] : $_SESSION[self::$key]['App']);
 				    }
 				}

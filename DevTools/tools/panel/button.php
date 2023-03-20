@@ -1,14 +1,14 @@
 <?php
 
-use ArshWell\Monolith\DevTool\DevToolData;
-use ArshWell\Monolith\Session;
-use ArshWell\Monolith\Piece;
-use ArshWell\Monolith\Func;
-use ArshWell\Monolith\Web;
+use Arshwell\Monolith\DevTool\DevToolData;
+use Arshwell\Monolith\Session;
+use Arshwell\Monolith\Piece;
+use Arshwell\Monolith\Func;
+use Arshwell\Monolith\Web;
 
-$hashed_arsh_version = substr(md5(DevToolData::ArshWellVersion()), 0, 5); ?>
+$hashed_arsh_version = substr(md5(DevToolData::ArshwellVersion()), 0, 5); ?>
 
-<!-- - - - - - - - - - - - - - - - - - - - ArshWell | DevPanel - - - - - - - - - - - - - - - - - - - -->
+<!-- - - - - - - - - - - - - - - - - - - - Arshwell | DevPanel - - - - - - - - - - - - - - - - - - - -->
 <script type="text/javascript">
     'use strict';
     var script = document.currentScript;
@@ -206,4 +206,4 @@ letter-spacing: 1px !important; text-shadow: 1px 1px 2px black !important; z-ind
         &#9881;
     </span>
 </button>
-<!-- - - - - - - - - - - - - - - - - - - - ArshWell | DevPanel - - - - - - - - - - - - - - - - - - - -->
+<!-- - - - - - - - - - - - - - - - - - - - Arshwell | DevPanel - - - - - - - - - - - - - - - - - - - -->

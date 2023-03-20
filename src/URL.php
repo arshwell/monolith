@@ -1,6 +1,6 @@
 <?php
 
-namespace ArshWell\Monolith;
+namespace Arshwell\Monolith;
 
 /**
  * Class for URL manipulation.

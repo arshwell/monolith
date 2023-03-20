@@ -1,13 +1,13 @@
 <?php
 
-namespace ArshWell\Monolith;
+namespace Arshwell\Monolith;
 
-use ArshWell\Monolith\Language;
-use ArshWell\Monolith\Cache;
-use ArshWell\Monolith\Text;
-use ArshWell\Monolith\Func;
-use ArshWell\Monolith\ENV;
-use ArshWell\Monolith\URL;
+use Arshwell\Monolith\Language;
+use Arshwell\Monolith\Cache;
+use Arshwell\Monolith\Text;
+use Arshwell\Monolith\Func;
+use Arshwell\Monolith\ENV;
+use Arshwell\Monolith\URL;
 
 /**
  * Routing Management Class.

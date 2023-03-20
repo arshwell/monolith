@@ -1,9 +1,9 @@
 <?php
 
-use ArshWell\Monolith\ENV;
-use ArshWell\Monolith\Web;
-use ArshWell\Monolith\File;
-use ArshWell\Monolith\Time;
+use Arshwell\Monolith\ENV;
+use Arshwell\Monolith\Web;
+use Arshwell\Monolith\File;
+use Arshwell\Monolith\Time;
 
 $max_attempts = array(
     'recompile-css-js' => call_user_func(function () {

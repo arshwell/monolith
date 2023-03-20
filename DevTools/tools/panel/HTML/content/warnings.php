@@ -1,7 +1,7 @@
 <?php
 
-use ArshWell\Monolith\ENV;
-use ArshWell\Monolith\File;
+use Arshwell\Monolith\ENV;
+use Arshwell\Monolith\File;
 
 $warnings = array(
     'errors' => call_user_func(function (): array {
