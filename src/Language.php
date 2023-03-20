@@ -1,8 +1,8 @@
 <?php
 
-namespace ArshWell\Monolith;
+namespace Arshwell\Monolith;
 
-use ArshWell\Monolith\Session;
+use Arshwell\Monolith\Session;
 
 abstract class Language {
     const PAGINATION    = "p-([1-9]\\d*)";

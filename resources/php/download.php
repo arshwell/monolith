@@ -1,11 +1,11 @@
 <?php
 
-use ArshWell\Monolith\Session;
-use ArshWell\Monolith\Folder;
-use ArshWell\Monolith\File;
-use ArshWell\Monolith\ENV;
-use ArshWell\Monolith\URL;
-use ArshWell\Monolith\DB;
+use Arshwell\Monolith\Session;
+use Arshwell\Monolith\Folder;
+use Arshwell\Monolith\File;
+use Arshwell\Monolith\ENV;
+use Arshwell\Monolith\URL;
+use Arshwell\Monolith\DB;
 
 session_start();
 

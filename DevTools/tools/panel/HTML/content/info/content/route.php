@@ -19,8 +19,8 @@
     <tr>
         <th rowspan="2">URL</th>
         <?php
-        if (rtrim(ArshWell\Monolith\Web::pattern($_REQUEST['request']['route'], $_REQUEST['request']['language']), '/') != trim($_REQUEST['request']['path'], '/')) { ?>
-            <td><?= ArshWell\Monolith\Web::pattern($_REQUEST['request']['route'], $_REQUEST['request']['language']) ?></td>
+        if (rtrim(Arshwell\Monolith\Web::pattern($_REQUEST['request']['route'], $_REQUEST['request']['language']), '/') != trim($_REQUEST['request']['path'], '/')) { ?>
+            <td><?= Arshwell\Monolith\Web::pattern($_REQUEST['request']['route'], $_REQUEST['request']['language']) ?></td>
         <?php } ?>
     </tr>
     <tr>
@@ -28,7 +28,7 @@
     </tr>
     <tr>
         <th>Folder</th>
-        <td><?= ArshWell\Monolith\Web::folder($_REQUEST['request']['route']) ?></td>
+        <td><?= Arshwell\Monolith\Web::folder($_REQUEST['request']['route']) ?></td>
     </tr>
     <?php
     if ($_REQUEST['request']['compiled']['css'] || $_REQUEST['request']['compiled']['js']['header'] || $_REQUEST['request']['compiled']['js']['footer']) { ?>

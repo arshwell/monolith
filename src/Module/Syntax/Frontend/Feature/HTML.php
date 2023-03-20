@@ -1,6 +1,6 @@
 <?php
 
-namespace ArshWell\Monolith\Module\Syntax\Frontend\Feature;
+namespace Arshwell\Monolith\Module\Syntax\Frontend\Feature;
 
 final class HTML {
 

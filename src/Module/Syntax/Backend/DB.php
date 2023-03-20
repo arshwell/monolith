@@ -1,6 +1,6 @@
 <?php
 
-namespace ArshWell\Monolith\Module\Syntax\Backend;
+namespace Arshwell\Monolith\Module\Syntax\Backend;
 
 final class DB {
 

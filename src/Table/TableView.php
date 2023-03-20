@@ -1,16 +1,16 @@
 <?php
 
-namespace ArshWell\Monolith\Table;
+namespace Arshwell\Monolith\Table;
 
-use ArshWell\Monolith\Session;
-use ArshWell\Monolith\Folder;
-use ArshWell\Monolith\Table;
-use ArshWell\Monolith\File;
-use ArshWell\Monolith\Func;
-use ArshWell\Monolith\Web;
-use ArshWell\Monolith\ENV;
-use ArshWell\Monolith\SQL;
-use ArshWell\Monolith\DB;
+use Arshwell\Monolith\Session;
+use Arshwell\Monolith\Folder;
+use Arshwell\Monolith\Table;
+use Arshwell\Monolith\File;
+use Arshwell\Monolith\Func;
+use Arshwell\Monolith\Web;
+use Arshwell\Monolith\ENV;
+use Arshwell\Monolith\SQL;
+use Arshwell\Monolith\DB;
 
 use Verot\Upload\Upload;
 
@@ -71,8 +71,8 @@ abstract class TableView extends Table {
 
                 foreach (debug_backtrace(0) as $trace) {
                     if (!empty($trace['class']) && !empty($trace['function'])
-                    && (($trace['class'] == 'ArshWell\Monolith\Piece' && $trace['function'] == 'html')
-                    || ($trace['class'] == 'ArshWell\Monolith\Mail' && in_array($trace['function'], ['send', 'html'])))) {
+                    && (($trace['class'] == 'Arshwell\Monolith\Piece' && $trace['function'] == 'html')
+                    || ($trace['class'] == 'Arshwell\Monolith\Mail' && in_array($trace['function'], ['send', 'html'])))) {
                         $source = strtolower(substr($trace['class'], strrpos($trace['class'], '\\') + 1)) .'s/'. $trace['args'][0];
                         break;
                     }

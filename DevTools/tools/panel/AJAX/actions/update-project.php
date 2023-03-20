@@ -1,14 +1,14 @@
 <?php
 
-use ArshWell\Monolith\Table\TableValidation;
-use ArshWell\Monolith\Module\Backend;
-use ArshWell\Monolith\Table\TableMigration;
-use ArshWell\Monolith\ENV\ENVComponent;
-use ArshWell\Monolith\Folder;
-use ArshWell\Monolith\File;
-use ArshWell\Monolith\Time;
-use ArshWell\Monolith\ENV;
-use ArshWell\Monolith\Web;
+use Arshwell\Monolith\Table\TableValidation;
+use Arshwell\Monolith\Module\Backend;
+use Arshwell\Monolith\Table\TableMigration;
+use Arshwell\Monolith\ENV\ENVComponent;
+use Arshwell\Monolith\Folder;
+use Arshwell\Monolith\File;
+use Arshwell\Monolith\Time;
+use Arshwell\Monolith\ENV;
+use Arshwell\Monolith\Web;
 
 $form = TableValidation::run(array_merge($_POST, $_FILES),
     array(

@@ -1,17 +1,17 @@
 <?php
 
-namespace ArshWell\Monolith;
+namespace Arshwell\Monolith;
 
 use Pelago\Emogrifier\CssInliner;
 use Pelago\Emogrifier\HtmlProcessor\CssToAttributeConverter;
 use Pelago\Emogrifier\HtmlProcessor\HtmlNormalizer;
 use Pelago\Emogrifier\HtmlProcessor\HtmlPruner;
 
-use ArshWell\Monolith\DevTool\DevToolData;
-use ArshWell\Monolith\Folder;
-use ArshWell\Monolith\Layout;
-use ArshWell\Monolith\Piece;
-use ArshWell\Monolith\ENV;
+use Arshwell\Monolith\DevTool\DevToolData;
+use Arshwell\Monolith\Folder;
+use Arshwell\Monolith\Layout;
+use Arshwell\Monolith\Piece;
+use Arshwell\Monolith\ENV;
 
 use PHPMailer\PHPMailer\PHPMailer;
 
@@ -91,7 +91,7 @@ final class Mail {
             $mailer->Body         = $html;
             $mailer->AltBody      = self::prepareText($html);
 
-            $mailer->AddCustomHeader("Organization: " . ENV::mail('from.name') .' '. DevToolData::ArshWellVersion());
+            $mailer->AddCustomHeader("Organization: " . ENV::mail('from.name') .' '. DevToolData::ArshwellVersion());
 
             if ($files) {
                 foreach ($files as $file) {

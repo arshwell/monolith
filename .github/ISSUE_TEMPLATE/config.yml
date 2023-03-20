@@ -2,9 +2,9 @@ blank_issues_enabled: false
 contact_links:
   - name: Community Support
     url: https://github.com/arshwell/monolith/discussions
-    about: Please use the ArshWell discussions section for support.
+    about: Please use the Arshwell discussions section for support.
   - name: Private Support Question
     url: https://www.instagram.com/arsavinel/
     about: |
-      We use GitHub issues only to discuss about ArshWell bugs and new features.
-      For private paid support about using ArshWell, please contact me on arsavinel#8902 or @arsavinel.
+      We use GitHub issues only to discuss about Arshwell bugs and new features.
+      For private paid support about using Arshwell, please contact me on arsavinel#8902 or @arsavinel.

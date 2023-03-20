@@ -1,15 +1,15 @@
 <?php
 
-namespace ArshWell\Monolith;
+namespace Arshwell\Monolith;
 
-use ArshWell\Monolith\Session;
-use ArshWell\Monolith\Folder;
-use ArshWell\Monolith\Piece;
-use ArshWell\Monolith\Table;
-use ArshWell\Monolith\File;
-use ArshWell\Monolith\Func;
-use ArshWell\Monolith\ENV;
-use ArshWell\Monolith\Web;
+use Arshwell\Monolith\Session;
+use Arshwell\Monolith\Folder;
+use Arshwell\Monolith\Piece;
+use Arshwell\Monolith\Table;
+use Arshwell\Monolith\File;
+use Arshwell\Monolith\Func;
+use Arshwell\Monolith\ENV;
+use Arshwell\Monolith\Web;
 
 use MatthiasMullie\Minify\JS as JsMin;
 use ScssPhp\ScssPhp\Compiler as ScssPhp;
@@ -192,19 +192,19 @@ final class Layout {
         		),
         		'files'	=> array(
                     array(
-                        'name' => 'vendor/arshwell/monolith/DevTools/tools/files/design/js/ArshWell/http_build_query/v1.js',
+                        'name' => 'vendor/arshwell/monolith/DevTools/tools/files/design/js/Arshwell/http_build_query/v1.js',
                         'range' => array(
                             'min' => 0 // guarantees will compile even if there are no other js files
                         )
                     ),
                     array(
-                        'name' => 'vendor/arshwell/monolith/DevTools/tools/files/design/js/ArshWell/Form/v2.js',
+                        'name' => 'vendor/arshwell/monolith/DevTools/tools/files/design/js/Arshwell/Form/v2.js',
                         'range' => array(
                             'min' => 0 // guarantees will compile even if there are no other js files
                         )
                     ),
                     array(
-                        'name' => 'vendor/arshwell/monolith/DevTools/tools/files/design/js/ArshWell/VanillaJS/v1.js',
+                        'name' => 'vendor/arshwell/monolith/DevTools/tools/files/design/js/Arshwell/VanillaJS/v1.js',
                         'range' => array(
                             'min' => 0 // guarantees will compile even if there are no other js files
                         )
@@ -307,7 +307,7 @@ final class Layout {
         		),
         		'files'	=> array(
                     array(
-                        'name' => 'vendor/arshwell/monolith/DevTools/tools/files/design/js/ArshWell/body/v1.js',
+                        'name' => 'vendor/arshwell/monolith/DevTools/tools/files/design/js/Arshwell/body/v1.js',
                         'range' => array(
         	                'min' => 0 // guarantees will compile even if there are no other js files
         				)
@@ -954,7 +954,7 @@ final class Layout {
                             )) .';',
                             'Web.vars.routes = '. json_encode($routes) .';',
                         ),
-                        file_get_contents('vendor/arshwell/monolith/DevTools/tools/files/design/js/ArshWell/Web/v2.js')
+                        file_get_contents('vendor/arshwell/monolith/DevTools/tools/files/design/js/Arshwell/Web/v2.js')
                     ));
 
                     $js_web_class = $js_minifier->minify();

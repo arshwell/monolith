@@ -1,11 +1,11 @@
 <?php
 
-namespace ArshWell\Monolith\DevTool;
+namespace Arshwell\Monolith\DevTool;
 
-use ArshWell\Monolith\Folder;
+use Arshwell\Monolith\Folder;
 
 /**
- * Static class about ArshWell framework.
+ * Static class about Arshwell framework.
 
  * @package https://github.com/arshwell/monolith
  */
@@ -17,7 +17,7 @@ final class DevToolData {
 
      * @return string no matter what
      */
-    static function ArshWellVersion (): string {
+    static function ArshwellVersion (): string {
         $installed = json_decode(file_get_contents(Folder::root() . 'vendor/composer/installed.json'), true);
 
         foreach ($installed["packages"] as $package) {
@@ -35,8 +35,8 @@ final class DevToolData {
 
      * @return string because version can start with zero (ex: v0.1.4)
      */
-    static function ArshWellVersionNumber (): string {
-        $version = strtolower(DevToolData::ArshWellVersion());
+    static function ArshwellVersionNumber (): string {
+        $version = strtolower(DevToolData::ArshwellVersion());
 
         if (preg_match("/^[v\.]+? (\d+\.\d+ (.\d+)? )/x", $version, $matches)) {
             return $matches[1];

@@ -1,6 +1,6 @@
 <?php
 
-namespace ArshWell\Monolith\Module\Syntax\Frontend\Action;
+namespace Arshwell\Monolith\Module\Syntax\Frontend\Action;
 
 class HTML {
 

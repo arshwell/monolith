@@ -1,9 +1,9 @@
 <?php
 
-namespace ArshWell\Monolith\DevTool;
+namespace Arshwell\Monolith\DevTool;
 
-use ArshWell\Monolith\Session;
-use ArshWell\Monolith\URL;
+use Arshwell\Monolith\Session;
+use Arshwell\Monolith\URL;
 
 /**
  * Static class for printing debuging and DevTools data in development phase.
@@ -18,7 +18,7 @@ final class DevToolHTML
      */
     static function html(string $text, bool $trusty = true): void
     {
-        $rshwll = substr(md5(DevToolData::ArshWellVersion()), 0, 5);
+        $rshwll = substr(md5(DevToolData::ArshwellVersion()), 0, 5);
         $url    = URL::get(true, false);
 
         ob_start(); // for returning all content
@@ -27,7 +27,7 @@ final class DevToolHTML
             <html lang="ro">
 
             <head>
-                <title>ArshWell <?= ($trusty ? DevToolData::ArshWellVersion() : '') ?></title>
+                <title>Arshwell <?= ($trusty ? DevToolData::ArshwellVersion() : '') ?></title>
 
                 <meta http-equiv="content-type" content="text/html;charset=utf-8" />
                 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -56,11 +56,11 @@ final class DevToolHTML
                     <script type="text/javascript" src="<?= $url ?>?rshwll=<?= $rshwll ?>&hdr=text/javascript&fl=design/js/floating-ui/v1.js"></script>
                     <script type="text/javascript" src="<?= $url ?>?rshwll=<?= $rshwll ?>&hdr=text/javascript&fl=design/js/bootstrap/v4.js"></script>
                     <script type="text/javascript" src="<?= $url ?>?rshwll=<?= $rshwll ?>&hdr=text/javascript&fl=design/js/chartjs/v3.js"></script>
-                    <script type="text/javascript" src="<?= $url ?>?rshwll=<?= $rshwll ?>&hdr=text/javascript&fl=design/js/ArshWell/body/v1.js"></script>
-                    <script type="text/javascript" src="<?= $url ?>?rshwll=<?= $rshwll ?>&hdr=text/javascript&fl=design/js/ArshWell/http_build_query/v1.js"></script>
-                    <script type="text/javascript" src="<?= $url ?>?rshwll=<?= $rshwll ?>&hdr=text/javascript&fl=design/js/ArshWell/Web/v2.js"></script>
-                    <script type="text/javascript" src="<?= $url ?>?rshwll=<?= $rshwll ?>&hdr=text/javascript&fl=design/js/ArshWell/VanillaJS/v1.js"></script>
-                    <script type="text/javascript" src="<?= $url ?>?rshwll=<?= $rshwll ?>&hdr=text/javascript&fl=design/js/ArshWell/Form/v2.js"></script>
+                    <script type="text/javascript" src="<?= $url ?>?rshwll=<?= $rshwll ?>&hdr=text/javascript&fl=design/js/Arshwell/body/v1.js"></script>
+                    <script type="text/javascript" src="<?= $url ?>?rshwll=<?= $rshwll ?>&hdr=text/javascript&fl=design/js/Arshwell/http_build_query/v1.js"></script>
+                    <script type="text/javascript" src="<?= $url ?>?rshwll=<?= $rshwll ?>&hdr=text/javascript&fl=design/js/Arshwell/Web/v2.js"></script>
+                    <script type="text/javascript" src="<?= $url ?>?rshwll=<?= $rshwll ?>&hdr=text/javascript&fl=design/js/Arshwell/VanillaJS/v1.js"></script>
+                    <script type="text/javascript" src="<?= $url ?>?rshwll=<?= $rshwll ?>&hdr=text/javascript&fl=design/js/Arshwell/Form/v2.js"></script>
                 <?php } ?>
             </body>
             </html>
@@ -182,11 +182,11 @@ final class DevToolHTML
             <div class="markdown-body p-4">
                 <h1 dir="auto">
                     <a href="https://github.com/arshwell/monolith" target="_blank" aria-hidden="true">
-                        Contributing <small>to ArshWell <small>on GitHub project</small></small>
+                        Contributing <small>to Arshwell <small>on GitHub project</small></small>
                     </a>
                 </h1>
 
-                <p dir="auto">Thank you for considering contributing to the ArshWell framework!</p>
+                <p dir="auto">Thank you for considering contributing to the Arshwell framework!</p>
 
                 <ul dir="auto">
                     <li>
@@ -203,12 +203,12 @@ final class DevToolHTML
                             <code>composer require [your-user]/[your-new-fork] --prefer-source</code>
                         </p>
                         <ul dir="auto">
-                            <li>In that way, you can modify ArshWell directly inside your vendor's project</li>
-                            <li>And after that, just <code>git commit</code> & <code>git push</code> the ArshWell from you vendor</li>
+                            <li>In that way, you can modify Arshwell directly inside your vendor's project</li>
+                            <li>And after that, just <code>git commit</code> & <code>git push</code> the Arshwell from you vendor</li>
                         </ul>
                     </li>
                     <li>
-                        <p dir="auto">Come back to GitHub ArshWell and create a Pull Request</li></p>
+                        <p dir="auto">Come back to GitHub Arshwell and create a Pull Request</li></p>
                         <ul dir="auto">
                             <li>Explain the problem you've found</li>
                             <li>Present the solution you've implemented.</li>

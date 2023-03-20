@@ -1,17 +1,17 @@
-# ArshWell | PHP Framework | for LAMP Stack
+# Arshwell | PHP Framework | for LAMP Stack
 
 Simple to learn and use:
->  ArshWell started from the idea of a fast and clean framework. <br>
+>  Arshwell started from the idea of a fast and clean framework. <br>
 >  No MVC: less OOP *(at least for now)*.
 ---
 
 ### Tech
 
-ArshWell uses next technologies:
+Arshwell uses next technologies:
 
 - [MySQL] - Package uses SQL
 - [PHP 7.4] - Also some OOP features (ex: DB)
-- [SASS] - A good fit CSS extension language for ArshWell
+- [SASS] - A good fit CSS extension language for Arshwell
 - [JS Vanilla functions] - Built-in helpful functions (ex: Web, Form)
 - [jQuery] - default JS library
 
@@ -42,7 +42,7 @@ ArshWell uses next technologies:
 
 ### Features
 
-ArshWell has many features, including:
+Arshwell has many features, including:
 
 | Feature | Detail |
 | ------ | ------ |
@@ -70,29 +70,29 @@ Don't believe us, see for yourself.
 
 ### Contributing
 
-Thank you for considering contributing to the ArshWell framework!
+Thank you for considering contributing to the Arshwell framework!
 
 - Fork the repo, from GitHub
 - Run, from terminal, in the root of your project: <br>
   `composer require [your-user]/[your-new-fork] --prefer-source`
-    - In that way, you can modify ArshWell directly inside your vendor's project
-    - And after that, just `git commit` & `git push` the ArshWell from you vendor
-- Come back to GitHub ArshWell and create a Pull Request
+    - In that way, you can modify Arshwell directly inside your vendor's project
+    - And after that, just `git commit` & `git push` the Arshwell from you vendor
+- Come back to GitHub Arshwell and create a Pull Request
     - Explain the problem you've found
     - Present the solution you've implemented;
 
 ### Code of Conduct
 
-In order to ensure that the ArshWell community is welcoming to all,
+In order to ensure that the Arshwell community is welcoming to all,
 please review and abide by the CODE_OF_CONDUCT.md.
 
 ### Security Vulnerabilities
 
-If you’ve found a security issue in ArshWell, please use the procedure
+If you’ve found a security issue in Arshwell, please use the procedure
 described in [SECURITY](https://github.com/arshwell/monolith/security/policy).
 
 In that situation, please, don't create an issue.
 
 ### License
 
-The ArshWell framework is open-sourced software licensed under the MIT license.
+The Arshwell framework is open-sourced software licensed under the MIT license.

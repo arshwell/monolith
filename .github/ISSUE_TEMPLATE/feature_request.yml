@@ -16,8 +16,8 @@ body:
         If the new feature changes an existing feature, include a simple before/after comparison.
   - type: input
     attributes:
-      label: ArshWell Version
-      description: "The ArshWell version if for a specific major/minor."
+      label: Arshwell Version
+      description: "The Arshwell version if for a specific major/minor."
       placeholder: "x.y"
     validations:
       required: false

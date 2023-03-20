@@ -3,7 +3,7 @@ $(document).ready(function () {
         var parent = $(form).closest('.arshmodule').find('.arshmodule-html-piece-dialog').eq(0);
 
         if (parent.length == 0) {
-            alert("No modal dialog found. \nInclude it from module pieces \n(ArshWell\\Monolith\\Module\\HTML\\Piece::dialog())!");
+            alert("No modal dialog found. \nInclude it from module pieces \n(Arshwell\\Monolith\\Module\\HTML\\Piece::dialog())!");
             return;
         }
 

@@ -1,7 +1,7 @@
 <?php
 
-use ArshWell\Monolith\DevTool\DevToolHTML;
-use ArshWell\Monolith\Folder;
+use Arshwell\Monolith\DevTool\DevToolHTML;
+use Arshwell\Monolith\Folder;
 
 /**
  * Verifies if all pieces have correct name pattern.
