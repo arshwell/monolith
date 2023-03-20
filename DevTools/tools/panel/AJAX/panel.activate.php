@@ -1,14 +1,14 @@
 <?php
 
-use ArshWell\Monolith\DevTool\DevToolData;
-use ArshWell\Monolith\Table\TableValidation;
-use ArshWell\Monolith\Session;
+use Arshwell\Monolith\DevTool\DevToolData;
+use Arshwell\Monolith\Table\TableValidation;
+use Arshwell\Monolith\Session;
 
 $form = TableValidation::run(
     $_POST,
     array(
         'pass' => array(
-            "equal:arshwell".DevToolData::ArshWellVersionNumber()
+            "equal:arshwell".DevToolData::ArshwellVersionNumber()
         )
     ),
     array(

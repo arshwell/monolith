@@ -1,8 +1,8 @@
 <?php
 
-use ArshWell\Monolith\Session;
-use ArshWell\Monolith\ENV;
-use ArshWell\Monolith\Web;
+use Arshwell\Monolith\Session;
+use Arshwell\Monolith\ENV;
+use Arshwell\Monolith\Web;
 
 /**
  * If ENV::board('dev') true, it gets also my session.
@@ -76,14 +76,14 @@ $sessions = Session::all(ENV::board('dev'), true);
                 Routes accessed in real time
                 <span class="maintenance--smart-configuration collapse <?= ((ENV::class('maintenance'))::isActive() && (ENV::class('maintenance'))::isSmart() ? 'show' : '') ?>">
                     <?php // all sessions with history ?>
-                    (by all ~<?= count(array_filter(array_column(array_column(array_column($sessions, 'arsavinel'), 'ArshWell'), 'history'))) ?> sessions)
+                    (by all ~<?= count(array_filter(array_column(array_column(array_column($sessions, 'arsavinel'), 'Arshwell'), 'history'))) ?> sessions)
                 </span>
             </div>
             <div class="card-body py-0">
                 <ul class="list-group list-group-flush maintenance--smart-configuration collapse <?= ((ENV::class('maintenance'))::isActive() && (ENV::class('maintenance'))::isSmart() ? 'show' : '') ?>">
                     <?php
                     foreach ($sessions as $session) {
-                        foreach (array_reverse($session['arsavinel']['ArshWell']['history']) as $index => $route) { ?>
+                        foreach (array_reverse($session['arsavinel']['Arshwell']['history']) as $index => $route) { ?>
                             <li type="button" class="list-group-item" data-toggle="collapse" data-target="#maintenance--history-<?= $index ?>" aria-expanded="false">
                                 <div class="row">
                                     <div class="col-3 col-md-3 nowrap">

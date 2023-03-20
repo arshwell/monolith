@@ -1,11 +1,11 @@
 <?php
 
-namespace ArshWell\Monolith;
+namespace Arshwell\Monolith;
 
-use ArshWell\Monolith\ENV\ENVComponent;
-use ArshWell\Monolith\Folder;
-use ArshWell\Monolith\Filter;
-use ArshWell\Monolith\Func;
+use Arshwell\Monolith\ENV\ENVComponent;
+use Arshwell\Monolith\Folder;
+use Arshwell\Monolith\Filter;
+use Arshwell\Monolith\Func;
 
 use ErrorException;
 use Exception;
@@ -97,7 +97,7 @@ final class ENV {
             return self::$env->path($folder, $append_folder);
         }
         catch (Exception $e) {
-            throw new Exception("|ArshWell| env.json should contain ['paths'][$folder] with string value. It contains the optional path to your $folder/ folder, or NULL for default path.");
+            throw new Exception("|Arshwell| env.json should contain ['paths'][$folder] with string value. It contains the optional path to your $folder/ folder, or NULL for default path.");
         }
     }
 

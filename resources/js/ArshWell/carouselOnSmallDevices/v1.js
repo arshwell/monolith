@@ -1,5 +1,5 @@
 /**
- * carouselOnSmallDevices v1 - ArshWell js function for owl-carousel available only on smaller devices.
+ * carouselOnSmallDevices v1 - Arshwell js function for owl-carousel available only on smaller devices.
 
  * @author: https://github.com/arsavinel
  * @license MIT (https://github.com/arshwell/monolith/blob/0.x/LICENSE.md)

@@ -1,11 +1,11 @@
 <?php
 
-use ArshWell\Monolith\Table\TableValidation;
-use ArshWell\Monolith\Table\TableView;
-use ArshWell\Monolith\Folder;
-use ArshWell\Monolith\File;
-use ArshWell\Monolith\ENV;
-use ArshWell\Monolith\DB;
+use Arshwell\Monolith\Table\TableValidation;
+use Arshwell\Monolith\Table\TableView;
+use Arshwell\Monolith\Folder;
+use Arshwell\Monolith\File;
+use Arshwell\Monolith\ENV;
+use Arshwell\Monolith\DB;
 
 $form = TableValidation::run($_POST, array(
     'prev' => array(

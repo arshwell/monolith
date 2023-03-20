@@ -1,8 +1,8 @@
 <?php
 
-use ArshWell\Monolith\Table\TableValidation;
-use ArshWell\Monolith\Folder;
-use ArshWell\Monolith\Time;
+use Arshwell\Monolith\Table\TableValidation;
+use Arshwell\Monolith\Folder;
+use Arshwell\Monolith\Time;
 
 $form = TableValidation::run($_POST,
     array(

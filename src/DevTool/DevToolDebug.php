@@ -1,11 +1,11 @@
 <?php
 
-namespace ArshWell\Monolith\DevTool;
+namespace Arshwell\Monolith\DevTool;
 
-use ArshWell\Monolith\Folder;
-use ArshWell\Monolith\ENV;
-use ArshWell\Monolith\Text;
-use ArshWell\Monolith\DB;
+use Arshwell\Monolith\Folder;
+use Arshwell\Monolith\ENV;
+use Arshwell\Monolith\Text;
+use Arshwell\Monolith\DB;
 use Exception;
 
 /**
@@ -114,7 +114,7 @@ final class DevToolDebug {
     /**
      * It prints the sql query and its parameters nicer.
      *
-     * This function is used at least by try-catch from ArshWell\Monolith\Table class methods.
+     * This function is used at least by try-catch from Arshwell\Monolith\Table class methods.
      */
     static function print_pdo_exception (object $exception, string $sql_query, array $params = NULL): void {
         DB::rollBack();
@@ -218,7 +218,7 @@ final class DevToolDebug {
     /**
      * It prints the sql query and its parameters nicer.
      *
-     * This function is used at least by try-catch from ArshWell\Monolith\Table class methods.
+     * This function is used at least by try-catch from Arshwell\Monolith\Table class methods.
      */
     static function print_sql_query ($sql, $columns = array()): void {
         if (ENV::supervisor() == false) {

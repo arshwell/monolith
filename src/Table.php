@@ -1,10 +1,10 @@
 <?php
 
-namespace ArshWell\Monolith;
+namespace Arshwell\Monolith;
 
-use ArshWell\Monolith\Table\TableField;
-use ArshWell\Monolith\Table\TableFiles;
-use ArshWell\Monolith\DB;
+use Arshwell\Monolith\Table\TableField;
+use Arshwell\Monolith\Table\TableFiles;
+use Arshwell\Monolith\DB;
 
 /**
  * Table class for manipulating certain table and its columns.

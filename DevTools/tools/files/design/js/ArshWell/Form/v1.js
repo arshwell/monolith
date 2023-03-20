@@ -5,8 +5,8 @@
  * @license MIT (https://github.com/arshwell/monolith/blob/0.x/LICENSE.md)
 
  * This file is used at least by:
- *      - ArshWell\Monolith\Layout::compileJSFooter()
- *      - ArshWell\Monolith\DevTool\DevToolHTML::html()
+ *      - Arshwell\Monolith\Layout::compileJSFooter()
+ *      - Arshwell\Monolith\DevTool\DevToolHTML::html()
  */
 class Form { // helps you with any need about JS forms
     #form;
@@ -89,7 +89,7 @@ class Form { // helps you with any need about JS forms
                     }
                 }
 
-                // Used by ArshWell to return the properly css/js files for every device.
+                // Used by Arshwell to return the properly css/js files for every device.
                 array.push("arsavinel-arshwell-mxdvcwdthflg=" + Math.max(
                     window.screen.availWidth || screen.width || window.outerWidth || window.innerWidth,
                     window.screen.availHeight || screen.height || window.outerHeight || window.innerHeight
@@ -126,7 +126,7 @@ class Form { // helps you with any need about JS forms
                     }
                 }
 
-                // Used by ArshWell to return the properly css/js files.
+                // Used by Arshwell to return the properly css/js files.
                 array['arsavinel-arshwell-mxdvcwdthflg'] = Math.max(
                     window.screen.availWidth || screen.width || window.outerWidth || window.innerWidth,
                     window.screen.availHeight || screen.height || window.outerHeight || window.innerHeight

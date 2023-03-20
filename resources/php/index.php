@@ -1,14 +1,14 @@
 <?php
 
-use ArshWell\Monolith\Session;
-use ArshWell\Monolith\Module;
-use ArshWell\Monolith\Layout;
-use ArshWell\Monolith\Piece;
-use ArshWell\Monolith\Meta;
-use ArshWell\Monolith\ENV;
-use ArshWell\Monolith\URL;
-use ArshWell\Monolith\Web;
-use ArshWell\Monolith\DB;
+use Arshwell\Monolith\Session;
+use Arshwell\Monolith\Module;
+use Arshwell\Monolith\Layout;
+use Arshwell\Monolith\Piece;
+use Arshwell\Monolith\Meta;
+use Arshwell\Monolith\ENV;
+use Arshwell\Monolith\URL;
+use Arshwell\Monolith\Web;
+use Arshwell\Monolith\DB;
 
 session_start();
 

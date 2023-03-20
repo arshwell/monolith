@@ -1,9 +1,9 @@
 <?php
 
-namespace ArshWell\Monolith;
+namespace Arshwell\Monolith;
 
-use ArshWell\Monolith\ENV;
-use ArshWell\Monolith\DB;
+use Arshwell\Monolith\ENV;
+use Arshwell\Monolith\DB;
 
 /**
  * Class for preparing SQL queries.

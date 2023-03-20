@@ -1,6 +1,6 @@
 <?php
 
-use ArshWell\Monolith\DevTool\DevToolData;
+use Arshwell\Monolith\DevTool\DevToolData;
 
 /**
  * Preparation for development mode actions.
@@ -16,7 +16,7 @@ use ArshWell\Monolith\DevTool\DevToolData;
  * @package https://github.com/arshwell/monolith
  */
 
-if (!empty($_REQUEST['rshwll']) && $_REQUEST['rshwll'] == substr(md5(DevToolData::ArshWellVersion()), 0, 5)) {
+if (!empty($_REQUEST['rshwll']) && $_REQUEST['rshwll'] == substr(md5(DevToolData::ArshwellVersion()), 0, 5)) {
     call_user_func(function () {
         // DevTool panel action
         if (!empty($_REQUEST['pnl']) && is_file("vendor/arshwell/monolith/DevTools/tools/panel/". $_REQUEST['pnl'] .".php")) {

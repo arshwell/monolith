@@ -1,9 +1,9 @@
 <?php
 
-namespace ArshWell\Monolith;
+namespace Arshwell\Monolith;
 
-use ArshWell\Monolith\DevTool\DevToolDebug;
-use ArshWell\Monolith\ENV;
+use Arshwell\Monolith\DevTool\DevToolDebug;
+use Arshwell\Monolith\ENV;
 use PDOException;
 use Exception;
 use PDO;
@@ -155,7 +155,7 @@ final class DB {
                     }
                     else {
                         throw new Exception(
-                            "|ArshWell| ".static::class."::languages() query can't replace :lg placeholders;
+                            "|Arshwell| ".static::class."::languages() query can't replace :lg placeholders;
                             Should be send as params or fetched from your class const TRANSLATOR"
                         );
                     }

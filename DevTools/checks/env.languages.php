@@ -1,7 +1,7 @@
 <?php
 
-use ArshWell\Monolith\DevTool\DevToolHTML;
-use ArshWell\Monolith\ENV;
+use Arshwell\Monolith\DevTool\DevToolHTML;
+use Arshwell\Monolith\ENV;
 
 call_user_func(function () {
     $regex = "/^[a-z]{2}$/";
@@ -12,11 +12,11 @@ call_user_func(function () {
                 $recursively($class);
             }
             else {
-                if (!class_exists($class) || !defined($class."::LANGUAGES") || !is_subclass_of($class, "ArshWell\Monolith\Language")) {
+                if (!class_exists($class) || !defined($class."::LANGUAGES") || !is_subclass_of($class, "Arshwell\Monolith\Language")) {
                     DevToolHTML::html(
                         '<i>env.php</i> > <i>'.$class.'</i><br>' .
                         DevToolHTML::code(file_get_contents(str_replace('\\', '/', $class) . '.php')) .
-                        DevToolHTML::error("ENV translations classes should extend <i>ArshWell\Monolith\Language</i> and contain LANGUAGES array constant.")
+                        DevToolHTML::error("ENV translations classes should extend <i>Arshwell\Monolith\Language</i> and contain LANGUAGES array constant.")
                     );
                 }
                 foreach (($class)::LANGUAGES as $lang) {
@@ -24,7 +24,7 @@ call_user_func(function () {
                         DevToolHTML::html(
                             '<i>env.php</i> > <i>'.$class.'</i><br>' .
                             DevToolHTML::code(DevToolHTML::var("LANGUAGES") .' = '. DevToolHTML::array(($class)::LANGUAGES) .';') .
-                            DevToolHTML::error("Language codes should be valid (".$regex."). ArshWell accepts ". DevToolHTML::link("https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes", "these ones") .".")
+                            DevToolHTML::error("Language codes should be valid (".$regex."). Arshwell accepts ". DevToolHTML::link("https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes", "these ones") .".")
                         );
                     }
                 }

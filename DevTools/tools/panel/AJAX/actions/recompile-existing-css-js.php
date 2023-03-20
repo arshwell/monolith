@@ -1,13 +1,13 @@
 <?php
 
-use ArshWell\Monolith\Table\TableValidation;
-use ArshWell\Monolith\Session;
-use ArshWell\Monolith\Layout;
-use ArshWell\Monolith\Folder;
-use ArshWell\Monolith\Cache;
-use ArshWell\Monolith\Time;
-use ArshWell\Monolith\ENV;
-use ArshWell\Monolith\Web;
+use Arshwell\Monolith\Table\TableValidation;
+use Arshwell\Monolith\Session;
+use Arshwell\Monolith\Layout;
+use Arshwell\Monolith\Folder;
+use Arshwell\Monolith\Cache;
+use Arshwell\Monolith\Time;
+use Arshwell\Monolith\ENV;
+use Arshwell\Monolith\Web;
 
 $form = TableValidation::run($_POST,
     array(
@@ -41,7 +41,7 @@ if ($form->valid()) {
         $prev = $form->value('prev');
 
         if ($prev && $prev['pnl'] == "AJAX/actions/update-project") {
-            // NOTE: create new session, because new ArshWell version
+            // NOTE: create new session, because new Arshwell version
             // could expect different things.
             session_destroy();
             session_start();

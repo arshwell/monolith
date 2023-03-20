@@ -1,6 +1,6 @@
 <?php
 
-use ArshWell\Monolith\ENV;
+use Arshwell\Monolith\ENV;
 
 // verify because could be already user-defined
 if (function_exists('_br') == false) {

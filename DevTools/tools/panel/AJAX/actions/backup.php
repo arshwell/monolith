@@ -1,10 +1,10 @@
 <?php
 
-use ArshWell\Monolith\Table\TableValidation;
-use ArshWell\Monolith\Folder;
-use ArshWell\Monolith\File;
-use ArshWell\Monolith\Time;
-use ArshWell\Monolith\ENV;
+use Arshwell\Monolith\Table\TableValidation;
+use Arshwell\Monolith\Folder;
+use Arshwell\Monolith\File;
+use Arshwell\Monolith\Time;
+use Arshwell\Monolith\ENV;
 
 $form = TableValidation::run($_POST,
     array(

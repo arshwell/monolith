@@ -1,14 +1,14 @@
 <?php
 
-use ArshWell\Monolith\DevTool\DevToolData;
-use ArshWell\Monolith\DevTool\DevToolHTML;
-use ArshWell\Monolith\Table\TableValidation;
-use ArshWell\Monolith\Session;
-use ArshWell\Monolith\Time;
-use ArshWell\Monolith\File;
-use ArshWell\Monolith\ENV;
-use ArshWell\Monolith\URL;
-use ArshWell\Monolith\Web;
+use Arshwell\Monolith\DevTool\DevToolData;
+use Arshwell\Monolith\DevTool\DevToolHTML;
+use Arshwell\Monolith\Table\TableValidation;
+use Arshwell\Monolith\Session;
+use Arshwell\Monolith\Time;
+use Arshwell\Monolith\File;
+use Arshwell\Monolith\ENV;
+use Arshwell\Monolith\URL;
+use Arshwell\Monolith\Web;
 
 $info = TableValidation::run(
     array_merge(
@@ -327,8 +327,8 @@ ob_start(); // for adding all content in DevToolHTML::html() function
                 <i style="text-shadow: 0px 0px 1px #000;" class="pr-1" data-toggle="tooltip" data-placement="right" data-title="Released on 30 August 2019">
                     <span class="text-success">Arsh</span><span class="text-warning">Well</span>
                     <?php
-                    if (Session::panel('active') && DevToolData::ArshWellVersion()) { ?>
-                        <span class="text-danger"><?= DevToolData::ArshWellVersion() ?></span>
+                    if (Session::panel('active') && DevToolData::ArshwellVersion()) { ?>
+                        <span class="text-danger"><?= DevToolData::ArshwellVersion() ?></span>
                     <?php } ?>
                 </i>
             </div>
@@ -633,7 +633,7 @@ ob_start(); // for adding all content in DevToolHTML::html() function
                         /** ↑ builds ******************************************/
 
                         /** supervisors ***************************************/
-                            $supervisors = count(array_filter(array_column(array_column(array_column(array_column($sessions, 'arsavinel'), 'ArshWell'), 'panel'), 'active')));
+                            $supervisors = count(array_filter(array_column(array_column(array_column(array_column($sessions, 'arsavinel'), 'Arshwell'), 'panel'), 'active')));
                             if ($supervisors) { ?>
                                 <span class="pl-1" data-toggle="tooltip" data-placement="left" data-title="Another <?= $supervisors ?> session<?= ($supervisors > 1 ? 's' : '') ?> use DevPanel right now">
                                     <span class="bg-danger border border-dark rounded text-dark d-inline-block text-center"
@@ -655,7 +655,7 @@ if (Session::panel('active')) { // load js ?>
     <script type="text/javascript">
         'use strict';
 
-        var max_microtime_sessions_history = "<?= max(call_user_func_array('array_merge_recursive', array_map('array_keys', array_filter(array_column(array_column(array_column($sessions, 'arsavinel'), 'ArshWell'), 'history'))))) ?>";
+        var max_microtime_sessions_history = "<?= max(call_user_func_array('array_merge_recursive', array_map('array_keys', array_filter(array_column(array_column(array_column($sessions, 'arsavinel'), 'Arshwell'), 'history'))))) ?>";
 
         window.onload = function () {
             $('[data-toggle="tooltip"]').tooltip();
@@ -928,7 +928,7 @@ if (Session::panel('active')) { // load js ?>
                         "<b>Important:</b> Don't change GET ROUTE names, because they use TableView class.",
                         "<b>Advice:</b> Set always best width ranges, in css/js filenames.",
                         "<b>Advice:</b> Don't close DevPanel during an action.",
-                        "<b>History:</b> ArshWell&trade; started from the idea of a <i>fast and clean</i> framework.",
+                        "<b>History:</b> Arshwell&trade; started from the idea of a <i>fast and clean</i> framework.",
                         "<b>Info:</b> For uploading a new project version, first <b>turn maintenance on.</b>",
                         "<b>Info:</b> DevPanel content comes from the page load. <u>Reopen it</u>, if you wanna see updates.",
                         "<b>Brag:</b> <u>Layouts</u>, <u>pieces</u>, <u class='nowrap'>preset JS functions</u>, <u class='nowrap'>css/js compressing</u>, aren't the all <span class='nowrap'>super-powers.</span>",

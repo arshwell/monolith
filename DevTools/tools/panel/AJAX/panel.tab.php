@@ -1,6 +1,6 @@
 <?php
 
-use ArshWell\Monolith\Session;
+use Arshwell\Monolith\Session;
 
 $tabs   = explode('-', $_POST['tb']);
 $tab    = '';

@@ -1,11 +1,11 @@
 <?php
 
-namespace ArshWell\Monolith\Module\Request\Backend\Action;
+namespace Arshwell\Monolith\Module\Request\Backend\Action;
 
-use ArshWell\Monolith\Table\TableFiles;
-use ArshWell\Monolith\File;
-use ArshWell\Monolith\URL;
-use ArshWell\Monolith\DB;
+use Arshwell\Monolith\Table\TableFiles;
+use Arshwell\Monolith\File;
+use Arshwell\Monolith\URL;
+use Arshwell\Monolith\DB;
 
 final class Insert {
 
@@ -52,7 +52,7 @@ final class Insert {
 
                     $join = array_shift($field['DB']['joins']);
 
-                    $sql = \ArshWell\Monolith\SQL::joinsField2joinsQuery(
+                    $sql = \Arshwell\Monolith\SQL::joinsField2joinsQuery(
                         $join['table'], $join['column'], $field['DB']['joins'], $lgs
                     );
 
@@ -221,12 +221,12 @@ final class Insert {
                         $file = $table->file($key);
 
                         switch (get_class($file)) {
-                            case 'ArshWell\Monolith\Table\Files\Doc':
-                            case 'ArshWell\Monolith\Table\Files\Image': {
+                            case 'Arshwell\Monolith\Table\Files\Doc':
+                            case 'Arshwell\Monolith\Table\Files\Image': {
                                 $file->update($value, $column ?: NULL); // $column is lg
                                 break;
                             }
-                            case 'ArshWell\Monolith\Table\Files\ImageGroup': {
+                            case 'Arshwell\Monolith\Table\Files\ImageGroup': {
                                 $file->insert($value, $column ?: NULL); // $column is lg
                                 break;
                             }

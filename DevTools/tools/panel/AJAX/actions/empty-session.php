@@ -1,8 +1,8 @@
 <?php
 
-use ArshWell\Monolith\Table\TableValidation;
-use ArshWell\Monolith\Session;
-use ArshWell\Monolith\Time;
+use Arshwell\Monolith\Table\TableValidation;
+use Arshwell\Monolith\Session;
+use Arshwell\Monolith\Time;
 
 $form = TableValidation::run($_POST, array());
 

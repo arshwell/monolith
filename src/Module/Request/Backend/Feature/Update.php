@@ -1,14 +1,14 @@
 <?php
 
-namespace ArshWell\Monolith\Module\Request\Backend\Feature;
+namespace Arshwell\Monolith\Module\Request\Backend\Feature;
 
-use ArshWell\Monolith\Table\TableColumn;
-use ArshWell\Monolith\Table\TableField;
-use ArshWell\Monolith\Table\TableFiles;
-use ArshWell\Monolith\File;
-use ArshWell\Monolith\Text;
-use ArshWell\Monolith\URL;
-use ArshWell\Monolith\DB;
+use Arshwell\Monolith\Table\TableColumn;
+use Arshwell\Monolith\Table\TableField;
+use Arshwell\Monolith\Table\TableFiles;
+use Arshwell\Monolith\File;
+use Arshwell\Monolith\Text;
+use Arshwell\Monolith\URL;
+use Arshwell\Monolith\DB;
 
 final class Update {
 
@@ -120,7 +120,7 @@ final class Update {
 
                         $join = array_shift($field['DB']['joins']);
 
-                        $sql = \ArshWell\Monolith\SQL::joinsField2joinsQuery(
+                        $sql = \Arshwell\Monolith\SQL::joinsField2joinsQuery(
                             $join['table'], $join['column'], $field['DB']['joins'], $lgs
                         );
 
@@ -339,12 +339,12 @@ final class Update {
                             $file = $table->file($key);
 
                             switch (get_class($file)) {
-                                case 'ArshWell\Monolith\Table\Files\Doc':
-                                case 'ArshWell\Monolith\Table\Files\Image': {
+                                case 'Arshwell\Monolith\Table\Files\Doc':
+                                case 'Arshwell\Monolith\Table\Files\Image': {
                                     $file->delete($lg ?: NULL);
                                     break;
                                 }
-                                case 'ArshWell\Monolith\Table\Files\ImageGroup': {
+                                case 'Arshwell\Monolith\Table\Files\ImageGroup': {
                                     $file->delete($value, $lg ?: NULL);
                                     break;
                                 }
@@ -428,12 +428,12 @@ final class Update {
                         $file = $table->file($key);
 
                         switch (get_class($file)) {
-                            case 'ArshWell\Monolith\Table\Files\Doc':
-                            case 'ArshWell\Monolith\Table\Files\Image': {
+                            case 'Arshwell\Monolith\Table\Files\Doc':
+                            case 'Arshwell\Monolith\Table\Files\Image': {
                                 $file->update($value, $column ?: NULL); // $column is lg
                                 break;
                             }
-                            case 'ArshWell\Monolith\Table\Files\ImageGroup': {
+                            case 'Arshwell\Monolith\Table\Files\ImageGroup': {
                                 $file->insert($value, $column ?: NULL); // $column is lg
                                 break;
                             }

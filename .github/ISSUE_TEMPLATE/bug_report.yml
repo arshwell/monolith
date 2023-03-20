@@ -4,7 +4,7 @@ labels: ["bug"]
 body:
   - type: input
     attributes:
-      label: "ArshWell version(s) affected"
+      label: "Arshwell version(s) affected"
       placeholder: "x.y.z"
     validations:
       required: true
@@ -13,7 +13,7 @@ body:
       label: "Description"
       description: "A clear and concise description of the problem."
       placeholder: |
-        Please use the ArshWell Discussions section for questions:
+        Please use the Arshwell Discussions section for questions:
 
         https://github.com/arshwell/monolith/discussions
     validations:
