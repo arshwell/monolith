@@ -1,7 +1,7 @@
 <?php
 
 use Arshwell\Monolith\Table\TableValidation;
-use Arshwell\Monolith\ENV\ENVComponent;
+use Arshwell\Monolith\ENV\EnvComponent;
 use Arshwell\Monolith\Layout;
 use Arshwell\Monolith\Folder;
 
@@ -10,7 +10,7 @@ $form = TableValidation::run($_POST, array(), false);
 if ($form->valid()) {
     $build_dir = sys_get_temp_dir().'/vendor/arshwell/monolith/builds/sess_'.session_id().'/';
 
-    $env = new ENVComponent($build_dir);
+    $env = new EnvComponent($build_dir);
 
     try { // because could be thrown SCSS errors
         Layout::recompileSCSS(NULL, NULL, NULL, $env->url(), $build_dir);

@@ -2,7 +2,7 @@
 
 namespace Arshwell\Monolith;
 
-use Arshwell\Monolith\ENV\ENVComponent;
+use Arshwell\Monolith\ENV\EnvComponent;
 use Arshwell\Monolith\Folder;
 use Arshwell\Monolith\Filter;
 use Arshwell\Monolith\Func;
@@ -21,7 +21,7 @@ final class ENV {
      All vars are NULL so we get error if we don't fetch() before anything.
      ******************************************************************************/
 
-    /** @var ENVComponent */
+    /** @var EnvComponent */
     private static $env = NULL;
 
     /** @var bool */
@@ -33,7 +33,7 @@ final class ENV {
     /** @var bool */
     private static $supervisor = false; // on CRON Jobs, it is false
 
-    static function set (ENVComponent $env) {
+    static function set (EnvComponent $env) {
         self::$env = $env;
 
         self::$is_cron = (in_array(php_sapi_name(), ['cgi', 'cgi-fcgi', 'cli']) && !isset($_SERVER['TERM']));
@@ -176,7 +176,7 @@ foreach (glob(Folder::realpath('vendor/arshwell/monolith/DevTools/functions/*.ph
     require($v);
 }
 
-ENV::set(new ENVComponent(Folder::root()));
+ENV::set(new EnvComponent(Folder::root()));
 
 // .htaccess file
 if (!is_file(Folder::root(). '.htaccess')) {

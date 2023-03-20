@@ -1,13 +1,13 @@
 <?php
 
 use Arshwell\Monolith\Table\TableValidation;
-use Arshwell\Monolith\ENV\ENVComponent;
+use Arshwell\Monolith\ENV\EnvComponent;
 
 $form = TableValidation::run($_POST, array(), false);
 
 if ($form->valid()) {
 	if (is_file('env.build.json')) {
-        $env = new ENVComponent(sys_get_temp_dir().'/vendor/arshwell/monolith/builds/sess_'.session_id());
+        $env = new EnvComponent(sys_get_temp_dir().'/vendor/arshwell/monolith/builds/sess_'.session_id());
 
         $env->mergeWithEnvBuild();
 
