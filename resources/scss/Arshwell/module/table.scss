@@ -1,0 +1,145 @@
+.arshmodule-html-piece-thead {
+    .table.table-striped {
+        table-layout: fixed;
+        width: 100%;
+
+        thead {
+            .th-id-table { // ID column
+                width: 40px;
+                text-align: center;
+                white-space: nowrap;
+            }
+            th, td {
+                line-height: 1.5em;
+                height: 1.5em;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                position: relative;
+                font-weight: 600;
+                border: none;
+                vertical-align: middle;
+
+                span[type="button"] {
+                    margin-right: 40px;
+
+                    &:hover {
+                        color: #dc3545;
+                    }
+                }
+
+                i {
+                    position: absolute;
+                    top: 50%;
+                    @include arsh--transform(translateY(-50%));
+                    color: #dee2e6;
+                    right: 5px;
+
+                    &:not([type="button"]).text-danger {
+                        text-shadow: 0px 0px 2px #dc3545;
+                    }
+                    &[type="button"] {
+                        right: 20px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.arshmodule-html-piece-tbody {
+    .table.table-striped {
+        table-layout: fixed;
+        width: 100%;
+
+        tbody {
+            tr:nth-of-type(odd) {
+                background-color: rgba(0, 0, 0, 0.02);
+            }
+            tr.ui-sortable-helper {
+                background-color: #ddd;
+            }
+
+            .th-id-table, // ID column
+            tr.ui-sortable-placeholder .th-id-table  {
+                width: 40px !important;
+                text-align: center;
+                white-space: nowrap;
+            }
+            th, td {
+                vertical-align: middle;
+
+                .arshmodule-table-image {
+                    position: relative;
+                    min-width: 60px;
+                    width: 100%;
+                    max-width: 120px;
+                    height: 60px;
+                    @include arsh--transition(500ms ease-in-out all); // for background table chess
+
+                    img {
+                        width: auto;
+                        max-width: 100%;
+                        height: auto;
+                        max-height: 100%;
+                        position: absolute;
+                        top: 50%;
+                        @include arsh--transform(translateY(-50%));
+                    }
+                }
+
+                video {
+                    width: auto;
+                    max-width: 100%;
+                    min-height: 30px;
+                    height: auto;
+                    max-height: 70px;
+                }
+
+                .text {
+                    display: -webkit-box;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    -webkit-box-orient: vertical;
+                    line-height: 18px;
+                    max-height: 36px;
+                    -webkit-line-clamp: 2;
+
+                    @media (min-width: 768px) {
+                        max-height: 54px;
+                        -webkit-line-clamp: 3;
+                    }
+                    @media (min-width: 992px) {
+                        max-height: 72px;
+                        -webkit-line-clamp: 4;
+                    }
+                    @media (min-width:  1200px) {
+                        max-height: 90px;
+                        -webkit-line-clamp: 5;
+                    }
+                }
+
+                .arshmodule-html-feature {
+                    display: inline-block;
+
+                    &.arshmodule-html-feature-popup {
+                        iframe {
+                            min-height: 200px;
+                            height: 75vh;
+                            max-height: 600px;
+                        }
+                    }
+
+                    .fa-spinner {
+                        // 'spinner-border' is from Bootstrap 4
+                        @include arsh--animation(spinner-border 2s linear infinite);
+                    }
+
+                    &[data-key="order"] {
+                        cursor: move;
+                    }
+                }
+            }
+        }
+    }
+}

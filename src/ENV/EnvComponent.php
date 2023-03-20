@@ -10,7 +10,7 @@ use Arshwell\Monolith\URL;
 
 use Exception;
 
-final class ENVComponent {
+final class EnvComponent {
     private $path = NULL;
     private $json = NULL;
     private $site = NULL;

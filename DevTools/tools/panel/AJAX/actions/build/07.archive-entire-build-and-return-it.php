@@ -1,7 +1,7 @@
 <?php
 
 use Arshwell\Monolith\Table\TableValidation;
-use Arshwell\Monolith\ENV\ENVComponent;
+use Arshwell\Monolith\ENV\EnvComponent;
 use Arshwell\Monolith\Folder;
 use Arshwell\Monolith\File;
 use Arshwell\Monolith\URL;
@@ -44,7 +44,7 @@ if ($form->valid()) {
 	            $getcwd = dirname($getcwd);
 	        } while ($getcwd != '/'); // creating path to tmp folder
 
-			$env = new ENVComponent($build_dir);
+			$env = new EnvComponent($build_dir);
 
 			$zipsize = filesize($build_zip);
 
