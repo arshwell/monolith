@@ -2,15 +2,15 @@
     <tr>
         <th>board.dev</th>
         <td>
-            <?= Arshwell\Monolith\ENV::board('dev') ? '<b>Yes</b>' : 'No' ?>
+            <?= Arshwell\Monolith\StaticHandler::getEnvConfig('development.debug') ? '<b>Yes</b>' : 'No' ?>
         </td>
     </tr>
     <tr>
         <th>IP</th>
         <td>
-            <?= Arshwell\Monolith\ENV::clientIP() ?>
-            <span data-toggle="tooltip" data-placement="top" title="Supervisor key from env.json">
-                (<?= array_search(Arshwell\Monolith\ENV::clientIP(), Arshwell\Monolith\ENV::board('supervisors')) ?>)
+            <?= Arshwell\Monolith\StaticHandler::clientIP() ?>
+            <span data-toggle="tooltip" data-placement="top" title="Supervisor key from config/development.json">
+                (<?= array_search(Arshwell\Monolith\StaticHandler::clientIP(), Arshwell\Monolith\StaticHandler::getEnvConfig('development.ips')) ?>)
             </span>
         </td>
     </tr>

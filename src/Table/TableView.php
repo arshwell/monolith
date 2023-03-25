@@ -8,7 +8,7 @@ use Arshwell\Monolith\Table;
 use Arshwell\Monolith\File;
 use Arshwell\Monolith\Func;
 use Arshwell\Monolith\Web;
-use Arshwell\Monolith\ENV;
+use Arshwell\Monolith\StaticHandler;
 use Arshwell\Monolith\SQL;
 use Arshwell\Monolith\DB;
 
@@ -53,9 +53,9 @@ abstract class TableView extends Table {
     );
 
     private static function source (bool &$global): string {
-        if (ENV::isCRON() || Web::key() == NULL) { // if CRON or browser testing CRON
+        if (StaticHandler::isCRON() || Web::key() == NULL) { // if CRON or browser testing CRON
             if ($global == false) {
-                $source = Folder::shorter(ENV::scriptfile()); // CRON file
+                $source = Folder::shorter(StaticHandler::scriptfile()); // CRON file
                 $global = true;
             }
             else {
@@ -237,7 +237,7 @@ abstract class TableView extends Table {
 
             $urlpath = Folder::encode(static::class) .'/'. $result[(static::class)::PRIMARY_KEY] .'/value/'. $language .'/'. $width.'x'.$height;
 
-            $file = File::first(ENV::path('uploads') .'files/'. $urlpath);
+            $file = File::first(StaticHandler::getEnvConfig()->getLocationPath('uploads') .'files/'. $urlpath);
 
             if ($file) {
                 return ($site .'uploads/files/'. $urlpath .'/'. basename($file));
@@ -257,13 +257,13 @@ abstract class TableView extends Table {
         $image_folder = Folder::encode(static::class) .'/'. $result[(static::class)::PRIMARY_KEY] .'/value/';
 
         foreach ((static::TRANSLATOR)::LANGUAGES as $lang) {
-            $file = File::first(ENV::path('uploads') . 'files/'. $image_folder . $lang .'/'. $width.'x'.$height);
+            $file = File::first(StaticHandler::getEnvConfig()->getLocationPath('uploads') . 'files/'. $image_folder . $lang .'/'. $width.'x'.$height);
             $basename = basename($file);
 
             // if this language doesn't have the file
             if ($file == NULL) {
                 $image = (
-                    File::findBiggestSibling(ENV::path('uploads') . 'files/'. $image_folder . $lang .'/'. $width.'x'.$height.'/foo.bar')
+                    File::findBiggestSibling(StaticHandler::getEnvConfig()->getLocationPath('uploads') . 'files/'. $image_folder . $lang .'/'. $width.'x'.$height.'/foo.bar')
                     ?:
                     self::$source['image']
                 );
@@ -274,7 +274,7 @@ abstract class TableView extends Table {
                 $resizer = new Upload($image);
 
             if (!$resizer->uploaded) {
-                if (ENV::board('dev')) {
+                if (StaticHandler::getEnvConfig('development.debug')) {
                     throw new Exception($resizer->error);
                 }
                 else {
@@ -293,12 +293,12 @@ abstract class TableView extends Table {
             $resizer->image_y            = $height;
             $resizer->image_ratio_crop   = true;
 
-                $resizer->process(ENV::path('uploads') . 'files/'. $image_folder . $lang .'/'. $width .'x'. $height .'/');
+                $resizer->process(StaticHandler::getEnvConfig()->getLocationPath('uploads') . 'files/'. $image_folder . $lang .'/'. $width .'x'. $height .'/');
             }
 
             // remember url file, for current language
             if ($lang == $language) {
-                $file = ($site .ENV::path('uploads') . 'files/'. $image_folder . $language .'/'. $width .'x'. $height .'/'. $basename);
+                $file = ($site .StaticHandler::getEnvConfig()->getLocationPath('uploads') . 'files/'. $image_folder . $language .'/'. $width .'x'. $height .'/'. $basename);
             }
         }
 
@@ -528,13 +528,13 @@ abstract class TableView extends Table {
 
             $urlpath = Folder::encode(static::class) .'/'. $result[(static::class)::PRIMARY_KEY] .'/value/'. $language .'/'. $width.'x'.$height;
 
-            $file = File::first(ENV::path('uploads') .'files/'. $urlpath);
+            $file = File::first(StaticHandler::getEnvConfig()->getLocationPath('uploads') .'files/'. $urlpath);
 
             if ($file) {
                 return $site .'uploads/files/'. $urlpath .'/'. basename($file);
             }
 
-            $dirpath = ENV::path('uploads') . 'files/' . $urlpath .'/'. dirname($file);
+            $dirpath = StaticHandler::getEnvConfig()->getLocationPath('uploads') . 'files/' . $urlpath .'/'. dirname($file);
 
             /**
              * Creating its directory no matter what.
@@ -561,7 +561,7 @@ abstract class TableView extends Table {
         foreach ((static::TRANSLATOR)::LANGUAGES as $lang) {
             // getting name from sibling file
             $image = (
-                File::findBiggestSibling(ENV::path('uploads') . 'files/'. $image_folder . $lang .'/'. $width.'x'.$height.'/foo.bar')
+                File::findBiggestSibling(StaticHandler::getEnvConfig()->getLocationPath('uploads') . 'files/'. $image_folder . $lang .'/'. $width.'x'.$height.'/foo.bar')
                 ?:
                 self::$source['image']
             );
@@ -586,7 +586,7 @@ abstract class TableView extends Table {
             $resizer->image_y            = $height;
             $resizer->image_ratio_crop   = true;
 
-            $resizer->process(ENV::path('uploads') . 'files/'. $image_folder . $lang .'/'. $width .'x'. $height .'/');
+            $resizer->process(StaticHandler::getEnvConfig()->getLocationPath('uploads') . 'files/'. $image_folder . $lang .'/'. $width .'x'. $height .'/');
 
             // remember url file, for current language
             if ($lang == $language) {
@@ -622,7 +622,7 @@ abstract class TableView extends Table {
 
             $files = array_map(function ($file) use ($site, $urlpath) {
                 return ($site .'uploads/files/'. $urlpath .'/'. basename($file));
-            }, File::folder(ENV::path('uploads') . 'files/'. $urlpath));
+            }, File::folder(StaticHandler::getEnvConfig()->getLocationPath('uploads') . 'files/'. $urlpath));
 
             return $files;
         }
@@ -640,7 +640,7 @@ abstract class TableView extends Table {
 
         foreach ((static::TRANSLATOR)::LANGUAGES as $lang) {
             unset($max); // because $max is used many times in this foreach
-            foreach (Folder::children(ENV::path('uploads') . 'files/'. $image_folder . $lang, true) as $size) {
+            foreach (Folder::children(StaticHandler::getEnvConfig()->getLocationPath('uploads') . 'files/'. $image_folder . $lang, true) as $size) {
                 list($w, $h) = explode('x', $size);
                 $value = ($w*$h);
 
@@ -651,7 +651,7 @@ abstract class TableView extends Table {
             }
 
             $images = (isset($biggest) ?
-                File::folder(ENV::path('uploads') . 'files/'. $image_folder . $lang .'/'. $biggest)
+                File::folder(StaticHandler::getEnvConfig()->getLocationPath('uploads') . 'files/'. $image_folder . $lang .'/'. $biggest)
                 :
                 array(self::$source['image'])
             );
@@ -677,7 +677,7 @@ abstract class TableView extends Table {
                 $resizer->image_y            = $height;
                 $resizer->image_ratio_crop   = true;
 
-                $resizer->process(ENV::path('uploads') . 'files/'. $image_folder . $lang .'/'. $width .'x'. $height .'/');
+                $resizer->process(StaticHandler::getEnvConfig()->getLocationPath('uploads') . 'files/'. $image_folder . $lang .'/'. $width .'x'. $height .'/');
 
                 if ($lang == $language) {
                     $results[] = ($site .'uploads/files/'. $image_folder . $lang .'/'. $width .'x'. $height .'/'. $basename);
@@ -746,7 +746,7 @@ abstract class TableView extends Table {
 
             $urlpath = Folder::encode(static::class) .'/'. $result[(static::class)::PRIMARY_KEY] .'/value/'. $language;
 
-            $file = File::first(ENV::path('uploads') . 'files/'. $urlpath);
+            $file = File::first(StaticHandler::getEnvConfig()->getLocationPath('uploads') . 'files/'. $urlpath);
 
             if ($file) {
                 return ($site . 'uploads/files/' . $urlpath . '/'. basename($file));
@@ -766,7 +766,7 @@ abstract class TableView extends Table {
         foreach ((static::TRANSLATOR)::LANGUAGES as $lang) {
             $basename = basename(self::$source['image']);
 
-            $dirpath = ENV::path('uploads') . 'files/' . $image_folder . $language; // could be outside of project
+            $dirpath = StaticHandler::getEnvConfig()->getLocationPath('uploads') . 'files/' . $image_folder . $language; // could be outside of project
             $urlpath = 'uploads/files/'. $image_folder . $language;
 
             if (!is_dir($dirpath)) {

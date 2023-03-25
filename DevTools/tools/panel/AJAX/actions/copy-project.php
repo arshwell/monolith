@@ -39,10 +39,6 @@ if ($form->valid()) {
         touch($file);
     }
 
-    if (is_file('../'. $form->value('folder').'/env.json')) {
-        touch('../'. $form->value('folder').'/env.json');
-    }
-
     $form->info = array(
         'status'    => "Project was copied in the destination.",
         'PHP'       => Time::readableTime((microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']) * 1000)

@@ -3,7 +3,7 @@
 use Arshwell\Monolith\Table\TableValidation;
 use Arshwell\Monolith\Folder;
 use Arshwell\Monolith\File;
-use Arshwell\Monolith\ENV;
+use Arshwell\Monolith\StaticHandler;
 
 $form = TableValidation::run($_POST,
     array(

@@ -4,7 +4,7 @@ use Arshwell\Monolith\Table\TableValidation;
 use Arshwell\Monolith\Folder;
 use Arshwell\Monolith\File;
 use Arshwell\Monolith\Time;
-use Arshwell\Monolith\ENV;
+use Arshwell\Monolith\StaticHandler;
 
 $form = TableValidation::run($_POST,
     array(
@@ -29,7 +29,7 @@ if ($form->valid()) {
         );
     }
     else {
-        $zippath = 'DevTools/backups/'.trim(ENV::root() ?: ENV::site(), '/').$form->value('date').'.zip';
+        $zippath = 'DevTools/backups/'.trim(StaticHandler::getEnvConfig()->getSiteRoot() ?: StaticHandler::getEnvConfig()->site(), '/').$form->value('date').'.zip';
     	if (!is_dir(dirname($zippath))) {
     		mkdir(dirname($zippath), 0755, true);
     	}

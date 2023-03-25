@@ -8,7 +8,7 @@ use Arshwell\Monolith\File;
 use Arshwell\Monolith\Text;
 use Arshwell\Monolith\Func;
 use Arshwell\Monolith\Web;
-use Arshwell\Monolith\ENV;
+use Arshwell\Monolith\StaticHandler;
 
 use Verot\Upload\Upload;
 
@@ -25,12 +25,15 @@ final class Image implements TableSegment {
     private $smallest = array(); // urls
     private $biggest = array(); // urls
     private $sizes = array();
+    private $uploadsPath;
 
     function __construct (string $class, int $id_table = NULL, string $filekey) {
         $this->class    = $class;
         $this->id_table = $id_table;
         $this->filekey  = $filekey;
         $this->folder   = (Folder::encode($class) .'/'. $id_table .'/'. $filekey);
+
+        $this->uploadsPath = StaticHandler::getEnvConfig()->getLocationPath('uploads');
 
         $this->config = array_replace_recursive(
             array(
@@ -46,7 +49,7 @@ final class Image implements TableSegment {
         );
 
         if (empty($this->config['sizes'])) { // if no sizes, like TableView
-            foreach (Folder::children(ENV::path('uploads') .'files/'. $this->folder .'/'. ($class::TRANSLATOR)::get(), true) as $size) {
+            foreach (Folder::children($this->uploadsPath .'files/'. $this->folder .'/'. ($class::TRANSLATOR)::get(), true) as $size) {
                 list($width, $height) = explode('x', $size);
 
                 $this->config['sizes'][$size]['width'] = array($width, $width);
@@ -93,11 +96,11 @@ final class Image implements TableSegment {
         $this->biggest  = array();
         $this->urls     = array();
 
-        $files = File::tree(ENV::path('uploads') .'files/'. $this->folder, NULL, false, true);
+        $files = File::tree($this->uploadsPath .'files/'. $this->folder, NULL, false, true);
 
         if ($files) {
-            foreach (Folder::children(ENV::path('uploads') .'files/'. $this->folder, true) as $lg) {
-                $lg_files = File::rFolder(ENV::path('uploads') .'files/'. $this->folder .'/'. $lg, NULL, true, true);
+            foreach (Folder::children($this->uploadsPath .'files/'. $this->folder, true) as $lg) {
+                $lg_files = File::rFolder($this->uploadsPath .'files/'. $this->folder .'/'. $lg, NULL, true, true);
 
                 if ($lg_files) {
                     $lg_sized_files = array_map(function ($file) {
@@ -106,8 +109,8 @@ final class Image implements TableSegment {
                         return ($data[0]*$data[1]);
                     }, $lg_files);
 
-                    $this->smallest[$lg] = $site . ltrim(preg_replace('~^'. ENV::path('uploads', false) .'~', '', $lg_files[Func::keyFromSmallest($lg_sized_files)]), '/');
-                    $this->biggest[$lg] = $site . ltrim(preg_replace('~^'. ENV::path('uploads', false) .'~', '', $lg_files[Func::keyFromBiggest($lg_sized_files)]), '/');
+                    $this->smallest[$lg] = $site . ltrim(preg_replace('~^'. StaticHandler::getEnvConfig()->getLocationPath('uploads', false) .'~', '', $lg_files[Func::keyFromSmallest($lg_sized_files)]), '/');
+                    $this->biggest[$lg] = $site . ltrim(preg_replace('~^'. StaticHandler::getEnvConfig()->getLocationPath('uploads', false) .'~', '', $lg_files[Func::keyFromBiggest($lg_sized_files)]), '/');
                 }
             }
 
@@ -120,7 +123,7 @@ final class Image implements TableSegment {
                     $first_lang = array_key_first($files);
 
                     $files[$language] = $files[$first_lang];
-                    Folder::copy(ENV::path('uploads') .'files/'. $this->folder .'/'. $first_lang, ENV::path('uploads') .'files/'. $this->folder .'/'. $language);
+                    Folder::copy($this->uploadsPath .'files/'. $this->folder .'/'. $first_lang, $this->uploadsPath .'files/'. $this->folder .'/'. $language);
                 }
 
                 foreach ($this->config['sizes'] as $size => $ranges) {
@@ -129,7 +132,7 @@ final class Image implements TableSegment {
 
                         // biggest language size from existent ones
                         if (!empty($files[$language])) {
-                            $lg_files = File::rFolder(ENV::path('uploads') .'files/'. $this->folder .'/'. $language, NULL, true, true);
+                            $lg_files = File::rFolder($this->uploadsPath .'files/'. $this->folder .'/'. $language, NULL, true, true);
 
                             if ($lg_files) {
                                 $biggest = File::parsePath($lg_files[Func::keyFromBiggest(array_map(function ($file) {
@@ -161,10 +164,10 @@ final class Image implements TableSegment {
                             $filepath = $lg .'/'. $sz .'/'. $files[$lg][$sz][0];
                         }
 
-                        $imagesize = getimagesize(ENV::path('uploads') .'files/'. $this->folder .'/'. $filepath);
+                        $imagesize = getimagesize($this->uploadsPath .'files/'. $this->folder .'/'. $filepath);
 
                         if (($ranges['width'][1] != NULL && $imagesize[0] > $ranges['width'][1]) || ($ranges['height'][1] != NULL && $imagesize[1] > $ranges['height'][1])) {
-                            $resizer = new Upload(ENV::path('uploads') .'files/'. $this->folder .'/'. $filepath);
+                            $resizer = new Upload($this->uploadsPath .'files/'. $this->folder .'/'. $filepath);
 
                             $resizer->file_new_name_body    = strtolower(File::name($filepath));
                             $resizer->file_overwrite        = true;
@@ -192,18 +195,18 @@ final class Image implements TableSegment {
                                 $resizer->image_ratio_crop = true;
                             }
 
-                            $resizer->process(ENV::path('uploads') .'files/'. $this->folder .'/'. $language .'/'. $size);
+                            $resizer->process($this->uploadsPath .'files/'. $this->folder .'/'. $language .'/'. $size);
                         }
-                        else if (is_dir(ENV::path('uploads') .'files/'.$this->folder.'/'.$language.'/'.$size) || mkdir(ENV::path('uploads') .'files/'.$this->folder.'/'.$language.'/'.$size, 0755, true)) {
-                            copy(ENV::path('uploads') .'files/'.$this->folder.'/'.$filepath, ENV::path('uploads') .'files/'.$this->folder.'/'.$language.'/'.$size.'/'.basename($filepath));
+                        else if (is_dir($this->uploadsPath .'files/'.$this->folder.'/'.$language.'/'.$size) || mkdir($this->uploadsPath .'files/'.$this->folder.'/'.$language.'/'.$size, 0755, true)) {
+                            copy($this->uploadsPath .'files/'.$this->folder.'/'.$filepath, $this->uploadsPath .'files/'.$this->folder.'/'.$language.'/'.$size.'/'.basename($filepath));
                         }
                     }
 
                     // if file found
                     if (isset($files[$language][$size][0])) {
-                        $this->paths[$language][$size] = (ENV::path('uploads') . 'files/' . $this->folder .'/'. $language .'/'. $size .'/'. $files[$language][$size][0]);
+                        $this->paths[$language][$size] = ($this->uploadsPath . 'files/' . $this->folder .'/'. $language .'/'. $size .'/'. $files[$language][$size][0]);
 
-                        $this->sizes[$language][$size] = getimagesize(ENV::path('uploads') . 'files/' . $this->folder .'/'. $language .'/'. $size .'/'. $files[$language][$size][0]);
+                        $this->sizes[$language][$size] = getimagesize($this->uploadsPath . 'files/' . $this->folder .'/'. $language .'/'. $size .'/'. $files[$language][$size][0]);
 
                         $this->urls[$language][$size] = ($site .'uploads/files/'. $this->folder .'/'. $language .'/'. $size .'/'. $files[$language][$size][0]);
                     }
@@ -287,10 +290,10 @@ final class Image implements TableSegment {
     function rename (string $name, string $language = NULL): string {
         $language = ($language ?: (($this->class)::TRANSLATOR)::default());
 
-        $file_ext = ('.'. File::extension(File::rFirst(ENV::path('uploads') .'files/'. $this->folder .'/'. $language)));
+        $file_ext = ('.'. File::extension(File::rFirst($this->uploadsPath .'files/'. $this->folder .'/'. $language)));
         $name = Text::slug($name);
 
-        foreach (File::rFolder(ENV::path('uploads') .'files/'. $this->folder .'/'. $language) as $file) {
+        foreach (File::rFolder($this->uploadsPath .'files/'. $this->folder .'/'. $language) as $file) {
             rename($file, dirname($file) .'/'. $name . $file_ext);
         }
 
@@ -314,7 +317,7 @@ final class Image implements TableSegment {
         foreach ($this->config['sizes'] as $size => $ranges) {
             ini_set('memory_limit', ini_get('memory_limit') + 1048600); // + 1MB
 
-            Folder::remove(ENV::path('uploads') .'files/'.$this->folder.'/'.$language.'/'.$size);
+            Folder::remove($this->uploadsPath .'files/'.$this->folder.'/'.$language.'/'.$size);
 
             // width OR height is not NULL - so a resize is needed
             if (($ranges['width'][1] != NULL && $imagesize[0] > $ranges['width'][1]) || ($ranges['height'][1] != NULL && $imagesize[1] > $ranges['height'][1])) {
@@ -362,15 +365,15 @@ final class Image implements TableSegment {
                     $resizer->image_ratio_crop = true;
                 }
 
-                $resizer->process(ENV::path('uploads') .'files/'. $this->folder .'/'. $language .'/'. $size);
+                $resizer->process($this->uploadsPath .'files/'. $this->folder .'/'. $language .'/'. $size);
 
                 if ($resizer->processed == false) {
                     throw new \ErrorException($resizer->error);
                 }
             }
             // no resize needed
-            else if (is_dir(ENV::path('uploads') .'files/'.$this->folder.'/'.$language.'/'.$size) || mkdir(ENV::path('uploads') .'files/'.$this->folder.'/'.$language.'/'.$size, 0755, true)) {
-                copy($data['tmp_name'], ENV::path('uploads') .'files/'.$this->folder.'/'.$language.'/'.$size.'/'.$data['name']);
+            else if (is_dir($this->uploadsPath .'files/'.$this->folder.'/'.$language.'/'.$size) || mkdir($this->uploadsPath .'files/'.$this->folder.'/'.$language.'/'.$size, 0755, true)) {
+                copy($data['tmp_name'], $this->uploadsPath .'files/'.$this->folder.'/'.$language.'/'.$size.'/'.$data['name']);
             }
         }
 
@@ -378,12 +381,12 @@ final class Image implements TableSegment {
     }
 
     function delete (string $language = NULL, bool $removeEmpty = true): bool {
-        if (Folder::remove(ENV::path('uploads') .'files/'. $this->folder .'/'. ($language ?? ''), $removeEmpty)) {
+        if (Folder::remove($this->uploadsPath .'files/'. $this->folder .'/'. ($language ?? ''), $removeEmpty)) {
             $this->setup();
         }
 
         if ($removeEmpty) {
-            Folder::removeEmpty(ENV::path('uploads') .'files/'. dirname($this->folder));
+            Folder::removeEmpty($this->uploadsPath .'files/'. dirname($this->folder));
         }
 
         return true;

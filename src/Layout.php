@@ -8,7 +8,7 @@ use Arshwell\Monolith\Piece;
 use Arshwell\Monolith\Table;
 use Arshwell\Monolith\File;
 use Arshwell\Monolith\Func;
-use Arshwell\Monolith\ENV;
+use Arshwell\Monolith\StaticHandler;
 use Arshwell\Monolith\Web;
 
 use MatthiasMullie\Minify\JS as JsMin;
@@ -631,7 +631,7 @@ final class Layout {
                 $css_file_path = ($destination.'uploads/design/css/'.$folder .'/');
             }
             if (!$url) {
-                $url = ENV::url();
+                $url = StaticHandler::getEnvConfig('web.URL');
             }
             $time   = time();
             $return = false;
@@ -645,7 +645,7 @@ final class Layout {
                 }, $media['json']['scss']['vars']),
                 array(
                     'arshwell--env-root' => trim((strstr($url, '/') ?: ''), '/'), // the url path for root project
-                    'arshwell--web-paths' => self::SASSify(ENV::paths(), function (string $path = NULL, string $folder) use ($url): string {
+                    'arshwell--web-paths' => self::SASSify(StaticHandler::getEnvConfig('locations'), function (string $path = NULL, string $folder) use ($url): string {
                         // in url we use only folder, not real path
                         return ('//'. $url .'/'. trim($folder, '/') . '/'); // having one, and only one, slash at the end
                     })
@@ -674,7 +674,7 @@ final class Layout {
 
                 do {
                     if (is_file($css_file) && ($last_update = filemtime($css_file)) && !$vars
-                    && (!$destination || !is_file($destination.'env.json') || $last_update > filemtime($destination.'env.json'))) {
+                    && (!$destination || $last_update > Folder::mTime('config/'))) {
                         foreach ($media['utils'] as $util) {
                             if (filemtime($util) >= $last_update) {
                                 break 2; // go to compile
@@ -821,7 +821,7 @@ final class Layout {
                     if (!empty($media['json']['scss']['vars']) && array_filter(array_keys($media['json']['scss']['vars']), function ($var) use ($files, $nr) {
                         return (strpos(file_get_contents($files[$nr]['name']), $var) !== false);
                     })) {
-                        $filename .= 'forks/' . $folder . '/';
+                        $filename .= 'config/forks/' . $folder . '/';
                     }
 
                     $filename .= File::name($files[$nr]['name'], false) .'.css';
@@ -851,11 +851,11 @@ final class Layout {
                 $jsHeader_path = ($destination.'uploads/design/js/h/'.$folder .'/');
             }
             if (!$url) {
-                $url = ENV::url();
+                $url = StaticHandler::getEnvConfig('web.URL');
             }
 
             $return = false;
-            $forksmtime = Folder::mTime('forks');
+            $forksmtime = Folder::mTime('config/forks');
 
             $mins = array_unique(array_column(array_merge(array_column($media['files'], 'range')), 'min'));
 
@@ -875,7 +875,7 @@ final class Layout {
 
                 do {
                     if (is_file($jsHeader) && ($last_update = filemtime($jsHeader))
-                    && (!$destination || !is_file($destination.'env.json') || $last_update > filemtime($destination.'env.json'))) {
+                    && (!$destination || $last_update > Folder::mTime('config/'))) {
                         if (!is_file('uploads/design/dev/' .'dynamic/'. $folder .'/web.js')
                         || ($forksmtime >= $last_update)) {
                             break; // go to compile
@@ -946,7 +946,7 @@ final class Layout {
                             'Web.vars.site = "'. $url .'/";',
                             'Web.vars.paths = '. json_encode(array_map(function ($folder) use ($url) {
                                 return $url .'/'. $folder;
-                            }, array_keys(ENV::paths()))) .';',
+                            }, array_keys(StaticHandler::getEnvConfig('locations')))) .';',
                             'Web.vars.key = "'. $route_name .'";',
                             'Web.vars.route = '. json_encode(array(
                                 'url'           => preg_replace('/\/{2,}$/', '/', $url .'/'. Web::pattern($route_name)),
@@ -1028,7 +1028,7 @@ final class Layout {
 
                 do {
                     if (is_file($jsFooter) && ($last_update = filemtime($jsFooter))
-                    && (!$destination || !is_file($destination.'env.json') || $last_update > filemtime($destination.'env.json'))) {
+                    && (!$destination || $last_update > Folder::mTime('config/'))) {
                         foreach ($media['utils'] as $util) {
                             if (filemtime($util) >= $last_update) {
                                 break 2; // go to compile
@@ -1103,7 +1103,7 @@ final class Layout {
             $scss->addVariables(array_merge(
                 $media['json']['scss']['vars'],
                 array(
-                    'env-statics' => self::SASSify(ENV::path('statics'), function (string $value) use ($url): string {
+                    'env-statics' => self::SASSify(StaticHandler::getEnvConfig('locations.statics'), function (string $value) use ($url): string {
                         return ('//'. $url .'/'. substr($value, 0, -1));
                     })
                 ),
@@ -1134,7 +1134,7 @@ final class Layout {
 
                 do {
                     if (is_file($css_file) && ($last_update = filemtime($css_file))
-                    && (!$destination || !is_file($destination.'env.json') || $last_update > filemtime($destination.'env.json'))) {
+                    && (!$destination || $last_update > Folder::mTime('config/'))) {
                         foreach ($media['utils'] as $util) {
                             if (filemtime($util) >= $last_update) {
                                 break 2; // go to compile
@@ -1546,14 +1546,14 @@ final class Layout {
     }
 
     static function devFiles (string $route = NULL, array $pieces = NULL): array {
-        $path   = ENV::root() . '/uploads/design/dev/';
+        $path   = StaticHandler::getEnvConfig()->getSiteRoot() . '/uploads/design/dev/';
         $pieces = array_unique($pieces ?? Piece::used());
         $folder = Web::folder($route);
 
         $links = array(
             'css'   => array_map(function (array $file) use ($folder, $path) {
-                    if (is_file('uploads/design/dev/forks/'.$folder.'/'.$file['name'])) {
-                        return $path.'forks/'.$folder.'/'.$file['name'];
+                    if (is_file('uploads/design/dev/config/forks/'.$folder.'/'.$file['name'])) {
+                        return $path.'config/forks/'.$folder.'/'.$file['name'];
                     }
                     return $path.$file['name'];
                 },
@@ -1630,7 +1630,7 @@ final class Layout {
      * @return string
      */
     private static function signature (string $site = NULL): string {
-        $credits = ENV::credits();
+        $credits = StaticHandler::getEnvConfig('development.credits');
 
         $text_1 = 'PHP Framework used: https://github.com/arshwell/monolith';
         $text_2 = 'Website'. ($site ? " ($site)" : '') .' developed by ['. implode(' | ', $credits) .']';

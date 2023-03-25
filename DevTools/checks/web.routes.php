@@ -25,7 +25,7 @@ call_user_func(function () {
                     $jsons[str_replace(
                         '/', '.',
                         preg_replace(
-                            "~forks/(.*).json~",
+                            "~config/forks/(.*).json~",
                             "$1",
                             preg_replace(
                                 "~(/)(\d+\.)(?!(/|json$))~",
@@ -61,7 +61,7 @@ call_user_func(function () {
             }
         }
     };
-    $pull(NULL, $getforks('forks'));
+    $pull(NULL, $getforks('config/forks'));
 
 
     /* Checking Route requests */

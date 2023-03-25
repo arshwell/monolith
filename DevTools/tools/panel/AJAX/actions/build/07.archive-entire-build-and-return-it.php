@@ -1,7 +1,7 @@
 <?php
 
 use Arshwell\Monolith\Table\TableValidation;
-use Arshwell\Monolith\ENV\EnvComponent;
+use Arshwell\Monolith\Env\EnvComponent;
 use Arshwell\Monolith\Folder;
 use Arshwell\Monolith\File;
 use Arshwell\Monolith\URL;

@@ -2,7 +2,7 @@
 
 use Arshwell\Monolith\Layout;
 use Arshwell\Monolith\Web;
-use Arshwell\Monolith\ENV;
+use Arshwell\Monolith\StaticHandler;
 
 $resources = array(
     'scss' => array(),
@@ -41,7 +41,7 @@ if (!empty($utils['js']['files']['footer']) && is_array($utils['js']['files']['f
     }
 }
 
-$asset  = ENV::root().'/'.'uploads/design/dev/';
+$asset  = StaticHandler::getEnvConfig()->getSiteRoot().'/'.'uploads/design/dev/';
 $time   = substr(str_shuffle("BCDFGHKLMNPQRSTVWXYZ"), 0, 4);
 
 $mediaLinks = Layout::mediaLinks($_REQUEST['request']['route'], $_REQUEST['request']['pieces'] ?? array()); ?>

@@ -118,7 +118,7 @@ final class Func {
     static function arrayFlattenTree (array $value, string $prefix = NULL, string $separator = '-', bool $add_subarrays = false): array {
         $array = array();
 
-        if (!self::isAssoc($value)) {
+        if (!self::isAssoc($value, false)) {
             $array[$prefix] = $value;
         }
         else {

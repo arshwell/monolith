@@ -2,7 +2,7 @@
 
 namespace Arshwell\Monolith;
 
-use Arshwell\Monolith\ENV;
+use Arshwell\Monolith\StaticHandler;
 use Arshwell\Monolith\DB;
 
 /**
@@ -70,7 +70,7 @@ final class SQL {
         if (!$db_key) {
             $db_key = DB::key();
         }
-        return "(SELECT `AUTO_INCREMENT` FROM information_schema.TABLES WHERE `TABLE_SCHEMA` = '". ENV::db('conn.'.$db_key.'.name') ."' AND `TABLE_NAME` = '". ENV::db('conn.'.$db_key.'.prefix'). $table ."')";
+        return "(SELECT `AUTO_INCREMENT` FROM information_schema.TABLES WHERE `TABLE_SCHEMA` = '". StaticHandler::getEnvConfig('databases.conn.'.$db_key.'.name') ."' AND `TABLE_NAME` = '". StaticHandler::getEnvConfig('databases.conn.'.$db_key.'.prefix'). $table ."')";
     }
 
     /**

@@ -4,7 +4,7 @@ namespace Arshwell\Monolith;
 
 use Arshwell\Monolith\Module\HTML\Piece;
 use Arshwell\Monolith\Module\Backend;
-use Arshwell\Monolith\ENV;
+use Arshwell\Monolith\StaticHandler;
 use Arshwell\Monolith\Web;
 use Arshwell\Monolith\DB;
 
@@ -17,7 +17,7 @@ final class Module {
      * @return [array|string]
     */
     static function backend (array $back, array $query, array $files = array()) {
-        if (ENV::board('dev') && ENV::supervisor()) {
+        if (StaticHandler::getEnvConfig('development.debug') && StaticHandler::supervisor()) {
             // syntax validation
             foreach ($back as $key => $value) {
                 $back[$key] = ("Arshwell\Monolith\Module\Syntax\Backend")::{$key}($value);
@@ -49,7 +49,7 @@ final class Module {
     }
 
     static function frontend (array $module, array $front): string {
-        if (ENV::board('dev') && ENV::supervisor()) {
+        if (StaticHandler::getEnvConfig('development.debug') && StaticHandler::supervisor()) {
             // syntax validation
             foreach ($front as $key => $value) {
                 $front[$key] = ("Arshwell\Monolith\Module\Syntax\Frontend")::{$key}($value);

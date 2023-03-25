@@ -4,7 +4,7 @@ use Arshwell\Monolith\Table\TableValidation;
 use Arshwell\Monolith\Table\TableView;
 use Arshwell\Monolith\Folder;
 use Arshwell\Monolith\File;
-use Arshwell\Monolith\ENV;
+use Arshwell\Monolith\StaticHandler;
 use Arshwell\Monolith\DB;
 
 $form = TableValidation::run($_POST, array(
@@ -17,7 +17,7 @@ if ($form->valid()) {
     $build_dir  = sys_get_temp_dir().'/vendor/arshwell/monolith/builds/sess_'.session_id().'/';
     $asset      = 'uploads/files/';
 
-    if (!is_dir($build_dir . ENV::path('uploads') . 'files/')) {
+    if (!is_dir($build_dir . StaticHandler::getEnvConfig()->getLocationPath('uploads') . 'files/')) {
         $form->info = array("TABLE FILES have not been added.");
     }
     else {

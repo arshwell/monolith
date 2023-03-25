@@ -2,7 +2,7 @@
 
 use Arshwell\Monolith\Table\TableValidation;
 use Arshwell\Monolith\Time;
-use Arshwell\Monolith\ENV;
+use Arshwell\Monolith\StaticHandler;
 
 $form = TableValidation::run($_POST,
     array(
@@ -16,8 +16,8 @@ $form = TableValidation::run($_POST,
 );
 
 if ($form->valid()) {
-    (ENV::class('maintenance'))::setActive($form->value('type') != 'none');
-    (ENV::class('maintenance'))::setSmart($form->value('type') != 'instant');
+    (StaticHandler::getEnvConfig('services.maintenance'))::setActive($form->value('type') != 'none');
+    (StaticHandler::getEnvConfig('services.maintenance'))::setSmart($form->value('type') != 'instant');
 
     $form->info = array(
         'status'    => 'Maintenance set',
