@@ -72,7 +72,7 @@ if ($form->valid()) {
                     'fl'        => str_replace('//', '/', $path . $zippath),
                     'dlt'       => 1 // delete file after download
                 )),
-                'download'  => trim(StaticHandler::getEnvConfig()->getRoot() ?: StaticHandler::getEnvConfig()->site(), '/').date(' d.m.Y H-i') .'.zip',
+                'download'  => trim(StaticHandler::getEnvConfig()->getSiteRoot() ?: StaticHandler::getEnvConfig()->site(), '/').date(' d.m.Y H-i') .'.zip',
                 'waiting'   => $zipsize / 1000 // waiting time approx
             );
             $form->info = array(

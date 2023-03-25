@@ -10,7 +10,7 @@ final class EnvConfig
     private $configs;
 
     private $site = NULL;
-    private $root = NULL;
+    private $siteRoot = NULL;
 
 
     function __construct(array $config)
@@ -37,7 +37,7 @@ final class EnvConfig
         }
 
         $this->site = (strstr($this->configs['web.URL'], '/', true) ?: $this->configs['web.URL']);
-        $this->root = (strstr($this->configs['web.URL'], '/') ?: '');
+        $this->siteRoot = (strstr($this->configs['web.URL'], '/') ?: '');
     }
 
 
@@ -62,7 +62,7 @@ final class EnvConfig
         return $this->site;
     }
 
-    function getRoot (): string {
-        return $this->root;
+    function getSiteRoot (): string {
+        return $this->siteRoot;
     }
 }

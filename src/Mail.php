@@ -136,7 +136,7 @@ abstract class Mail extends Table {
 
         // Supervisors see all resources separately.
         if (StaticHandler::getEnvConfig('development.debug') && StaticHandler::supervisor()) {
-            $asset  = StaticHandler::getEnvConfig()->getRoot().'/'.'uploads/design/';
+            $asset  = StaticHandler::getEnvConfig()->getSiteRoot().'/'.'uploads/design/';
             $time   = substr(str_shuffle("BCDFGHKLMNPQRSTVWXYZ"), 0, 4);
 
             $link = $asset.'dev/'.implode(

@@ -9,7 +9,7 @@
     <div class="row align-items-center text-muted">
         <div class="col-3 col-md-2 nowrap">Archive:</div>
         <div class="col-9 col-md-10">
-            <?= trim(Arshwell\Monolith\StaticHandler::getEnvConfig()->getRoot() ?: Arshwell\Monolith\StaticHandler::getEnvConfig()->site(), '/') ?>
+            <?= trim(Arshwell\Monolith\StaticHandler::getEnvConfig()->getSiteRoot() ?: Arshwell\Monolith\StaticHandler::getEnvConfig()->site(), '/') ?>
             <span class="nowrap"><u>date("d.m.Y H-i")</u>.zip</span>
         </div>
     </div>

@@ -20,11 +20,11 @@ abstract class TableAuth extends Table {
 
     // static
     final static function setCookieID (int $id, int $expires): bool {
-        return setcookie("arsavinel[Arshwell][".static::class."]", $id, time() + $expires, StaticHandler::getEnvConfig()->getRoot() ?: '/');
+        return setcookie("arsavinel[Arshwell][".static::class."]", $id, time() + $expires, StaticHandler::getEnvConfig()->getSiteRoot() ?: '/');
     }
     // object
     final function setCookie (int $expires): bool {
-        return setcookie("arsavinel[Arshwell][".static::class."]", $this->id_table, time() + $expires, StaticHandler::getEnvConfig()->getRoot() ?: '/');
+        return setcookie("arsavinel[Arshwell][".static::class."]", $this->id_table, time() + $expires, StaticHandler::getEnvConfig()->getSiteRoot() ?: '/');
     }
 
     // static

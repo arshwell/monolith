@@ -47,7 +47,7 @@ final class Field {
                                 data-language="<?= ($language ?: (($image->class())::TRANSLATOR)::get()) ?>"
                                 data-folder="<?= $image->folder() ?>"
                                 data-uploads="<?= Web::site() ?>uploads/files/"
-                                data-smallest-size="<?= File::parsePath(ltrim(preg_replace('~^'. StaticHandler::getEnvConfig()->getRoot() .'~', '', URL::path($image->smallest($language))), '/'), 'size') ?>">
+                                data-smallest-size="<?= File::parsePath(ltrim(preg_replace('~^'. StaticHandler::getEnvConfig()->getSiteRoot() .'~', '', URL::path($image->smallest($language))), '/'), 'size') ?>">
                                     <div class="image-actions px-2">
                                         <input type="hidden" name="filetools[delete]<?= $piece['filetools']['name'] ?>" value="1" disabled />
                                         <span class="info info-red text-light" form-error="filetools.delete.<?= $piece['filetools']['identifier'] ?>"></span>
@@ -233,7 +233,7 @@ final class Field {
                                     data-language="<?= ($language ?: (($images->class())::TRANSLATOR)::get()) ?>"
                                     data-folder="<?= $images->folder() ?>"
                                     data-uploads="<?= Web::site() ?>uploads/files/"
-                                    data-smallest-size="<?= File::parsePath(ltrim(preg_replace('~^'. StaticHandler::getEnvConfig()->getRoot() .'~', '', URL::path($images->smallest($language)[0])), '/'), 'size') ?>">
+                                    data-smallest-size="<?= File::parsePath(ltrim(preg_replace('~^'. StaticHandler::getEnvConfig()->getSiteRoot() .'~', '', URL::path($images->smallest($language)[0])), '/'), 'size') ?>">
                                         <div class="image-actions px-2">
                                             <input type="hidden" name="filetools[delete]<?= $piece['filetools']['name'] ?>[<?= $basename ?>]" value="1" disabled />
                                             <span class="info info-red text-light" form-error="filetools.delete.<?= $piece['filetools']['identifier'] ?>.<?= $basename ?>"></span>

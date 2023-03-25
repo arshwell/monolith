@@ -29,7 +29,7 @@ if ($form->valid()) {
         );
     }
     else {
-        $zippath = 'DevTools/backups/'.trim(StaticHandler::getEnvConfig()->getRoot() ?: StaticHandler::getEnvConfig()->site(), '/').$form->value('date').'.zip';
+        $zippath = 'DevTools/backups/'.trim(StaticHandler::getEnvConfig()->getSiteRoot() ?: StaticHandler::getEnvConfig()->site(), '/').$form->value('date').'.zip';
     	if (!is_dir(dirname($zippath))) {
     		mkdir(dirname($zippath), 0755, true);
     	}

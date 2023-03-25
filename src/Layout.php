@@ -1546,7 +1546,7 @@ final class Layout {
     }
 
     static function devFiles (string $route = NULL, array $pieces = NULL): array {
-        $path   = StaticHandler::getEnvConfig()->getRoot() . '/uploads/design/dev/';
+        $path   = StaticHandler::getEnvConfig()->getSiteRoot() . '/uploads/design/dev/';
         $pieces = array_unique($pieces ?? Piece::used());
         $folder = Web::folder($route);
 

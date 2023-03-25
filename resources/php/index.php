@@ -34,7 +34,7 @@ if (StaticHandler::getEnvConfig('development.debug') && StaticHandler::superviso
 }
 
 Web::fetch()::prepare(
-    preg_replace('~^'. StaticHandler::getEnvConfig()->getRoot() .'~', '', URL::path()),
+    preg_replace('~^'. StaticHandler::getEnvConfig()->getSiteRoot() .'~', '', URL::path()),
     $_SERVER['REQUEST_METHOD'],
     false
 );

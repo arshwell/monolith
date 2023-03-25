@@ -25,7 +25,7 @@ StaticHandler::iniSetPHP();
 DB::connect('default');
 Session::set(StaticHandler::getEnvConfig('web.URL').StaticHandler::getEnvConfig('databases.conn.default.name'));
 
-$urlpath = ltrim(preg_replace('~^'. StaticHandler::getEnvConfig()->getRoot() .'~', '', URL::path()), '/');
+$urlpath = ltrim(preg_replace('~^'. StaticHandler::getEnvConfig()->getSiteRoot() .'~', '', URL::path()), '/');
 $filepath = StaticHandler::getEnvConfig()->getLocationPath('uploads', false) . $urlpath; // could be outside of project
 
 if (is_file($filepath) && ($matches = File::parsePath($urlpath))
