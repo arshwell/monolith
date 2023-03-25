@@ -9,7 +9,7 @@
     <div class="row align-items-center text-muted">
         <div class="col-3 col-md-2 nowrap">Archive:</div>
         <div class="col-9 col-md-10">
-            <?= trim(Arshwell\Monolith\ENV::root() ?: Arshwell\Monolith\ENV::site(), '/') ?>
+            <?= trim(Arshwell\Monolith\StaticHandler::getEnvConfig()->getRoot() ?: Arshwell\Monolith\StaticHandler::getEnvConfig()->site(), '/') ?>
             <span class="nowrap"><u>date("d.m.Y H-i")</u>.zip</span>
         </div>
     </div>
@@ -18,7 +18,7 @@
             <div class="form-check py-2">
                 <label class="form-check-label text-danger" for="actions-frequently-download--delete" data-toggle="tooltip" data-placement="left" title="Be careful!">
                     <input class="form-check-input" disabled type="checkbox" name="delete" id="actions-frequently-download--delete" value="1" />
-                    And delete it from source: <span class="nowrap"><?= Arshwell\Monolith\ENV::url() ?><span>
+                    And delete it from source: <span class="nowrap"><?= Arshwell\Monolith\StaticHandler::getEnvConfig('web.URL') ?><span>
                 </label>
             </div>
         </div>

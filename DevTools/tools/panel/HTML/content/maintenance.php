@@ -1,14 +1,14 @@
 <?php
 
 use Arshwell\Monolith\Session;
-use Arshwell\Monolith\ENV;
+use Arshwell\Monolith\StaticHandler;
 use Arshwell\Monolith\Web;
 
 /**
- * If ENV::board('dev') true, it gets also my session.
+ * If StaticHandler::getEnvConfig('development.debug') true, it gets also my session.
  * Because work env doesn't have traffic.
  */
-$sessions = Session::all(ENV::board('dev'), true);
+$sessions = Session::all(StaticHandler::getEnvConfig('development.debug'), true);
 
 ?>
 
@@ -25,7 +25,7 @@ $sessions = Session::all(ENV::board('dev'), true);
                     <div class="row">
                         <div class="col-4">
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" onclick="$('.maintenance--smart-configuration').collapse('hide');" name="type" id="maintenance--none" value="none" <?= (!(ENV::class('maintenance'))::isActive() ? 'checked' : '') ?> />
+                                <input class="form-check-input" type="radio" onclick="$('.maintenance--smart-configuration').collapse('hide');" name="type" id="maintenance--none" value="none" <?= (!(StaticHandler::getEnvConfig('services.maintenance'))::isActive() ? 'checked' : '') ?> />
                                 <label class="form-check-label" for="maintenance--none">
                                     None
                                 </label>
@@ -33,7 +33,7 @@ $sessions = Session::all(ENV::board('dev'), true);
                         </div>
                         <div class="col-4">
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" onclick="$('.maintenance--smart-configuration').collapse('show');" name="type" id="maintenance--smart" value="smart" <?= ((ENV::class('maintenance'))::isActive() && (ENV::class('maintenance'))::isSmart() ? 'checked' : '') ?> />
+                                <input class="form-check-input" type="radio" onclick="$('.maintenance--smart-configuration').collapse('show');" name="type" id="maintenance--smart" value="smart" <?= ((StaticHandler::getEnvConfig('services.maintenance'))::isActive() && (StaticHandler::getEnvConfig('services.maintenance'))::isSmart() ? 'checked' : '') ?> />
                                 <label class="form-check-label" for="maintenance--smart">
                                     SMART
                                 </label>
@@ -41,7 +41,7 @@ $sessions = Session::all(ENV::board('dev'), true);
                         </div>
                         <div class="col-4">
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" onclick="$('.maintenance--smart-configuration').collapse('hide');" name="type" id="maintenance--instant" value="instant" <?= ((ENV::class('maintenance'))::isActive() && !(ENV::class('maintenance'))::isSmart() ? 'checked' : '') ?> />
+                                <input class="form-check-input" type="radio" onclick="$('.maintenance--smart-configuration').collapse('hide');" name="type" id="maintenance--instant" value="instant" <?= ((StaticHandler::getEnvConfig('services.maintenance'))::isActive() && !(StaticHandler::getEnvConfig('services.maintenance'))::isSmart() ? 'checked' : '') ?> />
                                 <label class="form-check-label" for="maintenance--instant">
                                     Instant
                                 </label>
@@ -49,7 +49,7 @@ $sessions = Session::all(ENV::board('dev'), true);
                         </div>
                     </div>
 
-                    <div class="card bg-dark maintenance--smart-configuration collapse <?= ((ENV::class('maintenance'))::isActive() && (ENV::class('maintenance'))::isSmart() ? 'show' : '') ?> mt-3">
+                    <div class="card bg-dark maintenance--smart-configuration collapse <?= ((StaticHandler::getEnvConfig('services.maintenance'))::isActive() && (StaticHandler::getEnvConfig('services.maintenance'))::isSmart() ? 'show' : '') ?> mt-3">
                         <div class="card-header py-2">
                             SMART configuration
                         </div>
@@ -74,13 +74,13 @@ $sessions = Session::all(ENV::board('dev'), true);
         <div class="card bg-dark mb-2">
             <div class="card-header py-2">
                 Routes accessed in real time
-                <span class="maintenance--smart-configuration collapse <?= ((ENV::class('maintenance'))::isActive() && (ENV::class('maintenance'))::isSmart() ? 'show' : '') ?>">
+                <span class="maintenance--smart-configuration collapse <?= ((StaticHandler::getEnvConfig('services.maintenance'))::isActive() && (StaticHandler::getEnvConfig('services.maintenance'))::isSmart() ? 'show' : '') ?>">
                     <?php // all sessions with history ?>
                     (by all ~<?= count(array_filter(array_column(array_column(array_column($sessions, 'arsavinel'), 'Arshwell'), 'history'))) ?> sessions)
                 </span>
             </div>
             <div class="card-body py-0">
-                <ul class="list-group list-group-flush maintenance--smart-configuration collapse <?= ((ENV::class('maintenance'))::isActive() && (ENV::class('maintenance'))::isSmart() ? 'show' : '') ?>">
+                <ul class="list-group list-group-flush maintenance--smart-configuration collapse <?= ((StaticHandler::getEnvConfig('services.maintenance'))::isActive() && (StaticHandler::getEnvConfig('services.maintenance'))::isSmart() ? 'show' : '') ?>">
                     <?php
                     foreach ($sessions as $session) {
                         foreach (array_reverse($session['arsavinel']['Arshwell']['history']) as $index => $route) { ?>

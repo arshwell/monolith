@@ -12,7 +12,7 @@ call_user_func(function () {
     require("vendor/arshwell/monolith/DevTools/checks/php-settings.php");
 
     $filemtime = filemtime("vendor/arshwell/monolith/DevTools/checks/web.routes.php");
-    foreach (File::rFolder('forks') as $file) {
+    foreach (File::rFolder('config/forks') as $file) {
         if (filemtime($file) > $filemtime) {
             require("vendor/arshwell/monolith/DevTools/checks/web.routes.php");
             touch("vendor/arshwell/monolith/DevTools/checks/web.routes.php");
@@ -20,7 +20,7 @@ call_user_func(function () {
         }
     }
 
-    if (filemtime('env.json') > filemtime("vendor/arshwell/monolith/DevTools/checks/env.languages.php")) {
+    if (filemtime('config/services.json') > filemtime("vendor/arshwell/monolith/DevTools/checks/env.languages.php")) {
         require("vendor/arshwell/monolith/DevTools/checks/env.languages.php");
         touch("vendor/arshwell/monolith/DevTools/checks/env.languages.php");
     }

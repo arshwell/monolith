@@ -1,6 +1,6 @@
 <?php
 
-use Arshwell\Monolith\ENV;
+use Arshwell\Monolith\StaticHandler;
 use Arshwell\Monolith\File;
 
 $warnings = array(
@@ -22,7 +22,7 @@ $warnings = array(
                 $forbidden_files[] = $file . " (".File::mimeType($file).")";
             }
         }
-        foreach (array('errors','forks','gates','layouts','mails','outcomes','pieces') as $folder) {
+        foreach (array('errors','config/forks','gates','layouts','mails','outcomes','pieces') as $folder) {
             foreach (File::rFolder($folder, [NULL]) as $file) {
                 if (basename($file) == '.htaccess') {
                     $forbidden_files[] = $file;
@@ -30,7 +30,7 @@ $warnings = array(
             }
         }
         foreach (File::rFolder('uploads', array(NULL, 'php', 'phtml')) as $file) {
-            if (!in_array($file, [ENV::path('uploads') . 'files/'.'.htaccess', 'uploads/design/.htaccess'])
+            if (!in_array($file, [StaticHandler::getEnvConfig()->getLocationPath('uploads') . 'files/'.'.htaccess', 'uploads/design/.htaccess'])
             && (in_array(basename($file), ['.htaccess', '.htpasswd'])
             || in_array(File::extension($file), ['php', 'phtml'])
             || in_array(File::mimeType($file), [NULL, 'text/x-php']))) {
@@ -53,7 +53,7 @@ $warnings = array(
                 $wrong_place_files[] = $file;
             }
         }
-        foreach (File::rFolder('forks') as $file) {
+        foreach (File::rFolder('config/forks') as $file) {
             if (File::extension($file) != 'json') {
                 $wrong_place_files[] = $file;
             }

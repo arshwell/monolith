@@ -1,6 +1,6 @@
 <?php
 
-use Arshwell\Monolith\ENV;
+use Arshwell\Monolith\StaticHandler;
 
 // verify because could be already user-defined
 if (function_exists('_br') == false) {
@@ -10,7 +10,7 @@ if (function_exists('_br') == false) {
     * @package https://github.com/arshwell/monolith
     */
     function _br (int $repeats = 1): void {
-        if (ENV::supervisor() == false) {
+        if (StaticHandler::supervisor() == false) {
             return;
         }
 

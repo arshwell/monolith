@@ -6,7 +6,7 @@ use Arshwell\Monolith\Table\TableValidation;
 use Arshwell\Monolith\Session;
 use Arshwell\Monolith\Time;
 use Arshwell\Monolith\File;
-use Arshwell\Monolith\ENV;
+use Arshwell\Monolith\StaticHandler;
 use Arshwell\Monolith\URL;
 use Arshwell\Monolith\Web;
 
@@ -107,7 +107,7 @@ $warnings = array(
                 $forbidden_files[] = $file;
             }
         }
-        foreach (array('errors','forks','gates','layouts','mails','outcomes','pieces') as $folder) {
+        foreach (array('errors','config/forks','gates','layouts','mails','outcomes','pieces') as $folder) {
             foreach (File::rFolder($folder, [NULL]) as $file) {
                 if (basename($file) == '.htaccess') {
                     $forbidden_files[] = $file;
@@ -115,7 +115,7 @@ $warnings = array(
             }
         }
         foreach (File::rFolder('uploads', array(NULL, 'php', 'phtml')) as $file) {
-            if (!in_array($file, [ENV::path('uploads') . 'files/.htaccess', 'uploads/design/.htaccess'])
+            if (!in_array($file, [StaticHandler::getEnvConfig()->getLocationPath('uploads') . 'files/.htaccess', 'uploads/design/.htaccess'])
             && (in_array(basename($file), ['.htaccess', '.htpasswd'])
             || in_array(File::extension($file), ['php', 'phtml'])
             || in_array(File::mimeType($file), [NULL, 'text/x-php']))) {
@@ -138,7 +138,7 @@ $warnings = array(
                 $wrong_place_files[] = $file;
             }
         }
-        foreach (File::rFolder('forks') as $file) {
+        foreach (File::rFolder('config/forks') as $file) {
             if (File::extension($file) != 'json') {
                 $wrong_place_files[] = $file;
             }
@@ -366,8 +366,8 @@ ob_start(); // for adding all content in DevToolHTML::html() function
                             <div class="d-flex align-items-center">
                                 Maintenance
                                 <?php
-                                if ((ENV::class('maintenance'))::isActive()) { ?>
-                                    <div class="spinner-grow spinner-grow-sm ml-auto <?= ((ENV::class('maintenance'))::isSmart() ? 'text-success' : 'text-danger') ?> float-right" aria-hidden="true"></div>
+                                if ((StaticHandler::getEnvConfig('services.maintenance'))::isActive()) { ?>
+                                    <div class="spinner-grow spinner-grow-sm ml-auto <?= ((StaticHandler::getEnvConfig('services.maintenance'))::isSmart() ? 'text-success' : 'text-danger') ?> float-right" aria-hidden="true"></div>
                                 <?php } ?>
                             </div>
                         </a>

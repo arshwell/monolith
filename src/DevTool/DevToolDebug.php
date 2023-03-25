@@ -3,7 +3,7 @@
 namespace Arshwell\Monolith\DevTool;
 
 use Arshwell\Monolith\Folder;
-use Arshwell\Monolith\ENV;
+use Arshwell\Monolith\StaticHandler;
 use Arshwell\Monolith\Text;
 use Arshwell\Monolith\DB;
 use Exception;
@@ -21,7 +21,7 @@ final class DevToolDebug {
      * @return ?array
      */
     static function compare_functions (array $funcs, int $counter = 1000): ?array {
-        if (ENV::supervisor() == false) {
+        if (StaticHandler::supervisor() == false) {
             return NULL;
         }
 
@@ -60,7 +60,7 @@ final class DevToolDebug {
      * @return ?int
      */
     static function execution_time (\closure $function): ?int {
-        if (ENV::supervisor() == false) {
+        if (StaticHandler::supervisor() == false) {
             return NULL;
         }
 
@@ -75,7 +75,7 @@ final class DevToolDebug {
      * It throws proper exception for last json error.
      */
     static function throw_json_last_error (): void {
-        if (ENV::supervisor() == false) {
+        if (StaticHandler::supervisor() == false) {
             return;
         }
 
@@ -119,7 +119,7 @@ final class DevToolDebug {
     static function print_pdo_exception (object $exception, string $sql_query, array $params = NULL): void {
         DB::rollBack();
 
-        if (ENV::supervisor()) { ?>
+        if (StaticHandler::supervisor()) { ?>
             <table cellpadding="15" style="width: 100%;">
                 <tr style="background-color: rgb(230,230,230);">
                     <th>File</th>
@@ -221,7 +221,7 @@ final class DevToolDebug {
      * This function is used at least by try-catch from Arshwell\Monolith\Table class methods.
      */
     static function print_sql_query ($sql, $columns = array()): void {
-        if (ENV::supervisor() == false) {
+        if (StaticHandler::supervisor() == false) {
             return;
         }
 

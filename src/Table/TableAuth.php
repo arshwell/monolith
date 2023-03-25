@@ -4,7 +4,7 @@ namespace Arshwell\Monolith\Table;
 
 use Arshwell\Monolith\Session;
 use Arshwell\Monolith\Table;
-use Arshwell\Monolith\ENV;
+use Arshwell\Monolith\StaticHandler;
 
 /*
  * Static and non-static methods, for manipulating MySQL DB tables,
@@ -20,11 +20,11 @@ abstract class TableAuth extends Table {
 
     // static
     final static function setCookieID (int $id, int $expires): bool {
-        return setcookie("arsavinel[Arshwell][".static::class."]", $id, time() + $expires, ENV::root() ?: '/');
+        return setcookie("arsavinel[Arshwell][".static::class."]", $id, time() + $expires, StaticHandler::getEnvConfig()->getRoot() ?: '/');
     }
     // object
     final function setCookie (int $expires): bool {
-        return setcookie("arsavinel[Arshwell][".static::class."]", $this->id_table, time() + $expires, ENV::root() ?: '/');
+        return setcookie("arsavinel[Arshwell][".static::class."]", $this->id_table, time() + $expires, StaticHandler::getEnvConfig()->getRoot() ?: '/');
     }
 
     // static

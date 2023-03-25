@@ -3,7 +3,7 @@
 namespace Arshwell\Monolith;
 
 use Arshwell\Monolith\DevTool\DevToolDebug;
-use Arshwell\Monolith\ENV;
+use Arshwell\Monolith\StaticHandler;
 use PDOException;
 use Exception;
 use PDO;
@@ -23,21 +23,21 @@ final class DB {
         self::$key = $key;
 
         if (!isset(self::$pdos[$key])) {
-            self::$tb_prefixes[$key] = ENV::db('conn.'.$key.'.prefix');
+            self::$tb_prefixes[$key] = StaticHandler::getEnvConfig('databases.conn.'.$key.'.prefix');
             self::$pdos[$key] = new PDO(
-                'mysql:host='.ENV::db('conn.'.$key.'.host').';dbname='.ENV::db('conn.'.$key.'.name').';charset='.ENV::db('conn.'.$key.'.charset'),
-                ENV::db('conn.'.$key.'.username'),
-                ENV::db('conn.'.$key.'.password')
+                'mysql:host='.StaticHandler::getEnvConfig('databases.conn.'.$key.'.host').';dbname='.StaticHandler::getEnvConfig('databases.conn.'.$key.'.name').';charset='.StaticHandler::getEnvConfig('databases.conn.'.$key.'.charset'),
+                StaticHandler::getEnvConfig('databases.conn.'.$key.'.username'),
+                StaticHandler::getEnvConfig('databases.conn.'.$key.'.password')
             );
 
             self::$pdos[$key]->query(
-                "SET SQL_MODE='NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'; SET NAMES '".ENV::db('conn.'.$key.'.charset')."'; SET COLLATE '".ENV::db('conn.'.$key.'.charset')."_general_ci';"
+                "SET SQL_MODE='NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'; SET NAMES '".StaticHandler::getEnvConfig('databases.conn.'.$key.'.charset')."'; SET COLLATE '".StaticHandler::getEnvConfig('databases.conn.'.$key.'.charset')."_general_ci';"
             );
 
-            self::$backups = ENV::db('backups');
+            self::$backups = StaticHandler::getEnvConfig('databases.backups');
 
             // Supervisors are alerted if there are problems.
-            if (ENV::supervisor()) {
+            if (StaticHandler::supervisor()) {
                 self::$pdos[$key]->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             }
         }
@@ -221,7 +221,7 @@ final class DB {
                 $result->execute();
             }
             catch (PDOException $e) {
-                if (ENV::isCRON() == false) {
+                if (StaticHandler::isCRON() == false) {
                     DevToolDebug::print_pdo_exception($e, $query);
                 }
                 else {
@@ -246,7 +246,7 @@ final class DB {
                 $result->execute($params);
             }
             catch (PDOException $e) {
-                if (ENV::isCRON() == false) {
+                if (StaticHandler::isCRON() == false) {
                     DevToolDebug::print_pdo_exception($e, $query, $params);
                 }
                 else {
@@ -272,7 +272,7 @@ final class DB {
                 $result->execute($params);
             }
             catch (PDOException $e) {
-                if (ENV::isCRON() == false) {
+                if (StaticHandler::isCRON() == false) {
                     DevToolDebug::print_pdo_exception($e, $query, $params);
                 }
                 else {
@@ -319,7 +319,7 @@ final class DB {
                 $result->execute($params);
             }
             catch (PDOException $e) {
-                if (ENV::isCRON() == false) {
+                if (StaticHandler::isCRON() == false) {
                     DevToolDebug::print_pdo_exception($e, $query, $params);
                 }
                 else {
@@ -344,7 +344,7 @@ final class DB {
                 $result->execute($params);
             }
             catch (PDOException $e) {
-                if (ENV::isCRON() == false) {
+                if (StaticHandler::isCRON() == false) {
                     DevToolDebug::print_pdo_exception($e, $query, $params);
                 }
                 else {
@@ -371,7 +371,7 @@ final class DB {
                 $result->execute();
             }
             catch (PDOException $e) {
-                if (ENV::isCRON() == false) {
+                if (StaticHandler::isCRON() == false) {
                     DevToolDebug::print_pdo_exception($e, $query);
                 }
                 else {
@@ -428,7 +428,7 @@ final class DB {
                 $result->execute($params);
             }
             catch (PDOException $e) {
-                if (ENV::isCRON() == false) {
+                if (StaticHandler::isCRON() == false) {
                     DevToolDebug::print_pdo_exception($e, $query, $params);
                 }
                 else {
@@ -469,7 +469,7 @@ final class DB {
                 return self::$pdos[self::$key]->lastInsertId();
             }
             catch (PDOException $e) {
-                if (ENV::isCRON() == false) {
+                if (StaticHandler::isCRON() == false) {
                     DevToolDebug::print_pdo_exception($e, $query, $params);
                 }
                 else {
@@ -521,7 +521,7 @@ final class DB {
                 return $result->rowCount();
             }
             catch (PDOException $e) {
-                if (ENV::isCRON() == false) {
+                if (StaticHandler::isCRON() == false) {
                     DevToolDebug::print_pdo_exception($e, $query, $params);
                 }
                 else {
@@ -552,7 +552,7 @@ final class DB {
                 return $result->rowCount();
             }
             catch (PDOException $e) {
-                if (ENV::isCRON() == false) {
+                if (StaticHandler::isCRON() == false) {
                     DevToolDebug::print_pdo_exception($e, $query, $params);
                 }
                 else {
@@ -564,14 +564,14 @@ final class DB {
     /* DDL (Data Definition Language) */
 
         final static function tables (): array {
-            $query = "SELECT * FROM information_schema.TABLES WHERE TABLE_SCHEMA = '". ENV::db('conn.'.self::$key.'.name') ."';";
+            $query = "SELECT * FROM information_schema.TABLES WHERE TABLE_SCHEMA = '". StaticHandler::getEnvConfig('databases.conn.'.self::$key.'.name') ."';";
 
             try {
                 $result = self::$pdos[self::$key]->prepare($query);
                 $result->execute();
             }
             catch (PDOException $e) {
-                if (ENV::isCRON() == false) {
+                if (StaticHandler::isCRON() == false) {
                     DevToolDebug::print_pdo_exception($e, $query);
                 }
                 else {
@@ -585,7 +585,7 @@ final class DB {
         final static function existsTable (string $tb_name): bool {
             $query = "SELECT COUNT(*) FROM information_schema.TABLES WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?;";
             $params = array(
-                ENV::db('conn.'.self::$key.'.name'), self::$tb_prefixes[self::$key].$tb_name
+                StaticHandler::getEnvConfig('databases.conn.'.self::$key.'.name'), self::$tb_prefixes[self::$key].$tb_name
             );
 
             try {
@@ -593,7 +593,7 @@ final class DB {
                 $result->execute($params);
             }
             catch (PDOException $e) {
-                if (ENV::isCRON() == false) {
+                if (StaticHandler::isCRON() == false) {
                     DevToolDebug::print_pdo_exception($e, $query, $params);
                 }
                 else {
@@ -619,7 +619,7 @@ final class DB {
                 }
             }
             catch (PDOException $e) {
-                if (ENV::isCRON() == false) {
+                if (StaticHandler::isCRON() == false) {
                     DevToolDebug::print_pdo_exception($e, $sql);
                 }
                 else {
@@ -636,7 +636,7 @@ final class DB {
             $query .= ';';
 
             $params = array(
-                ENV::db('conn.'.self::$key.'.name'), self::$tb_prefixes[self::$key].$tb_name
+                StaticHandler::getEnvConfig('databases.conn.'.self::$key.'.name'), self::$tb_prefixes[self::$key].$tb_name
             );
 
             try {
@@ -644,7 +644,7 @@ final class DB {
                 $result->execute($params);
             }
             catch (PDOException $e) {
-                if (ENV::isCRON() == false) {
+                if (StaticHandler::isCRON() == false) {
                     DevToolDebug::print_pdo_exception($e, $query, $params);
                 }
                 else {
@@ -690,7 +690,7 @@ final class DB {
                 return true;
             }
             catch (PDOException $e) {
-                if (ENV::isCRON() == false) {
+                if (StaticHandler::isCRON() == false) {
                     DevToolDebug::print_pdo_exception($e, $sql);
                 }
                 else {
@@ -712,7 +712,7 @@ final class DB {
                 }
             }
             catch (PDOException $e) {
-                if (ENV::isCRON() == false) {
+                if (StaticHandler::isCRON() == false) {
                     DevToolDebug::print_pdo_exception($e, $sql);
                 }
                 else {
@@ -734,7 +734,7 @@ final class DB {
                 }
             }
             catch (PDOException $e) {
-                if (ENV::isCRON() == false) {
+                if (StaticHandler::isCRON() == false) {
                     DevToolDebug::print_pdo_exception($e, $sql);
                 }
                 else {

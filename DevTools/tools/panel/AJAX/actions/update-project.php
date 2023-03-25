@@ -3,11 +3,11 @@
 use Arshwell\Monolith\Table\TableValidation;
 use Arshwell\Monolith\Module\Backend;
 use Arshwell\Monolith\Table\TableMigration;
-use Arshwell\Monolith\ENV\EnvComponent;
+use Arshwell\Monolith\Env\EnvComponent;
 use Arshwell\Monolith\Folder;
 use Arshwell\Monolith\File;
 use Arshwell\Monolith\Time;
-use Arshwell\Monolith\ENV;
+use Arshwell\Monolith\StaticHandler;
 use Arshwell\Monolith\Web;
 
 $form = TableValidation::run(array_merge($_POST, $_FILES),
@@ -192,10 +192,6 @@ if ($form->valid()) {
                         touch($destination, $sourcemtime);
                     }
                 }
-
-                if (is_file('caches/vendor/arshwell/monolith/env.json')) {
-                    touch('caches/vendor/arshwell/monolith/env.json'); // so is up-to-date with env.json
-                }
             }
             catch (Exception $e) {
                 $info = array(
@@ -237,7 +233,7 @@ if ($form->valid()) {
 
                     // Migrations
                     try {
-                        $class = ENV::class('migration');
+                        $class = StaticHandler::getEnvConfig('services.migration');
 
                         if (class_exists($class) && is_subclass_of($class, TableMigration::class)) {
                             $info['migrations'] = ($class)::migrate();

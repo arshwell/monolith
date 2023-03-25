@@ -6,7 +6,7 @@ use Arshwell\Monolith\Language;
 use Arshwell\Monolith\Cache;
 use Arshwell\Monolith\Text;
 use Arshwell\Monolith\Func;
-use Arshwell\Monolith\ENV;
+use Arshwell\Monolith\StaticHandler;
 use Arshwell\Monolith\URL;
 
 /**
@@ -46,10 +46,10 @@ final class Web {
     */
 
     static function fetch (): string {
-        self::$protocol = ENV::isCRON() ? 'https' : URL::protocol();
-        self::$site     = ENV::url();
+        self::$protocol = StaticHandler::isCRON() ? 'https' : URL::protocol();
+        self::$site     = StaticHandler::getEnvConfig('web.URL');
 
-        if (!is_file(Cache::file('vendor/arshwell/monolith/forks')) || Folder::mTime('forks') >= Cache::filemtime('vendor/arshwell/monolith/forks')) {
+        if (!is_file(Cache::file('vendor/arshwell/monolith/forks')) || Folder::mTime('config/forks') >= Cache::filemtime('vendor/arshwell/monolith/forks')) {
             self::$routes_by_request = array();
 
             $getforks = function (string $dir) use (&$getforks) {
@@ -64,7 +64,7 @@ final class Web {
                             $jsons[str_replace(
                                 '/', '.',
                                 preg_replace(
-                                    "~forks/(.*).json~",
+                                    "~config/forks/(.*).json~",
                                     "$1",
                                     preg_replace(
                                         "~(/)(\d+\.)(?!(/|json$))~",
@@ -126,7 +126,7 @@ final class Web {
                 return $array;
             };
 
-            $envlangs = $getenvlangs(ENV::class('translation')::langsPerWebGroup());
+            $envlangs = $getenvlangs(StaticHandler::getEnvConfig('services.translation')::langsPerWebGroup());
 
             $assoc = function (string $group = NULL, array $routes, $folders) use (&$assoc, &$envlangs) {
                 foreach ($routes as $name => $route) {
@@ -187,7 +187,7 @@ final class Web {
                 }
             };
 
-            $assoc(NULL, $getforks('forks'), array());
+            $assoc(NULL, $getforks('config/forks'), array());
 
             // after creating routes list, we add, in them, paginations and regex
             foreach (self::$routes as $name => $route) {
@@ -333,7 +333,7 @@ final class Web {
     // returns bool | object
     static function prepare (string $url_path, string $method, bool $return = true) {
         self::$protocol = URL::protocol();
-        self::$site     = ENV::url();
+        self::$site     = StaticHandler::getEnvConfig('web.URL');
 
         if ($method == 'HEAD') {
             $method = 'GET';

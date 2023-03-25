@@ -1,6 +1,6 @@
 <?php
 
-use Arshwell\Monolith\ENV;
+use Arshwell\Monolith\StaticHandler;
 use Arshwell\Monolith\Web;
 use Arshwell\Monolith\File;
 use Arshwell\Monolith\Time;

@@ -3,7 +3,7 @@
 use Arshwell\Monolith\Table\TableValidation;
 use Arshwell\Monolith\Time;
 use Arshwell\Monolith\File;
-use Arshwell\Monolith\ENV;
+use Arshwell\Monolith\StaticHandler;
 use Arshwell\Monolith\URL;
 
 $form = TableValidation::run($_POST,
@@ -72,7 +72,7 @@ if ($form->valid()) {
                     'fl'        => str_replace('//', '/', $path . $zippath),
                     'dlt'       => 1 // delete file after download
                 )),
-                'download'  => trim(ENV::root() ?: ENV::site(), '/').date(' d.m.Y H-i') .'.zip',
+                'download'  => trim(StaticHandler::getEnvConfig()->getRoot() ?: StaticHandler::getEnvConfig()->site(), '/').date(' d.m.Y H-i') .'.zip',
                 'waiting'   => $zipsize / 1000 // waiting time approx
             );
             $form->info = array(

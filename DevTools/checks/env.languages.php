@@ -1,7 +1,7 @@
 <?php
 
 use Arshwell\Monolith\DevTool\DevToolHTML;
-use Arshwell\Monolith\ENV;
+use Arshwell\Monolith\StaticHandler;
 
 call_user_func(function () {
     $regex = "/^[a-z]{2}$/";
@@ -32,5 +32,5 @@ call_user_func(function () {
         }
     };
 
-    $recursively(ENV::class('translation')::langsPerWebGroup());
+    $recursively(StaticHandler::getEnvConfig('services.translation')::langsPerWebGroup());
 });

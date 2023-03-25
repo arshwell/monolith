@@ -1,7 +1,7 @@
 <?php
 
 use Arshwell\Monolith\Folder;
-use Arshwell\Monolith\ENV;
+use Arshwell\Monolith\StaticHandler;
 
 // verify because could be already user-defined
 if (function_exists('_vd') == false) {
@@ -11,7 +11,7 @@ if (function_exists('_vd') == false) {
     * @package https://github.com/arshwell/monolith
     */
     function _vd ($variable, string $description = NULL): void {
-        if (ENV::supervisor() == false) {
+        if (StaticHandler::supervisor() == false) {
             return;
         }
 

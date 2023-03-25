@@ -6,7 +6,7 @@ use Arshwell\Monolith\Layout;
 use Arshwell\Monolith\Folder;
 use Arshwell\Monolith\Cache;
 use Arshwell\Monolith\Time;
-use Arshwell\Monolith\ENV;
+use Arshwell\Monolith\StaticHandler;
 use Arshwell\Monolith\Web;
 
 $form = TableValidation::run($_POST,
@@ -48,7 +48,7 @@ if ($form->valid()) {
 
             // NOTE: doing after recompile,
             // because it could take more than one request
-            Session::set(ENV::url().ENV::db('conn.default.name'));
+            Session::set(StaticHandler::getEnvConfig('web.URL').StaticHandler::getEnvConfig('databases.conn.default.name'));
             Cache::delete(); // because new project version could have new logic
 
             $info['1.'] = '---';

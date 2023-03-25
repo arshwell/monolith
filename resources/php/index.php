@@ -1,11 +1,12 @@
 <?php
 
+use Arshwell\Monolith\Env\EnvConfig;
+use Arshwell\Monolith\StaticHandler;
 use Arshwell\Monolith\Session;
 use Arshwell\Monolith\Module;
 use Arshwell\Monolith\Layout;
 use Arshwell\Monolith\Piece;
 use Arshwell\Monolith\Meta;
-use Arshwell\Monolith\ENV;
 use Arshwell\Monolith\URL;
 use Arshwell\Monolith\Web;
 use Arshwell\Monolith\DB;
@@ -14,24 +15,32 @@ session_start();
 
 require("vendor/autoload.php");
 
-require("vendor/arshwell/monolith/src/ENV.php");
+StaticHandler::setEnvConfig(new EnvConfig([
+    'databases' => json_decode(file_get_contents("config/databases.json"), true, 512, JSON_THROW_ON_ERROR),
+    'development' => json_decode(file_get_contents("config/development.json"), true, 512, JSON_THROW_ON_ERROR),
+    'locations' => json_decode(file_get_contents("config/locations.json"), true, 512, JSON_THROW_ON_ERROR),
+    'services' => json_decode(file_get_contents("config/services.json"), true, 512, JSON_THROW_ON_ERROR),
+    'web' => json_decode(file_get_contents("config/web.json"), true, 512, JSON_THROW_ON_ERROR),
+]));
+
+StaticHandler::iniSetPHP();
 
 DB::connect('default');
-Session::set(ENV::url().ENV::db('conn.default.name'));
+Session::set(StaticHandler::getEnvConfig('web.URL').StaticHandler::getEnvConfig('databases.conn.default.name'));
 
 // Supervisors are alerted if there are problems.
-if (ENV::board('dev') && ENV::supervisor() && $_SERVER['REQUEST_METHOD'] == 'GET') {
+if (StaticHandler::getEnvConfig('development.debug') && StaticHandler::supervisor() && $_SERVER['REQUEST_METHOD'] == 'GET') {
     require("vendor/arshwell/monolith/DevTools/checks.php");
 }
 
 Web::fetch()::prepare(
-    preg_replace('~^'. ENV::root() .'~', '', URL::path()),
+    preg_replace('~^'. StaticHandler::getEnvConfig()->getRoot() .'~', '', URL::path()),
     $_SERVER['REQUEST_METHOD'],
     false
 );
 
 // Supervisors can use DevPanel and access DevFiles.
-if (ENV::supervisor()) {
+if (StaticHandler::supervisor()) {
     // NOTE: We do it here, before Session::memorize(), for not saving DevTools actions in Session.
     require("vendor/arshwell/monolith/DevTools/tools.php");
 }
@@ -60,7 +69,7 @@ if (Web::isType('AJAX')) {
         exit;
     }
 
-    if (ENV::board('dev') == false && !empty($_POST['arsavinel-arshwell-mxdvcwdthflg'])) { // max device width flag
+    if (StaticHandler::getEnvConfig('development.debug') == false && !empty($_POST['arsavinel-arshwell-mxdvcwdthflg'])) { // max device width flag
         Session::setDesign($_POST['arsavinel-arshwell-mxdvcwdthflg']);
     }
 }
@@ -72,18 +81,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && (!isset($_SERVER['HTTP_REFERER']) || 
     exit;
 }
 
-if ((ENV::class('maintenance'))::isActive()) {
-    if (ENV::supervisor()) {
+if ((StaticHandler::getEnvConfig('services.maintenance'))::isActive()) {
+    if (StaticHandler::supervisor()) {
         // supervisor keep their session, so they can acces DevPanel
-        Web::force((ENV::class('maintenance'))::route());
+        Web::force((StaticHandler::getEnvConfig('services.maintenance'))::route());
     }
-    else if ((ENV::class('maintenance'))::isSmart() && !Session::isNew()) {
+    else if ((StaticHandler::getEnvConfig('services.maintenance'))::isSmart() && !Session::isNew()) {
         // NOTE: Client still can use the app.
     }
     else {
         // HACK: so here are the other 3 situations
         Session::empty(); // for keeping the session new
-        Web::force((ENV::class('maintenance'))::route());
+        Web::force((StaticHandler::getEnvConfig('services.maintenance'))::route());
     }
 }
 
@@ -156,7 +165,7 @@ unset($v); // NOTE: used by gates/ and ENV.php ↑
                 });
 
                 // Supervisors see all resources separately.
-                if (ENV::board('dev') && ENV::supervisor()) {
+                if (StaticHandler::getEnvConfig('development.debug') && StaticHandler::supervisor()) {
                     $links = Layout::devFiles();
 
                     $time = substr(str_shuffle("BCDFGHKLMNPQRSTVWXYZ"), 0, 4); // without vowels
@@ -207,7 +216,7 @@ unset($v); // NOTE: used by gates/ and ENV.php ↑
         echo($output); // display
 
         // Supervisors can see DevPanel (if they write down current version).
-        if (ENV::supervisor()) {
+        if (StaticHandler::supervisor()) {
             require("vendor/arshwell/monolith/DevTools/tools/panel/button.php"); // NOTE: it uses the $compiled variable
         }
 
@@ -218,7 +227,7 @@ unset($v); // NOTE: used by gates/ and ENV.php ↑
     }
     else if (Web::isType('AJAX')) {
         // Update to date the media links.
-        if (ENV::board('dev')) {
+        if (StaticHandler::getEnvConfig('development.debug')) {
             call_user_func(function () {
                 $folder = Web::folder();
                 $pieces = Piece::used();
