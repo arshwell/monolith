@@ -13,13 +13,24 @@ final class EnvConfig
     private $siteRoot = NULL;
 
 
-    function __construct(array $config)
+    function __construct(array $config, array $envVariables)
     {
         $this->configs['databases'] = $config['databases'];
         $this->configs['development'] = $config['development'];
         $this->configs['locations'] = $config['locations'];
         $this->configs['services'] = $config['services'];
         $this->configs['web'] = $config['web'];
+
+        // replace envVariables in the config
+        array_walk_recursive($this->configs, function (&$value) use ($envVariables) {
+            $value = preg_replace_callback(
+                "~\%env\(([A-Z_]+?)\)\%~",
+                function ($matches) use ($envVariables) {
+                    return $envVariables[$matches[1]];
+                },
+                $value
+            );
+        });
 
         // NOTE: array_merge_recursive is not good
         $this->configs = array_replace_recursive(
