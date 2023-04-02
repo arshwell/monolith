@@ -1,5 +1,7 @@
 <?php
 
+use Symfony\Component\Dotenv\Dotenv;
+
 use Arshwell\Monolith\Env\EnvConfig;
 use Arshwell\Monolith\StaticHandler;
 use Arshwell\Monolith\Session;
@@ -12,13 +14,16 @@ session_start();
 
 require("vendor/autoload.php");
 
+// loads .env, .env.local, and .env.$APP_ENV.local or .env.$APP_ENV
+(new Dotenv())->loadEnv('.env');
+
 StaticHandler::setEnvConfig(new EnvConfig([
     'databases' => json_decode(file_get_contents("config/databases.json"), true, 512, JSON_THROW_ON_ERROR),
     'development' => json_decode(file_get_contents("config/development.json"), true, 512, JSON_THROW_ON_ERROR),
     'locations' => json_decode(file_get_contents("config/locations.json"), true, 512, JSON_THROW_ON_ERROR),
     'services' => json_decode(file_get_contents("config/services.json"), true, 512, JSON_THROW_ON_ERROR),
     'web' => json_decode(file_get_contents("config/web.json"), true, 512, JSON_THROW_ON_ERROR),
-]));
+], $_ENV));
 
 StaticHandler::iniSetPHP();
 
