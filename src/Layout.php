@@ -645,7 +645,7 @@ final class Layout {
                 }, $media['json']['scss']['vars']),
                 array(
                     'arshwell--env-root' => trim((strstr($url, '/') ?: ''), '/'), // the url path for root project
-                    'arshwell--web-paths' => self::SASSify(StaticHandler::getEnvConfig('locations'), function (string $path = NULL, string $folder) use ($url): string {
+                    'arshwell--web-paths' => self::SASSify(StaticHandler::getEnvConfig()->getFileStoragePathsByIndex(0), function (string $path = NULL, string $folder) use ($url): string {
                         // in url we use only folder, not real path
                         return ('//'. $url .'/'. trim($folder, '/') . '/'); // having one, and only one, slash at the end
                     })
@@ -946,7 +946,7 @@ final class Layout {
                             'Web.vars.site = "'. $url .'/";',
                             'Web.vars.paths = '. json_encode(array_map(function ($folder) use ($url) {
                                 return $url .'/'. $folder;
-                            }, array_keys(StaticHandler::getEnvConfig('locations')))) .';',
+                            }, array_keys(StaticHandler::getEnvConfig()->getFileStoragePathsByIndex(0)))) .';',
                             'Web.vars.key = "'. $route_name .'";',
                             'Web.vars.route = '. json_encode(array(
                                 'url'           => preg_replace('/\/{2,}$/', '/', $url .'/'. Web::pattern($route_name)),
@@ -1103,7 +1103,7 @@ final class Layout {
             $scss->addVariables(array_merge(
                 $media['json']['scss']['vars'],
                 array(
-                    'env-statics' => self::SASSify(StaticHandler::getEnvConfig('locations.statics'), function (string $value) use ($url): string {
+                    'env-statics' => self::SASSify(StaticHandler::getEnvConfig('paths.statics'), function (string $value) use ($url): string {
                         return ('//'. $url .'/'. substr($value, 0, -1));
                     })
                 ),

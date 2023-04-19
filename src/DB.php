@@ -17,77 +17,82 @@ final class DB {
     private static $pdos        = array();
     private static $backups     = array();
     private static $tb_prefixes = array();
-    private static $key         = NULL;
 
-    final static function connect (string $key): void {
-        self::$key = $key;
+    /** @var string */
+    private static $defaultDbConnKey = NULL;
 
-        if (!isset(self::$pdos[$key])) {
-            self::$tb_prefixes[$key] = StaticHandler::getEnvConfig('databases.conn.'.$key.'.prefix');
-            self::$pdos[$key] = new PDO(
-                'mysql:host='.StaticHandler::getEnvConfig('databases.conn.'.$key.'.host').';dbname='.StaticHandler::getEnvConfig('databases.conn.'.$key.'.name').';charset='.StaticHandler::getEnvConfig('databases.conn.'.$key.'.charset'),
-                StaticHandler::getEnvConfig('databases.conn.'.$key.'.username'),
-                StaticHandler::getEnvConfig('databases.conn.'.$key.'.password')
+    final static function connect (string $dbConnKey): void {
+        if (self::$defaultDbConnKey == null) {
+            // default dbConn key
+            self::$defaultDbConnKey = array_key_first(StaticHandler::getEnvConfig('databases')['conn']);
+        }
+
+        if (!isset(self::$pdos[$dbConnKey])) {
+            self::$tb_prefixes[$dbConnKey] = StaticHandler::getEnvConfig('databases.conn.'.$dbConnKey.'.prefix');
+            self::$pdos[$dbConnKey] = new PDO(
+                'mysql:host='.StaticHandler::getEnvConfig('databases.conn.'.$dbConnKey.'.host').';dbname='.StaticHandler::getEnvConfig('databases.conn.'.$dbConnKey.'.name').';charset='.StaticHandler::getEnvConfig('databases.conn.'.$dbConnKey.'.charset'),
+                StaticHandler::getEnvConfig('databases.conn.'.$dbConnKey.'.username'),
+                StaticHandler::getEnvConfig('databases.conn.'.$dbConnKey.'.password')
             );
 
-            self::$pdos[$key]->query(
-                "SET SQL_MODE='NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'; SET NAMES '".StaticHandler::getEnvConfig('databases.conn.'.$key.'.charset')."'; SET COLLATE '".StaticHandler::getEnvConfig('databases.conn.'.$key.'.charset')."_general_ci';"
+            self::$pdos[$dbConnKey]->query(
+                "SET SQL_MODE='NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'; SET NAMES '".StaticHandler::getEnvConfig('databases.conn.'.$dbConnKey.'.charset')."'; SET COLLATE '".StaticHandler::getEnvConfig('databases.conn.'.$dbConnKey.'.charset')."_general_ci';"
             );
 
             self::$backups = StaticHandler::getEnvConfig('databases.backups');
 
             // Supervisors are alerted if there are problems.
             if (StaticHandler::supervisor()) {
-                self::$pdos[$key]->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                self::$pdos[$dbConnKey]->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             }
         }
     }
 
     final static function key (): string {
-        return self::$key;
+        return self::$defaultDbConnKey;
     }
 
     /* TCL (Transaction Control Language) */
 
         final static function beginTransaction (): void {
-            self::$pdos[self::$key]->beginTransaction();
+            self::$pdos[self::$defaultDbConnKey]->beginTransaction();
 
-            if (isset(self::$backups[self::$key])) {
-                foreach (self::$backups[self::$key] as $db_key) {
+            if (isset(self::$backups[self::$defaultDbConnKey])) {
+                foreach (self::$backups[self::$defaultDbConnKey] as $db_key) {
                     self::$pdos[$db_key]->beginTransaction();
                 }
             }
         }
         final static function rollback (): void {
-            if (self::$pdos[self::$key]->inTransaction()) {
-                self::$pdos[self::$key]->rollback();
+            if (self::$pdos[self::$defaultDbConnKey]->inTransaction()) {
+                self::$pdos[self::$defaultDbConnKey]->rollback();
 
-                if (isset(self::$backups[self::$key])) {
-                    foreach (self::$backups[self::$key] as $db_key) {
+                if (isset(self::$backups[self::$defaultDbConnKey])) {
+                    foreach (self::$backups[self::$defaultDbConnKey] as $db_key) {
                         self::$pdos[$db_key]->rollback();
                     }
                 }
             }
         }
         final static function commit (): void {
-            if (self::$pdos[self::$key]->inTransaction()) {
-                self::$pdos[self::$key]->commit();
+            if (self::$pdos[self::$defaultDbConnKey]->inTransaction()) {
+                self::$pdos[self::$defaultDbConnKey]->commit();
 
-                if (isset(self::$backups[self::$key])) {
-                    foreach (self::$backups[self::$key] as $db_key) {
+                if (isset(self::$backups[self::$defaultDbConnKey])) {
+                    foreach (self::$backups[self::$defaultDbConnKey] as $db_key) {
                         self::$pdos[$db_key]->commit();
                     }
                 }
             }
         }
 
-        final private static function prefix (string $query, bool $dml_dql = false, bool $ddl = false): string {
+        final private static function prefix (string $tb_prefix, string $query, bool $dml_dql = false, bool $ddl = false): string {
             // table.*          => pr_table.*
             // table.column     => pr_table.column
             // table.`column`   => pr_table.`column`
             $query = preg_replace(
                 "/(^|\(|\s|,) ((?:\w+\.\*) | (?:\w+\.\w+(?::lg)?) | (?:\w+\.`\w+(?::lg)?`)) (,|\s|\)|;|$)/x",
-                '$1'.self::$tb_prefixes[self::$key].'$2$3',
+                '$1'.$tb_prefix.'$2$3',
                 $query
             );
 
@@ -96,7 +101,7 @@ final class DB {
             // `table`.`column` => `pr_table`.`column`
             $query = preg_replace(
                 "/(^|\(|\s|,) (`) ((?:\w+`\.\*) | (?:\w+`\.\w+(?::lg)?) | (?:\w+`\.`\w+(?::lg)?`)) (,|\s|\)|;|$)/x",
-                '$1$2'.self::$tb_prefixes[self::$key].'$3$4',
+                '$1$2'.$tb_prefix.'$3$4',
                 $query
             );
 
@@ -123,7 +128,7 @@ final class DB {
                     "/(^|\(|\s|,) (".implode(' | ', array_map(function($command) {
                         return "(?:$command)";
                     }, $commands)).") (\s+) (\w+) (,|\s|\)|;|$)/x",
-                    '$1$2$3'.self::$tb_prefixes[self::$key].'$4$5',
+                    '$1$2$3'.$tb_prefix.'$4$5',
                     $query
                 );
 
@@ -133,7 +138,7 @@ final class DB {
                     "/(^|\(|\s|,) (".implode(' | ', array_map(function($command) {
                         return "(?:$command)";
                     }, $commands)).") (\s+`) (\w+`) (,|\s|\)|;|$)/x",
-                    '$1$2$3'.self::$tb_prefixes[self::$key].'$4$5',
+                    '$1$2$3'.$tb_prefix.'$4$5',
                     $query
                 );
             }
@@ -141,8 +146,8 @@ final class DB {
             return $query;
         }
 
-        final private static function languages (string $query, string $class, array &$params = NULL): string {
-            $regex = "/(^|\(|\s|,|`)((".self::$tb_prefixes[self::$key].")(\w+)\.)?(\w+)(:lg)((\s+AS\s+\w+)(:lg))?(`|,|\s|\)|;|$)/i";
+        final private static function languages (string $dbConnKey, string $query, string $class, array &$params = NULL): string {
+            $regex = "/(^|\(|\s|,|`)((".self::$tb_prefixes[$dbConnKey].")(\w+)\.)?(\w+)(:lg)((\s+AS\s+\w+)(:lg))?(`|,|\s|\)|;|$)/i";
 
             if (preg_match($regex, $query, $matches)) {
                 $nr_langs_per_column = array(); // for replacing ?:lg with real count of placeholders
@@ -212,12 +217,14 @@ final class DB {
     /* DLQ (Data Query Language) */
 
         final static function get (string $class, int $id, string $columns): ?array {
-            $query = "SELECT ".$columns." FROM ".self::$tb_prefixes[self::$key].($class)::TABLE ." WHERE ". ($class)::PRIMARY_KEY ." = ". $id;
+            $dbConnKey = (defined("{$class}::DB_CONN_KEY") ? ($class)::DB_CONN_KEY : self::$defaultDbConnKey);
 
-            $query = self::languages($query.';', $class, $params);
+            $query = "SELECT ".$columns." FROM ".self::$tb_prefixes[$dbConnKey].($class)::TABLE ." WHERE ". ($class)::PRIMARY_KEY ." = ". $id;
+
+            $query = self::languages($dbConnKey, $query.';', $class, $params);
 
             try {
-                $result = self::$pdos[self::$key]->prepare($query);
+                $result = self::$pdos[$dbConnKey]->prepare($query);
                 $result->execute();
             }
             catch (PDOException $e) {
@@ -233,16 +240,18 @@ final class DB {
         }
 
         final static function column (string $class, string $column, string $where = NULL, array $params = NULL): array {
-            $query = "SELECT ". $column ." FROM ".self::$tb_prefixes[self::$key].($class)::TABLE;
+            $dbConnKey = (defined("{$class}::DB_CONN_KEY") ? ($class)::DB_CONN_KEY : self::$defaultDbConnKey);
+
+            $query = "SELECT ". $column ." FROM ".self::$tb_prefixes[$dbConnKey].($class)::TABLE;
 
             if ($where) {
-                $query .= " WHERE ". self::prefix($where, true);
+                $query .= " WHERE ". self::prefix(self::$tb_prefixes[$dbConnKey], $where, true);
             }
 
-            $query = self::languages($query.';', $class, $params);
+            $query = self::languages($dbConnKey, $query.';', $class, $params);
 
             try {
-                $result = self::$pdos[self::$key]->prepare($query);
+                $result = self::$pdos[$dbConnKey]->prepare($query);
                 $result->execute($params);
             }
             catch (PDOException $e) {
@@ -258,17 +267,19 @@ final class DB {
         }
 
         final static function field (string $class, string $column, string $where = NULL, array $params = NULL): ?string {
-            $query = "SELECT ". $column ." FROM ".self::$tb_prefixes[self::$key].($class)::TABLE;
+            $dbConnKey = (defined("{$class}::DB_CONN_KEY") ? ($class)::DB_CONN_KEY : self::$defaultDbConnKey);
+
+            $query = "SELECT ". $column ." FROM ".self::$tb_prefixes[$dbConnKey].($class)::TABLE;
 
             if ($where) {
-                $query .= " WHERE ". self::prefix($where, true);
+                $query .= " WHERE ". self::prefix(self::$tb_prefixes[$dbConnKey], $where, true);
             }
             $query .= " LIMIT 1;";
 
-            $query = self::languages($query, $class, $params);
+            $query = self::languages($dbConnKey, $query, $class, $params);
 
             try {
-                $result = self::$pdos[self::$key]->prepare($query);
+                $result = self::$pdos[$dbConnKey]->prepare($query);
                 $result->execute($params);
             }
             catch (PDOException $e) {
@@ -286,36 +297,38 @@ final class DB {
         }
 
         final static function first (array $sql, array $params = NULL): ?array {
-            $sql['columns'] = self::prefix($sql['columns']);
+            $dbConnKey = (defined("{$sql['class']}::DB_CONN_KEY") ? ($sql['class'])::DB_CONN_KEY : self::$defaultDbConnKey);
 
-            $query = "SELECT ".$sql['columns']." FROM ".self::$tb_prefixes[self::$key].($sql['class'])::TABLE;
+            $sql['columns'] = self::prefix(self::$tb_prefixes[$dbConnKey], $sql['columns']);
+
+            $query = "SELECT ".$sql['columns']." FROM ".self::$tb_prefixes[$dbConnKey].($sql['class'])::TABLE;
 
             if (!empty($sql['join'])) {
                 $join = $sql;
                 while (isset($join['join'])) {
                     $join = $join['join'];
-                    $query .= " ".$join[0]." JOIN ". self::$tb_prefixes[self::$key] . $join[1]." ON ".preg_replace("/(\w+[.]\w+)/", self::$tb_prefixes[self::$key]."$1", $join[2]);
+                    $query .= " ".$join[0]." JOIN ". self::$tb_prefixes[$dbConnKey] . $join[1]." ON ".preg_replace("/(\w+[.]\w+)/", self::$tb_prefixes[$dbConnKey]."$1", $join[2]);
                 }
             }
             else if (!empty($sql['joins'])) {
                 foreach ($sql['joins'] as $join) {
-                    $query .= " ".$join['type']." JOIN ". self::$tb_prefixes[self::$key] . $join['table']." ON ".self::prefix($join['on']);
+                    $query .= " ".$join['type']." JOIN ". self::$tb_prefixes[$dbConnKey] . $join['table']." ON ".self::prefix(self::$tb_prefixes[$dbConnKey], $join['on']);
                 }
             }
 
             if (isset($sql['where'])) {
-                $query .= " WHERE ". self::prefix($sql['where'], true);
+                $query .= " WHERE ". self::prefix(self::$tb_prefixes[$dbConnKey], $sql['where'], true);
             }
 
             if (isset($sql['order'])) {
-                $query .= " ORDER BY ". self::prefix($sql['order']);
+                $query .= " ORDER BY ". self::prefix(self::$tb_prefixes[$dbConnKey], $sql['order']);
             }
             $query .= " LIMIT 1;";
 
-            $query = self::languages($query, $sql['class'], $params);
+            $query = self::languages($dbConnKey, $query, $sql['class'], $params);
 
             try {
-                $result = self::$pdos[self::$key]->prepare($query);
+                $result = self::$pdos[$dbConnKey]->prepare($query);
                 $result->execute($params);
             }
             catch (PDOException $e) {
@@ -331,16 +344,18 @@ final class DB {
         }
 
         final static function count (string $class, string $where = NULL, array $params = NULL): int {
-            $query = "SELECT COUNT(*) FROM ". self::$tb_prefixes[self::$key].($class)::TABLE;
+            $dbConnKey = (defined("{$class}::DB_CONN_KEY") ? ($class)::DB_CONN_KEY : self::$defaultDbConnKey);
+
+            $query = "SELECT COUNT(*) FROM ". self::$tb_prefixes[$dbConnKey].($class)::TABLE;
 
             if ($where) {
-                $query .= " WHERE ". self::prefix($where, true);
+                $query .= " WHERE ". self::prefix(self::$tb_prefixes[$dbConnKey], $where, true);
             }
 
-            $query = self::languages($query.';', $class, $params);
+            $query = self::languages($dbConnKey, $query.';', $class, $params);
 
             try {
-                $result = self::$pdos[self::$key]->prepare($query);
+                $result = self::$pdos[$dbConnKey]->prepare($query);
                 $result->execute($params);
             }
             catch (PDOException $e) {
@@ -358,16 +373,18 @@ final class DB {
         }
 
         final static function all (string $class, $columns, string $order = NULL): array {
-            $query = "SELECT ".$columns." FROM ".self::$tb_prefixes[self::$key].($class)::TABLE;
+            $dbConnKey = (defined("{$class}::DB_CONN_KEY") ? ($class)::DB_CONN_KEY : self::$defaultDbConnKey);
+
+            $query = "SELECT ".$columns." FROM ".self::$tb_prefixes[$dbConnKey].($class)::TABLE;
 
             if ($order) {
                 $query .= " ORDER BY ". $order;
             }
 
-            $query = self::languages($query.';', $class, $params);
+            $query = self::languages($dbConnKey, $query.';', $class, $params);
 
             try {
-                $result = self::$pdos[self::$key]->prepare($query);
+                $result = self::$pdos[$dbConnKey]->prepare($query);
                 $result->execute();
             }
             catch (PDOException $e) {
@@ -383,36 +400,38 @@ final class DB {
         }
 
         final static function select (array $sql, array $params = NULL): array {
+            $dbConnKey = (defined("{$sql['class']}::DB_CONN_KEY") ? ($sql['class'])::DB_CONN_KEY : self::$defaultDbConnKey);
+
             if (trim($sql['columns']) != '*' && isset($sql['sort']) && !preg_match("/(^(\s+)?|.+,(\s+)?)". $sql['sort'] ."((\s+)?,.+|$)/", $sql['columns'])) {
                 $sql['columns'] = $sql['columns'] .', '. $sql['sort'];
             }
 
-            $sql['columns'] = self::prefix($sql['columns']);
+            $sql['columns'] = self::prefix(self::$tb_prefixes[$dbConnKey], $sql['columns']);
 
-            $query = "SELECT ".$sql['columns']." FROM ".self::$tb_prefixes[self::$key].($sql['class'])::TABLE;
+            $query = "SELECT ".$sql['columns']." FROM ".self::$tb_prefixes[$dbConnKey].($sql['class'])::TABLE;
 
             if (!empty($sql['join'])) {
                 $join = $sql;
                 while (isset($join['join'])) {
                     $join = $join['join'];
 
-                    $query .= " ".$join[0]." JOIN ". self::$tb_prefixes[self::$key] . $join[1]." ON ".self::prefix($join[2]);
+                    $query .= " ".$join[0]." JOIN ". self::$tb_prefixes[$dbConnKey] . $join[1]." ON ".self::prefix(self::$tb_prefixes[$dbConnKey], $join[2]);
                 }
             }
             else if (!empty($sql['joins'])) {
                 foreach ($sql['joins'] as $join) {
-                    $query .= " ".$join['type']." JOIN ". self::$tb_prefixes[self::$key] . $join['table']." ON ".self::prefix($join['on']);
+                    $query .= " ".$join['type']." JOIN ". self::$tb_prefixes[$dbConnKey] . $join['table']." ON ".self::prefix(self::$tb_prefixes[$dbConnKey], $join['on']);
                 }
             }
 
             if (isset($sql['where'])) {
-                $query .= " WHERE ". self::prefix($sql['where'], true);
+                $query .= " WHERE ". self::prefix(self::$tb_prefixes[$dbConnKey], $sql['where'], true);
             }
             if (isset($sql['group'])) {
-                $query .= " GROUP BY ".self::prefix($sql['group']);
+                $query .= " GROUP BY ".self::prefix(self::$tb_prefixes[$dbConnKey], $sql['group']);
             }
             if (isset($sql['order'])) {
-                $query .= " ORDER BY ". self::prefix($sql['order']);
+                $query .= " ORDER BY ". self::prefix(self::$tb_prefixes[$dbConnKey], $sql['order']);
             }
             if (isset($sql['limit'])) {
                 $query .= " LIMIT ".$sql['limit'];
@@ -421,10 +440,10 @@ final class DB {
                 $query .= " OFFSET ".$sql['offset'];
             }
 
-            $query = self::languages($query.';', $sql['class'], $params);
+            $query = self::languages($dbConnKey, $query.';', $sql['class'], $params);
 
             try {
-                $result = self::$pdos[self::$key]->prepare($query);
+                $result = self::$pdos[$dbConnKey]->prepare($query);
                 $result->execute($params);
             }
             catch (PDOException $e) {
@@ -451,22 +470,24 @@ final class DB {
     /* DML (Data Manipulation Language) */
 
         final static function insert (string $class, string $columns, $values, array $params = NULL): int {
-            $query = "INSERT INTO ". self::$tb_prefixes[self::$key].($class)::TABLE ." (". $columns .") VALUES (". (is_string($values) ? $values : implode('),(', array_map(function ($columns) {
+            $dbConnKey = (defined("{$class}::DB_CONN_KEY") ? ($class)::DB_CONN_KEY : self::$defaultDbConnKey);
+
+            $query = "INSERT INTO ". self::$tb_prefixes[$dbConnKey].($class)::TABLE ." (". $columns .") VALUES (". (is_string($values) ? $values : implode('),(', array_map(function ($columns) {
                 return (is_array($columns) ? implode(', ', $columns) : $columns);
             }, $values))) .");";
 
-            $query = self::languages($query, $class, $params);
+            $query = self::languages($dbConnKey, $query, $class, $params);
 
             try {
-                self::$pdos[self::$key]->prepare($query)->execute($params);
+                self::$pdos[$dbConnKey]->prepare($query)->execute($params);
 
-                    if (isset(self::$backups[self::$key])) {
-                        foreach (self::$backups[self::$key] as $db_key) {
+                    if (isset(self::$backups[$dbConnKey])) {
+                        foreach (self::$backups[$dbConnKey] as $db_key) {
                             self::$pdos[$db_key]->prepare($query)->execute($params);
                         }
                     }
 
-                return self::$pdos[self::$key]->lastInsertId();
+                return self::$pdos[$dbConnKey]->lastInsertId();
             }
             catch (PDOException $e) {
                 if (StaticHandler::isCRON() == false) {
@@ -479,7 +500,9 @@ final class DB {
         }
 
         final static function update (array $sql, array $params = NULL): int {
-            $query = "UPDATE ". self::$tb_prefixes[self::$key].($sql['class'])::TABLE ." SET ". preg_replace("/(?<=^|,)(\s*\w+(\:lg)?)\s*(?=(,|$))/x", "$1 = ?", $sql['set']);
+            $dbConnKey = (defined("{$sql['class']}::DB_CONN_KEY") ? ($sql['class'])::DB_CONN_KEY : self::$defaultDbConnKey);
+
+            $query = "UPDATE ". self::$tb_prefixes[$dbConnKey].($sql['class'])::TABLE ." SET ". preg_replace("/(?<=^|,)(\s*\w+(\:lg)?)\s*(?=(,|$))/x", "$1 = ?", $sql['set']);
 
             /* Back up for preg_replace() regex.
                 Add to unassigned columns, from $sql['set'], an " = ?".
@@ -491,18 +514,18 @@ final class DB {
             TODO: Don't delete this comment 'till you are sure that used preg_replace() is perfect always */
 
             if (isset($sql['where'])) {
-                $query .= " WHERE ". self::prefix($sql['where'], true);
+                $query .= " WHERE ". self::prefix(self::$tb_prefixes[$dbConnKey], $sql['where'], true);
             }
 
-            $query = self::languages($query.';', $sql['class'], $params);
+            $query = self::languages($dbConnKey, $query.';', $sql['class'], $params);
 
             try {
-                $result = self::$pdos[self::$key]->prepare($query);
+                $result = self::$pdos[$dbConnKey]->prepare($query);
 
                 if ($params) {
-                    foreach ($params as $key => $param) {
+                    foreach ($params as $dbConnKey => $param) {
                         $result->bindValue(
-                            is_int($key) ? ($key)+1 : $key,
+                            is_int($dbConnKey) ? ($dbConnKey)+1 : $dbConnKey,
                             $param,
                             // really check if integer, because very long digits crash
                             (is_numeric($param) && $param == (int)$param) ? PDO::PARAM_INT : PDO::PARAM_STR
@@ -512,8 +535,8 @@ final class DB {
 
                 $result->execute();
 
-                    if (isset(self::$backups[self::$key])) {
-                        foreach (self::$backups[self::$key] as $db_key) {
+                    if (isset(self::$backups[$dbConnKey])) {
+                        foreach (self::$backups[$dbConnKey] as $db_key) {
                             self::$pdos[$db_key]->prepare($query)->execute($params);
                         }
                     }
@@ -531,20 +554,22 @@ final class DB {
         }
 
         final static function delete (string $class, string $where = NULL, array $params = NULL): int {
-            $query = "DELETE FROM ". self::$tb_prefixes[self::$key].($class)::TABLE;
+            $dbConnKey = (defined("{$class}::DB_CONN_KEY") ? ($class)::DB_CONN_KEY : self::$defaultDbConnKey);
+
+            $query = "DELETE FROM ". self::$tb_prefixes[$dbConnKey].($class)::TABLE;
 
             if ($where) {
                 $query .= " WHERE ". $where;
             }
 
-            $query = self::languages($query.';', $class, $params);
+            $query = self::languages($dbConnKey, $query.';', $class, $params);
 
             try {
-                $result = self::$pdos[self::$key]->prepare($query);
+                $result = self::$pdos[$dbConnKey]->prepare($query);
                 $result->execute($params);
 
-                    if (isset(self::$backups[self::$key])) {
-                        foreach (self::$backups[self::$key] as $db_key) {
+                    if (isset(self::$backups[$dbConnKey])) {
+                        foreach (self::$backups[$dbConnKey] as $db_key) {
                             self::$pdos[$db_key]->prepare($query)->execute($params);
                         }
                     }
@@ -564,10 +589,10 @@ final class DB {
     /* DDL (Data Definition Language) */
 
         final static function tables (): array {
-            $query = "SELECT * FROM information_schema.TABLES WHERE TABLE_SCHEMA = '". StaticHandler::getEnvConfig('databases.conn.'.self::$key.'.name') ."';";
+            $query = "SELECT * FROM information_schema.TABLES WHERE TABLE_SCHEMA = '". StaticHandler::getEnvConfig('databases.conn.'.self::$defaultDbConnKey.'.name') ."';";
 
             try {
-                $result = self::$pdos[self::$key]->prepare($query);
+                $result = self::$pdos[self::$defaultDbConnKey]->prepare($query);
                 $result->execute();
             }
             catch (PDOException $e) {
@@ -585,11 +610,11 @@ final class DB {
         final static function existsTable (string $tb_name): bool {
             $query = "SELECT COUNT(*) FROM information_schema.TABLES WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?;";
             $params = array(
-                StaticHandler::getEnvConfig('databases.conn.'.self::$key.'.name'), self::$tb_prefixes[self::$key].$tb_name
+                StaticHandler::getEnvConfig('databases.conn.'.self::$defaultDbConnKey.'.name'), self::$tb_prefixes[self::$defaultDbConnKey].$tb_name
             );
 
             try {
-                $result = self::$pdos[self::$key]->prepare($query);
+                $result = self::$pdos[self::$defaultDbConnKey]->prepare($query);
                 $result->execute($params);
             }
             catch (PDOException $e) {
@@ -607,13 +632,13 @@ final class DB {
         }
 
         final static function createTable (string $tb_name, array $columns): void {
-            $sql = "CREATE TABLE IF NOT EXISTS ". self::$tb_prefixes[self::$key].$tb_name ." (". implode(', ', $columns) .");";
+            $sql = "CREATE TABLE IF NOT EXISTS ". self::$tb_prefixes[self::$defaultDbConnKey].$tb_name ." (". implode(', ', $columns) .");";
 
             try {
-                self::$pdos[self::$key]->exec($sql);
+                self::$pdos[self::$defaultDbConnKey]->exec($sql);
 
-                if (isset(self::$backups[self::$key])) {
-                    foreach (self::$backups[self::$key] as $db_key) {
+                if (isset(self::$backups[self::$defaultDbConnKey])) {
+                    foreach (self::$backups[self::$defaultDbConnKey] as $db_key) {
                         self::$pdos[$db_key]->exec($sql);
                     }
                 }
@@ -636,11 +661,11 @@ final class DB {
             $query .= ';';
 
             $params = array(
-                StaticHandler::getEnvConfig('databases.conn.'.self::$key.'.name'), self::$tb_prefixes[self::$key].$tb_name
+                StaticHandler::getEnvConfig('databases.conn.'.self::$defaultDbConnKey.'.name'), self::$tb_prefixes[self::$defaultDbConnKey].$tb_name
             );
 
             try {
-                $result = self::$pdos[self::$key]->prepare($query);
+                $result = self::$pdos[self::$defaultDbConnKey]->prepare($query);
                 $result->execute($params);
             }
             catch (PDOException $e) {
@@ -656,7 +681,7 @@ final class DB {
         }
 
         final static function alterTable (string $tb_name, string $action = NULL, string $column, string $value = NULL): bool {
-            $exists = self::$pdos[self::$key]->query('SHOW COLUMNS FROM ' . self::$tb_prefixes[self::$key].$tb_name . " LIKE '". $column ."'")->fetch(PDO::FETCH_NUM);
+            $exists = self::$pdos[self::$defaultDbConnKey]->query('SHOW COLUMNS FROM ' . self::$tb_prefixes[self::$defaultDbConnKey].$tb_name . " LIKE '". $column ."'")->fetch(PDO::FETCH_NUM);
             $action = ($action ? trim(strtoupper($action)) : NULL);
 
             if ($exists) {
@@ -676,13 +701,13 @@ final class DB {
                 }
             }
 
-            $sql = ("ALTER TABLE ". self::$tb_prefixes[self::$key].$tb_name .' '. $action ." `". $column ."` ". str_replace('()', '', $value) .';');
+            $sql = ("ALTER TABLE ". self::$tb_prefixes[self::$defaultDbConnKey].$tb_name .' '. $action ." `". $column ."` ". str_replace('()', '', $value) .';');
 
             try {
-                self::$pdos[self::$key]->exec($sql);
+                self::$pdos[self::$defaultDbConnKey]->exec($sql);
 
-                if (isset(self::$backups[self::$key])) {
-                    foreach (self::$backups[self::$key] as $db_key) {
+                if (isset(self::$backups[self::$defaultDbConnKey])) {
+                    foreach (self::$backups[self::$defaultDbConnKey] as $db_key) {
                         self::$pdos[$db_key]->exec($sql);
                     }
                 }
@@ -700,13 +725,13 @@ final class DB {
         }
 
         final static function dropTable (string $tb_name): void {
-            $sql = "DROP TABLE IF EXISTS ". self::$tb_prefixes[self::$key].$tb_name .";";
+            $sql = "DROP TABLE IF EXISTS ". self::$tb_prefixes[self::$defaultDbConnKey].$tb_name .";";
 
             try {
-                self::$pdos[self::$key]->exec($sql);
+                self::$pdos[self::$defaultDbConnKey]->exec($sql);
 
-                if (isset(self::$backups[self::$key])) {
-                    foreach (self::$backups[self::$key] as $db_key) {
+                if (isset(self::$backups[self::$defaultDbConnKey])) {
+                    foreach (self::$backups[self::$defaultDbConnKey] as $db_key) {
                         self::$pdos[$db_key]->exec($sql);
                     }
                 }
@@ -722,13 +747,13 @@ final class DB {
         }
 
         final static function truncateTable (string $tb_name): void {
-            $sql = "TRUNCATE TABLE ". self::$tb_prefixes[self::$key].$tb_name .";";
+            $sql = "TRUNCATE TABLE ". self::$tb_prefixes[self::$defaultDbConnKey].$tb_name .";";
 
             try {
-                self::$pdos[self::$key]->exec($sql);
+                self::$pdos[self::$defaultDbConnKey]->exec($sql);
 
-                if (isset(self::$backups[self::$key])) {
-                    foreach (self::$backups[self::$key] as $db_key) {
+                if (isset(self::$backups[self::$defaultDbConnKey])) {
+                    foreach (self::$backups[self::$defaultDbConnKey] as $db_key) {
                         self::$pdos[$db_key]->exec($sql);
                     }
                 }
@@ -761,12 +786,12 @@ final class DB {
     			// if it has a semicolon at the end,
                 // it's the end of the query.
     			if (substr(trim($line), -1, 1) == ';') {
-                    $sql = self::prefix($sql, true, true);
+                    $sql = self::prefix(self::$tb_prefixes[self::$defaultDbConnKey], $sql, true, true);
 
-                    self::$pdos[self::$key]->exec($sql);
+                    self::$pdos[self::$defaultDbConnKey]->exec($sql);
 
-                    if (isset(self::$backups[self::$key])) {
-                        foreach (self::$backups[self::$key] as $db_key) {
+                    if (isset(self::$backups[self::$defaultDbConnKey])) {
+                        foreach (self::$backups[self::$defaultDbConnKey] as $db_key) {
                             self::$pdos[$db_key]->exec($sql);
                         }
                     }

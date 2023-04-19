@@ -3,6 +3,7 @@
 namespace Arshwell\Monolith\Table\Files;
 
 use Arshwell\Monolith\Table\TableSegment;
+use Arshwell\Monolith\DevTool\DevToolData;
 use Arshwell\Monolith\Folder;
 use Arshwell\Monolith\File;
 use Arshwell\Monolith\Text;
@@ -14,7 +15,8 @@ use Verot\Upload\Upload;
 
 use Exception;
 
-final class Image implements TableSegment {
+final class Image implements TableSegment
+{
     private $class;
     private $id_table = NULL;
     private $filekey;
@@ -27,13 +29,23 @@ final class Image implements TableSegment {
     private $sizes = array();
     private $uploadsPath;
 
-    function __construct (string $class, int $id_table = NULL, string $filekey) {
+    function __construct (string $class, int $id_table = NULL, string $filekey, string $filesystemKey = null) {
         $this->class    = $class;
         $this->id_table = $id_table;
         $this->filekey  = $filekey;
-        $this->folder   = (Folder::encode($class) .'/'. $id_table .'/'. $filekey);
 
-        $this->uploadsPath = StaticHandler::getEnvConfig()->getLocationPath('uploads');
+        foreach (StaticHandler::getEnvConfig('filestorages') as $filesystemKey => $filesystem) {
+            if (!empty($filesystem['aliases']) && in_array($class, $filesystem['aliases'])) {
+                // file class becomes the alias class
+                $class = array_search($class, $filesystem['aliases']);
+                break;
+            }
+        }
+
+        $this->folder = (Folder::encode($class) .'/'. $id_table .'/'. $filekey);
+
+        // fyi: because the path could be outside of project
+        $this->uploadsPath = StaticHandler::getEnvConfig()->getFileStoragePath($filesystemKey, 'uploads');
 
         $this->config = array_replace_recursive(
             array(
@@ -45,7 +57,7 @@ final class Image implements TableSegment {
                     NULL, '50%', '50%', false
                 )
             ),
-            ($class)::FILES[$filekey]
+            ($this->class)::FILES[$filekey]
         );
 
         if (empty($this->config['sizes'])) { // if no sizes, like TableView
@@ -109,8 +121,8 @@ final class Image implements TableSegment {
                         return ($data[0]*$data[1]);
                     }, $lg_files);
 
-                    $this->smallest[$lg] = $site . ltrim(preg_replace('~^'. StaticHandler::getEnvConfig()->getLocationPath('uploads', false) .'~', '', $lg_files[Func::keyFromSmallest($lg_sized_files)]), '/');
-                    $this->biggest[$lg] = $site . ltrim(preg_replace('~^'. StaticHandler::getEnvConfig()->getLocationPath('uploads', false) .'~', '', $lg_files[Func::keyFromBiggest($lg_sized_files)]), '/');
+                    $this->smallest[$lg] = $site . ltrim(preg_replace('~^'. $this->uploadsPath .'~', 'uploads/', $lg_files[Func::keyFromSmallest($lg_sized_files)]), '/');
+                    $this->biggest[$lg] = $site . ltrim(preg_replace('~^'. $this->uploadsPath .'~', 'uploads/', $lg_files[Func::keyFromBiggest($lg_sized_files)]), '/');
                 }
             }
 

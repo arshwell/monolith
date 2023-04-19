@@ -22,7 +22,7 @@ final class DocGroup implements TableSegment {
         $this->filekey  = $filekey;
         $this->folder   = (Folder::encode($class) .'/'. $id_table .'/'. $filekey);
 
-        $files = File::tree(StaticHandler::getEnvConfig()->getLocationPath('uploads') . 'files/'. $this->folder, NULL, false, true);
+        $files = File::tree(StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') . 'files/'. $this->folder, NULL, false, true);
 
         if ($files) {
             $site = Web::site();
@@ -32,11 +32,11 @@ final class DocGroup implements TableSegment {
                     $first_lang = array_key_first($files);
 
                     $files[$language] = $files[$first_lang];
-                    Folder::copy(StaticHandler::getEnvConfig()->getLocationPath('uploads') . 'files/'. $this->folder .'/'. $first_lang, StaticHandler::getEnvConfig()->getLocationPath('uploads') . 'files/'. $this->folder .'/'. $language);
+                    Folder::copy(StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') . 'files/'. $this->folder .'/'. $first_lang, StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') . 'files/'. $this->folder .'/'. $language);
                 }
 
                 foreach ($files[$language] as $filename) {
-                    $this->paths[$language][] = (StaticHandler::getEnvConfig()->getLocationPath('uploads') . 'files/'. $this->folder .'/'. $language .'/'. $filename);
+                    $this->paths[$language][] = (StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') . 'files/'. $this->folder .'/'. $language .'/'. $filename);
 
                     $this->urls[$language][] = ($site .'uploads/files/'. $this->folder .'/'. $language .'/'. $filename);
                 }
@@ -81,7 +81,7 @@ final class DocGroup implements TableSegment {
         $language   = ($language ?: (($this->class)::TRANSLATOR)::default());
 
         for ($i=0; $i<count($data['name']); $i++) {
-            $dirname = (StaticHandler::getEnvConfig()->getLocationPath('uploads') . 'files/'.$this->folder.'/'.$language);
+            $dirname = (StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') . 'files/'.$this->folder.'/'.$language);
 
             if (is_dir($dirname) || mkdir($dirname, 0755, true)) {
                 copy($data['tmp_name'][$i], $dirname.'/'.$data['name'][$i]);
@@ -92,7 +92,7 @@ final class DocGroup implements TableSegment {
     }
 
     function rename (array $names, string $language = NULL): void {
-        $files = File::tree(StaticHandler::getEnvConfig()->getLocationPath('uploads') . 'files/'. $this->folder .'/'. ($language ?: (($this->class)::TRANSLATOR)::default()), NULL, true, true, true);
+        $files = File::tree(StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') . 'files/'. $this->folder .'/'. ($language ?: (($this->class)::TRANSLATOR)::default()), NULL, true, true, true);
 
         foreach ($names as $key => $name) {
             $names[$key] = (basename($name) .'.'. File::extension($key));
@@ -118,8 +118,8 @@ final class DocGroup implements TableSegment {
     function delete (array $names = NULL, string $language = NULL): int {
         $count = 0;
 
-        foreach (($language ? array($language) : Folder::children(StaticHandler::getEnvConfig()->getLocationPath('uploads') . 'files/'. $this->folder, true)) as $lg) {
-            foreach (File::tree(StaticHandler::getEnvConfig()->getLocationPath('uploads') . 'files/'. $this->folder .'/'. $lg, NULL, true, true, true) as $files) {
+        foreach (($language ? array($language) : Folder::children(StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') . 'files/'. $this->folder, true)) as $lg) {
+            foreach (File::tree(StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') . 'files/'. $this->folder .'/'. $lg, NULL, true, true, true) as $files) {
                 foreach (($names ? array_intersect_key($files, $names) : $files) as $file) {
                     if (unlink($file)) {
                         $count++;
@@ -128,9 +128,9 @@ final class DocGroup implements TableSegment {
             }
         }
 
-        Folder::removeEmpty(StaticHandler::getEnvConfig()->getLocationPath('uploads') . 'files/'. dirname($this->folder));
+        Folder::removeEmpty(StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') . 'files/'. dirname($this->folder));
 
-        if (!is_dir(StaticHandler::getEnvConfig()->getLocationPath('uploads') . 'files/'. $this->folder)) {
+        if (!is_dir(StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') . 'files/'. $this->folder)) {
             $this->urls = NULL;
         }
 
