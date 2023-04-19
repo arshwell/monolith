@@ -17,7 +17,7 @@ if ($form->valid()) {
     $build_dir  = sys_get_temp_dir().'/vendor/arshwell/monolith/builds/sess_'.session_id().'/';
     $asset      = 'uploads/files/';
 
-    if (!is_dir($build_dir . StaticHandler::getEnvConfig()->getLocationPath('uploads') . 'files/')) {
+    if (!is_dir($build_dir . StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') . 'files/')) {
         $form->info = array("TABLE FILES have not been added.");
     }
     else {

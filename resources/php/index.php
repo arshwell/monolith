@@ -23,15 +23,19 @@ require("vendor/autoload.php");
 StaticHandler::setEnvConfig(new EnvConfig([
     'databases' => json_decode(file_get_contents("config/databases.json"), true, 512, JSON_THROW_ON_ERROR),
     'development' => json_decode(file_get_contents("config/development.json"), true, 512, JSON_THROW_ON_ERROR),
-    'locations' => json_decode(file_get_contents("config/locations.json"), true, 512, JSON_THROW_ON_ERROR),
+    'filestorages' => json_decode(file_get_contents("config/filestorages.json"), true, 512, JSON_THROW_ON_ERROR),
     'services' => json_decode(file_get_contents("config/services.json"), true, 512, JSON_THROW_ON_ERROR),
     'web' => json_decode(file_get_contents("config/web.json"), true, 512, JSON_THROW_ON_ERROR),
 ], $_ENV));
 
 StaticHandler::iniSetPHP();
 
-DB::connect('default');
-Session::set(StaticHandler::getEnvConfig('web.URL').StaticHandler::getEnvConfig('databases.conn.default.name'));
+// connect to all databases
+foreach (array_keys(StaticHandler::getEnvConfig('databases')['conn']) as $connKey) {
+    DB::connect($connKey);
+}
+
+Session::set(StaticHandler::getEnvConfig('web.URL').StaticHandler::getEnvConfig()->getDbConnByIndex()['name']);
 
 // Supervisors are alerted if there are problems.
 if (StaticHandler::getEnvConfig('development.debug') && StaticHandler::supervisor() && $_SERVER['REQUEST_METHOD'] == 'GET') {

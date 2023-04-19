@@ -217,7 +217,7 @@ final class File {
             return NULL; // invalid file path
         }
 
-        $filekeyfolder = StaticHandler::getEnvConfig()->getLocationPath('uploads') . 'files/' . $filepath['class'] .'/'. $filepath['id_table'] .'/'. $filepath['filekey'];
+        $filekeyfolder = StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') . 'files/' . $filepath['class'] .'/'. $filepath['id_table'] .'/'. $filepath['filekey'];
 
         if (empty($siblings)) {
             $siblings = File::tree($filekeyfolder, NULL, false, true);

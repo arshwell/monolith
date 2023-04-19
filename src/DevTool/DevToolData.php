@@ -3,6 +3,7 @@
 namespace Arshwell\Monolith\DevTool;
 
 use Arshwell\Monolith\Folder;
+use Arshwell\Monolith\Func;
 
 /**
  * Static class about Arshwell framework.
@@ -43,6 +44,17 @@ final class DevToolData {
         }
 
         return preg_replace("/[^0-9.]+/", '', $version) ?: preg_replace("/[^a-z0-9]+/", '', $version) ?: $version;
+    }
+
+    static function ComposerAutoloadNamespaces(string $composerFile): array
+    {
+        $autoload = json_decode(file_get_contents($composerFile), true)['autoload'];
+
+        $namespaces = Func::arrayFlatten(array_map(function ($array) {
+            return array_flip($array);
+        }, $autoload));
+
+        return $namespaces;
     }
 
 }

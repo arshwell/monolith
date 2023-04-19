@@ -99,9 +99,9 @@ abstract class TableView extends Table {
             DB::insert(
                 static::class,
                 "source, global, info, type, value:lg, vars, `order`",
-                ":source, 0, :info, :type, ". implode(', ', array_fill(0, count((static::TRANSLATOR)::LANGUAGES), ':value')) .", :vars, ". SQL::nextID((static::class)::TABLE),
+                ":source, 0, :info, :type, ". implode(', ', array_fill(0, count(((static::class)::TRANSLATOR)::LANGUAGES), ':value')) .", :vars, ". SQL::nextID((static::class)::TABLE),
                 array(
-                    ':lg'       => (static::TRANSLATOR)::LANGUAGES,
+                    ':lg'       => ((static::class)::TRANSLATOR)::LANGUAGES,
                     ':source'   => $source,
                     ':info'     => $info,
                     ':type'     => self::TYPES['sentenceSEO'],
@@ -165,9 +165,9 @@ abstract class TableView extends Table {
             DB::insert(
                 static::class,
                 "source, global, info, type, value:lg, vars, `order`",
-                ":source, 0, :info, :type, ". implode(', ', array_fill(0, count((static::TRANSLATOR)::LANGUAGES), ':value')) .", :vars, ". SQL::nextID((static::class)::TABLE),
+                ":source, 0, :info, :type, ". implode(', ', array_fill(0, count(((static::class)::TRANSLATOR)::LANGUAGES), ':value')) .", :vars, ". SQL::nextID((static::class)::TABLE),
                 array(
-                    ':lg'       => (static::TRANSLATOR)::LANGUAGES,
+                    ':lg'       => ((static::class)::TRANSLATOR)::LANGUAGES,
                     ':source'   => $source,
                     ':info'     => $info,
                     ':type'     => self::TYPES['textSEO'],
@@ -229,7 +229,7 @@ abstract class TableView extends Table {
             array($info, self::TYPES['imageSEO'], $source)
         );
 
-        $language   = (static::TRANSLATOR)::GET();
+        $language   = ((static::class)::TRANSLATOR)::GET();
         $site       = Web::site();
 
         if ($result) {
@@ -237,7 +237,7 @@ abstract class TableView extends Table {
 
             $urlpath = Folder::encode(static::class) .'/'. $result[(static::class)::PRIMARY_KEY] .'/value/'. $language .'/'. $width.'x'.$height;
 
-            $file = File::first(StaticHandler::getEnvConfig()->getLocationPath('uploads') .'files/'. $urlpath);
+            $file = File::first(StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') .'files/'. $urlpath);
 
             if ($file) {
                 return ($site .'uploads/files/'. $urlpath .'/'. basename($file));
@@ -256,14 +256,14 @@ abstract class TableView extends Table {
 
         $image_folder = Folder::encode(static::class) .'/'. $result[(static::class)::PRIMARY_KEY] .'/value/';
 
-        foreach ((static::TRANSLATOR)::LANGUAGES as $lang) {
-            $file = File::first(StaticHandler::getEnvConfig()->getLocationPath('uploads') . 'files/'. $image_folder . $lang .'/'. $width.'x'.$height);
+        foreach (((static::class)::TRANSLATOR)::LANGUAGES as $lang) {
+            $file = File::first(StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') . 'files/'. $image_folder . $lang .'/'. $width.'x'.$height);
             $basename = basename($file);
 
             // if this language doesn't have the file
             if ($file == NULL) {
                 $image = (
-                    File::findBiggestSibling(StaticHandler::getEnvConfig()->getLocationPath('uploads') . 'files/'. $image_folder . $lang .'/'. $width.'x'.$height.'/foo.bar')
+                    File::findBiggestSibling(StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') . 'files/'. $image_folder . $lang .'/'. $width.'x'.$height.'/foo.bar')
                     ?:
                     self::$source['image']
                 );
@@ -293,12 +293,12 @@ abstract class TableView extends Table {
             $resizer->image_y            = $height;
             $resizer->image_ratio_crop   = true;
 
-                $resizer->process(StaticHandler::getEnvConfig()->getLocationPath('uploads') . 'files/'. $image_folder . $lang .'/'. $width .'x'. $height .'/');
+                $resizer->process(StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') . 'files/'. $image_folder . $lang .'/'. $width .'x'. $height .'/');
             }
 
             // remember url file, for current language
             if ($lang == $language) {
-                $file = ($site .StaticHandler::getEnvConfig()->getLocationPath('uploads') . 'files/'. $image_folder . $language .'/'. $width .'x'. $height .'/'. $basename);
+                $file = ($site .StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') . 'files/'. $image_folder . $language .'/'. $width .'x'. $height .'/'. $basename);
             }
         }
 
@@ -321,9 +321,9 @@ abstract class TableView extends Table {
             DB::insert(
                 static::class,
                 "source, global, info, type, value:lg, vars, `order`",
-                ":source, :global, :info, :type, ". implode(', ', array_fill(0, count((static::TRANSLATOR)::LANGUAGES), ':value')) .", :vars, ". SQL::nextID((static::class)::TABLE),
+                ":source, :global, :info, :type, ". implode(', ', array_fill(0, count(((static::class)::TRANSLATOR)::LANGUAGES), ':value')) .", :vars, ". SQL::nextID((static::class)::TABLE),
                 array(
-                    ':lg'       => (static::TRANSLATOR)::LANGUAGES,
+                    ':lg'       => ((static::class)::TRANSLATOR)::LANGUAGES,
                     ':source'   => $source,
                     ':global'   => (int)$global,
                     ':info'     => $info,
@@ -388,9 +388,9 @@ abstract class TableView extends Table {
             DB::insert(
                 static::class,
                 "source, global, info, type, value:lg, vars, `order`",
-                ":source, :global, :info, :type, ". implode(', ', array_fill(0, count((static::TRANSLATOR)::LANGUAGES), ':value')) .", :vars, ". SQL::nextID((static::class)::TABLE),
+                ":source, :global, :info, :type, ". implode(', ', array_fill(0, count(((static::class)::TRANSLATOR)::LANGUAGES), ':value')) .", :vars, ". SQL::nextID((static::class)::TABLE),
                 array(
-                    ':lg'       => (static::TRANSLATOR)::LANGUAGES,
+                    ':lg'       => ((static::class)::TRANSLATOR)::LANGUAGES,
                     ':source'   => $source,
                     ':global'   => (int)$global,
                     ':info'     => $info,
@@ -455,9 +455,9 @@ abstract class TableView extends Table {
             DB::insert(
                 static::class,
                 "source, global, info, type, value:lg, vars, `order`",
-                ":source, :global, :info, :type, ". implode(', ', array_fill(0, count((static::TRANSLATOR)::LANGUAGES), ':value')) .", :vars, ". SQL::nextID((static::class)::TABLE),
+                ":source, :global, :info, :type, ". implode(', ', array_fill(0, count(((static::class)::TRANSLATOR)::LANGUAGES), ':value')) .", :vars, ". SQL::nextID((static::class)::TABLE),
                 array(
-                    ':lg'       => (static::TRANSLATOR)::LANGUAGES,
+                    ':lg'       => ((static::class)::TRANSLATOR)::LANGUAGES,
                     ':source'   => $source,
                     ':global'   => (int)$global,
                     ':info'     => $info,
@@ -520,7 +520,7 @@ abstract class TableView extends Table {
             array($info, self::TYPES['image'], $source, (int)$global)
         );
 
-        $language   = (static::TRANSLATOR)::GET();
+        $language   = ((static::class)::TRANSLATOR)::GET();
         $site       = Web::site();
 
         if ($result) {
@@ -528,13 +528,13 @@ abstract class TableView extends Table {
 
             $urlpath = Folder::encode(static::class) .'/'. $result[(static::class)::PRIMARY_KEY] .'/value/'. $language .'/'. $width.'x'.$height;
 
-            $file = File::first(StaticHandler::getEnvConfig()->getLocationPath('uploads') .'files/'. $urlpath);
+            $file = File::first(StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') .'files/'. $urlpath);
 
             if ($file) {
                 return $site .'uploads/files/'. $urlpath .'/'. basename($file);
             }
 
-            $dirpath = StaticHandler::getEnvConfig()->getLocationPath('uploads') . 'files/' . $urlpath .'/'. dirname($file);
+            $dirpath = StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') . 'files/' . $urlpath .'/'. dirname($file);
 
             /**
              * Creating its directory no matter what.
@@ -558,10 +558,10 @@ abstract class TableView extends Table {
 
         $image_folder = Folder::encode(static::class) .'/'. $result[(static::class)::PRIMARY_KEY] .'/value/';
 
-        foreach ((static::TRANSLATOR)::LANGUAGES as $lang) {
+        foreach (((static::class)::TRANSLATOR)::LANGUAGES as $lang) {
             // getting name from sibling file
             $image = (
-                File::findBiggestSibling(StaticHandler::getEnvConfig()->getLocationPath('uploads') . 'files/'. $image_folder . $lang .'/'. $width.'x'.$height.'/foo.bar')
+                File::findBiggestSibling(StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') . 'files/'. $image_folder . $lang .'/'. $width.'x'.$height.'/foo.bar')
                 ?:
                 self::$source['image']
             );
@@ -586,7 +586,7 @@ abstract class TableView extends Table {
             $resizer->image_y            = $height;
             $resizer->image_ratio_crop   = true;
 
-            $resizer->process(StaticHandler::getEnvConfig()->getLocationPath('uploads') . 'files/'. $image_folder . $lang .'/'. $width .'x'. $height .'/');
+            $resizer->process(StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') . 'files/'. $image_folder . $lang .'/'. $width .'x'. $height .'/');
 
             // remember url file, for current language
             if ($lang == $language) {
@@ -612,7 +612,7 @@ abstract class TableView extends Table {
         );
 
         $encoded_class  = Folder::encode(static::class);
-        $language       = (static::TRANSLATOR)::GET();
+        $language       = ((static::class)::TRANSLATOR)::GET();
         $site           = Web::site();
 
         if ($result) {
@@ -622,7 +622,7 @@ abstract class TableView extends Table {
 
             $files = array_map(function ($file) use ($site, $urlpath) {
                 return ($site .'uploads/files/'. $urlpath .'/'. basename($file));
-            }, File::folder(StaticHandler::getEnvConfig()->getLocationPath('uploads') . 'files/'. $urlpath));
+            }, File::folder(StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') . 'files/'. $urlpath));
 
             return $files;
         }
@@ -638,9 +638,9 @@ abstract class TableView extends Table {
         $image_folder   = $encoded_class .'/'. $result[(static::class)::PRIMARY_KEY] .'/value/';
         $results        = array();
 
-        foreach ((static::TRANSLATOR)::LANGUAGES as $lang) {
+        foreach (((static::class)::TRANSLATOR)::LANGUAGES as $lang) {
             unset($max); // because $max is used many times in this foreach
-            foreach (Folder::children(StaticHandler::getEnvConfig()->getLocationPath('uploads') . 'files/'. $image_folder . $lang, true) as $size) {
+            foreach (Folder::children(StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') . 'files/'. $image_folder . $lang, true) as $size) {
                 list($w, $h) = explode('x', $size);
                 $value = ($w*$h);
 
@@ -651,7 +651,7 @@ abstract class TableView extends Table {
             }
 
             $images = (isset($biggest) ?
-                File::folder(StaticHandler::getEnvConfig()->getLocationPath('uploads') . 'files/'. $image_folder . $lang .'/'. $biggest)
+                File::folder(StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') . 'files/'. $image_folder . $lang .'/'. $biggest)
                 :
                 array(self::$source['image'])
             );
@@ -677,7 +677,7 @@ abstract class TableView extends Table {
                 $resizer->image_y            = $height;
                 $resizer->image_ratio_crop   = true;
 
-                $resizer->process(StaticHandler::getEnvConfig()->getLocationPath('uploads') . 'files/'. $image_folder . $lang .'/'. $width .'x'. $height .'/');
+                $resizer->process(StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') . 'files/'. $image_folder . $lang .'/'. $width .'x'. $height .'/');
 
                 if ($lang == $language) {
                     $results[] = ($site .'uploads/files/'. $image_folder . $lang .'/'. $width .'x'. $height .'/'. $basename);
@@ -704,9 +704,9 @@ abstract class TableView extends Table {
             DB::insert(
                 static::class,
                 "source, global, info, type, value:lg, vars, `order`",
-                ":source, :global, :info, :type, ". implode(', ', array_fill(0, count((static::TRANSLATOR)::LANGUAGES), ':value')) .", :vars, ". SQL::nextID((static::class)::TABLE),
+                ":source, :global, :info, :type, ". implode(', ', array_fill(0, count(((static::class)::TRANSLATOR)::LANGUAGES), ':value')) .", :vars, ". SQL::nextID((static::class)::TABLE),
                 array(
-                    ':lg'       => (static::TRANSLATOR)::LANGUAGES,
+                    ':lg'       => ((static::class)::TRANSLATOR)::LANGUAGES,
                     ':source'   => $source,
                     ':global'   => (int)$global,
                     ':info'     => $info,
@@ -738,7 +738,7 @@ abstract class TableView extends Table {
             array($info, self::TYPES['video'], $source, (int)$global)
         );
 
-        $language   = (static::TRANSLATOR)::GET();
+        $language   = ((static::class)::TRANSLATOR)::GET();
         $site       = Web::site();
 
         if ($result) {
@@ -746,7 +746,7 @@ abstract class TableView extends Table {
 
             $urlpath = Folder::encode(static::class) .'/'. $result[(static::class)::PRIMARY_KEY] .'/value/'. $language;
 
-            $file = File::first(StaticHandler::getEnvConfig()->getLocationPath('uploads') . 'files/'. $urlpath);
+            $file = File::first(StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') . 'files/'. $urlpath);
 
             if ($file) {
                 return ($site . 'uploads/files/' . $urlpath . '/'. basename($file));
@@ -763,10 +763,10 @@ abstract class TableView extends Table {
 
         $image_folder = Folder::encode(static::class) .'/'. $result[(static::class)::PRIMARY_KEY] .'/value/';
 
-        foreach ((static::TRANSLATOR)::LANGUAGES as $lang) {
+        foreach (((static::class)::TRANSLATOR)::LANGUAGES as $lang) {
             $basename = basename(self::$source['image']);
 
-            $dirpath = StaticHandler::getEnvConfig()->getLocationPath('uploads') . 'files/' . $image_folder . $language; // could be outside of project
+            $dirpath = StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') . 'files/' . $image_folder . $language; // could be outside of project
             $urlpath = 'uploads/files/'. $image_folder . $language;
 
             if (!is_dir($dirpath)) {
@@ -798,9 +798,9 @@ abstract class TableView extends Table {
             DB::insert(
                 static::class,
                 "source, global, info, type, value:lg, vars, `order`",
-                ":source, :global, :info, :type, ". implode(', ', array_fill(0, count((static::TRANSLATOR)::LANGUAGES), ':value')) .", :vars, ". SQL::nextID((static::class)::TABLE),
+                ":source, :global, :info, :type, ". implode(', ', array_fill(0, count(((static::class)::TRANSLATOR)::LANGUAGES), ':value')) .", :vars, ". SQL::nextID((static::class)::TABLE),
                 array(
-                    ':lg'       => (static::TRANSLATOR)::LANGUAGES,
+                    ':lg'       => ((static::class)::TRANSLATOR)::LANGUAGES,
                     ':source'   => $source,
                     ':global'   => (int)$global,
                     ':info'     => $info,

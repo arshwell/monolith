@@ -10,6 +10,10 @@ use Arshwell\Monolith\DB;
  * Table class for manipulating certain table and its columns.
 */
 abstract class Table {
+    const DB_CONN = null;
+
+    const FILES_NAMESPACE = null;
+
     const FILE_IMAGE        = 1;
     const FILE_IMAGE_GROUP  = 2;
     const FILE_DOC          = 3;
