@@ -54,6 +54,7 @@ foreach (StaticHandler::getEnvConfig('filestorages') as $filesystemKey => $files
         ) {
             header("Content-Type: ". File::mimeType($filepath));
             echo file_get_contents($filepath);
+            exit;
         }
     }
 }
