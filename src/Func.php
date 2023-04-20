@@ -89,17 +89,25 @@ final class Func {
         }
 
         foreach ($array as $key => $value) {
-            if (is_array($value)) {
-                if ($preserve_keys == false) {
-                    $value = array_values($value);
+            if ($preserve_keys == false) {
+                if (is_array($value)) {
+                    // NOTE: array_replace is not good (it replaces indexed keys)
+                    $result = array_merge($result, self::arrayFlatten($value, $preserve_keys));
                 }
-
-                // NOTE: array_merge is not good (it doesn't preserve keys)
-                $result = array_replace($result, self::arrayFlatten($value, $preserve_keys));
+                else {
+                    // NOTE: array_replace is not good (it replaces indexed keys)
+                    $result = array_merge($result, array($key => $value));
+                }
             }
             else {
-                // NOTE: array_merge is not good (it doesn't preserve keys)
-                $result = array_replace($result, array($key => $value));
+                if (is_array($value)) {
+                    // NOTE: array_merge is not good (it doesn't preserve keys)
+                    $result = array_replace($result, self::arrayFlatten($value, $preserve_keys));
+                }
+                else {
+                    // NOTE: array_merge is not good (it doesn't preserve keys)
+                    $result = array_replace($result, array($key => $value));
+                }
             }
         }
         return $result;

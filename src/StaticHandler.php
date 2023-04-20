@@ -47,10 +47,6 @@ final class StaticHandler
             }
 
             self::$supervisor = in_array(self::$client_ip, Func::arrayFlatten(self::$envConfig->get('development.ips')));
-
-            // var_dump(self::$envConfig->get('development.ips'));
-            // var_dump(self::$supervisor);
-            // die('jere');
         }
 
         set_error_handler(function ($e_code, $text, $file, $line) {
