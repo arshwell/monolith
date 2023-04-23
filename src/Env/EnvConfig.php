@@ -95,8 +95,12 @@ final class EnvConfig
     function getFileStoragePathByIndex (int $fileStorageIndex = 0, string $folder, bool $append_folder = true): string {
         $fileStorages = array_values($this->configs['filestorages']);
 
+        if ($fileStorages[$fileStorageIndex]['paths'][$folder]) {
+            $fileStorages[$fileStorageIndex]['paths'][$folder] .= '/';
+        }
+
         try {
-            return $fileStorages[$fileStorageIndex]['paths'][$folder] .'/'. ($append_folder ? "$folder/" : '');
+            return $fileStorages[$fileStorageIndex]['paths'][$folder] . ($append_folder ? "$folder/" : '');
         }
         catch (\Exception $e) {
             throw new \Exception("|Arshwell| config/filestorages.json has only ". count($fileStorages) ." file storages.");
