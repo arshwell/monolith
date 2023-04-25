@@ -194,7 +194,13 @@ $(document).ready(function () {
             },
 
             default_link_target: "_blank",
-            extended_valid_elements : "a[href|target=_blank]",
+            extended_valid_elements: "a[href|target=_blank|title]",
+            link_title: true,
+            relative_urls: true,
+            remove_script_host: false,
+            document_base_url: Web.site(),
+            link_assume_external_targets: false,
+
             forced_root_block: false, // no html tag parent
             images_upload_url: 'doesntmatter.php', // won't be actually used
             automatic_uploads: false, // we don't upload, so files stay as blob
