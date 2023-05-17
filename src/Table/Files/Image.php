@@ -3,7 +3,6 @@
 namespace Arshwell\Monolith\Table\Files;
 
 use Arshwell\Monolith\Table\TableSegment;
-use Arshwell\Monolith\DevTool\DevToolData;
 use Arshwell\Monolith\Folder;
 use Arshwell\Monolith\File;
 use Arshwell\Monolith\Text;
@@ -34,18 +33,25 @@ final class Image implements TableSegment
         $this->id_table = $id_table;
         $this->filekey  = $filekey;
 
-        foreach (StaticHandler::getEnvConfig('filestorages') as $filesystemKey => $filesystem) {
+        foreach (StaticHandler::getEnvConfig('filestorages') as $fsKey => $filesystem) {
             if (!empty($filesystem['aliases']) && in_array($class, $filesystem['aliases'])) {
                 // file class becomes the alias class
                 $class = array_search($class, $filesystem['aliases']);
+                $filesystemKey = $fsKey;
                 break;
             }
         }
 
         $this->folder = (Folder::encode($class) .'/'. $id_table .'/'. $filekey);
 
-        // fyi: because the path could be outside of project
-        $this->uploadsPath = StaticHandler::getEnvConfig()->getFileStoragePath($filesystemKey, 'uploads');
+        if ($filesystemKey) {
+            // fyi: because the path could be outside of project
+            $this->uploadsPath = StaticHandler::getEnvConfig()->getFileStoragePath($filesystemKey, 'uploads');
+        }
+        else {
+            // fyi: the path is in this project
+            $this->uploadsPath = StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads');
+        }
 
         $this->config = array_replace_recursive(
             array(
