@@ -197,7 +197,7 @@ final class Piece {
 
                                         if ($select) {
                                             // optgroups with options
-                                            if (\Arshwell\Monolith\Func::isAssoc($select, false)) {
+                                            if (Func::hasSubarrays($select)) {
                                                 foreach ($select as $optgroup_name => $values) { ?>
                                                     <optgroup label="<?= $optgroup_name ?>">
                                                         <?php
@@ -236,7 +236,7 @@ final class Piece {
                     }
                     else {
                         foreach ($query['filter'] as $key => $values) {
-                            if (!empty($options[$key]) && Func::isAssoc($options[$key], false)) {
+                            if (!empty($options[$key]) && Func::hasSubarrays($options[$key])) {
                                 $options[$key] = Func::arrayFlatten($options[$key], true);
                             }
 
