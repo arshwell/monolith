@@ -16,8 +16,8 @@ We support fixing security issues on the following releases:
 If you’ve found a security issue in Arshwell, please use the following procedure
 instead of the normal bug reporting system. Instead of using the bug tracker,
 mailing list or IRC please send a DM to the owner of this repo:
-- Discord: arsavinel#8902 user;
-- Instagram: [/arsavinel](https://www.instagram.com/arsavinel/) account.
+- Discord: arshavinel#8902 user;
+- Instagram: [/arshavinel](https://www.instagram.com/arshavinel/) account.
 
 For each report, we try to first confirm the vulnerability. Once confirmed,
 the Arshwell team will take the following actions:

@@ -1,7 +1,7 @@
 /**
  * Do the same as PHP function with same name does.
 
- * @author: https://github.com/arsavinel
+ * @author: https://github.com/arshavinel
  * @license MIT (https://github.com/arshwell/monolith/blob/0.x/LICENSE.md)
 
  * This file is used at least by:

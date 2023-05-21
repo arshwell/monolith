@@ -24,9 +24,9 @@ final class Session {
 		if (!isset(self::$session)) {
 			self::$key = $key;
 
-			if (!isset($_SESSION[$key]['App']) || !isset($_SESSION[$key]['arsavinel']['Arshwell'])) {
+			if (!isset($_SESSION[$key]['App']) || !isset($_SESSION[$key]['vendor']['Arshwell'])) {
 				$_SESSION[$key] = array(
-					'arsavinel' => array(
+					'vendor' => array(
                         'Arshwell' => self::default()
                     ),
 					'App' => array()
@@ -34,7 +34,7 @@ final class Session {
 
 				self::$is_new = true;
 			}
-			self::$session = &$_SESSION[$key]['arsavinel']['Arshwell'];
+			self::$session = &$_SESSION[$key]['vendor']['Arshwell'];
 
 			if (!empty(self::$session['views'])) {
 				foreach (self::$session['views'] as $class => $views) {
@@ -61,7 +61,7 @@ final class Session {
 
 	static private function default (): array {
 		return array(
-			'design'	=> 0, // it's modified by arsavinel-arshwell-mxdvcwdthflg (which comes from AJAX)
+			'design'	=> 0, // it's modified by arshwell-mxdvcwdthflg (which comes from AJAX)
 			'languages'	=> array(),
 			'form'		=> array(),
 			'auth'		=> array(),
@@ -214,7 +214,7 @@ final class Session {
 			        session_id($name);
 			        session_start();
 
-					if (!empty($_SESSION[self::$key]['arsavinel']['Arshwell'])) {
+					if (!empty($_SESSION[self::$key]['vendor']['Arshwell'])) {
 						$sessions[$name] = ($also_arshwell_session ? $_SESSION[self::$key] : $_SESSION[self::$key]['App']);
 				    }
 				}

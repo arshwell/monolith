@@ -2,7 +2,7 @@
  * Form function (acting as a class) for manipulating AJAX responses.
  * It helps you with any need about JS forms.
 
- * @author: https://github.com/arsavinel
+ * @author: https://github.com/arshavinel
  * @license MIT (https://github.com/arshwell/monolith/blob/0.x/LICENSE.md)
 
  * This file is used at least by:
@@ -55,7 +55,7 @@ function Form (form, response = null) { // the form is required
                 }
 
                 // Used by Arshwell to return the properly css/js files for every device.
-                array.push("arsavinel-arshwell-mxdvcwdthflg=" + Math.max(
+                array.push("arshwell-mxdvcwdthflg=" + Math.max(
                     window.screen.availWidth || screen.width || window.outerWidth || window.innerWidth,
                     window.screen.availHeight || screen.height || window.outerHeight || window.innerHeight
                 ));
@@ -95,7 +95,7 @@ function Form (form, response = null) { // the form is required
                 }
 
                 // Used by Arshwell to return the properly css/js files.
-                array['arsavinel-arshwell-mxdvcwdthflg'] = Math.max(
+                array['arshwell-mxdvcwdthflg'] = Math.max(
                     window.screen.availWidth || screen.width || window.outerWidth || window.innerWidth,
                     window.screen.availHeight || screen.height || window.outerHeight || window.innerHeight
                 );

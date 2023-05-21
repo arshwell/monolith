@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2022 arsavinel and other contributors
+Copyright (c) 2022 arshavinel and other contributors
 
 Project: https://github.com/arshwell/monolith
 

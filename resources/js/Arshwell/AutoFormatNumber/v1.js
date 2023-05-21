@@ -1,5 +1,5 @@
 /**
- * Library edited by arsavinel, starting from the online library maskNumber, as from 07-04-2019.
+ * Library edited by arshavinel, starting from the online library maskNumber, as from 07-04-2019.
 
  * The original library had the listener on keyup(). Now he is on keydown(), and the performance has increased significantly.
  * At the moment, at least, of writing these lines, there is no other library for formatting numbers/coins that allows all these things:
@@ -28,7 +28,7 @@
     $("input[type='number']").AutoFormatNumber('off');
 
  * @package AutoFormatNumber v1
- * @author: https://github.com/arsavinel
+ * @author: https://github.com/arshavinel
  * @license MIT (https://github.com/arshwell/monolith/blob/0.x/LICENSE.md)
  */
 

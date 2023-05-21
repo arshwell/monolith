@@ -737,7 +737,7 @@ final class Layout {
 
                     if (next($files)) {
                         // It's only a delimiter so we can split css in many dev css files.
-                        $css .= '#arsavinel-arshwell'.$time.'{color:#57201412;}';
+                        $css .= '#arshwell-monolith'.$time.'{color:#57201412;}';
                     }
                 }
 
@@ -749,7 +749,7 @@ final class Layout {
                 file_put_contents(
                     $css_file,
                     str_replace(
-                        "#arsavinel-arshwell".$time."{color:#57201412}", '',
+                        "#arshwell-monolith".$time."{color:#57201412}", '',
                         self::signature($url).PHP_EOL.$scss->compileString($css)->getCss().PHP_EOL.self::signature($url)
                     ),
                     LOCK_EX
@@ -807,14 +807,14 @@ final class Layout {
 
                     if (next($media['files'])) {
                         // NOTE: It's only a delimiter, so we can split compiled css in many dev css files.
-                        $css .= '#arsavinel-arshwell'.$time.'{color:#57201412;}';
+                        $css .= '#arshwell-monolith'.$time.'{color:#57201412;}';
                     }
                 }
 
                 $scss->setOutputStyle(\ScssPhp\ScssPhp\OutputStyle::EXPANDED);
 
                 $files = array_values($media['files']);
-                foreach (preg_split("/#arsavinel-arshwell".$time."\s{\s+color:\s#57201412;\s+}/", $scss->compileString($css)->getCss()) as $nr => $code) {
+                foreach (preg_split("/#arshwell-monolith".$time."\s{\s+color:\s#57201412;\s+}/", $scss->compileString($css)->getCss()) as $nr => $code) {
                     $filename = 'uploads/design/dev/';
 
                     // if file has vars, we create unique dev file
@@ -1184,7 +1184,7 @@ final class Layout {
 
                     if (next($files)) {
                         // It's only a delimiter so we can split css in many dev css files.
-                        $css .= '#arsavinel-arshwell'.$time.'{color:#57201412;}';
+                        $css .= '#arshwell-monolith'.$time.'{color:#57201412;}';
                     }
                 }
 
@@ -1196,7 +1196,7 @@ final class Layout {
                 file_put_contents(
                     $css_file,
                     str_replace(
-                        "#arsavinel-arshwell".$time."{color:#57201412}", '',
+                        "#arshwell-monolith".$time."{color:#57201412}", '',
                         self::signature($url).PHP_EOL.$scss->compileString($css)->getCss().PHP_EOL.self::signature($url)
                     ), LOCK_EX);
 
@@ -1238,14 +1238,14 @@ final class Layout {
 
                     if (next($media['files'])) {
                         // It's only a delimiter so we can split css in many dev css files.
-                        $css .= '#arsavinel-arshwell'.$time.'{color:#57201412;}';
+                        $css .= '#arshwell-monolith'.$time.'{color:#57201412;}';
                     }
                 }
 
                 $scss->setOutputStyle(\ScssPhp\ScssPhp\OutputStyle::EXPANDED);
 
                 $files = array_values($media['files']);
-                foreach (preg_split("/#arsavinel-arshwell".$time."\s{\s+color:\s#57201412;\s+}/", $scss->compileString($css)->getCss()) as $nr => $code) {
+                foreach (preg_split("/#arshwell-monolith".$time."\s{\s+color:\s#57201412;\s+}/", $scss->compileString($css)->getCss()) as $nr => $code) {
                     $filename = Folder::realpath('uploads/design/dev/'). File::name(Folder::shorter($files[$nr]['name']), false) .'.css';
 
                     if (is_dir(dirname($filename)) || mkdir(dirname($filename), 0755, true)) {
