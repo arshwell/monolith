@@ -1,7 +1,7 @@
 /**
  * Web class having some functions existent in PHP class Arshwell\Monolith\Web.
 
- * @author: https://github.com/arsavinel
+ * @author: https://github.com/arshavinel
  * @license MIT (https://github.com/arshwell/monolith/blob/0.x/LICENSE.md)
 
  * This file is used at least by:
@@ -146,7 +146,7 @@ class Web {
         route.url = (Number.isInteger(page) && page > 1 ? (route.url).replace("[page]", (route.pagination[document.querySelector("html").getAttribute("lang")]).replace(/\(.*\)/, page)) : (route.url).replace(/(\s)?\[page\]/, ""));
 
         if ($_request) {
-            route.url += ("?"+ (typeof $_request === "string" ? ($_request+"&") : (Object.keys($_request).length ? (http_build_query($_request)+"&") : "")) + "arsavinel-arshwell-mxdvcwdthflg="+ Math.max(
+            route.url += ("?"+ (typeof $_request === "string" ? ($_request+"&") : (Object.keys($_request).length ? (http_build_query($_request)+"&") : "")) + "arshwell-mxdvcwdthflg="+ Math.max(
                 window.screen.availWidth || screen.width || window.outerWidth || window.innerWidth,
                 window.screen.availHeight || screen.height || window.outerHeight || window.innerHeight
             ));

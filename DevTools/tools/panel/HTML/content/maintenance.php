@@ -76,14 +76,14 @@ $sessions = Session::all(StaticHandler::getEnvConfig('development.debug'), true)
                 Routes accessed in real time
                 <span class="maintenance--smart-configuration collapse <?= ((StaticHandler::getEnvConfig('services.maintenance'))::isActive() && (StaticHandler::getEnvConfig('services.maintenance'))::isSmart() ? 'show' : '') ?>">
                     <?php // all sessions with history ?>
-                    (by all ~<?= count(array_filter(array_column(array_column(array_column($sessions, 'arsavinel'), 'Arshwell'), 'history'))) ?> sessions)
+                    (by all ~<?= count(array_filter(array_column(array_column(array_column($sessions, 'vendor'), 'Arshwell'), 'history'))) ?> sessions)
                 </span>
             </div>
             <div class="card-body py-0">
                 <ul class="list-group list-group-flush maintenance--smart-configuration collapse <?= ((StaticHandler::getEnvConfig('services.maintenance'))::isActive() && (StaticHandler::getEnvConfig('services.maintenance'))::isSmart() ? 'show' : '') ?>">
                     <?php
                     foreach ($sessions as $session) {
-                        foreach (array_reverse($session['arsavinel']['Arshwell']['history']) as $index => $route) { ?>
+                        foreach (array_reverse($session['vendor']['Arshwell']['history']) as $index => $route) { ?>
                             <li type="button" class="list-group-item" data-toggle="collapse" data-target="#maintenance--history-<?= $index ?>" aria-expanded="false">
                                 <div class="row">
                                     <div class="col-3 col-md-3 nowrap">

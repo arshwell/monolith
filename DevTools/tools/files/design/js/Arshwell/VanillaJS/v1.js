@@ -5,7 +5,7 @@
  * What is JS Vanilla?
  * It is plain JavaScript without any additional libraries, like jQuery.
 
- * @author: https://github.com/arsavinel
+ * @author: https://github.com/arshavinel
  * @license MIT (https://github.com/arshwell/monolith/blob/0.x/LICENSE.md)
 
  * This file is used at least by:

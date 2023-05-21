@@ -1,7 +1,7 @@
 /**
  * Form class for manipulating AJAX responses.
 
- * @author: https://github.com/arsavinel
+ * @author: https://github.com/arshavinel
  * @license MIT (https://github.com/arshwell/monolith/blob/0.x/LICENSE.md)
 
  * This file is used at least by:
@@ -90,7 +90,7 @@ class Form { // helps you with any need about JS forms
                 }
 
                 // Used by Arshwell to return the properly css/js files for every device.
-                array.push("arsavinel-arshwell-mxdvcwdthflg=" + Math.max(
+                array.push("arshwell-mxdvcwdthflg=" + Math.max(
                     window.screen.availWidth || screen.width || window.outerWidth || window.innerWidth,
                     window.screen.availHeight || screen.height || window.outerHeight || window.innerHeight
                 ));
@@ -127,7 +127,7 @@ class Form { // helps you with any need about JS forms
                 }
 
                 // Used by Arshwell to return the properly css/js files.
-                array['arsavinel-arshwell-mxdvcwdthflg'] = Math.max(
+                array['arshwell-mxdvcwdthflg'] = Math.max(
                     window.screen.availWidth || screen.width || window.outerWidth || window.innerWidth,
                     window.screen.availHeight || screen.height || window.outerHeight || window.innerHeight
                 );

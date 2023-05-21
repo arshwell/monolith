@@ -1,7 +1,7 @@
 /**
  * --vh - custom js variable, as a backup if css vh variable is broken (on certain devices).
 
- * @author: https://github.com/arsavinel
+ * @author: https://github.com/arshavinel
  * @license MIT (https://github.com/arshwell/monolith/blob/0.x/LICENSE.md)
  */
 (function () {
@@ -24,7 +24,7 @@
 
  * @example: $('#app *:attrStartsWith(ajax-)')
 
- * @author: https://github.com/arsavinel
+ * @author: https://github.com/arshavinel
  * @license MIT (https://github.com/arshwell/monolith/blob/0.x/LICENSE.md)
  */
 jQuery.extend(jQuery.expr[':'], {
