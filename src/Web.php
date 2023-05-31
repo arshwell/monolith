@@ -431,6 +431,8 @@ final class Web {
                     }
                 }
 
+                $this->warnings = array(Web::WRNNG_NONE);
+
                 $this->prepared = false;
             }
 

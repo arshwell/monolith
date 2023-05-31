@@ -28,30 +28,29 @@ final class Image implements TableSegment
     private $sizes = array();
     private $uploadsPath;
 
-    function __construct (string $class, int $id_table = NULL, string $filekey, string $filesystemKey = null) {
+    function __construct (string $class, int $id_table = NULL, string $filekey, string $fileStorageKey = null) {
         $this->class    = $class;
         $this->id_table = $id_table;
         $this->filekey  = $filekey;
 
-        foreach (StaticHandler::getEnvConfig('filestorages') as $fsKey => $filesystem) {
-            if (!empty($filesystem['aliases']) && in_array($class, $filesystem['aliases'])) {
-                // file class becomes the alias class
-                $class = array_search($class, $filesystem['aliases']);
-                $filesystemKey = $fsKey;
-                break;
-            }
-        }
-
-        $this->folder = (Folder::encode($class) .'/'. $id_table .'/'. $filekey);
-
-        if ($filesystemKey) {
+        if ($fileStorageKey) {
             // fyi: because the path could be outside of project
-            $this->uploadsPath = StaticHandler::getEnvConfig()->getFileStoragePath($filesystemKey, 'uploads');
+
+            $filestorage = StaticHandler::getEnvConfig("filestorages")[$fileStorageKey];
+
+            if (!empty($filestorage['aliases']) && in_array($class, $filestorage['aliases'])) {
+                // file class becomes the alias class
+                $class = array_search($class, $filestorage['aliases']);
+            }
+
+            $this->uploadsPath = StaticHandler::getEnvConfig()->getFileStoragePath($fileStorageKey, 'uploads');
         }
         else {
             // fyi: the path is in this project
             $this->uploadsPath = StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads');
         }
+
+        $this->folder = (Folder::encode($class) .'/'. $id_table .'/'. $filekey);
 
         $this->config = array_replace_recursive(
             array(

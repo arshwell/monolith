@@ -25,9 +25,9 @@ abstract class Table {
     private $columns        = array();
     private $translations   = array();
 
-    private $files      = NULL;
-    private $load_files = false; // settled by object constructor
-    private $need_files = false; // settled by children's class FILES constant
+    private $files = NULL;
+    private $addTableFiles = false; // settled by constructor, via object parameter
+    private $usesTableFiles = false; // settled by constructor, via children's class FILES constant
 
     /**
      * Get number of translation times of the table or a certain column.
@@ -73,7 +73,7 @@ abstract class Table {
         return true;
     }
 
-    final function __construct (array $columns = NULL, bool $load_files = false) {
+    final function __construct (array $columns = NULL, bool $addTableFiles = false, string $fileStorageKey = null) {
         if (!isset(self::$structures[static::class])) {
             // Used only by objects, for removing unnecesary data from array before inserting/updating.
             self::$structures[static::class] = array_flip(array_column(self::columns(), 'COLUMN_NAME'));
@@ -105,13 +105,13 @@ abstract class Table {
                 }
             }
 
-            if (defined(static::class ."::FILES") && $load_files) {
-                $this->files = new TableFiles(static::class, $this->id_table);
+            if (defined(static::class ."::FILES") && $addTableFiles) {
+                $this->files = new TableFiles(static::class, $this->id_table, $fileStorageKey);
             }
         }
 
-        $this->need_files = defined(static::class ."::FILES");
-        $this->load_files = $load_files;
+        $this->usesTableFiles = defined(static::class ."::FILES");
+        $this->addTableFiles = $addTableFiles;
     }
 
     final function id (): ?int {
@@ -128,7 +128,7 @@ abstract class Table {
             array_values($columns)
         );
 
-        if ($this->need_files && $this->load_files) {
+        if ($this->usesTableFiles && $this->addTableFiles) {
             $this->files = new TableFiles(static::class, $this->id_table);
         }
 
@@ -242,7 +242,7 @@ abstract class Table {
 
             $result = DB::first($sql, $params);
 
-            return ($result ? new static(static::format($result), $sql['files']) : NULL);
+            return ($result ? new static(static::format($result), $sql['files'], $sql['fileStorageKey'] ?? (defined(static::class ."::FILESTORAGE_KEY") ? (static::class)::FILESTORAGE_KEY : null)) : NULL);
         }
 
         final static function count (string $where = NULL, array $params = NULL): int {
@@ -281,14 +281,14 @@ abstract class Table {
 
             if (!isset($sql['sort'])) {
                 return (array_map(function ($row) use ($sql) {
-                    return (new static(static::format($row), $sql['files']));
+                    return (new static(static::format($row), $sql['files'], $sql['fileStorageKey'] ?? (defined(static::class ."::FILESTORAGE_KEY") ? (static::class)::FILESTORAGE_KEY : null)));
                 }, DB::select($sql, $params)) ?? array());
             }
             else {
                 $results = DB::select($sql, $params);
                 foreach ($results as $i => $result) {
                     foreach ($result as $j => $row) {
-                        $results[$i][$j] = new static(static::format($row), $sql['files']);
+                        $results[$i][$j] = new static(static::format($row), $sql['files'], $sql['fileStorageKey'] ?? (defined(static::class ."::FILESTORAGE_KEY") ? (static::class)::FILESTORAGE_KEY : null));
                     }
                 }
                 return $results;
