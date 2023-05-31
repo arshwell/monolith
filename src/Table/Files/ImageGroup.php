@@ -22,12 +22,31 @@ final class ImageGroup implements TableSegment {
     private $smallest = array(); // urls
     private $biggest = array(); // urls
     private $sizes = array();
+    private $uploadsPath;
 
-    function __construct (string $class, int $id_table = NULL, string $filekey) {
+    function __construct (string $class, int $id_table = NULL, string $filekey, string $fileStorageKey = null) {
         $this->class    = $class;
         $this->id_table = $id_table;
         $this->filekey  = $filekey;
-        $this->folder   = (Folder::encode($class) .'/'. $id_table .'/'. $filekey);
+
+        if ($fileStorageKey) {
+            // fyi: because the path could be outside of project
+
+            $filestorage = StaticHandler::getEnvConfig("filestorages")[$fileStorageKey];
+
+            if (!empty($filestorage['aliases']) && in_array($class, $filestorage['aliases'])) {
+                // file class becomes the alias class
+                $class = array_search($class, $filestorage['aliases']);
+            }
+
+            $this->uploadsPath = StaticHandler::getEnvConfig()->getFileStoragePath($fileStorageKey, 'uploads');
+        }
+        else {
+            // fyi: the path is in this project
+            $this->uploadsPath = StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads');
+        }
+
+        $this->folder = (Folder::encode($class) .'/'. $id_table .'/'. $filekey);
 
         $this->config = array_replace_recursive(
             array(
@@ -43,7 +62,7 @@ final class ImageGroup implements TableSegment {
         );
 
         if (empty($this->config['sizes'])) { // if no sizes, like TableView
-            foreach (Folder::children(StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') .'files/'. $this->folder .'/'. ($class::TRANSLATOR)::get(), true) as $size) {
+            foreach (Folder::children($this->uploadsPath .'files/'. $this->folder .'/'. ($class::TRANSLATOR)::get(), true) as $size) {
                 list($width, $height) = explode('x', $size);
 
                 $this->config['sizes'][$size]['width'] = array($width, $width);
@@ -84,11 +103,11 @@ final class ImageGroup implements TableSegment {
         $this->biggest  = array();
         $this->urls     = array();
 
-        $files = File::tree(StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') .'files/'. $this->folder, NULL, false, true);
+        $files = File::tree($this->uploadsPath .'files/'. $this->folder, NULL, false, true);
 
         if ($files) {
-            foreach (Folder::children(StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') .'files/'. $this->folder, true) as $lg) {
-                $lg_files = File::tree(StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') .'files/'. $this->folder .'/'. $lg, NULL, true, true);
+            foreach (Folder::children($this->uploadsPath .'files/'. $this->folder, true) as $lg) {
+                $lg_files = File::tree($this->uploadsPath .'files/'. $this->folder .'/'. $lg, NULL, true, true);
 
                 if ($lg_files) {
                     $lg_sized_files = array_map(function ($files) {
@@ -123,7 +142,7 @@ final class ImageGroup implements TableSegment {
                     $first_lang = array_key_first($files);
 
                     $files[$language] = $files[$first_lang];
-                    Folder::copy(StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') .'files/'. $this->folder .'/'. $first_lang, StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') .'files/'. $this->folder .'/'. $language);
+                    Folder::copy($this->uploadsPath .'files/'. $this->folder .'/'. $first_lang, $this->uploadsPath .'files/'. $this->folder .'/'. $language);
                 }
 
                 foreach ($this->config['sizes'] as $size => $ranges) {
@@ -132,7 +151,7 @@ final class ImageGroup implements TableSegment {
 
                         // biggest language size from existent ones
                         if (!empty($files[$language])) {
-                            $lg_files = File::rFolder(StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') .'files/'. $this->folder .'/'. $language, NULL, true, true);
+                            $lg_files = File::rFolder($this->uploadsPath .'files/'. $this->folder .'/'. $language, NULL, true, true);
 
                             $biggest = File::parsePath($lg_files[Func::keyFromBiggest(array_map(function ($file) {
                                 $data = getimagesize($file);
@@ -163,10 +182,10 @@ final class ImageGroup implements TableSegment {
                         }
 
                         foreach ($files[$language][$size] as $image) {
-                            $imagesize = getimagesize(StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') .'files/'. $this->folder .'/'. $filepath .'/'. $image);
+                            $imagesize = getimagesize($this->uploadsPath .'files/'. $this->folder .'/'. $filepath .'/'. $image);
 
                             if (($ranges['width'][1] != NULL && $imagesize[0] > $ranges['width'][1]) || ($ranges['height'][1] != NULL && $imagesize[1] > $ranges['height'][1])) {
-                                $resizer = new Upload(StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') .'files/'. $this->folder .'/'. $filepath .'/'. $image);
+                                $resizer = new Upload($this->uploadsPath .'files/'. $this->folder .'/'. $filepath .'/'. $image);
 
                                 $resizer->file_new_name_body    = strtolower(File::name($image));
                                 $resizer->file_overwrite        = true;
@@ -193,10 +212,10 @@ final class ImageGroup implements TableSegment {
                                     $resizer->image_ratio_crop = true;
                                 }
 
-                                $resizer->process(StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') .'files/'. $this->folder .'/'. $language .'/'. $size);
+                                $resizer->process($this->uploadsPath .'files/'. $this->folder .'/'. $language .'/'. $size);
                             }
-                            else if (is_dir(StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') .'files/'. $this->folder.'/'.$language.'/'.$size) || mkdir(StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') .'files/'. $this->folder.'/'.$language.'/'.$size, 0755, true)) {
-                                copy(StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') .'files/'. $this->folder.'/'.$filepath.'/'.$image, StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') .'files/'. $this->folder.'/'.$language.'/'.$size.'/'.$image);
+                            else if (is_dir($this->uploadsPath .'files/'. $this->folder.'/'.$language.'/'.$size) || mkdir($this->uploadsPath .'files/'. $this->folder.'/'.$language.'/'.$size, 0755, true)) {
+                                copy($this->uploadsPath .'files/'. $this->folder.'/'.$filepath.'/'.$image, $this->uploadsPath .'files/'. $this->folder.'/'.$language.'/'.$size.'/'.$image);
                             }
                         }
                     }
@@ -204,11 +223,11 @@ final class ImageGroup implements TableSegment {
                     // if files found
                     if (isset($files[$language][$size][0])) {
                         foreach ($files[$language][$size] as $filename) {
-                            $path = (StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') .'files/'. $this->folder .'/'. $language .'/'. $size .'/'. $filename);
+                            $path = ($this->uploadsPath .'files/'. $this->folder .'/'. $language .'/'. $size .'/'. $filename);
 
                             $this->paths[$language][$size][] = $path;
 
-                            $this->sizes[$language][$size][] = getimagesize(StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') . 'files/' . $this->folder .'/'. $language .'/'. $size .'/'. $filename);
+                            $this->sizes[$language][$size][] = getimagesize($this->uploadsPath . 'files/' . $this->folder .'/'. $language .'/'. $size .'/'. $filename);
 
                             $this->urls[$language][$size][] = ($site .'uploads/files/'. $this->folder .'/'. $language .'/'. $size .'/'. $filename);
                         }
@@ -348,14 +367,14 @@ final class ImageGroup implements TableSegment {
                         $resizer->image_ratio_crop = true;
                     }
 
-                    $resizer->process(StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') .'files/'. $this->folder.'/'.$language.'/'.$size);
+                    $resizer->process($this->uploadsPath .'files/'. $this->folder.'/'.$language.'/'.$size);
 
                     if ($resizer->processed == false) {
                         throw new \ErrorException($resizer->error);
                     }
                 }
-                else if (is_dir(StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') .'files/'. $this->folder.'/'.$language.'/'.$size) || mkdir(StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') .'files/'. $this->folder.'/'.$language.'/'.$size, 0755, true)) {
-                    copy($data['tmp_name'][$i], StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') .'files/'. $this->folder.'/'.$language.'/'.$size.'/'.$data['name'][$i]);
+                else if (is_dir($this->uploadsPath .'files/'. $this->folder.'/'.$language.'/'.$size) || mkdir($this->uploadsPath .'files/'. $this->folder.'/'.$language.'/'.$size, 0755, true)) {
+                    copy($data['tmp_name'][$i], $this->uploadsPath .'files/'. $this->folder.'/'.$language.'/'.$size.'/'.$data['name'][$i]);
                 }
             }
         }
@@ -364,7 +383,7 @@ final class ImageGroup implements TableSegment {
     }
 
     function rename (array $names, string $language = NULL): void {
-        $sizes = File::tree(StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') .'files/'. $this->folder .'/'. ($language ?: (($this->class)::TRANSLATOR)::default()), NULL, true, true, true);
+        $sizes = File::tree($this->uploadsPath .'files/'. $this->folder .'/'. ($language ?: (($this->class)::TRANSLATOR)::default()), NULL, true, true, true);
 
         foreach ($names as $key => $name) {
             $names[$key] = (basename($name) .'.'. File::extension($key));
@@ -394,10 +413,10 @@ final class ImageGroup implements TableSegment {
     function delete (array $names = NULL, string $language = NULL, bool $removeEmpty = true): int {
         $count = 0;
 
-        $languages = ($language ? array($language) : Folder::children(StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') .'files/'. $this->folder, true));
+        $languages = ($language ? array($language) : Folder::children($this->uploadsPath .'files/'. $this->folder, true));
 
         foreach ($languages as $lg) {
-            foreach (File::tree(StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') .'files/'. $this->folder .'/'. $lg, NULL, true, true) as $files) {
+            foreach (File::tree($this->uploadsPath .'files/'. $this->folder .'/'. $lg, NULL, true, true) as $files) {
                 foreach ($files as $file) {
                     if (in_array(basename($file), $names) && unlink($file)) {
                         $count++;
@@ -407,7 +426,7 @@ final class ImageGroup implements TableSegment {
         }
 
         if ($removeEmpty) {
-            Folder::removeEmpty(StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') .'files/'. dirname($this->folder));
+            Folder::removeEmpty($this->uploadsPath .'files/'. dirname($this->folder));
         }
 
         if ($count) {

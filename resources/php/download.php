@@ -35,12 +35,12 @@ Session::set(StaticHandler::getEnvConfig('web.URL').StaticHandler::getEnvConfig(
 
 $urlpath = ltrim(preg_replace('~^'. StaticHandler::getEnvConfig()->getSiteRoot() .'~', '', URL::path()), '/');
 
-foreach (StaticHandler::getEnvConfig('filestorages') as $filesystemKey => $filesystem) {
-    $filepath = StaticHandler::getEnvConfig()->getFileStoragePath($filesystemKey, 'uploads', false) . $urlpath; // could be outside of project
+foreach (StaticHandler::getEnvConfig('filestorages') as $fileStorageKey => $filestorage) {
+    $filepath = StaticHandler::getEnvConfig()->getFileStoragePath($fileStorageKey, 'uploads', false) . $urlpath; // could be outside of project
 
     if (is_file($filepath) && ($matches = File::parsePath($urlpath))) {
-        if (!empty($filesystem['aliases'])) {
-            foreach ($filesystem['aliases'] as $alias => $myClass) {
+        if (!empty($filestorage['aliases'])) {
+            foreach ($filestorage['aliases'] as $alias => $myClass) {
                 if (Folder::encode($alias) == $matches['class']) {
                     $matches['class'] = Folder::encode($myClass);
                 }
@@ -59,4 +59,5 @@ foreach (StaticHandler::getEnvConfig('filestorages') as $filesystemKey => $files
     }
 }
 
+// in case no file was found
 http_response_code(404);

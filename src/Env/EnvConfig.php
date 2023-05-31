@@ -74,7 +74,7 @@ final class EnvConfig
 
     function getFileStoragePath (string $fileStorageKey, string $folder, bool $append_folder = true): string {
         try {
-            return $this->configs["filestorages.$fileStorageKey.paths.$folder"] .'/'. ($append_folder ? "$folder/" : '');
+            return rtrim($this->configs["filestorages.$fileStorageKey.paths.$folder"], '/') .'/'. ($append_folder ? "$folder/" : '');
         }
         catch (\Exception $e) {
             throw new \Exception("|Arshwell| config/filestorages.json should contain [$folder] key, with string value. It represents the optional path to your $folder/ folder, or NULL for default path.");
