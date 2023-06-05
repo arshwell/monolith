@@ -10,15 +10,11 @@ html {
 }
 
 a, button, .btn {
-    &, &:hover, &:focus {
+    &, &:hover, &:focus, &:active {
         text-decoration: none;
         @include arsh--no-outline-no-shadows;
     }
 }
-.btn.active, .btn:active {
-    @include arsh--box-shadow(none);
-}
-
 .clearfix {
     @include arsh--clearfix;
 }
@@ -73,7 +69,7 @@ textarea {
 }
 
 .modal-open {
-	overflow: initial; // so sticky elements don't break
+	overflow: initial; // so the sticky elements don't break
 }
 .dropdown {
     @include arsh--box-shadow(none);
@@ -92,18 +88,6 @@ textarea {
 .owl-carousel {
     .owl-stage {
         margin: 0 auto;
-    }
-}
-
-// All redirect and AJAX submits have <form> tag because Form JS class needs it.
-form {
-    *[form-error]:not([form-error=""]) {
-		font-size: 10px;
-		line-height: 16px;
-		height: 16px;
-		opacity: 1;
-		visibility: visible;
-		display: block;
     }
 }
 

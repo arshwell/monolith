@@ -24,7 +24,7 @@ final class DevToolHTML
         ob_start(); // for returning all content
         ?>
             <!DOCTYPE html>
-            <html lang="ro">
+            <html lang="en">
 
             <head>
                 <title>Arshwell <?= ($trusty ? DevToolData::ArshwellVersion() : '') ?></title>
@@ -39,12 +39,12 @@ final class DevToolHTML
                     <meta name="csrf-form-token" content="<?= Session::token('form') ?>">
                     <meta name="csrf-ajax-token" content="<?= Session::token('ajax') ?>">
 
-                    <link href="<?= $url ?>?rshwll=<?= $rshwll ?>&hdr=image/png&fl=images/favicon.png" rel="shortcut icon" type="image/*" />
+                    <link href="<?= $url ?>?rshwll=<?= $rshwll ?>&hdr=image/png&rsrc=images/DevPanel/favicon.png" rel="shortcut icon" type="image/*" />
                 <?php } ?>
 
-                <link rel="stylesheet" type="text/css" href="<?= $url ?>?rshwll=<?= $rshwll ?>&hdr=text/css&fl=design/css/bootstrap/v4.css"></link>
-                <link rel="stylesheet" type="text/css" href="<?= $url ?>?rshwll=<?= $rshwll ?>&hdr=text/css&fl=design/css/sindresorhus/github-markdown-css/v5.css"></link>
-                <link rel="stylesheet" type="text/css" href="<?= $url ?>?rshwll=<?= $rshwll ?>&hdr=text/css&fl=design/css/sindresorhus/github-markdown-css/v5/dark.css"></link>
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css" integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown.min.css" integrity="sha512-Ya9H+OPj8NgcQk34nCrbehaA0atbzGdZCI2uCbqVRELgnlrh8vQ2INMnkadVMSniC54HChLIh5htabVuKJww8g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-dark.min.css" integrity="sha512-Mo2QuokS9Y0JOuzVLUh3o9A07RqSXcpc2KC9LXxOwfaBgPt8ZHRiDfGQ2+tZw7xIno+ViWipTNLg1StC6TmwMA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
             </head>
 
             <body>
@@ -52,15 +52,14 @@ final class DevToolHTML
 
                 <?php
                 if ($trusty) { ?>
-                    <script type="text/javascript" src="<?= $url ?>?rshwll=<?= $rshwll ?>&hdr=text/javascript&fl=design/js/jquery/v3.js"></script>
-                    <script type="text/javascript" src="<?= $url ?>?rshwll=<?= $rshwll ?>&hdr=text/javascript&fl=design/js/floating-ui/v1.js"></script>
-                    <script type="text/javascript" src="<?= $url ?>?rshwll=<?= $rshwll ?>&hdr=text/javascript&fl=design/js/bootstrap/v4.js"></script>
-                    <script type="text/javascript" src="<?= $url ?>?rshwll=<?= $rshwll ?>&hdr=text/javascript&fl=design/js/chartjs/v3.js"></script>
-                    <script type="text/javascript" src="<?= $url ?>?rshwll=<?= $rshwll ?>&hdr=text/javascript&fl=design/js/Arshwell/body/v1.js"></script>
-                    <script type="text/javascript" src="<?= $url ?>?rshwll=<?= $rshwll ?>&hdr=text/javascript&fl=design/js/Arshwell/http_build_query/v1.js"></script>
-                    <script type="text/javascript" src="<?= $url ?>?rshwll=<?= $rshwll ?>&hdr=text/javascript&fl=design/js/Arshwell/Web/v2.js"></script>
-                    <script type="text/javascript" src="<?= $url ?>?rshwll=<?= $rshwll ?>&hdr=text/javascript&fl=design/js/Arshwell/VanillaJS/v1.js"></script>
-                    <script type="text/javascript" src="<?= $url ?>?rshwll=<?= $rshwll ?>&hdr=text/javascript&fl=design/js/Arshwell/Form/v2.js"></script>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js" integrity="sha512-ubuT8Z88WxezgSqf3RLuNi5lmjstiJcyezx34yIU2gAHonIi27Na7atqzUZCOoY4CExaoFumzOsFQ2Ch+I/HCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js" integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+                    <script type="text/javascript" src="<?= $url ?>?rshwll=<?= $rshwll ?>&hdr=text/javascript&rsrc=js/body/v1.js"></script>
+                    <script type="text/javascript" src="<?= $url ?>?rshwll=<?= $rshwll ?>&hdr=text/javascript&rsrc=js/http_build_query/v1.js"></script>
+                    <script type="text/javascript" src="<?= $url ?>?rshwll=<?= $rshwll ?>&hdr=text/javascript&rsrc=js/Web/v2.js"></script>
+                    <script type="text/javascript" src="<?= $url ?>?rshwll=<?= $rshwll ?>&hdr=text/javascript&rsrc=js/VanillaJS/v1.js"></script>
+                    <script type="text/javascript" src="<?= $url ?>?rshwll=<?= $rshwll ?>&hdr=text/javascript&rsrc=js/Form/v2.js"></script>
                 <?php } ?>
             </body>
             </html>
@@ -204,7 +203,7 @@ final class DevToolHTML
                         </p>
                         <ul dir="auto">
                             <li>In that way, you can modify Arshwell directly inside your vendor's project</li>
-                            <li>And after that, just <code>git commit</code> & <code>git push</code> the Arshwell from you vendor</li>
+                            <li>And after that, just <code>git commit</code> & <code>git push</code> the Arshwell from your vendor</li>
                         </ul>
                     </li>
                     <li>

@@ -55,7 +55,7 @@ if ($form->valid()) {
 
             $zip->close();
 
-			$path = '../../../../'; // getting out from vendor/arshwell/monolith/DevTools/tools/files
+			$path = '../../../../'; // getting out from vendor/arshwell/monolith/resources
             $getcwd = getcwd();
 
             do {
@@ -69,7 +69,7 @@ if ($form->valid()) {
                 'href'      => URL::get(true, false).'?'.http_build_query(array(
                     'rshwll'    => $_POST['rshwll'],
                     'hdr'       => 'application/zip',
-                    'fl'        => str_replace('//', '/', $path . $zippath),
+                    'rsrc'        => str_replace('//', '/', $path . $zippath),
                     'dlt'       => 1 // delete file after download
                 )),
                 'download'  => trim(StaticHandler::getEnvConfig()->getSiteRoot() ?: StaticHandler::getEnvConfig()->site(), '/').date(' d.m.Y H-i') .'.zip',
