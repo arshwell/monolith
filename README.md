@@ -76,7 +76,7 @@ Thank you for considering contributing to the Arshwell framework!
 - Run, from terminal, in the root of your project: <br>
   `composer require [your-user]/[your-new-fork] --prefer-source`
     - In that way, you can modify Arshwell directly inside your vendor's project
-    - And after that, just `git commit` & `git push` the Arshwell from you vendor
+    - And after that, just `git commit` & `git push` the Arshwell from your vendor
 - Come back to GitHub Arshwell and create a Pull Request
     - Explain the problem you've found
     - Present the solution you've implemented;

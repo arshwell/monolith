@@ -192,19 +192,19 @@ final class Layout {
         		),
         		'files'	=> array(
                     array(
-                        'name' => 'vendor/arshwell/monolith/DevTools/tools/files/design/js/Arshwell/http_build_query/v1.js',
+                        'name' => 'vendor/arshwell/monolith/resources/js/http_build_query/v1.js',
                         'range' => array(
                             'min' => 0 // guarantees will compile even if there are no other js files
                         )
                     ),
                     array(
-                        'name' => 'vendor/arshwell/monolith/DevTools/tools/files/design/js/Arshwell/Form/v2.js',
+                        'name' => 'vendor/arshwell/monolith/resources/js/Form/v2.js',
                         'range' => array(
                             'min' => 0 // guarantees will compile even if there are no other js files
                         )
                     ),
                     array(
-                        'name' => 'vendor/arshwell/monolith/DevTools/tools/files/design/js/Arshwell/VanillaJS/v1.js',
+                        'name' => 'vendor/arshwell/monolith/resources/js/VanillaJS/v1.js',
                         'range' => array(
                             'min' => 0 // guarantees will compile even if there are no other js files
                         )
@@ -307,7 +307,7 @@ final class Layout {
         		),
         		'files'	=> array(
                     array(
-                        'name' => 'vendor/arshwell/monolith/DevTools/tools/files/design/js/Arshwell/body/v1.js',
+                        'name' => 'vendor/arshwell/monolith/resources/js/body/v1.js',
                         'range' => array(
         	                'min' => 0 // guarantees will compile even if there are no other js files
         				)
@@ -954,7 +954,7 @@ final class Layout {
                             )) .';',
                             'Web.vars.routes = '. json_encode($routes) .';',
                         ),
-                        file_get_contents('vendor/arshwell/monolith/DevTools/tools/files/design/js/Arshwell/Web/v2.js')
+                        file_get_contents('vendor/arshwell/monolith/resources/js/Web/v2.js')
                     ));
 
                     $js_web_class = $js_minifier->minify();

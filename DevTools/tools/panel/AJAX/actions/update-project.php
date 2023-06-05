@@ -99,7 +99,7 @@ if ($form->valid()) {
                 $zip_folders = array(
                     // NOTE: Exceptions which don't create conflicts
                     'vendor/arshwell/monolith/src/Tygh/.+',
-                    'vendor/arshwell/monolith/DevTools/tools/files/',
+                    'vendor/arshwell/monolith/resources/',
                     preg_quote(Folder::shorter(__DIR__), '~').'/(?!'.preg_quote(basename(__FILE__), '~').'$)', // vendor/arshwell/monolith/DevTools/panel/AJAX/actions/*
 
                     '(?!\.htaccess$|env\.json$|web\.php$|vendor/arshwell/monolith/src/.+|vendor/arshwell/monolith/DevTools/.+)', // everything else

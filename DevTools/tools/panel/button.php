@@ -158,7 +158,7 @@ $hashed_arsh_version = substr(md5(DevToolData::ArshwellVersion()), 0, 5); ?>
                 iframe.style.backgroundImage= "url(" + location.protocol +'//'+ location.host + location.pathname +'?'+ "<?= http_build_query(array(
                     'rshwll'    => $hashed_arsh_version,
                     'hdr'       => 'image/png',
-                    'fl'        => 'images/background.png'
+                    'rsrc'      => 'images/DevPanel/background.png'
                 )) ?>)";
                 iframe.style.backgroundRepeat = "no-repeat";
                 iframe.style.backgroundPosition= "center";

@@ -115,7 +115,7 @@ $warnings = array(
             }
         }
         foreach (File::rFolder('uploads', array(NULL, 'php', 'phtml')) as $file) {
-            if (!in_array($file, [StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') . 'files/.htaccess', 'uploads/design/.htaccess'])
+            if (!in_array($file, [StaticHandler::getEnvConfig()->getFileStoragePathByIndex(0, 'uploads') . 'files/.htaccess', 'uploads/files/.htaccess', 'uploads/design/.htaccess'])
             && (in_array(basename($file), ['.htaccess', '.htpasswd'])
             || in_array(File::extension($file), ['php', 'phtml'])
             || in_array(File::mimeType($file), [NULL, 'text/x-php']))) {
@@ -581,7 +581,7 @@ ob_start(); // for adding all content in DevToolHTML::html() function
                 </div>
 
                 <div class="d-block col-12 d-sm-none text-center">
-                    <img style="max-width: 80%;" src="<?= URL::get(true, false) ?>?rshwll=<?= $_REQUEST['rshwll'] ?>&dvtls=fls&hdr=image/png&fl=images/ruler.png" />
+                    <img style="max-width: 80%;" src="<?= URL::get(true, false) ?>?rshwll=<?= $_REQUEST['rshwll'] ?>&dvtls=fls&hdr=image/png&rsrc=images/DevPanel/ruler.png" />
                     <p>Please, use a <b>larger</b> screen.</p>
                 </div>
             <?php } ?>
@@ -861,50 +861,6 @@ if (Session::panel('active')) { // load js ?>
                     $(this).closest(".input-group").find(".custom-file-trash").addClass('text-danger');
                 }
             });
-
-            if ($("#process--chart").length) {
-                new Chart($("#process--chart"), {
-                    type: 'line',
-                    data: {
-                        labels: ['Ianuarie', 'Februarie', 'Martie', 'Aprilie', 'Mai', 'Iunie', 'Iulie'],
-                        datasets: [{
-                            label: 'Analiza 1',
-                            fill: false,
-                            borderColor: 'rgb(255, 99, 132)',
-                            backgroundColor: 'rgb(255, 99, 132)',
-                            data: [
-                                Math.random(),
-                                Math.random(),
-                                Math.random(),
-                                Math.random(),
-                                Math.random(),
-                                Math.random(),
-                                Math.random()
-                            ]
-                        }, {
-                            label: 'Analiza 2',
-                            fill: false,
-                            borderColor: 'rgb(54, 162, 235)',
-                            backgroundColor: 'rgb(54, 162, 235)',
-                            data: [
-                                Math.random(),
-                                Math.random(),
-                                Math.random(),
-                                Math.random(),
-                                Math.random(),
-                                Math.random(),
-                                Math.random()
-                            ]
-                        }]
-                    },
-                    options: {
-                        title: {
-                            display: true,
-                            text: 'Rapoarte'
-                        }
-                    }
-                });
-            }
         };
 
         var fn = {
