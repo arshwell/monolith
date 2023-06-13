@@ -1,7 +1,6 @@
 <?php
 
 use Symfony\Component\Dotenv\Dotenv;
-
 use Arshwell\Monolith\Env\EnvConfig;
 use Arshwell\Monolith\StaticHandler;
 use Arshwell\Monolith\Session;

@@ -32,7 +32,7 @@ if ($form->valid()) {
     }
     else {
         // keep .htaccess files
-        foreach (File::rFolder($build_dir . 'uploads/design/') as $file) {
+        foreach (File::rFolder($build_dir . 'uploads/') as $file) {
             if (basename($file) != '.htaccess') {
                 unlink($file);
             }

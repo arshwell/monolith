@@ -95,27 +95,6 @@ final class StaticHandler
             require($v);
         }
 
-        // .htaccess file
-        if (!is_file(Folder::root(). '.htaccess')) {
-            copy(Folder::root() . 'vendor/arshwell/monolith/resources/htaccess/project.htaccess', Folder::root() . '.htaccess');
-        }
-
-        // .htaccess in files folder
-        if (!is_file(Folder::root() . 'uploads/files/.htaccess')) {
-            if (!is_dir(Folder::root() . 'uploads/files/')) {
-                mkdir(Folder::root() . 'uploads/files/', 0777, true);
-            }
-            copy(Folder::root() . 'vendor/arshwell/monolith/resources/htaccess/uploads.files.htaccess', Folder::root() . 'uploads/files/.htaccess');
-        }
-
-        // .htaccess in design folder
-        if (!is_file(Folder::root() . 'uploads/design/.htaccess')) {
-            if (!is_dir(Folder::root() . 'uploads/design/')) {
-                mkdir(Folder::root() . 'uploads/design/', 0777, true);
-            }
-            copy(Folder::root() . 'vendor/arshwell/monolith/resources/htaccess/uploads.design.htaccess', Folder::root() . 'uploads/design/.htaccess');
-        }
-
         if (strstr(Folder::shorter(getcwd()), '/', true) == 'crons' && !StaticHandler::isCRON()
         && (!StaticHandler::getEnvConfig('development.debug') || !StaticHandler::supervisor())) { // CRON is run by a stranger.
             http_response_code(404);

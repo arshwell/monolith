@@ -631,7 +631,7 @@ final class Web {
     }
 
     static function routes (string $request = NULL): array {
-        return ($request ? self::$routes_by_request[$request] : self::$routes);
+        return ($request ? (self::$routes_by_request[$request] ?? []) : self::$routes);
     }
 
     static function exists (string $key, string $request = NULL): bool {

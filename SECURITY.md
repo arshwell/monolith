@@ -8,8 +8,8 @@ We support fixing security issues on the following releases:
 
 | Version | Supported          | Security fixes until
 | ------- | ------------------ | --------------------
-| 1.x     | :white_check_mark: | 12 months after 2.0.0
-| 0.x     | :white_check_mark: | Until 1.x is released
+| 1.x     | :white_check_mark: | 12 months from 2.x release
+| 0.x     | :white_check_mark: | Until 1.x release
 
 ## Reporting a Vulnerability
 

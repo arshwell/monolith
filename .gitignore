@@ -1,2 +1,5 @@
-/.vscode/
-/vendor/
+.DS_Store
+.vscode/
+
+example/
+vendor/
