@@ -60,51 +60,55 @@ final class EnvConfig
         return $this->configs[$key];
     }
 
-    function getDbConnByIndex(int $index = 0): array
+    function getDbConnByIndex(int $index = 0): ?array
     {
         $conns = array_values($this->configs['databases']['conn']);
 
-        try {
-            return $conns[$index];
-        }
-        catch (\Exception $e) {
-            throw new \Exception("|Arshwell| config/databases.json has only ". count($conns) ." connections.");
-        }
+        return $conns[$index] ?? null;
     }
 
-    function getFileStoragePath (string $fileStorageKey, string $folder, bool $append_folder = true): string {
-        try {
-            return rtrim($this->configs["filestorages.$fileStorageKey.paths.$folder"], '/') .'/'. ($append_folder ? "$folder/" : '');
-        }
-        catch (\Exception $e) {
-            throw new \Exception("|Arshwell| config/filestorages.json should contain [$folder] key, with string value. It represents the optional path to your $folder/ folder, or NULL for default path.");
-        }
+    function getDbConnNameByIndex(int $index = 0): ?string
+    {
+        $conns = array_values($this->configs['databases']['conn']);
+
+        return $conns[$index]['name'] ?? null;
     }
 
-    function getFileStoragePathsByIndex (int $fileStorageIndex = 0): array {
+    function getFileStoragePath (string $fileStorageKey, string $folder, bool $append_folder = true): ?string {
+        if (!isset($this->configs["filestorages.$fileStorageKey.paths.$folder"])) {
+            return null;
+        }
+
+        return rtrim($this->configs["filestorages.$fileStorageKey.paths.$folder"], '/') .'/'. ($append_folder ? "$folder/" : '');
+    }
+
+    function getFileStoragePathsByIndex (int $fileStorageIndex = 0): ?array {
         $fileStorages = array_values($this->configs['filestorages']);
+
+        if (!isset($fileStorages[$fileStorageIndex])) {
+            return null;
+        }
 
         try {
             return $fileStorages[$fileStorageIndex]['paths'];
         }
         catch (\Exception $e) {
-            throw new \Exception("|Arshwell| config/filestorages.json has only ". count($fileStorages) ." file storages.");
+            throw new \Exception("|Arshwell| config/filestorages.json misses 'paths' key for fileStorageIndex: {$fileStorageIndex}.");
         }
     }
 
-    function getFileStoragePathByIndex (int $fileStorageIndex = 0, string $folder, bool $append_folder = true): string {
+    function getFileStoragePathByIndex (int $fileStorageIndex = 0, string $folder, bool $append_folder = true): ?string {
         $fileStorages = array_values($this->configs['filestorages']);
+
+        if (!isset($fileStorages[$fileStorageIndex]['paths'][$folder])) {
+            return null;
+        }
 
         if ($fileStorages[$fileStorageIndex]['paths'][$folder]) {
             $fileStorages[$fileStorageIndex]['paths'][$folder] .= '/';
         }
 
-        try {
-            return $fileStorages[$fileStorageIndex]['paths'][$folder] . ($append_folder ? "$folder/" : '');
-        }
-        catch (\Exception $e) {
-            throw new \Exception("|Arshwell| config/filestorages.json has only ". count($fileStorages) ." file storages.");
-        }
+        return $fileStorages[$fileStorageIndex]['paths'][$folder] . ($append_folder ? "$folder/" : '');
     }
 
     function getSite (): string {

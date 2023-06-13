@@ -48,7 +48,7 @@ final class DB {
         }
     }
 
-    final static function key (): string {
+    final static function key (): ?string {
         return self::$defaultDbConnKey;
     }
 

@@ -1,7 +1,6 @@
 <?php
 
 use Symfony\Component\Dotenv\Dotenv;
-
 use Arshwell\Monolith\Env\EnvConfig;
 use Arshwell\Monolith\StaticHandler;
 use Arshwell\Monolith\Session;
@@ -35,7 +34,7 @@ foreach (array_keys(StaticHandler::getEnvConfig('databases')['conn']) as $connKe
     DB::connect($connKey);
 }
 
-Session::set(StaticHandler::getEnvConfig('web.URL').StaticHandler::getEnvConfig()->getDbConnByIndex()['name']);
+Session::set(StaticHandler::getEnvConfig('web.URL').StaticHandler::getEnvConfig()->getDbConnNameByIndex());
 
 // Supervisors are alerted if there are problems.
 if (StaticHandler::getEnvConfig('development.debug') && StaticHandler::supervisor() && $_SERVER['REQUEST_METHOD'] == 'GET') {

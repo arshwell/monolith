@@ -84,6 +84,10 @@ abstract class TableView extends Table {
     }
 
     final static function sentenceSEO (string $info, array $vars = NULL, string $route = NULL): string {
+        if (null == DB::key()) {
+            throw new \Exception("|Arshwell| Can't use ". static::class .". No existent connection to a database.");
+        }
+
         $source = ($route ?: Web::key());
 
         $result = DB::first(
@@ -150,6 +154,10 @@ abstract class TableView extends Table {
     }
 
     final static function textSEO (string $info, array $vars = NULL, string $route = NULL): string {
+        if (null == DB::key()) {
+            throw new \Exception("|Arshwell| Can't use ". static::class .". No existent connection to a database.");
+        }
+
         $source = ($route ?: Web::key());
 
         $result = DB::first(
@@ -216,6 +224,10 @@ abstract class TableView extends Table {
     }
 
     final static function imageSEO (string $info, int $width, int $height, string $route = NULL): string {
+        if (null == DB::key()) {
+            throw new \Exception("|Arshwell| Can't use ". static::class .". No existent connection to a database.");
+        }
+
         ini_set('max_execution_time', ini_get('max_execution_time') + 2);
 
         $source = ($route ?: Web::key());
@@ -306,6 +318,10 @@ abstract class TableView extends Table {
     }
 
     final static function sentence (string $info, array $vars = NULL, bool $global = false): string {
+        if (null == DB::key()) {
+            throw new \Exception("|Arshwell| Can't use ". static::class .". No existent connection to a database.");
+        }
+
         $source = self::source($global);
 
         $result = DB::first(
@@ -373,6 +389,10 @@ abstract class TableView extends Table {
     }
 
     final static function text (string $info, array $vars = NULL, bool $global = false): string {
+        if (null == DB::key()) {
+            throw new \Exception("|Arshwell| Can't use ". static::class .". No existent connection to a database.");
+        }
+
         $source = self::source($global);
 
         $result = DB::first(
@@ -440,6 +460,10 @@ abstract class TableView extends Table {
     }
 
     final static function content (string $info, array $vars = NULL, bool $global = false): ?string {
+        if (null == DB::key()) {
+            throw new \Exception("|Arshwell| Can't use ". static::class .". No existent connection to a database.");
+        }
+
         $source = self::source($global);
 
         $result = DB::first(
@@ -507,6 +531,10 @@ abstract class TableView extends Table {
     }
 
     final static function image (string $info, int $width, int $height, bool $global = false): ?string {
+        if (null == DB::key()) {
+            throw new \Exception("|Arshwell| Can't use ". static::class .". No existent connection to a database.");
+        }
+
         ini_set('max_execution_time', ini_get('max_execution_time') + 2);
 
         $source = self::source($global);
@@ -598,6 +626,10 @@ abstract class TableView extends Table {
     }
 
     final static function images (string $info, int $width, int $height, bool $global = false): array {
+        if (null == DB::key()) {
+            throw new \Exception("|Arshwell| Can't use ". static::class .". No existent connection to a database.");
+        }
+
         ini_set('max_execution_time', ini_get('max_execution_time') + 2);
 
         $source = self::source($global);
@@ -689,6 +721,10 @@ abstract class TableView extends Table {
     }
 
     final static function checked (string $info, bool $global = false): int {
+        if (null == DB::key()) {
+            throw new \Exception("|Arshwell| Can't use ". static::class .". No existent connection to a database.");
+        }
+
         $source = self::source($global);
 
         $result = DB::first(
@@ -725,6 +761,10 @@ abstract class TableView extends Table {
     }
 
     final static function video (string $info, bool $global = false): string {
+        if (null == DB::key()) {
+            throw new \Exception("|Arshwell| Can't use ". static::class .". No existent connection to a database.");
+        }
+
         ini_set('max_execution_time', ini_get('max_execution_time') + 2);
 
         $source = self::source($global);
@@ -783,6 +823,10 @@ abstract class TableView extends Table {
     }
 
     final static function href (string $info, array $vars = NULL, bool $global = false): string {
+        if (null == DB::key()) {
+            throw new \Exception("|Arshwell| Can't use ". static::class .". No existent connection to a database.");
+        }
+
         $source = self::source($global);
 
         $result = DB::first(

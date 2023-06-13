@@ -1,4 +1,4 @@
-# Arshwell | PHP Framework | for LAMP Stack
+# Arshwell v0.x | PHP Framework | for LAMP Stack
 
 Simple to learn and use:
 >  Arshwell started from the idea of a fast and clean framework. <br>
@@ -15,30 +15,15 @@ Arshwell uses next technologies:
 - [JS Vanilla functions] - Built-in helpful functions (ex: Web, Form)
 - [jQuery] - default JS library
 
-### Installation & Use
+### Installation & Setup
 
-- Include this package (arshwell/monolith) in your project composer;
-- Run `composer install`;
-- Create `index.php`, in root of your project, and include the following code:
+1. From terminal, in the root of your project, run `composer require arshwell/monolith:0.*`
+2. After that run `sh vendor/arshwell/monolith/bin/copy-arshwell-example.sh`
+3. Replace, in entire project, MyTeam\MyProject, with your desired namespace
+4. Create the .env.local file
+5. Done 📢 run your website!
 
-    - ```php
-      <?php
-      /**
-       * Used for web requests towards pages.
-       */
-      require("vendor/arshwell/monolith/resources/php/index.php");
-      ```
-- Create `download.php`, in root of your project, and include the following code:
-
-    - ```php
-      <?php
-      /**
-       * Used for web requests towards uploaded files (png, jpg, gif, etc).
-       * So access can be restricted in necessary situations.
-       */
-      require("vendor/arshwell/monolith/resources/php/download.php");
-      ```
-- Refresh project from web. So necessary .htaccess files will be created automatically.
+See more details on https://arshwell.github.io/docs.html#installation
 
 ### Features
 
@@ -57,11 +42,11 @@ Arshwell has many features, including:
 
 DevPanel is a built-in panel which has many features, including:
 
-| Feature |
-| ------ |
+| Feature | |
+| ------ | ------ |
 | Recompiling SCSS/JS files |
 | Downloading project as ZIP |
-| Updating with newer version (throw ZIP file) |
+| Updating with newer version (throw ZIP file) | _(deprecated)_ |
 | Removing dangerous files |
 | Activating maintenance mode |
 
@@ -80,6 +65,8 @@ Thank you for considering contributing to the Arshwell framework!
 - Come back to GitHub Arshwell and create a Pull Request
     - Explain the problem you've found
     - Present the solution you've implemented;
+
+See other details on https://arshwell.github.io/docs.html#contributing
 
 ### Code of Conduct
 

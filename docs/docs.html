@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Arshwell Documentation | PHP Framework</title>
+
+    <!-- favicon -->
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="Easy to use PHP framework for any novice in the frameworks world.">
+    <meta name="author" content="Arshavin">
+    <meta name="robots" content="noindex, nofollow" />
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
+
+    <!-- css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" integrity="sha512-t4GWSVZO1eC8BM339Xd7Uphw5s17a86tIZIj8qRxhnKub6WoyhnrxeCIMeAqBPgdZGlCcG2PrZjMc+Wr78+5Xg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="assets/css/theme.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.2/styles/atom-one-dark.min.css">
+</head>
+<body class="docs-page">
+    <header class="header fixed-top">
+        <div class="branding docs-branding">
+            <div class="container-fluid position-relative py-2">
+                <div class="docs-logo-wrapper">
+					<button id="docs-sidebar-toggler" class="docs-sidebar-toggler docs-sidebar-visible me-2 d-xl-none" type="button">
+	                    <span></span>
+	                    <span></span>
+	                    <span></span>
+	                </button>
+	                <div class="site-logo">
+                        <a class="navbar-brand" href="index.html">
+                            <div class="d-flex align-items-end">
+                                <div class="flex-shrink-0">
+								    <span class="theme-icon-holder bg-transparent">
+                                        <i class="fa-solid fa-meteor fa-2x"></i>
+                                    </span>
+                                </div>
+                                <div class="flex-grow-1 ms-3 text-center">
+                                    <span class="logo-text" style="display: block;">Arshwell</span>
+                                    <small class="text-alt" style="display: block; font-size: 14px; line-height: 14px;">PHP Framework</small>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+	            <div class="docs-top-utilities d-flex justify-content-end align-items-center">
+	                <div class="top-search-box d-none d-lg-flex">
+		                <form class="search-form">
+				            <input type="text" placeholder="Search the docs..." name="search" class="form-control search-input">
+				            <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
+				        </form>
+	                </div>
+
+					<ul class="social-list list-inline mx-md-3 mx-lg-5 mb-0 d-none d-lg-flex">
+						<li class="list-inline-item"><a href="https://github.com/arshwell/monolith" target="_blank"><i class="fab fa-github fa-fw"></i></a></li>
+		            </ul>
+	            </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="docs-wrapper">
+	    <div id="docs-sidebar" class="docs-sidebar">
+		    <div class="top-search-box d-lg-none p-3">
+                <form class="search-form">
+		            <input type="text" placeholder="Search the docs..." name="search" class="form-control search-input">
+		            <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
+		        </form>
+            </div>
+		    <nav id="docs-nav" class="docs-nav navbar">
+			    <ul class="section-items list-unstyled nav flex-column pb-3">
+
+                    <!-- Introduction -->
+				    <li class="nav-item section-title">
+                        <a class="nav-link scrollto" href="#introduction">
+                            <span class="theme-icon-holder me-2"><i class="fas fa-map-signs"></i></span>
+                            Introduction
+                        </a>
+                    </li>
+				    <li class="nav-item">
+                        <a class="nav-link scrollto" href="#installation">Installation & Setup</a>
+                    </li>
+
+                    <!-- Upgrade version -->
+				    <li class="nav-item section-title mt-3">
+                        <a class="nav-link scrollto" href="#upgrade-version">
+                            <span class="theme-icon-holder me-2"><i class="fas fa-cogs"></i></span>
+                            Upgrade version
+                        </a>
+                    </li>
+
+                    <!-- Documentation -->
+				    <li class="nav-item section-title mt-3">
+                        <a class="nav-link scrollto" href="#documentation">
+                            <span class="theme-icon-holder me-2"><i class="fas fa-book-reader"></i></span>
+                            Documentation
+                        </a>
+                    </li>
+				    <li class="nav-item">
+                        <!-- The basics -->
+                        <li class="nav-item">
+                            <a class="nav-link scrollto" href="#docs-the-basics">
+                                The Basics
+                            </a>
+                        </li>
+                        <ul class="section-items list-unstyled nav flex-column ps-4 pt-2 pb-2">
+
+                            <li class="nav-item"><a class="nav-link scrollto" href="#docs-request-lifecicle">request lifecicle</a></li>
+                            <li class="nav-item"><a class="nav-link scrollto" href="#docs-configuration">configuration</a></li>
+                            <li class="nav-item"><a class="nav-link scrollto" href="#docs-routing">routing</a></li>
+                            <li class="nav-item"><a class="nav-link scrollto" href="#docs-pages">pages</a></li>
+                            <li class="nav-item"><a class="nav-link scrollto" href="#docs-modules">modules</a></li>
+                        </ul>
+                        <!-- Advanced Topics -->
+                        <li class="nav-item mt-3">
+                            <a class="nav-link scrollto" href="#docs-advanced-topics">
+                                Advanced Topics
+                            </a>
+                        </li>
+                        <ul class="section-items list-unstyled nav flex-column ps-4 pt-2 pb-3">
+                            <li class="nav-item"><a class="nav-link scrollto" href="#docs-database">database</a></li>
+                            <li class="nav-item"><a class="nav-link scrollto" href="#docs-sessions">sessions</a></li>
+                            <li class="nav-item"><a class="nav-link scrollto" href="#docs-security-validation">security & validation</a></li>
+                            <li class="nav-item"><a class="nav-link scrollto" href="#docs-users">users</a></li>
+                            <li class="nav-item"><a class="nav-link scrollto" href="#docs-file-uploads">file uploads</a></li>
+                            <li class="nav-item"><a class="nav-link scrollto" href="#docs-devpanel">DevPanel</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Utilities -->
+				    <li class="nav-item section-title mt-3">
+                        <a class="nav-link scrollto" href="#utilities"><span class="theme-icon-holder me-2"><i class="fas fa-tools"></i></span>
+                            Utilities
+                        </a>
+                    </li>
+
+                    <!-- FAQs -->
+				    <li class="nav-item section-title mt-3">
+                        <a class="nav-link scrollto" href="#faqs"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>
+                            FAQs
+                        </a>
+                    </li>
+
+                    <!-- Coding standards -->
+				    <li class="nav-item section-title mt-3">
+                        <a class="nav-link scrollto" href="#coding-standards"><span class="theme-icon-holder me-2"><i class="fas fa-laptop-code"></i></span>
+                            Coding standards
+                        </a>
+                    </li>
+
+                    <!-- Deploy website -->
+				    <li class="nav-item section-title mt-3">
+                        <a class="nav-link scrollto" href="#deploy-website"><span class="theme-icon-holder me-2"><i class="fas fa-rocket"></i></span>
+                            Deploy website
+                        </a>
+                    </li>
+			    </ul>
+		    </nav>
+	    </div>
+
+        <!------- Content ------->
+	    <div class="docs-content">
+		    <div class="container">
+
+                <!-- Introduction -->
+			    <article class="docs-article" id="introduction">
+                    <header class="docs-header">
+					    <h1 class="docs-heading">
+                            Introduction
+                            <span class="docs-time">
+                                <span class="float-end">09 Jun 2023</span>
+                                <br><small><small class="float-end"><i>last update of "Introduction"</i></small></small>
+                            </span>
+                        </h1>
+					    <section class="docs-intro">
+						    <p>Hi from Arshavin. I started working on this framework since 2018. I've used it on many presentation websites, improving it continuously.</p>
+						    <p>In 2022 Arshwell moved from random .zips to a GitHub repo 🎉 And one year after that it started having releases available from Composer.</p>
+						</section>
+
+                        <!-- Installation and Setup -->
+                        <section class="docs-section" id="installation">
+                            <h2 class="section-heading">Installation & Setup</h2>
+
+                            <ol>
+                                <li>
+                                    From terminal, in the root of your project, run
+                                    <code class="d-inline-block">composer require arshwell/monolith:0.*</code>
+                                    <ul>
+                                        <li><small>it adds the framework files in vendor/ folder;</small></li>
+                                        <li><small>it adds the framework name in composer.json and composer.lock.</small></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    After that run <code class="d-inline-block">sh vendor/arshwell/monolith/bin/copy-arshwell-example.sh</code>
+                                    <ul>
+                                        <li><small>it copies the example project files;</small></li>
+                                        <li><small>so you have already a functional draft website.</small></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    Replace, in entire project, MyTeam\MyProject, with your desired namespace
+                                    <ul>
+                                        <li><small>your desired namespace should be present also in composer.json file.</small></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    Create the .env.local file
+                                    <ul>
+                                        <li><small>here should be defined env vars with specific values for every developer;</small></li>
+                                        <li><small>ex: database credentials, or even website url.</small></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    Done 📢 run your website!
+                                    <ul>
+                                        <li><small>your draft website is incredible;</small></li>
+                                        <li><small>use the below steps to make it even cooler.</small></li>
+                                    </ul>
+                                </li>
+                            </ol>
+                        </section>
+				    </header>
+
+                    <div class="progress progress-bar-striped h-auto" role="progressbar" aria-label="20% completed" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                        <div class="progress-bar bg-primary text-wrap p-1" style="width: 20%">you're 20% done reading...</div>
+                    </div>
+                </article>
+
+                <!-- Upgrade version -->
+                <article class="docs-article" id="upgrade-version">
+				    <header class="docs-header">
+					    <h1 class="docs-heading">
+                            Upgrade version
+                            <span class="docs-time">
+                                <span class="float-end">09 Jun 2023</span>
+                                <br><small><small class="float-end"><i>last update of "Upgrade version"</i></small></small>
+                            </span>
+                        </h1>
+					    <section class="docs-intro">
+						    <p>Because v0.x is in Beta, so far we don't have documentation for versions older than v0.4 🙏</p>
+                            <p>We just hope you don't use a version smaller than that.</p>
+						</section>
+                    </header>
+                </article>
+
+                <!-- Documentation -->
+                <article class="docs-article" id="documentation">
+				    <header class="docs-header">
+					    <h1 class="docs-heading">
+                            Documentation
+                            <span class="docs-time">
+                                <span class="float-end">09 Jun 2023</span>
+                                <br><small><small class="float-end"><i>last update of "Documentation"</i></small></small>
+                            </span>
+                        </h1>
+					    <section class="docs-intro">
+						    <p>We're happy you came across these docs 🙏 Go through this chapter and you will master Arshwell framework.</p>
+                            <p>Enjoy these journey by implementing in your project in the same time we're teaching you.</p>
+						</section>
+
+                        <!-- The basics -->
+                        <section class="docs-section" id="docs-the-basics">
+                            <h2 class="section-heading">The Basics</h2>
+
+                            <p>Let's start from simple, right?!</p>
+                            <p>Understanding tool functionality in the real world builds confidence, including in application development. Knowing how your development tools work boosts comfort and confidence.</p>
+                            <p>This document gives a brief overview of the Arshwell framework to demystify it and increase your confidence in building applications. Don't worry if you don't understand all the terms right away. Focus on grasping the basics, and your knowledge will grow as you explore the rest of the documentation.</p>
+
+                            <!-- Request lifecicle -->
+                            <section class="docs-section" id="docs-request-lifecicle">
+                                <h4>Request lifecicle</h4>
+
+                                <ol>
+                                    <li>The entry point for all requests to an Arshwell application is the <code>index.php</code> file.
+                                        All requests are directed to this php file by your <code>.htaccess</code> configuration file.
+                                        <br><br>
+                                        The index.php file serves as a minimal code base and acts as the initial entry point for loading the entire framework.
+                                    </li>
+                                    <li>It reads the data from <code>config/</code> folder.</li>
+                                    <li>It connects to database.</li>
+                                    <li>It matches request url with one from <code>config/forks/</code>. So we know what page is about.</li>
+                                    <li>It runs php files from <code>gates/</code> folder.</li>
+                                    <li>For our page, it includes the <code>outcomes/**/backend.php</code> file.</li>
+                                    <li>For our page, it includes the <code>layouts/**/layout.php</code> file.</li>
+                                    <li>For our page, it includes the <code>outcomes/**/frontend.php</code> file.</li>
+                                    <li>The entire result <i>(ex: HTML)</i> is displayed to browser.</li>
+                                </ol>
+                            </section>
+
+                            <!-- Configuration -->
+                            <section class="docs-section" id="docs-configuration">
+                                <h4>Configuration</h4>
+
+                                <p>
+                                    The default structure of Arshwell websites includes configuration files
+                                    stored in the <code>config/</code> directory:
+
+                                    <br>
+                                    <br><i>your-project/</i>
+                                    <br>│  config/
+                                    <br>│  ├─ forks/
+                                    <br>│  ├─ databases.json
+                                    <br>│  ├─ development.json
+                                    <br>│  ├─ filestorages.json
+                                    <br>│  ├─ services.json
+                                    <br>│  └─ web.json
+                                </p>
+
+                                <p>
+                                    <ul>
+                                        <li>The <code>config/forks/</code> folder defines the urls of your pages.</li>
+                                        <li>The <code>config/databases.json</code> defines the credentials to your database(s).</li>
+                                        <li>The <code>config/development.json</code> defines if the possible errors are displayed to page and who can see them.</li>
+                                        <li>The <code>config/filestorages.json</code> defines the location for static and uploaded files.</li>
+                                        <li>The <code>config/services.json</code> is in BETA. <br><small>in v1.x it'll come with awesome features.</small></li>
+                                        <li>The <code>config/web.json</code> defines the base url of your website.</li>
+                                    </ul>
+                                </p>
+                                <p>
+                                    Some of their values are volatile. They are different on your dev website
+                                    compared to the live website (the official one).
+                                    <br>
+                                    Like database credentials and website url.
+                                    <br><br>
+                                    That's why you will include env vars in these config/ files, so the values can be changed anytime.
+                                    <br>
+                                    And you can define their value in your <code>.env</code> file.
+                                </p>
+                            </section>
+
+                            <!-- Routing -->
+                            <section class="docs-section" id="docs-routing">
+                                <h4>Routing</h4>
+
+                                <p>
+                                    Routes can be found in <code>config/forks/</code> folder. They represent all urls the website has.
+                                </p>
+                                <p>
+                                    When your application receives a request, it includes
+                                    <code>outcomes/**/backend.php</code> and <code>outcomes/**/frontend.php</code> files to display the HTML.
+                                    <br>
+                                    With other words, the routing configuration defines which <code>outcomes/</code> php files to be included for each incoming URL.
+                                </p>
+                                <p>
+                                    It also provides other useful features, like generating SEO-friendly URLs
+                                    (ex: /article/2/how-to-cook-chicken, instead of article.php?id=2).
+                                </p>
+                                <p>
+                                    For the inserting page links in your HTML, you can check
+                                    <u class="d-inline-block"><a href="#utility-web-class">Utilities > Web::class</a></u> anytime you need.
+                                </p>
+                            </section>
+
+                            <!-- Pages -->
+                            <section class="docs-section" id="docs-pages">
+                                <h4>Pages</h4>
+
+                                <p>
+                                    A page represents any route with GET method. That's because POST requests should not have a page.
+                                </p>
+                                <p>
+                                    So any page is a GET request which displays a HTML code to browser.
+                                </p>
+                                <p>
+                                    To create a page easily you need:
+                                    <ul>
+                                        <li>
+                                            a route
+                                            <br><small>in <code>config/forks/</code> folder</small>
+                                        </li>
+                                        <li>
+                                            a layout
+                                            <br><small>in <code>layouts/</code> folder</small>
+                                        </li>
+                                        <li>
+                                            an outcome
+                                            <br><small>in <code>outcomes/</code> folder</small>
+                                        </li>
+                                        <li>
+                                            <small>a piece <small>(optional)</small></small>
+                                            <br><small>in <code>pieces/</code> folder</small>
+                                        </li>
+                                    </ul>
+                                </p>
+                                <p>
+                                    This is the actual flow for the framework:
+                                    <ol>
+                                        <li>The route specifies the url and the outcome to be used.</li>
+                                        <li>The framework includes <code>outcomes/**/backend.php</code>.</li>
+                                        <li>The outcome specifies the layout to be used.</li>
+                                        <li>The framework includes <code>outcomes/**/frontend.php</code> inside the layout.</li>
+                                        <li>
+                                            Optional: the outcome includes a piece in frontend.
+                                            <br><small>in case you have a HTML code you use in many pages.</small>
+                                        </li>
+                                    </ol>
+                                </p>
+                                <p>
+                                    <small><b>Note:</b> most often the layout contains the header and the footer of the pages.</small>
+                                </p>
+                            </section>
+
+                            <!-- Modules -->
+                            <section class="docs-section" id="docs-modules">
+                                <h4>Modules</h4>
+
+                                <p>
+                                    Because the administration area of the website most often has repetitive functionality,
+                                    the Modules helps you generate sections easily for every table you need to manipulate from admin zone.
+                                </p>
+                                <p>
+                                    So you will define sections where there will be:
+
+                                    <ol>
+                                        <li>listings of database table rows;</li>
+                                        <li>forms for inserting new data;</li>
+                                        <li>forms for updating existing data;</li>
+                                        <li>options to delete, hide, reorder data.</li>
+                                    </ol>
+                                </p>
+                            </section>
+
+                            <div class="progress progress-bar-striped h-auto" role="progressbar" aria-label="35% completed" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100">
+                                <div class="progress-bar bg-primary text-wrap p-1" style="width: 35%">you're 35% done reading...</div>
+                            </div>
+                        </section>
+
+                        <!-- Advanced Topics -->
+                        <section class="docs-section" id="docs-advanced-topics">
+                            <h2 class="section-heading">Advanced Topics</h2>
+
+                            <p>Let's go deeper. What do you think?!</p>
+                            <p>The Basics chapter presents to you how you can create static pages and how to display pages to user.</p>
+                            <p>In this chapter we really take the advantage of Arshwell framework 👻</p>
+
+                            <!-- Database -->
+                            <section class="docs-section" id="docs-database">
+                                <h4>Database</h4>
+
+                                <p>
+                                    The connection to database is defined in <code>config/databases.json</code> and
+                                    can be overwritten by you from your <code>.env.local</code> file.
+                                    <br>
+                                    <small>
+                                        If you miss something about that, you can check anytime
+                                        the <u class="d-inline-block"><a href="#docs-configuration">The Basics > Configuration</a></u> section.
+                                    </small>
+                                </p>
+                                <p>
+                                    In order to manipulate a table from database you just need to create a PHP class
+                                    which extends the Arshwell Table class:
+
+                                    <pre><code class="hljs">&lt;?php
+
+// in app/Table/Blog/Article.php
+
+namespace MyNamespace\Table\Blog;
+
+use Arshwell\Monolith\Table;
+
+final class Article extends Table
+{
+    const TABLE       = 'articles';
+    const PRIMARY_KEY = 'id_article';
+}
+</code></pre>
+                                </p>
+
+                                <p>
+                                    You can check <u class="d-inline-block"><a href="#utility-table-class">Utilities > Table::class</a></u> anytime you need.
+                                    <!-- <br><small>Besides that, <u class="d-inline-block">Utilities > DB::class</u> has even more flexibility in creating SQL queries.</small> -->
+                                </p>
+                            </section>
+
+                            <!-- Sessions -->
+                            <section class="docs-section" id="docs-sessions">
+                                <h4>Sessions</h4>
+
+                                <p>
+                                    You should know what sessions are. They are from PHP.
+                                </p>
+                                <p>
+                                    Arshwell just helps you with encapsulating them. What do we mean by that?
+                                    That if you have more websites on the same domain, one website won't affect the sessions of the others.
+                                </p>
+                                <p>
+                                    You can check <u class="d-inline-block"><a href="#utility-session-class">Utilities > Session::class</a></u> anytime you need.
+                                </p>
+                            </section>
+
+                            <!-- Security and Validation -->
+                            <section class="docs-section" id="docs-security-validation">
+                                <h4>Security and Validation</h4>
+
+                                <p>
+                                    Whenever is about logging in a user or validating a form data, not ommiting a strong validation is very important.
+                                    <br><small>Let's not forget also about uploading forbidden files.</small>
+                                </p>
+                                <p>
+                                    We have the best tool for you: Arshwell TableValidation class.
+                                    Validation of every field is just too simple. It also covers default security validation.
+                                </p>
+                                <p>
+                                    You can check <u class="d-inline-block"><a href="#utility-table-validation-class">Utilities > TableValidation::class</a></u> anytime you need.
+                                </p>
+                            </section>
+
+                            <!-- Users -->
+                            <section class="docs-section" id="docs-users">
+                                <h4>Users</h4>
+
+                                <p>
+                                    Validating user credentials and keeping his data in session should not be a struggle.
+                                </p>
+                                <p>
+                                    Arshwell Table\TableAuth class does all of that for you.
+                                    <br><small>You can check more about it anytime at <u class="d-inline-block">Utilities > Table\TableAuth::class</u>.</small>
+                                </p>
+                                <p>
+                                    This class provides all default Table features and also the user related features.
+                                    <br>
+                                    It will take care also of storing user data on session and retrieving it when you need that.
+                                </p>
+                            </section>
+
+                            <!-- File uploads -->
+                            <section class="docs-section" id="docs-file-uploads">
+                                <h4>File uploads</h4>
+
+                                <p>
+                                    The management of storing uploaded files, linking them to tables and updating them is boring.
+                                </p>
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <p>
+                                            Arshwell Table\TableFiles class has awesome architecture just for that.
+                                            <br><small>You can check more about it anytime at <u class="d-inline-block">Utilities > Table\TableFiles::class</u>.</small>
+                                        </p>
+                                        <p>
+                                            Uploads location is defined in <code>config/filestorages.json</code> and files are linked to
+                                            the certain table rows without a struggle.
+                                        </p>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <p>
+                                            Let's say we need an image for our article. This is all we need to do:
+
+                                            <div class="pb-1"><code>app/Table/Blog/Article.php</code></div>
+                                            <pre><code class="hljs">&lt;?php
+
+namespace MyNamespace\Table\Blog;
+
+use Arshwell\Monolith\Table;
+
+final class Article extends Table
+{
+    const TABLE       = 'articles';
+    const PRIMARY_KEY = 'id_article';
+
+    const FILES = [
+        'banner' => [
+            'sizes' => [
+                'big' => [
+                    'width' => 1000,
+                    'height' => 800
+                ],
+            ],
+        ],
+    ];
+}
+</code></pre>
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <p>
+                                    That's it. And your Article object will be able to store banner image for every DB article row.
+                                    <br>
+                                    The "big" keyword is just a shortcut name you decide to use.
+                                </p>
+                                <p>
+                                    The other details from Utilities chapter will show you the PHP class methods you can use for:
+                                    <ul>
+                                        <li>uploading files;</li>
+                                        <li>editing files;</li>
+                                        <li>getting the url for any certain file.</li>
+                                    </ul>
+                                </p>
+                            </section>
+
+                            <!-- DevPanel -->
+                            <section class="docs-section" id="docs-devpanel">
+                                <h4>DevPanel</h4>
+
+                                <p>
+                                    Do you need a technical overview about your project? We got you.
+                                </p>
+                                <p>
+                                    From DevPanel, you can do the following and more:
+                                    <ul>
+                                        <li>See what scss/js files every page uses;</li>
+                                        <li>Recompile the scss/js in one single file;</li>
+                                        <li>Empty PHP session;</li>
+                                        <li>Activate maintenance for the website;</li>
+                                        <li>See PHP log errors;</li>
+                                        <li><i>and many more...</i></li>
+                                    </ul>
+                                </p>
+                                <p>
+                                    Find out more from <u class="d-inline-block">Utilities > DevPanel</u> anytime you need.
+                                </p>
+                            </section>
+
+                            <div class="progress progress-bar-striped h-auto" role="progressbar" aria-label="45% completed" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100">
+                                <div class="progress-bar bg-primaray text-wrap p-1" style="width: 45%">you're 45% done reading...</div>
+                            </div>
+                        </section>
+
+                    </header>
+                </article>
+
+                <!-- Utilities -->
+			    <article class="docs-article" id="utilities">
+                    <header class="docs-header">
+					    <h1 class="docs-heading">
+                            Utilities
+                            <span class="docs-time">
+                                <span class="float-end">09 Jun 2023</span>
+                                <br><small><small class="float-end"><i>last update of "Utilities"</i></small></small>
+                            </span>
+                        </h1>
+					    <section class="docs-intro">
+						    <p>All Arshwell classes which will save your time.</p>
+						    <p>They are the core of the framework.</p>
+						</section>
+
+                        <!-- Web::class -->
+                        <section class="docs-section" id="utility-web-class">
+                            <h2 class="section-heading"><code>Web::class</code></h2>
+
+                            <p>
+                                You create your page links in <code>config/forks/</code> files.
+                                <br>But you shouldn't use these plain text links in your html.
+                            </p>
+                            <p>
+                                In this way, whenever you want to edit a page link, you have one single place to change it with:
+                                <code>config/forks/</code>.
+                            </p>
+
+                            <ul>
+                                <li>
+                                    Web::url() receives your route key and generates the url:
+
+                                    <pre><code class="hljs">&lt;a href="&lt;?= Web::url('site.blog') ?&gt;"&gt;
+    Blog
+&lt;/a&gt;
+</code></pre>
+                                    <small>
+                                        If you change the blog page link, or if you change the website domain,
+                                        you don't have to edit them in the entire website, but only in config :)
+                                    </small>
+                                </li>
+                            </ul>
+                        </section>
+
+                        <!-- Table::class -->
+                        <section class="docs-section" id="utility-table-class">
+                            <h2 class="section-heading"><code>Table::class</code></h2>
+
+                            <p>
+                                For every DB table, you just create, in your project, a class which extends this Arshwell Table::class.
+                                <br>The rest is magic. You will automatically have static methods for SELECT, INSERT, UPDATE, DELETE, and many more.
+                            </p>
+                            <p>
+                                The SELECT method will return an object containing all wanted columns from database :D
+                            </p>
+
+                            See a very straight forward example:
+
+                            <div class="mt-3 row">
+                                <div class="col-md">
+
+                                    <div class="pb-1"><code><b>1.</b> app/Table/Blog/Article.php</code></div>
+                                    <pre><code>&lt;?php
+
+namespace MyNamespace\Table\Blog;
+
+use Arshwell\Monolith\Table;
+
+final class Article extends Table
+{
+    const TABLE       = 'articles';
+    const PRIMARY_KEY = 'id_article';
+}
+</code></pre>
+
+                                </div>
+                                <div class="col-md">
+
+                                    <div class="pb-1"><code><b>2.</b> outcomes/site/blog/backend.php</code></div>
+                                    <pre><code>&lt;?php
+
+use MyNamespace\Table\Blog\Article;
+
+/* update in database to make invisible the articles older than 2019 */
+Article::update([
+    'set' => "visible = 0",
+    'where' => "inserted_at < 2019-01-01",
+]);
+
+/* select from database only the articles with "visible" equals 1 */
+$articles = Article::select([
+    'columns' => "title, description",
+    'where' => "visible = 1",
+]);
+</code></pre>
+
+                                </div>
+                                <div class="col-md">
+
+                                    <div class="pb-1"><code><b>3.</b> outcomes/site/blog/frontend.php</code></div>
+                                    <pre><code class="hljs">&lt;?php
+foreach ($articles as $article) { ?&gt;
+    &lt;a href="&lt;?= Web::url('site.article', ['id' => $article->id()]) ?&gt;"&gt;
+        &lt;?= $article->title() ?&gt;
+    &lt;/a&gt;
+&lt;?php } ?&gt;
+                                            </code></pre>
+                                        </div>
+                                    </div>
+
+                                    <small>
+                                        As you can see, the articles are PHP objects. So the ::select() method did the hard job.
+                                        We just enjoying it.
+                                        <br>
+                                        <b>Note:</b> Web::url() uses a second parameter to define the article id. Of course, the id will be added in the url.
+                                    </small>
+                                </li>
+                            </ul>
+                        </section>
+
+                        <!-- Session::class -->
+                        <section class="docs-section" id="utility-session-class">
+                            <h2 class="section-heading"><code>Session::class</code></h2>
+
+                            <p>
+                                You will rarely use the Session class. It's a core class used the most by Arshwell.
+                                But why not to understand the benefits of it.
+                            </p>
+                            <p>
+                                Managing the session data can be difficult. Especially if there are many websites in the same domain.
+                            </p>
+                            <p>
+                                Here are its superpowers:
+
+                                <ul>
+                                    <li>
+                                        It encapsulates the session. So more websites on the same domain won't affect each other.
+                                        <br>
+                                        Use <code>$_SESSION</code> global variable without any concern.
+                                    </li>
+                                    <li>
+                                        It takes care of saving user data after login. No need to do it by yourself.
+                                        <br>
+                                        <small>Ofc, it deletes it to logout.</small>
+                                    </li>
+                                    <li>
+                                        <code>Session::form()</code> gives you the validation messages from a POST request.
+                                        <br>
+                                        When the submit redirects the user back to the form, you will have access to the validation made by the POST route.
+                                    </li>
+                                </ul>
+                            </p>
+
+                        </section>
+
+                        <!-- Table\TableValidation::class -->
+                        <section class="docs-section" id="utility-table-validation-class">
+                            <h2 class="section-heading"><code>Table\TableValidation::class</code></h2>
+
+                            <p>
+                                For every language your site has, you create in your project a class which extends this Arshwell TableValidation::class.
+                                <br>Any form filled by user will be validated wonderful.
+                            </p>
+
+                            See a very straight forward example:
+
+                            <div class="mt-3">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="pb-1"><code><b>1.</b> app/Validation/SiteValidation.php</code></div>
+                                        <pre><code>&lt;?php
+
+namespace MyNamespace\Validation;
+
+use Arshwell\Monolith\Table\TableValidation;
+
+use MyNamespace\Language\LangSite;
+
+class SiteValidation extends TableValidation {
+    const TABLE         = 'validations_site';
+    const PRIMARY_KEY   = NULL;
+
+    const TRANSLATOR    = LangSite::class;
+}
+</code></pre>
+
+                                        <div class="pb-1"><code><b>2.</b> outcomes/site/contact/backend.php</code></div>
+                                        <pre><code>&lt;?php
+
+use Arshwell\Monolith\Session;
+
+/* if exists, get validation from the route which made it */
+$submitResponse = Session::form('site.validation.contact')
+</code></pre>
+
+                                        <div class="pb-1"><code><b>3.</b> outcomes/site/contact/frontend.php</code></div>
+                                        <pre><code class="hljs">&lt;form action="&lt;?= Web::url('site.validation.contact') ?&gt;" method="POST"&gt;
+    &lt;input type="text" name="name" /&gt;
+    &lt;?php
+    if (null != $submitResponse->error('name')) { ?&gt;
+        &lt;span&gt;&lt;?= $submitResponse->error('name') ?&gt;&lt;/span&gt;
+    &lt;?php } ?&gt;
+
+    &lt;input type="text" name="email" /&gt;
+    &lt;?php
+    if (null != $submitResponse->error('email')) { ?&gt;
+        &lt;span&gt;&lt;?= $submitResponse->error('email') ?&gt;&lt;/span&gt;
+    &lt;?php } ?&gt;
+
+    &lt;textarea name="message"&gt;&lt;/textarea&gt;
+    &lt;?php
+    if (null != $submitResponse->error('message')) { ?&gt;
+        &lt;span&gt;&lt;?= $submitResponse->error('message') ?&gt;&lt;/span&gt;
+    &lt;?php } ?&gt;
+
+    &lt;button type="submit"&gt;Send&lt;/button&gt;
+&lt;/form&gt;
+</code></pre>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="pb-1"><code><b>4.</b> outcomes/site/validation/contact.php</code></div>
+                                        <pre><code>&lt;?php
+
+use Arshwell\Monolith\Web;
+
+use MyNamespace\Table\Contact;
+use MyNamespace\Validation\SiteValidation;
+
+// validate these fields sent by html form
+$response = SiteValidation::run($_POST, [
+    'name' => [
+        "required",
+        function ($value) {
+            return trim($value);
+        },
+        "minLength:3"
+    ],
+    'email' => [
+        function ($value) {
+            return trim($value);
+        },
+        "email"
+    ],
+    'message' => [
+        function ($value) {
+            return trim($value);
+        },
+        "maxLength:300"
+    ]
+]);
+
+if ($response->valid()) {
+    // save data in database contact table
+    Contact::insert(
+        "name, email, message",
+        "?, ?, ?",
+        $response->values(['name', 'email', 'message'])
+    );
+
+    /* validation won&apos;t be stored to session,
+    because the data was valid */
+    $response->forget();
+}
+else {
+    /* validation will be stored to session,
+    so the frontend will have access to it */
+    $response->remember(true);
+}
+
+// go back to contact page
+Web::goBack('site.contact');
+</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <small>
+                                As you can see, when a submit is made to
+                                <code class="d-inline-block"><b>4.</b> outcomes/site/validation/contact.php</code>,
+                                if the data is invalid, validation is saved in session and displayed in
+                                <code class="d-inline-block"><b>3.</b> outcomes/site/contact/frontend.php</code>, under every html field.
+                            </small>
+                        </section>
+				    </header>
+
+                    <div class="progress progress-bar-striped h-auto" role="progressbar" aria-label="70% completed" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">
+                        <div class="progress-bar bg-success text-wrap p-1" style="width: 70%">you're 70% done reading...</div>
+                    </div>
+                </article>
+
+                <!-- FAQs -->
+			    <article class="docs-article" id="faqs">
+				    <header class="docs-header">
+					    <h1 class="docs-heading">
+                            FAQs
+                            <span class="docs-time">
+                                <span class="float-end">09 Jun 2023</span>
+                                <br><small><small class="float-end"><i>last update of "FAQs"</i></small></small>
+                            </span>
+                        </h1>
+					    <section class="docs-intro">
+						    <p>Before any worries, let us answer the most frequently asked questions.</p>
+						</section>
+				    </header>
+
+                    <h5 class="pt-3">
+                        <i class="fas fa-question-circle me-1"></i>
+                        Is Arshwell a good solution?
+                    </h5>
+                    <p>
+                        This framework is made for novice developers. It doesn't use complex concepts like MVC and dependency injection.
+                        <br>
+                        In this way, anybody can learn it and use very fast.
+                    </p>
+
+                    <h5 class="pt-3">
+                        <i class="fas fa-question-circle me-1"></i>
+                        What skills should I have before using this framework?
+                    </h5>
+                    <p>
+                        Arshwell helps you creating web platforms. Minimum of PHP, HTML, CSS are very important.
+                        For a good fit, Javascript and SCSS are useful.
+                        <br>
+                        If you're in the process of learning web development,
+                        <a href="https://www.instagram.com/arshavinel/" target="_blank">join</a>
+                        our very low-priced online workshops.
+                    </p>
+
+                    <article class="docs-article" id="contributing">
+                        <h5 class="pt-3">
+                            <i class="fas fa-question-circle me-1"></i>
+                            Can I improve Arshwell?
+                        </h5>
+                        <p>
+                            Yes, of course. You can anytime make a Pull Request on GitHub project with your improvement.
+                            <br>
+                            Contributing steps can be found on
+                            <a href="https://github.com/arshwell/monolith#contributing" target="_blank">GitHub Arshwell README</a> section.
+
+                            <br><br>
+
+                            <small class="text-body-tertiary">
+                                For running the changes also in the Arshwell example project, you need to copy your changes in its own
+                                <span class="d-inline-block">vendor/arshwell/monolith.</span>
+                                <br>
+                                <small>
+                                    For every modification, run
+                                    <code class="d-inline-block">sh vendor/arshwell/monolith/bin/cp-arshwell-to-example.sh</code>
+                                    in the root.
+                                    <br>
+                                    It'll copy <span class="d-inline-block">/vendor/arshwell/monolith/</span>
+                                    to <span class="d-inline-block">/vendor/arshwell/monolith/example/vendor/arshwell/monolith/.</span>
+                                </small>
+                            </small>
+                        </p>
+                    </article>
+
+                    <div class="progress progress-bar-striped h-auto" role="progressbar" aria-label="80% completed" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100">
+                        <div class="progress-bar bg-success text-wrap p-1" style="width: 80%">you're 80% done reading...</div>
+                    </div>
+                </article>
+
+                <!-- Coding standards -->
+			    <article class="docs-article" id="coding-standards">
+				    <header class="docs-header">
+					    <h1 class="docs-heading">
+                            Coding standards
+                            <span class="docs-time">
+                                <span class="float-end">09 Jun 2023</span>
+                                <br><small><small class="float-end"><i>last update of "Coding standards"</i></small></small>
+                            </span>
+                        </h1>
+					    <section class="docs-intro">
+						    <p>Follow these standards for a more professional coding way.</p>
+						</section>
+				    </header>
+
+                    <ul>
+                        <li>In PHP, for arrays, use brackets <code>[]</code>, instead of <code>array()</code>.</li>
+                        <li>In PHP, for classes and methods, put the starting brace <code>{</code> at the next line.</li>
+                        <li>In HTML, when you echo something, use the shorter syntax: <code>&lt;?= $var ?&gt;</code></li>
+                    </ul>
+
+                    <div class="progress progress-bar-striped h-auto" role="progressbar" aria-label="90% completed" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100">
+                        <div class="progress-bar bg-success text-wrap p-1" style="width: 90%">you're 90% done reading...</div>
+                    </div>
+                </article>
+
+                <!-- Deploy website -->
+			    <article class="docs-article" id="deploy-website">
+				    <header class="docs-header">
+					    <h1 class="docs-heading">
+                            Deploy website
+                            <span class="docs-time">
+                                <span class="float-end">09 Jun 2023</span>
+                                <br><small><small class="float-end"><i>last update of "Deploy website"</i></small></small>
+                            </span>
+                        </h1>
+					    <section class="docs-intro">
+						    <p>The live website needs another configuration than the dev one.</p>
+						</section>
+				    </header>
+
+                    <p>
+                        In order to easily deploy your project to live, use GitHub Actions workflow.
+                        <br>
+                        With just a GitHub .yml small file inside your project, GitHub will deploy your website,
+                        via FTP, directly to live.
+                    </p>
+                    <p>
+                        The rest is miraculous. For every PR merged with the main branch, all modifications are
+                        instantly uploaded on the live web server.
+                    </p>
+                    <p>
+                        For having another <code>.env.local</code> file on live, GitHub Workflow will let you define it easily.
+                    </p>
+
+                    <div class="progress progress-bar-striped h-auto" role="progressbar" aria-label="100% completed" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                        <div class="progress-bar bg-success text-wrap p-1" style="width: 100%">you're 100% done reading</div>
+                    </div>
+                </article>
+
+			    <footer class="footer">
+				    <div class="container text-center py-5">
+				        <small class="copyright">Designed with <span class="sr-only">love</span><i class="fas fa-heart" style="color: #fb866a;"></i> by <a class="theme-link" href="https://github.com/arshavinel" target="_blank">Arshavin</a> for novice developers</small>
+				        <ul class="social-list list-unstyled pt-4 mb-0">
+						    <li class="list-inline-item"><a href="https://github.com/arshwell/monolith" target="_blank"><i class="fab fa-github fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="https://www.instagram.com/arshavinel/" target="_blank"><i class="fab fa-instagram fa-fw"></i></a></li>
+				        </ul>
+				    </div>
+			    </footer>
+		    </div>
+	    </div>
+    </div>
+
+    <!-- js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.min.js" integrity="sha512-3dZ9wIrMMij8rOH7X3kLfXAzwtcHpuYpEgQg1OA4QAob1e81H8ntUQmQm3pBudqIoySO5j0tHN4ENzA6+n2r4w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/smooth-scroll/16.1.3/smooth-scroll.min.js" integrity="sha512-HYG9E+RmbXS7oy529Nk8byKFw5jqM3R1zzvoV2JnltsIGkK/AhZSzciYCNxDMOXEbYO9w6MJ6SpuYgm5PJPpeQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.8/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gumshoe/5.1.1/gumshoe.polyfills.min.js" integrity="sha512-yVzCaz20ZDrzuRplydQew5tUuKPXueLLvXhS8w5QMmvaQ90PJsoqD9gKSifYBEcMosPAeRxSTRDq2CWvZMX67w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="assets/js/docs.js"></script>
+</body>
+</html>
