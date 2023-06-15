@@ -18,12 +18,12 @@ Arshwell uses next technologies:
 ### Installation & Setup
 
 1. From terminal, in the root of your project, run `composer require arshwell/monolith:0.*`
-2. After that run `sh vendor/arshwell/monolith/bin/copy-arshwell-example.sh`
+2. After that run `sh vendor/arshwell/monolith/bin/install-arshwell-example.sh`
 3. Replace, in entire project, MyTeam\MyProject, with your desired namespace
 4. Create the .env.local file
 5. Done 📢 run your website!
 
-See more details on https://arshwell.github.io/docs.html#installation
+See more details on https://arshwell.github.io/monolith/docs.html#installation
 
 ### Features
 
@@ -66,7 +66,7 @@ Thank you for considering contributing to the Arshwell framework!
     - Explain the problem you've found
     - Present the solution you've implemented;
 
-See other details on https://arshwell.github.io/docs.html#contributing
+See other details on https://arshwell.github.io/monolith/docs.html#contributing
 
 ### Code of Conduct
 
