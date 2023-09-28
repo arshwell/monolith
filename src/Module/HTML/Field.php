@@ -671,6 +671,14 @@ final class Field {
                         }, array_keys($config['JS']['tagsinput']), $config['JS']['tagsinput']));
                     }
                 } ?>
+                <?php
+                if (isset($config['JS']['tailDateTime'])) {
+                    echo ('js-plugin-taildatetime="'.(!is_bool($config['JS']['tailDateTime']) || $config['JS']['tailDateTime'] == true ? 'true' : 'false').'"');
+
+                    if (is_array($config['JS']['tailDateTime'])) {
+                        echo self::convertArrayToHtmlAttributes('js-plugin-taildatetime', $config['JS']['tailDateTime']);
+                    }
+                } ?>
                 <?= (($config['HTML']['name'] ?? false) ? 'name="'.$config['HTML']['name'].'"' : '') ?>
                 value="<?= htmlspecialchars($config['HTML']['value']) // to avoid HTML conflicts ?>"
                 form-valid-update="<?= (empty($config['JS']['update']) ? 'false' : 'true') ?>"
@@ -1210,5 +1218,18 @@ final class Field {
             <?php }
 
         return ob_get_clean();
+    }
+
+
+    private static function convertArrayToHtmlAttributes (string $key, array $attributes): string {
+        return implode(' ', array_map(function ($prefix, $value) use ($key) {
+            if (is_array($value)) {
+                return self::convertArrayToHtmlAttributes("$key-$prefix", $value);
+            }
+            if (is_bool($value)) {
+                return ("$key-$prefix=" . ($value == true ? 'true' : 'false'));
+            }
+            return ("$key-$prefix=$value");
+        }, array_keys($attributes), $attributes));
     }
 }
