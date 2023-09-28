@@ -103,6 +103,59 @@ $(document).ready(function () {
         });
     }
 
+    if (typeof tail.DateTime == 'function') {
+        $('[js-plugin-taildatetime="true"]').each(function () {
+            var attributes = {};
+
+            $.each(this.attributes, function (i, attr) {
+                if (attr.specified && attr.name.startsWith("js-plugin-taildatetime-")) {
+                    let value = attr.value;
+                    if (value === "true") value = true;
+                    else if (value === "false") value = false;
+
+                    const name = attr.name.substring("js-plugin-taildatetime-".length)
+                        .replace(/-([a-z])/, function (match, letter) {
+                            return letter.toUpperCase();
+                        });
+
+                    const parts = name.split('-');
+
+                    let current = attributes;
+
+                    for (let j = 0; j < parts.length; j++) {
+                        const part = parts[j];
+                        const isNumeric = !isNaN(part);
+
+                        if (j === parts.length - 1) {
+                            if (isNumeric) {
+                                const index = parseInt(part, 10);
+                                current = current || [];
+                                current[index] = value;
+                            } else {
+                                current[part] = value;
+                            }
+                        } else {
+                            if (isNumeric) {
+                                const index = parseInt(part, 10);
+                                current = current || [];
+                                current[index] = current[index] || (isNaN(parts[j + 1]) ? {} : []);
+
+                                current = current[index];
+                            } else {
+                                current[part] = current[part] || {};
+                                current = current[part];
+                            }
+                        }
+                    }
+                }
+            });
+
+            tail.DateTime(this, attributes);
+        });
+
+    }
+
+
     if (typeof tinyMCE == 'object') {
         var options = {
             setup: function (editor) {
