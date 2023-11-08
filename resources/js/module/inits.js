@@ -103,7 +103,7 @@ $(document).ready(function () {
         });
     }
 
-    if (typeof tail.DateTime == 'function') {
+    if (typeof tail == 'object' && typeof tail.DateTime == 'function') {
         $('[js-plugin-taildatetime="true"]').each(function () {
             var attributes = {};
 
