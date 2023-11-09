@@ -158,7 +158,7 @@ final class Func {
     }
 
     static function hasSubarrays (array $array): bool {
-        return count(array_filter(array_keys($array), 'is_array')) > 0;
+        return count(array_filter($array, 'is_array')) > 0;
     }
 
     static function hasValidJSON (string $file): bool {
