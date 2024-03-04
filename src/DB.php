@@ -105,6 +105,13 @@ final class DB {
                 $query
             );
 
+            // FOREIGN KEY column REFERENCES table(column) => FOREIGN KEY column REFERENCES pr_table(column)
+            $query = preg_replace(
+                "/ (FOREIGN \s+ KEY \s+ \(\w+\) \s+ REFERENCES \s+) (\w+ \(\w+\)) /x",
+                '$1'.$tb_prefix.'$2',
+                $query
+            );
+
             if ($dml_dql || $ddl) {
                 $commands = array();
 
@@ -632,7 +639,7 @@ final class DB {
         }
 
         final static function createTable (string $tb_name, array $columns): void {
-            $sql = "CREATE TABLE IF NOT EXISTS ". self::$tb_prefixes[self::$defaultDbConnKey].$tb_name ." (". implode(', ', $columns) .");";
+            $sql = "CREATE TABLE IF NOT EXISTS ". self::$tb_prefixes[self::$defaultDbConnKey].$tb_name ." (". self::prefix(self::$tb_prefixes[self::$defaultDbConnKey], implode(', ', $columns)) .");";
 
             try {
                 self::$pdos[self::$defaultDbConnKey]->exec($sql);
