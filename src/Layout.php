@@ -10,7 +10,7 @@ use Arshwell\Monolith\File;
 use Arshwell\Monolith\Func;
 use Arshwell\Monolith\StaticHandler;
 use Arshwell\Monolith\Web;
-
+use Exception;
 use MatthiasMullie\Minify\JS as JsMin;
 use ScssPhp\ScssPhp\Compiler as ScssPhp;
 
@@ -980,7 +980,7 @@ final class Layout {
                     $dirname = dirname('uploads/design/dev/'. $file['name']);
 
                     if (is_dir($dirname) || mkdir($dirname, 0755, true)) {
-                        file_put_contents('uploads/design/dev/'. $file['name'], '"use strict"; ' . file_get_contents($file['name']));
+                        file_put_contents('uploads/design/dev/' . $file['name'], '"use strict"; ' . file_get_contents($file['name']), LOCK_EX);
                     }
                 }
 
@@ -1578,6 +1578,11 @@ final class Layout {
         return $links;
     }
 
+    /**
+     * @return array
+     *
+     * @throws Exception
+     */
     static function mediaLinks (string $route = NULL, array $pieces = NULL): array {
         $site           = Web::site();
         $pieces         = array_unique($pieces ?? Piece::used()); // copy so we can sort it
@@ -1612,6 +1617,7 @@ final class Layout {
                         )
                     )
                 );
+
                 $mediaLinks['urls'] = array(
                     'css'   => $site . $mediaLinks['paths']['css'],
                     'js'    => array(
@@ -1619,9 +1625,12 @@ final class Layout {
                         'footer' => $site . $mediaLinks['paths']['js']['footer']
                     )
                 );
+
                 return $mediaLinks;
             }
         }
+
+        throw new Exception("No media links found for this page.");
     }
 
     /**
