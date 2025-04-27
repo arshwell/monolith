@@ -244,25 +244,29 @@ abstract class TableValidation extends Table {
                     break;
                 case 'inDB':
                     if ((is_numeric($value) || !empty($value)) &&
-                    !DB::count($params[0], ($params[1] ?? $sub_field) .' = ?', array($value))) {
+                        !DB::countWhere($params[0], ($params[1] ?? $sub_field) . ' = ?', array($value))
+                    ) {
                         return ($message ?? self::message('dbExists'));
                     }
                     break;
                 case 'notInDB':
                     if ((is_numeric($value) || !empty($value)) &&
-                    DB::count($params[0], ($params[1] ?? $sub_field) .' = ?', array($value))) {
+                        DB::countWhere($params[0], ($params[1] ?? $sub_field) . ' = ?', array($value))
+                    ) {
                         return ($message ?? self::message('dbUnique'));
                     }
                     break;
                 case 'likeDB':
                     if ((is_numeric($value) || !empty($value)) &&
-                    !DB::count($params[0], ($params[1] ?? $sub_field) .' LIKE ?', array($value))) {
+                        !DB::countWhere($params[0], ($params[1] ?? $sub_field) . ' LIKE ?', array($value))
+                    ) {
                         return ($message ?? self::message('dbLike'));
                     }
                     break;
                 case 'notLikeDB':
                     if ((is_numeric($value) || !empty($value)) &&
-                    DB::count($params[0], ($params[1] ?? $sub_field) .' LIKE ?', array($value))) {
+                        DB::countWhere($params[0], ($params[1] ?? $sub_field) . ' LIKE ?', array($value))
+                    ) {
                         return ($message ?? self::message('dbNotLike'));
                     }
                     break;

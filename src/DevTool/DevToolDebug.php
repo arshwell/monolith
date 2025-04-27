@@ -229,7 +229,24 @@ final class DevToolDebug {
             'SELECT', 'UPDATE', 'INSERT', 'INTO', 'VALUES', 'DELETE', 'FROM', 'ON',
             'WHERE', 'IF', 'ELSE', 'EXISTS', 'AND', 'OR', 'NOT', 'AS', 'LIKE', 'INNER JOIN', 'LEFT JOIN', 'RIGHT JOIN',
             'FULL JOIN', 'SELF JOIN', 'NULL', 'SET', 'GROUP BY', 'ORDER BY CASE WHEN', 'ORDER BY', 'THEN', 'LIMIT',
-            'ASC', 'END DESC', 'DESC', 'OFFSET', 'RAND()', 'CREATE TABLE', 'ALTER TABLE', 'MODIFY COLUMN', 'DROP TABLE', 'IFNULL', 'MAX', 'MIN'
+            'ASC',
+            'END DESC',
+            'DESC',
+            'OFFSET',
+            'RAND()',
+            'CREATE TABLE',
+            'ALTER TABLE',
+            'MODIFY COLUMN',
+            'DROP TABLE',
+            'IFNULL',
+            'MAX',
+            'MIN',
+            'ADD',
+            'CONSTRAINT',
+            'FOREIGN KEY',
+            'REFERENCES',
+            'UNIQUE INDEX',
+            'RENAME COLUMN',
         );
 
         /* Edit SQL query */
