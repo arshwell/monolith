@@ -240,140 +240,188 @@ abstract class Table
     }
 
 
+    /**
+     * DLQ (Data Query Language)
+     *
+     * @return ?static
+     */
+    final static function get(int $id, string $columns = NULL): ?Table
+    {
+        if (trim($columns) != '*' && (static::class)::PRIMARY_KEY && !preg_match("/(^(\s+)?|.+,(\s+)?)" . (static::class)::PRIMARY_KEY . "((\s+)?,.+|$)/", $columns)) {
+            $columns = (trim($columns) ? ((static::class)::PRIMARY_KEY . ', ' . $columns) : (static::class)::PRIMARY_KEY);
+        }
 
-    /* DLQ (Data Query Language) */
+        $result = DB::get(static::class, $id, $columns);
 
-        /**
-         * @return ?static
-         */
-        final static function get (int $id, string $columns = NULL): ?Table {
-            if (trim($columns) != '*' && (static::class)::PRIMARY_KEY && !preg_match("/(^(\s+)?|.+,(\s+)?)". (static::class)::PRIMARY_KEY ."((\s+)?,.+|$)/", $columns)) {
-                $columns = (trim($columns) ? ((static::class)::PRIMARY_KEY .', '. $columns) : (static::class)::PRIMARY_KEY);
+        return ($result ? new static(static::__formatColumns($result), true) : NULL);
+    }
+
+    /**
+     * DLQ (Data Query Language)
+     */
+    final static function column(string $column, string $where = NULL, array $params = NULL): array
+    {
+        return DB::column(static::class, $column, $where, $params);
+    }
+
+    /**
+     * DLQ (Data Query Language)
+     */
+    final static function field(string $column, string $where = NULL, array $params = NULL): ?string
+    {
+        return DB::field(static::class, $column, $where, $params);
+    }
+
+    /**
+     * DLQ (Data Query Language)
+     *
+     * @return ?static
+     */
+    final static function first(array $sql, array $params = NULL): ?Table
+    {
+        $sql['class'] = static::class;
+
+        if (trim($sql['columns']) != '*' && (static::class)::PRIMARY_KEY && !preg_match("/(^(\s+)?|.+,(\s+)?)" . (static::class)::PRIMARY_KEY . "((\s+)?,.+|$)/", $sql['columns'])) {
+            $sql['columns'] = (static::class)::PRIMARY_KEY . ', ' . $sql['columns'];
+
+            if (!empty($sql['join']) || !empty($sql['joins'])) {
+                $sql['columns'] = (static::class)::TABLE . '.' . $sql['columns'];
             }
-
-            $result = DB::get(static::class, $id, $columns);
-
-            return ($result ? new static(static::__formatColumns($result), true) : NULL);
+        }
+        if (!isset($sql['files']) || !is_bool($sql['files'])) {
+            $sql['files'] = false; // don't load, by default, files in Table object
         }
 
-        final static function column (string $column, string $where = NULL, array $params = NULL): array {
-            return DB::column(static::class, $column, $where, $params);
+        $result = DB::first($sql, $params);
+
+        return ($result ? new static(static::__formatColumns($result), $sql['files'], $sql['fileStorageKey'] ?? (defined(static::class . "::FILESTORAGE_KEY") ? (static::class)::FILESTORAGE_KEY : null)) : NULL);
+    }
+
+    /**
+     * DLQ (Data Query Language)
+     */
+    final static function count(array $sql, array $params = NULL): int
+    {
+        $sql['class'] = static::class;
+
+        return DB::count($sql, $params);
+    }
+
+    /**
+     * DLQ (Data Query Language)
+     */
+    final static function countWhere(string $where, array $params = NULL): int
+    {
+        return DB::countWhere(static::class, $where, $params);
+    }
+
+    /**
+     * DLQ (Data Query Language)
+     *
+     * @return static[]
+     */
+    final static function all(string $columns = NULL, string $order = NULL): array
+    {
+        if (trim($columns) != '*' && (static::class)::PRIMARY_KEY && !preg_match("/(^(\s+)?|.+,(\s+)?)" . (static::class)::PRIMARY_KEY . "((\s+)?,.+|$)/", $columns)) {
+            $columns = (static::class)::PRIMARY_KEY . ($columns ? (', ' . $columns) : '');
         }
 
-        final static function field (string $column, string $where = NULL, array $params = NULL): ?string {
-            return DB::field(static::class, $column, $where, $params);
+        return (array_map(function ($row) use ($columns) {
+            return new static(static::__formatColumns($row), true);
+        }, DB::all(static::class, $columns, $order)) ?? array());
+    }
+
+    /**
+     * DLQ (Data Query Language)
+     *
+     * @return static[]
+     */
+    final static function select(array $sql, array $params = NULL): array
+    {
+        $sql['class'] = static::class;
+
+        if (trim($sql['columns']) != '*' && (static::class)::PRIMARY_KEY && !preg_match("/(^(\s+)?|.+,(\s+)?)" . (static::class)::PRIMARY_KEY . "((\s+)?,.+|$)/", $sql['columns'])) {
+            $sql['columns'] = (static::class)::PRIMARY_KEY . ($sql['columns'] ? (', ' . $sql['columns']) : '');
+
+            if (!empty($sql['join'])) {
+                $sql['columns'] = (static::class)::TABLE . '.' . $sql['columns'];
+            }
+        }
+        if (!isset($sql['files']) || !is_bool($sql['files'])) {
+            $sql['files'] = false; // don't load, by default, files in Table object
         }
 
-        /**
-         * @return ?static
-         */
-        final static function first (array $sql, array $params = NULL): ?Table {
-            $sql['class'] = static::class;
-
-            if (trim($sql['columns']) != '*' && (static::class)::PRIMARY_KEY && !preg_match("/(^(\s+)?|.+,(\s+)?)". (static::class)::PRIMARY_KEY ."((\s+)?,.+|$)/", $sql['columns'])) {
-                $sql['columns'] = (static::class)::PRIMARY_KEY .', '. $sql['columns'];
-
-                if (!empty($sql['join'])) {
-                    $sql['columns'] = (static::class)::TABLE .'.'. $sql['columns'];
+        if (!isset($sql['sort'])) {
+            return (array_map(function ($row) use ($sql) {
+                return (new static(static::__formatColumns($row), $sql['files'], $sql['fileStorageKey'] ?? (defined(static::class . "::FILESTORAGE_KEY") ? (static::class)::FILESTORAGE_KEY : null)));
+            }, DB::select($sql, $params)) ?? array());
+        } else {
+            $results = DB::select($sql, $params);
+            foreach ($results as $i => $result) {
+                foreach ($result as $j => $row) {
+                    $results[$i][$j] = new static(static::__formatColumns($row), $sql['files'], $sql['fileStorageKey'] ?? (defined(static::class . "::FILESTORAGE_KEY") ? (static::class)::FILESTORAGE_KEY : null));
                 }
             }
-            if (!isset($sql['files']) || !is_bool($sql['files'])) {
-                $sql['files'] = false; // don't load, by default, files in Table object
-            }
-
-            $result = DB::first($sql, $params);
-
-            return ($result ? new static(static::__formatColumns($result), $sql['files'], $sql['fileStorageKey'] ?? (defined(static::class ."::FILESTORAGE_KEY") ? (static::class)::FILESTORAGE_KEY : null)) : NULL);
+            return $results;
         }
+    }
 
-        final static function count (string $where = NULL, array $params = NULL): int {
-            return DB::count(static::class, $where, $params);
-        }
+    /**
+     * DML (Data Manipulation Language)
+     */
+    final static function insert(string $columns, $values, array $params = NULL): int
+    {
+        return DB::insert(static::class, $columns, $values, $params);
+    }
 
-        /**
-         * @return static[]
-         */
-        final static function all (string $columns = NULL, string $order = NULL): array {
-            if (trim($columns) != '*' && (static::class)::PRIMARY_KEY && !preg_match("/(^(\s+)?|.+,(\s+)?)". (static::class)::PRIMARY_KEY ."((\s+)?,.+|$)/", $columns)) {
-                $columns = (static::class)::PRIMARY_KEY . ($columns ? (', '. $columns) : '');
-            }
+    /**
+     * DML (Data Manipulation Language)
+     */
+    final static function update(array $sql, array $params = NULL): int
+    {
+        $sql['class'] = static::class;
 
-            return (array_map(function ($row) use ($columns) {
-                return new static(static::__formatColumns($row), true);
-            }, DB::all(static::class, $columns, $order)) ?? array());
-        }
+        return DB::update($sql, $params);
+    }
 
-        /**
-         * @return static[]
-         */
-        final static function select (array $sql, array $params = NULL): array {
-            $sql['class'] = static::class;
+    /**
+     * DML (Data Manipulation Language)
+     */
+    final static function updateId(int $id, string $set, array $params = NULL): int
+    {
+        return DB::updateId(static::class, $id, $set, $params);
+    }
 
-            if (trim($sql['columns']) != '*' && (static::class)::PRIMARY_KEY && !preg_match("/(^(\s+)?|.+,(\s+)?)". (static::class)::PRIMARY_KEY ."((\s+)?,.+|$)/", $sql['columns'])) {
-                $sql['columns'] = (static::class)::PRIMARY_KEY . ($sql['columns'] ? (', '. $sql['columns']) : '');
+    /**
+     * DML (Data Manipulation Language)
+     */
+    final static function delete(string $where = NULL, array $params = NULL): int
+    {
+        return DB::delete(static::class, $where, $params);
+    }
 
-                if (!empty($sql['join'])) {
-                    $sql['columns'] = (static::class)::TABLE .'.'. $sql['columns'];
-                }
-            }
-            if (!isset($sql['files']) || !is_bool($sql['files'])) {
-                $sql['files'] = false; // don't load, by default, files in Table object
-            }
+    /**
+     * DML (Data Manipulation Language)
+     */
+    final static function deleteId(int $id): int
+    {
+        return DB::delete(static::class, $id);
+    }
 
-            if (!isset($sql['sort'])) {
-                return (array_map(function ($row) use ($sql) {
-                    return (new static(static::__formatColumns($row), $sql['files'], $sql['fileStorageKey'] ?? (defined(static::class ."::FILESTORAGE_KEY") ? (static::class)::FILESTORAGE_KEY : null)));
-                }, DB::select($sql, $params)) ?? array());
-            }
-            else {
-                $results = DB::select($sql, $params);
-                foreach ($results as $i => $result) {
-                    foreach ($result as $j => $row) {
-                        $results[$i][$j] = new static(static::__formatColumns($row), $sql['files'], $sql['fileStorageKey'] ?? (defined(static::class ."::FILESTORAGE_KEY") ? (static::class)::FILESTORAGE_KEY : null));
-                    }
-                }
-                return $results;
-            }
-        }
 
-    /* DML (Data Manipulation Language) */
+    /**
+     * DDL (Data Definition Language)
+     */
+    final static function columns(bool $add_primary_key = false): array
+    {
+        return DB::columnsTable((static::class)::TABLE, $add_primary_key);
+    }
 
-        final static function insert (string $columns, $values, array $params = NULL): int
-        {
-            return DB::insert(static::class, $columns, $values, $params);
-        }
-
-        final static function update (array $sql, array $params = NULL): int
-        {
-            $sql['class'] = static::class;
-
-            return DB::update($sql, $params);
-        }
-
-        final static function updateId (int $id, string $set, array $params = NULL): int
-        {
-            return DB::updateId(static::class, $id, $set, $params);
-        }
-
-        final static function delete (string $where = NULL, array $params = NULL): int
-        {
-            return DB::delete(static::class, $where, $params);
-        }
-
-        final static function deleteId (int $id): int
-        {
-            return DB::delete(static::class, $id);
-        }
-
-    /* DDL (Data Definition Language) */
-
-        final static function columns (bool $add_primary_key = false): array
-        {
-            return DB::columnsTable((static::class)::TABLE, $add_primary_key);
-        }
-
-        final static function truncate ()
-        {
-            DB::truncateTable((static::class)::TABLE);
-        }
+    /**
+     * DDL (Data Definition Language)
+     */
+    final static function truncate()
+    {
+        DB::truncateTable((static::class)::TABLE);
+    }
 }

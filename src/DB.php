@@ -55,317 +55,371 @@ final class DB
     }
 
 
-    /* TCL (Transaction Control Language) */
+    /**
+     * TCL (Transaction Control Language)
+     */
+    final static function beginTransaction(): void
+    {
+        self::$pdos[self::$defaultDbConnKey]->beginTransaction();
 
-        final static function beginTransaction (): void
-        {
-            self::$pdos[self::$defaultDbConnKey]->beginTransaction();
+        if (isset(self::$backups[self::$defaultDbConnKey])) {
+            foreach (self::$backups[self::$defaultDbConnKey] as $db_key) {
+                self::$pdos[$db_key]->beginTransaction();
+            }
+        }
+    }
+
+    /**
+     * TCL (Transaction Control Language)
+     */
+    final static function rollback(): void
+    {
+        if (self::$pdos[self::$defaultDbConnKey]->inTransaction()) {
+            self::$pdos[self::$defaultDbConnKey]->rollback();
 
             if (isset(self::$backups[self::$defaultDbConnKey])) {
                 foreach (self::$backups[self::$defaultDbConnKey] as $db_key) {
-                    self::$pdos[$db_key]->beginTransaction();
+                    self::$pdos[$db_key]->rollback();
                 }
             }
         }
-        final static function rollback (): void
-        {
-            if (self::$pdos[self::$defaultDbConnKey]->inTransaction()) {
-                self::$pdos[self::$defaultDbConnKey]->rollback();
+    }
 
-                if (isset(self::$backups[self::$defaultDbConnKey])) {
-                    foreach (self::$backups[self::$defaultDbConnKey] as $db_key) {
-                        self::$pdos[$db_key]->rollback();
-                    }
+    /**
+     * TCL (Transaction Control Language)
+     */
+    final static function commit(): void
+    {
+        if (self::$pdos[self::$defaultDbConnKey]->inTransaction()) {
+            self::$pdos[self::$defaultDbConnKey]->commit();
+
+            if (isset(self::$backups[self::$defaultDbConnKey])) {
+                foreach (self::$backups[self::$defaultDbConnKey] as $db_key) {
+                    self::$pdos[$db_key]->commit();
                 }
             }
         }
-        final static function commit (): void
-        {
-            if (self::$pdos[self::$defaultDbConnKey]->inTransaction()) {
-                self::$pdos[self::$defaultDbConnKey]->commit();
+    }
 
-                if (isset(self::$backups[self::$defaultDbConnKey])) {
-                    foreach (self::$backups[self::$defaultDbConnKey] as $db_key) {
-                        self::$pdos[$db_key]->commit();
-                    }
-                }
+
+    /**
+     * DLQ (Data Query Language)
+     */
+    final static function get(string $class, int $id, string $columns): ?array
+    {
+        $dbConnKey = (defined("{$class}::DB_CONN_KEY") ? ($class)::DB_CONN_KEY : self::$defaultDbConnKey);
+
+        $query = "SELECT " . $columns . " FROM " . self::$tb_prefixes[$dbConnKey] . ($class)::TABLE . " WHERE " . ($class)::PRIMARY_KEY . " = " . $id;
+
+        $query = self::languages($dbConnKey, $query . ';', $class, $params);
+
+        try {
+            $result = self::$pdos[$dbConnKey]->prepare($query);
+            $result->execute();
+        } catch (PDOException $e) {
+            if (StaticHandler::isCRON() == false) {
+                DevToolDebug::print_pdo_exception($e, $query);
+            } else {
+                throw new Exception($e->getMessage(), $e->getCode(), $e);
             }
         }
 
+        return ($result->fetch(PDO::FETCH_ASSOC) ?: array());
+    }
 
-    /* DLQ (Data Query Language) */
+    /**
+     * DLQ (Data Query Language)
+     */
+    final static function column(string $class, string $column, string $where = NULL, array $params = NULL): array
+    {
+        $dbConnKey = (defined("{$class}::DB_CONN_KEY") ? ($class)::DB_CONN_KEY : self::$defaultDbConnKey);
 
-        final static function get (string $class, int $id, string $columns): ?array
-        {
-            $dbConnKey = (defined("{$class}::DB_CONN_KEY") ? ($class)::DB_CONN_KEY : self::$defaultDbConnKey);
+        $query = "SELECT " . $column . " FROM " . self::$tb_prefixes[$dbConnKey] . ($class)::TABLE;
 
-            $query = "SELECT ".$columns." FROM ".self::$tb_prefixes[$dbConnKey].($class)::TABLE ." WHERE ". ($class)::PRIMARY_KEY ." = ". $id;
-
-            $query = self::languages($dbConnKey, $query.';', $class, $params);
-
-            try {
-                $result = self::$pdos[$dbConnKey]->prepare($query);
-                $result->execute();
-            }
-            catch (PDOException $e) {
-                if (StaticHandler::isCRON() == false) {
-                    DevToolDebug::print_pdo_exception($e, $query);
-                }
-                else {
-                    throw new Exception($e->getMessage(), $e->getCode(), $e);
-                }
-            }
-
-            return ($result->fetch(PDO::FETCH_ASSOC) ?: array());
+        if ($where) {
+            $query .= " WHERE " . self::prefix(self::$tb_prefixes[$dbConnKey], $where, true);
         }
 
-        final static function column (string $class, string $column, string $where = NULL, array $params = NULL): array
-        {
-            $dbConnKey = (defined("{$class}::DB_CONN_KEY") ? ($class)::DB_CONN_KEY : self::$defaultDbConnKey);
+        $query = self::languages($dbConnKey, $query . ';', $class, $params);
 
-            $query = "SELECT ". $column ." FROM ".self::$tb_prefixes[$dbConnKey].($class)::TABLE;
-
-            if ($where) {
-                $query .= " WHERE ". self::prefix(self::$tb_prefixes[$dbConnKey], $where, true);
+        try {
+            $result = self::$pdos[$dbConnKey]->prepare($query);
+            $result->execute($params);
+        } catch (PDOException $e) {
+            if (StaticHandler::isCRON() == false) {
+                DevToolDebug::print_pdo_exception($e, $query, $params);
+            } else {
+                throw new Exception($e->getMessage(), $e->getCode(), $e);
             }
-
-            $query = self::languages($dbConnKey, $query.';', $class, $params);
-
-            try {
-                $result = self::$pdos[$dbConnKey]->prepare($query);
-                $result->execute($params);
-            }
-            catch (PDOException $e) {
-                if (StaticHandler::isCRON() == false) {
-                    DevToolDebug::print_pdo_exception($e, $query, $params);
-                }
-                else {
-                    throw new Exception($e->getMessage(), $e->getCode(), $e);
-                }
-            }
-
-            return array_column($result->fetchAll(PDO::FETCH_NUM), 0);
         }
 
-        final static function field (string $class, string $column, string $where = NULL, array $params = NULL): ?string
-        {
-            $dbConnKey = (defined("{$class}::DB_CONN_KEY") ? ($class)::DB_CONN_KEY : self::$defaultDbConnKey);
+        return array_column($result->fetchAll(PDO::FETCH_NUM), 0);
+    }
 
-            $query = "SELECT ". $column ." FROM ".self::$tb_prefixes[$dbConnKey].($class)::TABLE;
+    /**
+     * DLQ (Data Query Language)
+     */
+    final static function field(string $class, string $column, string $where = NULL, array $params = NULL): ?string
+    {
+        $dbConnKey = (defined("{$class}::DB_CONN_KEY") ? ($class)::DB_CONN_KEY : self::$defaultDbConnKey);
 
-            if ($where) {
-                $query .= " WHERE ". self::prefix(self::$tb_prefixes[$dbConnKey], $where, true);
+        $query = "SELECT " . $column . " FROM " . self::$tb_prefixes[$dbConnKey] . ($class)::TABLE;
+
+        if ($where) {
+            $query .= " WHERE " . self::prefix(self::$tb_prefixes[$dbConnKey], $where, true);
+        }
+        $query .= " LIMIT 1;";
+
+        $query = self::languages($dbConnKey, $query, $class, $params);
+
+        try {
+            $result = self::$pdos[$dbConnKey]->prepare($query);
+            $result->execute($params);
+        } catch (PDOException $e) {
+            if (StaticHandler::isCRON() == false) {
+                DevToolDebug::print_pdo_exception($e, $query, $params);
+            } else {
+                throw new Exception($e->getMessage(), $e->getCode(), $e);
             }
-            $query .= " LIMIT 1;";
-
-            $query = self::languages($dbConnKey, $query, $class, $params);
-
-            try {
-                $result = self::$pdos[$dbConnKey]->prepare($query);
-                $result->execute($params);
-            }
-            catch (PDOException $e) {
-                if (StaticHandler::isCRON() == false) {
-                    DevToolDebug::print_pdo_exception($e, $query, $params);
-                }
-                else {
-                    throw new Exception($e->getMessage(), $e->getCode(), $e);
-                }
-            }
-
-            $result = $result->fetch(PDO::FETCH_NUM);
-
-            return ($result[0] ?? NULL);
         }
 
-        final static function first (array $sql, array $params = NULL): ?array
-        {
-            $dbConnKey = (defined("{$sql['class']}::DB_CONN_KEY") ? ($sql['class'])::DB_CONN_KEY : self::$defaultDbConnKey);
+        $result = $result->fetch(PDO::FETCH_NUM);
 
-            $sql['columns'] = self::prefix(self::$tb_prefixes[$dbConnKey], $sql['columns']);
+        return ($result[0] ?? NULL);
+    }
 
-            $query = "SELECT ".$sql['columns']." FROM ".self::$tb_prefixes[$dbConnKey].($sql['class'])::TABLE;
+    /**
+     * DLQ (Data Query Language)
+     */
+    final static function first(array $sql, array $params = NULL): ?array
+    {
+        $dbConnKey = (defined("{$sql['class']}::DB_CONN_KEY") ? ($sql['class'])::DB_CONN_KEY : self::$defaultDbConnKey);
 
-            if (!empty($sql['join'])) {
-                $join = $sql;
-                while (isset($join['join'])) {
-                    $join = $join['join'];
-                    $query .= " ".$join[0]." JOIN ". self::$tb_prefixes[$dbConnKey] . $join[1]." ON ".preg_replace("/(\w+[.]\w+)/", self::$tb_prefixes[$dbConnKey]."$1", $join[2]);
-                }
+        $sql['columns'] = self::prefix(self::$tb_prefixes[$dbConnKey], $sql['columns']);
+
+        $query = "SELECT " . $sql['columns'] . " FROM " . self::$tb_prefixes[$dbConnKey] . ($sql['class'])::TABLE;
+
+        if (!empty($sql['join'])) {
+            $join = $sql;
+            while (isset($join['join'])) {
+                $join = $join['join'];
+                $query .= " " . $join[0] . " JOIN " . self::$tb_prefixes[$dbConnKey] . $join[1] . " ON " . preg_replace("/(\w+[.]\w+)/", self::$tb_prefixes[$dbConnKey] . "$1", $join[2]);
             }
-            else if (!empty($sql['joins'])) {
-                foreach ($sql['joins'] as $join) {
-                    $query .= " ".$join['type']." JOIN ". self::$tb_prefixes[$dbConnKey] . $join['table']." ON ".self::prefix(self::$tb_prefixes[$dbConnKey], $join['on']);
-                }
+        } else if (!empty($sql['joins'])) {
+            foreach ($sql['joins'] as $join) {
+                $query .= " " . $join['type'] . " JOIN " . self::$tb_prefixes[$dbConnKey] . $join['table'] . " ON " . self::prefix(self::$tb_prefixes[$dbConnKey], $join['on']);
             }
-
-            if (isset($sql['where'])) {
-                $query .= " WHERE ". self::prefix(self::$tb_prefixes[$dbConnKey], $sql['where'], true);
-            }
-
-            if (isset($sql['order'])) {
-                $query .= " ORDER BY ". self::prefix(self::$tb_prefixes[$dbConnKey], $sql['order']);
-            }
-            $query .= " LIMIT 1;";
-
-            $query = self::languages($dbConnKey, $query, $sql['class'], $params);
-
-            try {
-                $result = self::$pdos[$dbConnKey]->prepare($query);
-                $result->execute($params);
-            }
-            catch (PDOException $e) {
-                if (StaticHandler::isCRON() == false) {
-                    DevToolDebug::print_pdo_exception($e, $query, $params);
-                }
-                else {
-                    throw new Exception($e->getMessage(), $e->getCode(), $e);
-                }
-            }
-
-            return ($result->fetch(PDO::FETCH_ASSOC) ?: NULL);
         }
 
-        final static function count (string $class, string $where = NULL, array $params = NULL): int
-        {
-            $dbConnKey = (defined("{$class}::DB_CONN_KEY") ? ($class)::DB_CONN_KEY : self::$defaultDbConnKey);
-
-            $query = "SELECT COUNT(*) FROM ". self::$tb_prefixes[$dbConnKey].($class)::TABLE;
-
-            if ($where) {
-                $query .= " WHERE ". self::prefix(self::$tb_prefixes[$dbConnKey], $where, true);
-            }
-
-            $query = self::languages($dbConnKey, $query.';', $class, $params);
-
-            try {
-                $result = self::$pdos[$dbConnKey]->prepare($query);
-                $result->execute($params);
-            }
-            catch (PDOException $e) {
-                if (StaticHandler::isCRON() == false) {
-                    DevToolDebug::print_pdo_exception($e, $query, $params);
-                }
-                else {
-                    throw new Exception($e->getMessage(), $e->getCode(), $e);
-                }
-            }
-
-            $result = $result->fetch(PDO::FETCH_ASSOC);
-
-            return ($result['COUNT(*)'] ?? 0);
+        if (isset($sql['where'])) {
+            $query .= " WHERE " . self::prefix(self::$tb_prefixes[$dbConnKey], $sql['where'], true);
         }
 
-        final static function all (string $class, $columns, string $order = NULL): array
-        {
-            $dbConnKey = (defined("{$class}::DB_CONN_KEY") ? ($class)::DB_CONN_KEY : self::$defaultDbConnKey);
+        if (isset($sql['order'])) {
+            $query .= " ORDER BY " . self::prefix(self::$tb_prefixes[$dbConnKey], $sql['order']);
+        }
+        $query .= " LIMIT 1;";
 
-            $query = "SELECT ".$columns." FROM ".self::$tb_prefixes[$dbConnKey].($class)::TABLE;
+        $query = self::languages($dbConnKey, $query, $sql['class'], $params);
 
-            if ($order) {
-                $query .= " ORDER BY ". $order;
+        try {
+            $result = self::$pdos[$dbConnKey]->prepare($query);
+            $result->execute($params);
+        } catch (PDOException $e) {
+            if (StaticHandler::isCRON() == false) {
+                DevToolDebug::print_pdo_exception($e, $query, $params);
+            } else {
+                throw new Exception($e->getMessage(), $e->getCode(), $e);
             }
+        }
 
-            $query = self::languages($dbConnKey, $query.';', $class, $params);
+        return ($result->fetch(PDO::FETCH_ASSOC) ?: NULL);
+    }
 
-            try {
-                $result = self::$pdos[$dbConnKey]->prepare($query);
-                $result->execute();
+    /**
+     * DLQ (Data Query Language)
+     */
+    final static function count(array $sql, array $params = NULL): int
+    {
+        $dbConnKey = (defined("{$sql['class']}::DB_CONN_KEY") ? ($sql['class'])::DB_CONN_KEY : self::$defaultDbConnKey);
+
+        $query = "SELECT COUNT(*) FROM " . ($sql['class'])::TABLE;
+
+        if (!empty($sql['join'])) {
+            $join = $sql;
+            while (isset($join['join'])) {
+                $join = $join['join'];
+
+                $query .= " " . $join[0] . " JOIN " . $join[1] . " ON " . $join[2];
             }
-            catch (PDOException $e) {
-                if (StaticHandler::isCRON() == false) {
-                    DevToolDebug::print_pdo_exception($e, $query);
-                }
-                else {
-                    throw new Exception($e->getMessage(), $e->getCode(), $e);
-                }
+        } else if (!empty($sql['joins'])) {
+            foreach ($sql['joins'] as $join) {
+                $query .= " " . $join['type'] . " JOIN " . $join['table'] . " ON " . $join['on'];
             }
+        }
 
+        $query .= " WHERE " . $sql['where'];
+
+        $query = self::languages($dbConnKey, $query . ';', $sql['class'], $params);
+
+        try {
+            $result = self::$pdos[$dbConnKey]->prepare(self::prefix(self::$tb_prefixes[$dbConnKey], $query, true));
+            $result->execute($params);
+        } catch (PDOException $e) {
+            if (StaticHandler::isCRON() == false) {
+                DevToolDebug::print_pdo_exception($e, $query, $params);
+            } else {
+                throw new Exception($e->getMessage(), $e->getCode(), $e);
+            }
+        }
+
+        $result = $result->fetch(PDO::FETCH_ASSOC);
+
+        return ($result['COUNT(*)'] ?? 0);
+    }
+
+    /**
+     * DLQ (Data Query Language)
+     */
+    final static function countWhere(string $class, string $where = NULL, array $params = NULL): int
+    {
+        $dbConnKey = (defined("{$class}::DB_CONN_KEY") ? ($class)::DB_CONN_KEY : self::$defaultDbConnKey);
+
+        $query = "SELECT COUNT(*) FROM " . self::$tb_prefixes[$dbConnKey] . ($class)::TABLE;
+
+        if ($where) {
+            $query .= " WHERE " . self::prefix(self::$tb_prefixes[$dbConnKey], $where, true);
+        }
+
+        $query = self::languages($dbConnKey, $query . ';', $class, $params);
+
+        try {
+            $result = self::$pdos[$dbConnKey]->prepare($query);
+            $result->execute($params);
+        } catch (PDOException $e) {
+            if (StaticHandler::isCRON() == false) {
+                DevToolDebug::print_pdo_exception($e, $query, $params);
+            } else {
+                throw new Exception($e->getMessage(), $e->getCode(), $e);
+            }
+        }
+
+        $result = $result->fetch(PDO::FETCH_ASSOC);
+
+        return ($result['COUNT(*)'] ?? 0);
+    }
+
+    /**
+     * DLQ (Data Query Language)
+     */
+    final static function all(string $class, $columns, string $order = NULL): array
+    {
+        $dbConnKey = (defined("{$class}::DB_CONN_KEY") ? ($class)::DB_CONN_KEY : self::$defaultDbConnKey);
+
+        $query = "SELECT " . $columns . " FROM " . self::$tb_prefixes[$dbConnKey] . ($class)::TABLE;
+
+        if ($order) {
+            $query .= " ORDER BY " . $order;
+        }
+
+        $query = self::languages($dbConnKey, $query . ';', $class, $params);
+
+        try {
+            $result = self::$pdos[$dbConnKey]->prepare($query);
+            $result->execute();
+        } catch (PDOException $e) {
+            if (StaticHandler::isCRON() == false) {
+                DevToolDebug::print_pdo_exception($e, $query);
+            } else {
+                throw new Exception($e->getMessage(), $e->getCode(), $e);
+            }
+        }
+
+        return $result->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * DLQ (Data Query Language)
+     */
+    final static function select(array $sql, array $params = NULL): array
+    {
+        $dbConnKey = (defined("{$sql['class']}::DB_CONN_KEY") ? ($sql['class'])::DB_CONN_KEY : self::$defaultDbConnKey);
+
+        if (trim($sql['columns']) != '*' && isset($sql['sort']) && !preg_match("/(^(\s+)?|.+,(\s+)?)" . $sql['sort'] . "((\s+)?,.+|$)/", $sql['columns'])) {
+            $sql['columns'] = $sql['columns'] . ', ' . $sql['sort'];
+        }
+
+        $sql['columns'] = self::prefix(self::$tb_prefixes[$dbConnKey], $sql['columns']);
+
+        $query = "SELECT " . $sql['columns'] . " FROM " . self::$tb_prefixes[$dbConnKey] . ($sql['class'])::TABLE;
+
+        if (!empty($sql['join'])) {
+            $join = $sql;
+            while (isset($join['join'])) {
+                $join = $join['join'];
+
+                $query .= " " . $join[0] . " JOIN " . self::$tb_prefixes[$dbConnKey] . $join[1] . " ON " . self::prefix(self::$tb_prefixes[$dbConnKey], $join[2]);
+            }
+        } else if (!empty($sql['joins'])) {
+            foreach ($sql['joins'] as $join) {
+                $query .= " " . $join['type'] . " JOIN " . self::$tb_prefixes[$dbConnKey] . $join['table'] . " ON " . self::prefix(self::$tb_prefixes[$dbConnKey], $join['on']);
+            }
+        }
+
+        if (isset($sql['where'])) {
+            $query .= " WHERE " . self::prefix(self::$tb_prefixes[$dbConnKey], $sql['where'], true);
+        }
+        if (isset($sql['group'])) {
+            $query .= " GROUP BY " . self::prefix(self::$tb_prefixes[$dbConnKey], $sql['group']);
+        }
+        if (isset($sql['order'])) {
+            $query .= " ORDER BY " . self::prefix(self::$tb_prefixes[$dbConnKey], $sql['order']);
+        }
+        if (isset($sql['limit'])) {
+            $query .= " LIMIT " . $sql['limit'];
+        }
+        if (isset($sql['offset'])) {
+            $query .= " OFFSET " . $sql['offset'];
+        }
+
+        $query = self::languages($dbConnKey, $query . ';', $sql['class'], $params);
+
+        try {
+            $result = self::$pdos[$dbConnKey]->prepare($query);
+            $result->execute($params);
+        } catch (PDOException $e) {
+            if (StaticHandler::isCRON() == false) {
+                DevToolDebug::print_pdo_exception($e, $query, $params);
+            } else {
+                throw new Exception($e->getMessage(), $e->getCode(), $e);
+            }
+        }
+
+        if (!isset($sql['sort'])) {
             return $result->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            $results = array();
+            foreach ($result->fetchAll(PDO::FETCH_ASSOC) as $row) {
+                $results[$row[$sql['sort']]][] = $row;
+            }
+            return $results;
         }
+    }
 
-        final static function select (array $sql, array $params = NULL): array
-        {
-            $dbConnKey = (defined("{$sql['class']}::DB_CONN_KEY") ? ($sql['class'])::DB_CONN_KEY : self::$defaultDbConnKey);
+    /**
+     * DML (Data Manipulation Language)
+     */
+    final static function insert(string $class, string $columns, $values, array $params = NULL): int
+    {
+        $dbConnKey = (defined("{$class}::DB_CONN_KEY") ? ($class)::DB_CONN_KEY : self::$defaultDbConnKey);
 
-            if (trim($sql['columns']) != '*' && isset($sql['sort']) && !preg_match("/(^(\s+)?|.+,(\s+)?)". $sql['sort'] ."((\s+)?,.+|$)/", $sql['columns'])) {
-                $sql['columns'] = $sql['columns'] .', '. $sql['sort'];
-            }
+        $query = "INSERT INTO " . self::$tb_prefixes[$dbConnKey] . ($class)::TABLE . " (" . $columns . ") VALUES (" . (is_string($values) ? $values : implode('),(', array_map(function ($columns) {
+            return (is_array($columns) ? implode(', ', $columns) : $columns);
+        }, $values))) . ");";
 
-            $sql['columns'] = self::prefix(self::$tb_prefixes[$dbConnKey], $sql['columns']);
+        $query = self::languages($dbConnKey, $query, $class, $params);
 
-            $query = "SELECT ".$sql['columns']." FROM ".self::$tb_prefixes[$dbConnKey].($sql['class'])::TABLE;
-
-            if (!empty($sql['join'])) {
-                $join = $sql;
-                while (isset($join['join'])) {
-                    $join = $join['join'];
-
-                    $query .= " ".$join[0]." JOIN ". self::$tb_prefixes[$dbConnKey] . $join[1]." ON ".self::prefix(self::$tb_prefixes[$dbConnKey], $join[2]);
-                }
-            }
-            else if (!empty($sql['joins'])) {
-                foreach ($sql['joins'] as $join) {
-                    $query .= " ".$join['type']." JOIN ". self::$tb_prefixes[$dbConnKey] . $join['table']." ON ".self::prefix(self::$tb_prefixes[$dbConnKey], $join['on']);
-                }
-            }
-
-            if (isset($sql['where'])) {
-                $query .= " WHERE ". self::prefix(self::$tb_prefixes[$dbConnKey], $sql['where'], true);
-            }
-            if (isset($sql['group'])) {
-                $query .= " GROUP BY ".self::prefix(self::$tb_prefixes[$dbConnKey], $sql['group']);
-            }
-            if (isset($sql['order'])) {
-                $query .= " ORDER BY ". self::prefix(self::$tb_prefixes[$dbConnKey], $sql['order']);
-            }
-            if (isset($sql['limit'])) {
-                $query .= " LIMIT ".$sql['limit'];
-            }
-            if (isset($sql['offset'])) {
-                $query .= " OFFSET ".$sql['offset'];
-            }
-
-            $query = self::languages($dbConnKey, $query.';', $sql['class'], $params);
-
-            try {
-                $result = self::$pdos[$dbConnKey]->prepare($query);
-                $result->execute($params);
-            }
-            catch (PDOException $e) {
-                if (StaticHandler::isCRON() == false) {
-                    DevToolDebug::print_pdo_exception($e, $query, $params);
-                }
-                else {
-                    throw new Exception($e->getMessage(), $e->getCode(), $e);
-                }
-            }
-
-            if (!isset($sql['sort'])) {
-                return $result->fetchAll(PDO::FETCH_ASSOC);
-            }
-            else {
-                $results = array();
-                foreach ($result->fetchAll(PDO::FETCH_ASSOC) as $row) {
-                    $results[$row[$sql['sort']]][] = $row;
-                }
-                return $results;
-            }
-        }
-
-    /* DML (Data Manipulation Language) */
-
-        final static function insert (string $class, string $columns, $values, array $params = NULL): int
-        {
-            $dbConnKey = (defined("{$class}::DB_CONN_KEY") ? ($class)::DB_CONN_KEY : self::$defaultDbConnKey);
-
-            $query = "INSERT INTO ". self::$tb_prefixes[$dbConnKey].($class)::TABLE ." (". $columns .") VALUES (". (is_string($values) ? $values : implode('),(', array_map(function ($columns) {
-                return (is_array($columns) ? implode(', ', $columns) : $columns);
-            }, $values))) .");";
-
-            $query = self::languages($dbConnKey, $query, $class, $params);
-
-            try {
+        try {
             $result = self::$pdos[$dbConnKey]->prepare($query);
 
             if ($params) {
@@ -379,340 +433,479 @@ final class DB
                 }
             }
 
-                ($class)::__beforeInsert();
+            ($class)::__beforeInsert();
 
             $result->execute();
 
-                ($class)::__afterInsert(self::$pdos[$dbConnKey]->lastInsertId());
+            ($class)::__afterInsert(self::$pdos[$dbConnKey]->lastInsertId());
 
 
-                    if (isset(self::$backups[$dbConnKey])) {
-                        // insert in backup databases
+            if (isset(self::$backups[$dbConnKey])) {
+                // insert in backup databases
 
-                        foreach (self::$backups[$dbConnKey] as $db_key) {
-                            self::$pdos[$db_key]->prepare($query)->execute($params);
-                        }
-                    }
-
-
-                return self::$pdos[$dbConnKey]->lastInsertId();
+                foreach (self::$backups[$dbConnKey] as $db_key) {
+                    self::$pdos[$db_key]->prepare($query)->execute($params);
+                }
             }
-            catch (PDOException $e) {
-                if (StaticHandler::isCRON() == false) {
-                    DevToolDebug::print_pdo_exception($e, $query, $params);
-                }
-                else {
-                    throw new Exception($e->getMessage(), $e->getCode(), $e);
-                }
+
+
+            return self::$pdos[$dbConnKey]->lastInsertId();
+        } catch (PDOException $e) {
+            if (StaticHandler::isCRON() == false) {
+                DevToolDebug::print_pdo_exception($e, $query, $params);
+                return 0;
+            } else {
+                throw new Exception($e->getMessage(), $e->getCode(), $e);
+            }
+        }
+    }
+
+    /**
+     * DML (Data Manipulation Language)
+     *
+     * @return int rows count updated
+     */
+    final static function update(array $sql, array $params = NULL): int
+    {
+        $dbConnKey = (defined("{$sql['class']}::DB_CONN_KEY") ? ($sql['class'])::DB_CONN_KEY : self::$defaultDbConnKey);
+
+        $query = "UPDATE " . ($sql['class'])::TABLE;
+
+        if (!empty($sql['join'])) {
+            $join = $sql;
+            while (isset($join['join'])) {
+                $join = $join['join'];
+
+                $query .= " " . $join[0] . " JOIN " . $join[1] . " ON " . $join[2];
+            }
+        } else if (!empty($sql['joins'])) {
+            foreach ($sql['joins'] as $join) {
+                $query .= " " . $join['type'] . " JOIN " . $join['table'] . " ON " . $join['on'];
             }
         }
 
-        /**
-         * @return int rows count updated
-         */
-        final static function update (array $sql, array $params = NULL): int
-        {
-            $dbConnKey = (defined("{$sql['class']}::DB_CONN_KEY") ? ($sql['class'])::DB_CONN_KEY : self::$defaultDbConnKey);
+        $query .= " SET " . self::normalizeOrphansSetters($sql['set']);
 
-            $query = "UPDATE ". self::$tb_prefixes[$dbConnKey].($sql['class'])::TABLE ." SET ". self::normalizeOrphansSetters($sql['set']);
 
-            if (isset($sql['where'])) {
-                $query .= " WHERE ". self::prefix(self::$tb_prefixes[$dbConnKey], $sql['where'], true);
-            }
+        if (isset($sql['where'])) {
+            $query .= " WHERE " . $sql['where'];
+        }
 
-            $query = self::languages($dbConnKey, $query.';', $sql['class'], $params);
+        $query = self::prefix(self::$tb_prefixes[$dbConnKey], self::languages($dbConnKey, $query . ';', $sql['class'], $params), true);
 
-            try {
-                $result = self::$pdos[$dbConnKey]->prepare($query);
+        try {
+            $result = self::$pdos[$dbConnKey]->prepare($query);
 
-                if ($params) {
+            if ($params) {
                 foreach ($params as $p => $param) {
-                        $result->bindValue(
+                    $result->bindValue(
                         is_int($p) ? ($p) + 1 : $p,
-                            $param,
-                            // really check if integer, because very long digits crash
-                            (is_numeric($param) && $param == (int)$param) ? PDO::PARAM_INT : PDO::PARAM_STR
-                        );
-                    }
+                        $param,
+                        // really check if integer, because very long digits crash
+                        (is_numeric($param) && $param == (int)$param) ? PDO::PARAM_INT : PDO::PARAM_STR
+                    );
                 }
-
-                $result->execute();
-
-
-                    if (isset(self::$backups[$dbConnKey])) {
-                        // update in backup databases
-
-                        foreach (self::$backups[$dbConnKey] as $db_key) {
-                            self::$pdos[$db_key]->prepare($query)->execute($params);
-                        }
-                    }
-
-
-                return $result->rowCount();
             }
-            catch (PDOException $e) {
-                if (StaticHandler::isCRON() == false) {
-                    DevToolDebug::print_pdo_exception($e, $query, $params);
+
+            $result->execute();
+
+
+            if (isset(self::$backups[$dbConnKey])) {
+                // update in backup databases
+
+                foreach (self::$backups[$dbConnKey] as $db_key) {
+                    self::$pdos[$db_key]->prepare($query)->execute($params);
                 }
-                else {
-                    throw new Exception($e->getMessage(), $e->getCode(), $e);
-                }
+            }
+
+
+            return $result->rowCount();
+        } catch (PDOException $e) {
+            if (StaticHandler::isCRON() == false) {
+                DevToolDebug::print_pdo_exception($e, $query, $params);
+                return 0;
+            } else {
+                throw new Exception($e->getMessage(), $e->getCode(), $e);
             }
         }
+    }
 
-        /**
-         * @return int rows count updated
-         */
-        final static function updateId (string $class, int $id, string $set, array $params = NULL): int
-        {
-            $dbConnKey = (defined("{$class}::DB_CONN_KEY") ? ($class)::DB_CONN_KEY : self::$defaultDbConnKey);
+    /**
+     * DML (Data Manipulation Language)
+     *
+     * @return int rows count updated
+     */
+    final static function updateId(string $class, int $id, string $set, array $params = NULL): int
+    {
+        $dbConnKey = (defined("{$class}::DB_CONN_KEY") ? ($class)::DB_CONN_KEY : self::$defaultDbConnKey);
 
-            $query = (
-                "UPDATE ". self::$tb_prefixes[$dbConnKey].($class)::TABLE ." SET ". self::normalizeOrphansSetters($set) .
-                " WHERE ". self::prefix(self::$tb_prefixes[$dbConnKey], ($class)::PRIMARY_KEY .' = '. $id, true)
-            );
+        $query = (
+            "UPDATE " . self::$tb_prefixes[$dbConnKey] . ($class)::TABLE . " SET " . self::normalizeOrphansSetters($set) .
+            " WHERE " . self::prefix(self::$tb_prefixes[$dbConnKey], ($class)::PRIMARY_KEY . ' = ' . $id, true)
+        );
 
-            $query = self::languages($dbConnKey, $query.';', $class, $params);
+        $query = self::languages($dbConnKey, $query . ';', $class, $params);
 
-            try {
-                $result = self::$pdos[$dbConnKey]->prepare($query);
+        try {
+            $result = self::$pdos[$dbConnKey]->prepare($query);
 
-                if ($params) {
+            if ($params) {
                 foreach ($params as $p => $param) {
-                        $result->bindValue(
+                    $result->bindValue(
                         is_int($p) ? ($p) + 1 : $p,
-                            $param,
-                            // really check if integer, because very long digits crash
-                            (is_numeric($param) && $param == (int)$param) ? PDO::PARAM_INT : PDO::PARAM_STR
-                        );
-                    }
+                        $param,
+                        // really check if integer, because very long digits crash
+                        (is_numeric($param) && $param == (int)$param) ? PDO::PARAM_INT : PDO::PARAM_STR
+                    );
                 }
-
-                ($class)::__beforeUpdateId($id);
-
-                $result->execute();
-
-                ($class)::__afterUpdateId($id);
-
-
-                    if (isset(self::$backups[$dbConnKey])) {
-                        // update in backup databases
-
-                        foreach (self::$backups[$dbConnKey] as $db_key) {
-                            self::$pdos[$db_key]->prepare($query)->execute($params);
-                        }
-                    }
-
-
-                return $result->rowCount();
             }
-            catch (PDOException $e) {
-                if (StaticHandler::isCRON() == false) {
-                    DevToolDebug::print_pdo_exception($e, $query, $params);
+
+            ($class)::__beforeUpdateId($id);
+
+            $result->execute();
+
+            ($class)::__afterUpdateId($id);
+
+
+            if (isset(self::$backups[$dbConnKey])) {
+                // update in backup databases
+
+                foreach (self::$backups[$dbConnKey] as $db_key) {
+                    self::$pdos[$db_key]->prepare($query)->execute($params);
                 }
-                else {
-                    throw new Exception($e->getMessage(), $e->getCode(), $e);
+            }
+
+
+            return $result->rowCount();
+        } catch (PDOException $e) {
+            if (StaticHandler::isCRON() == false) {
+                DevToolDebug::print_pdo_exception($e, $query, $params);
+                return 0;
+            } else {
+                throw new Exception($e->getMessage(), $e->getCode(), $e);
+            }
+        }
+    }
+
+    /**
+     * DML (Data Manipulation Language)
+     *
+     * @return int rows count deleted
+     */
+    final static function delete(string $class, string $where = NULL, array $params = NULL): int
+    {
+        $dbConnKey = (defined("{$class}::DB_CONN_KEY") ? ($class)::DB_CONN_KEY : self::$defaultDbConnKey);
+
+        $query = "DELETE FROM " . self::$tb_prefixes[$dbConnKey] . ($class)::TABLE;
+
+        if ($where) {
+            $query .= " WHERE " . $where;
+        }
+
+        $query = self::languages($dbConnKey, $query . ';', $class, $params);
+
+        try {
+            $result = self::$pdos[$dbConnKey]->prepare($query);
+            $result->execute($params);
+
+            if (isset(self::$backups[$dbConnKey])) {
+                // delete in backup databases
+
+                foreach (self::$backups[$dbConnKey] as $db_key) {
+                    self::$pdos[$db_key]->prepare($query)->execute($params);
                 }
+            }
+
+            return $result->rowCount();
+        } catch (PDOException $e) {
+            if (StaticHandler::isCRON() == false) {
+                DevToolDebug::print_pdo_exception($e, $query, $params);
+                return 0;
+            } else {
+                throw new Exception($e->getMessage(), $e->getCode(), $e);
+            }
+        }
+    }
+
+    /**
+     * DML (Data Manipulation Language)
+     *
+     * @return int rows count deleted
+     */
+    final static function deleteId(string $class, int $id): int
+    {
+        $dbConnKey = (defined("{$class}::DB_CONN_KEY") ? ($class)::DB_CONN_KEY : self::$defaultDbConnKey);
+
+        $query = "DELETE FROM " . self::$tb_prefixes[$dbConnKey] . ($class)::TABLE . " WHERE " . ($class)::PRIMARY_KEY . ' = ' . $id . ';';
+
+        try {
+            ($class)::__beforeDeleteId($id);
+
+            $result = self::$pdos[$dbConnKey]->prepare($query);
+            $result->execute();
+
+            ($class)::__afterDeleteId($id);
+
+
+            if (isset(self::$backups[$dbConnKey])) {
+                // delete in backup databases
+
+                foreach (self::$backups[$dbConnKey] as $db_key) {
+                    self::$pdos[$db_key]->prepare($query)->execute();
+                }
+            }
+
+
+            return $result->rowCount();
+        } catch (PDOException $e) {
+            if (StaticHandler::isCRON() == false) {
+                DevToolDebug::print_pdo_exception($e, $query);
+                return 0;
+            } else {
+                throw new Exception($e->getMessage(), $e->getCode(), $e);
+            }
+        }
+    }
+
+
+    /**
+     * DDL (Data Definition Language)
+     */
+    final static function tables(): array
+    {
+        $query = "SELECT * FROM information_schema.TABLES WHERE TABLE_SCHEMA = '" . StaticHandler::getEnvConfig('databases.conn.' . self::$defaultDbConnKey . '.name') . "';";
+
+        try {
+            $result = self::$pdos[self::$defaultDbConnKey]->prepare($query);
+            $result->execute();
+        } catch (PDOException $e) {
+            if (StaticHandler::isCRON() == false) {
+                DevToolDebug::print_pdo_exception($e, $query);
+            } else {
+                throw new Exception($e->getMessage(), $e->getCode(), $e);
             }
         }
 
-        /**
-         * @return int rows count deleted
-         */
-        final static function delete (string $class, string $where = NULL, array $params = NULL): int
-        {
-            $dbConnKey = (defined("{$class}::DB_CONN_KEY") ? ($class)::DB_CONN_KEY : self::$defaultDbConnKey);
+        return $result->fetchAll(PDO::FETCH_ASSOC);
+    }
 
-            $query = "DELETE FROM ". self::$tb_prefixes[$dbConnKey].($class)::TABLE;
+    /**
+     * DDL (Data Definition Language)
+     */
+    final static function existsTable(string $tb_name): bool
+    {
+        $query = "SELECT COUNT(*) FROM information_schema.TABLES WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?;";
+        $params = array(
+            StaticHandler::getEnvConfig('databases.conn.' . self::$defaultDbConnKey . '.name'),
+            self::$tb_prefixes[self::$defaultDbConnKey] . $tb_name
+        );
 
-            if ($where) {
-                $query .= " WHERE ". $where;
-            }
-
-            $query = self::languages($dbConnKey, $query.';', $class, $params);
-
-            try {
-                $result = self::$pdos[$dbConnKey]->prepare($query);
-                $result->execute($params);
-
-                    if (isset(self::$backups[$dbConnKey])) {
-                        // delete in backup databases
-
-                        foreach (self::$backups[$dbConnKey] as $db_key) {
-                            self::$pdos[$db_key]->prepare($query)->execute($params);
-                        }
-                    }
-
-                return $result->rowCount();
-            }
-            catch (PDOException $e) {
-                if (StaticHandler::isCRON() == false) {
-                    DevToolDebug::print_pdo_exception($e, $query, $params);
-                }
-                else {
-                    throw new Exception($e->getMessage(), $e->getCode(), $e);
-                }
+        try {
+            $result = self::$pdos[self::$defaultDbConnKey]->prepare($query);
+            $result->execute($params);
+        } catch (PDOException $e) {
+            if (StaticHandler::isCRON() == false) {
+                DevToolDebug::print_pdo_exception($e, $query, $params);
+            } else {
+                throw new Exception($e->getMessage(), $e->getCode(), $e);
             }
         }
 
-        /**
-         * @return int rows count deleted
-         */
-        final static function deleteId (string $class, int $id): int
-        {
-            $dbConnKey = (defined("{$class}::DB_CONN_KEY") ? ($class)::DB_CONN_KEY : self::$defaultDbConnKey);
+        $result = $result->fetch(PDO::FETCH_ASSOC);
 
-            $query = "DELETE FROM ". self::$tb_prefixes[$dbConnKey].($class)::TABLE . " WHERE ". ($class)::PRIMARY_KEY .' = '. $id .';';
+        return ($result['COUNT(*)'] == 1);
+    }
 
-            try {
-                ($class)::__beforeDeleteId($id);
+    /**
+     * DDL (Data Definition Language)
+     */
+    final static function createTable(string $tb_name, array $columns): void
+    {
+        $sql = "CREATE TABLE IF NOT EXISTS " . self::$tb_prefixes[self::$defaultDbConnKey] . $tb_name . " (" . self::prefix(self::$tb_prefixes[self::$defaultDbConnKey], implode(', ', $columns), false, true) . ");";
 
-                $result = self::$pdos[$dbConnKey]->prepare($query);
-                $result->execute();
+        try {
+            self::$pdos[self::$defaultDbConnKey]->exec($sql);
 
-                ($class)::__afterDeleteId($id);
-
-
-                    if (isset(self::$backups[$dbConnKey])) {
-                        // delete in backup databases
-
-                        foreach (self::$backups[$dbConnKey] as $db_key) {
-                            self::$pdos[$db_key]->prepare($query)->execute();
-                        }
-                    }
-
-
-                return $result->rowCount();
+            if (isset(self::$backups[self::$defaultDbConnKey])) {
+                foreach (self::$backups[self::$defaultDbConnKey] as $db_key) {
+                    self::$pdos[$db_key]->exec($sql);
+                }
             }
-            catch (PDOException $e) {
-                if (StaticHandler::isCRON() == false) {
-                    DevToolDebug::print_pdo_exception($e, $query);
-                }
-                else {
-                    throw new Exception($e->getMessage(), $e->getCode(), $e);
-                }
+        } catch (PDOException $e) {
+            if (StaticHandler::isCRON() == false) {
+                DevToolDebug::print_pdo_exception($e, $sql);
+            } else {
+                throw new Exception($e->getMessage(), $e->getCode(), $e);
+            }
+        }
+    }
+
+    /**
+     * DDL (Data Definition Language)
+     */
+    final static function columnsTable(string $tb_name, bool $add_primary_key = false): array
+    {
+        $query = "SELECT * FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?";
+        if (!$add_primary_key) {
+            $query .= " AND (COLUMN_KEY != 'PRI' OR EXTRA != 'auto_increment')";
+        }
+        $query .= ';';
+
+        $params = array(
+            StaticHandler::getEnvConfig('databases.conn.' . self::$defaultDbConnKey . '.name'),
+            self::$tb_prefixes[self::$defaultDbConnKey] . $tb_name
+        );
+
+        try {
+            $result = self::$pdos[self::$defaultDbConnKey]->prepare($query);
+            $result->execute($params);
+        } catch (PDOException $e) {
+            if (StaticHandler::isCRON() == false) {
+                DevToolDebug::print_pdo_exception($e, $query, $params);
+            } else {
+                throw new Exception($e->getMessage(), $e->getCode(), $e);
             }
         }
 
+        return $result->fetchAll(PDO::FETCH_ASSOC);
+    }
 
-    /* DDL (Data Definition Language) */
+    /**
+     * DDL (Data Definition Language)
+     */
+    final static function alterTable(string $tb_name, string $action = NULL, string $column, string $value = NULL): bool
+    {
+        $exists = self::$pdos[self::$defaultDbConnKey]->query('SHOW COLUMNS FROM ' . self::$tb_prefixes[self::$defaultDbConnKey] . $tb_name . " LIKE '" . $column . "'")->fetch(PDO::FETCH_NUM);
 
-        final static function tables (): array {
-            $query = "SELECT * FROM information_schema.TABLES WHERE TABLE_SCHEMA = '". StaticHandler::getEnvConfig('databases.conn.'.self::$defaultDbConnKey.'.name') ."';";
+        $keyword = " ";
 
-            try {
-                $result = self::$pdos[self::$defaultDbConnKey]->prepare($query);
-                $result->execute();
-            }
-            catch (PDOException $e) {
-                if (StaticHandler::isCRON() == false) {
-                    DevToolDebug::print_pdo_exception($e, $query);
-                }
-                else {
-                    throw new Exception($e->getMessage(), $e->getCode(), $e);
-                }
-            }
-
-            return $result->fetchAll(PDO::FETCH_ASSOC);
-        }
-
-        final static function existsTable (string $tb_name): bool {
-            $query = "SELECT COUNT(*) FROM information_schema.TABLES WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?;";
-            $params = array(
-                StaticHandler::getEnvConfig('databases.conn.'.self::$defaultDbConnKey.'.name'), self::$tb_prefixes[self::$defaultDbConnKey].$tb_name
-            );
-
-            try {
-                $result = self::$pdos[self::$defaultDbConnKey]->prepare($query);
-                $result->execute($params);
-            }
-            catch (PDOException $e) {
-                if (StaticHandler::isCRON() == false) {
-                    DevToolDebug::print_pdo_exception($e, $query, $params);
-                }
-                else {
-                    throw new Exception($e->getMessage(), $e->getCode(), $e);
-                }
-            }
-
-            $result = $result->fetch(PDO::FETCH_ASSOC);
-
-            return ($result['COUNT(*)'] == 1);
-        }
-
-        final static function createTable (string $tb_name, array $columns): void {
-            $sql = "CREATE TABLE IF NOT EXISTS ". self::$tb_prefixes[self::$defaultDbConnKey].$tb_name ." (". self::prefix(self::$tb_prefixes[self::$defaultDbConnKey], implode(', ', $columns)) .");";
-
-            try {
-                self::$pdos[self::$defaultDbConnKey]->exec($sql);
-
-                if (isset(self::$backups[self::$defaultDbConnKey])) {
-                    foreach (self::$backups[self::$defaultDbConnKey] as $db_key) {
-                        self::$pdos[$db_key]->exec($sql);
-                    }
-                }
-            }
-            catch (PDOException $e) {
-                if (StaticHandler::isCRON() == false) {
-                    DevToolDebug::print_pdo_exception($e, $sql);
-                }
-                else {
-                    throw new Exception($e->getMessage(), $e->getCode(), $e);
-                }
-            }
-        }
-
-        final static function columnsTable (string $tb_name, bool $add_primary_key = false): array {
-            $query = "SELECT * FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?";
-            if (!$add_primary_key) {
-                $query .= " AND (COLUMN_KEY != 'PRI' OR EXTRA != 'auto_increment')";
-            }
-            $query .= ';';
-
-            $params = array(
-                StaticHandler::getEnvConfig('databases.conn.'.self::$defaultDbConnKey.'.name'), self::$tb_prefixes[self::$defaultDbConnKey].$tb_name
-            );
-
-            try {
-                $result = self::$pdos[self::$defaultDbConnKey]->prepare($query);
-                $result->execute($params);
-            }
-            catch (PDOException $e) {
-                if (StaticHandler::isCRON() == false) {
-                    DevToolDebug::print_pdo_exception($e, $query, $params);
-                }
-                else {
-                    throw new Exception($e->getMessage(), $e->getCode(), $e);
-                }
-            }
-
-            return $result->fetchAll(PDO::FETCH_ASSOC);
-        }
-
-        final static function alterTable (string $tb_name, string $action = NULL, string $column, string $value = NULL): bool {
-            $exists = self::$pdos[self::$defaultDbConnKey]->query('SHOW COLUMNS FROM ' . self::$tb_prefixes[self::$defaultDbConnKey].$tb_name . " LIKE '". $column ."'")->fetch(PDO::FETCH_NUM);
+        if (! str_contains($action, 'CONSTRAINT')) {
             $action = ($action ? trim(strtoupper($action)) : NULL);
+        }
 
-            if ($exists) {
-                if ($action == 'ADD') {
-                    return false;
-                }
-                if (is_null($action)) {
-                    $action = 'MODIFY COLUMN';
-                }
-            }
-            else {
-                if (str_replace(' ', '', $action) == 'DROPCOLUMN') {
-                    return false;
-                }
-                if (is_null($action)) {
-                    $action = 'ADD';
-                }
+        if ($exists) {
+            if ($action == 'ADD') {
+                return false;
             }
 
-            $sql = ("ALTER TABLE ". self::$tb_prefixes[self::$defaultDbConnKey].$tb_name .' '. $action ." `". $column ."` ". str_replace('()', '', $value) .';');
+            if (is_null($action)) {
+                $action = 'MODIFY COLUMN';
+            }
+        } else {
+            if (str_replace(' ', '', $action) == 'DROPCOLUMN') {
+                return false;
+            }
+            if (is_null($action)) {
+                $action = 'ADD';
+            }
+        }
 
-            try {
+        if (str_contains($action, 'FOREIGN KEY')) {
+            $column = "($column)";
+        } else {
+            $column = "`$column`";
+        }
+
+        if (str_contains($action, 'RENAME COLUMN')) {
+            $keyword = " TO ";
+        }
+
+        $sql = ("ALTER TABLE $tb_name $action $column" . $keyword . str_replace('()', '', $value) . ';');
+
+        $sql = self::prefix(self::$tb_prefixes[self::$defaultDbConnKey], $sql, false, true);
+
+        try {
+            self::$pdos[self::$defaultDbConnKey]->exec($sql);
+
+            if (isset(self::$backups[self::$defaultDbConnKey])) {
+                foreach (self::$backups[self::$defaultDbConnKey] as $db_key) {
+                    self::$pdos[$db_key]->exec($sql);
+                }
+            }
+
+            return true;
+        } catch (PDOException $e) {
+            if (StaticHandler::isCRON() == false) {
+                DevToolDebug::print_pdo_exception($e, $sql);
+                return false;
+            } else {
+                throw new Exception($e->getMessage(), $e->getCode(), $e);
+            }
+        }
+    }
+
+    /**
+     * DDL (Data Definition Language)
+     */
+    final static function dropTable(string $tb_name): void
+    {
+        $sql = "DROP TABLE IF EXISTS " . self::$tb_prefixes[self::$defaultDbConnKey] . $tb_name . ";";
+
+        try {
+            self::$pdos[self::$defaultDbConnKey]->exec($sql);
+
+            if (isset(self::$backups[self::$defaultDbConnKey])) {
+                foreach (self::$backups[self::$defaultDbConnKey] as $db_key) {
+                    self::$pdos[$db_key]->exec($sql);
+                }
+            }
+        } catch (PDOException $e) {
+            if (StaticHandler::isCRON() == false) {
+                DevToolDebug::print_pdo_exception($e, $sql);
+            } else {
+                throw new Exception($e->getMessage(), $e->getCode(), $e);
+            }
+        }
+    }
+
+    /**
+     * DDL (Data Definition Language)
+     */
+    final static function truncateTable(string $tb_name): void
+    {
+        $sql = "TRUNCATE TABLE " . self::$tb_prefixes[self::$defaultDbConnKey] . $tb_name . ";";
+
+        try {
+            self::$pdos[self::$defaultDbConnKey]->exec($sql);
+
+            if (isset(self::$backups[self::$defaultDbConnKey])) {
+                foreach (self::$backups[self::$defaultDbConnKey] as $db_key) {
+                    self::$pdos[$db_key]->exec($sql);
+                }
+            }
+        } catch (PDOException $e) {
+            if (StaticHandler::isCRON() == false) {
+                DevToolDebug::print_pdo_exception($e, $sql);
+            } else {
+                throw new Exception($e->getMessage(), $e->getCode(), $e);
+            }
+        }
+    }
+
+
+    /**
+     * Import SQL file
+     */
+    final static function importSqlFile(string $sql_filepath): bool
+    {
+        $sql = ''; // SQL variable, used to store current query.
+
+        $lines = file($sql_filepath); // Read in entire file.
+
+        // Loop through each line
+        foreach ($lines as $line) {
+            // Skip it if it's a comment
+            if (substr($line, 0, 2) == '--' || trim($line) == '') {
+                continue;
+            }
+
+            $sql .= $line; // Add this line to the current segment.
+
+            // if it has a semicolon at the end,
+            // it's the end of the query.
+            if (substr(trim($line), -1, 1) == ';') {
+                $sql = self::prefix(self::$tb_prefixes[self::$defaultDbConnKey], $sql, true, true);
+
                 self::$pdos[self::$defaultDbConnKey]->exec($sql);
 
                 if (isset(self::$backups[self::$defaultDbConnKey])) {
@@ -721,102 +914,22 @@ final class DB
                     }
                 }
 
-                return true;
-            }
-            catch (PDOException $e) {
-                if (StaticHandler::isCRON() == false) {
-                    DevToolDebug::print_pdo_exception($e, $sql);
-                }
-                else {
-                    throw new Exception($e->getMessage(), $e->getCode(), $e);
-                }
+                // we don't catch errors because we let DevPanel to do that
+
+                $sql = ''; // Reset sql variable to empty.
             }
         }
 
-        final static function dropTable (string $tb_name): void {
-            $sql = "DROP TABLE IF EXISTS ". self::$tb_prefixes[self::$defaultDbConnKey].$tb_name .";";
-
-            try {
-                self::$pdos[self::$defaultDbConnKey]->exec($sql);
-
-                if (isset(self::$backups[self::$defaultDbConnKey])) {
-                    foreach (self::$backups[self::$defaultDbConnKey] as $db_key) {
-                        self::$pdos[$db_key]->exec($sql);
-                    }
-                }
-            }
-            catch (PDOException $e) {
-                if (StaticHandler::isCRON() == false) {
-                    DevToolDebug::print_pdo_exception($e, $sql);
-                }
-                else {
-                    throw new Exception($e->getMessage(), $e->getCode(), $e);
-                }
-            }
-        }
-
-        final static function truncateTable (string $tb_name): void {
-            $sql = "TRUNCATE TABLE ". self::$tb_prefixes[self::$defaultDbConnKey].$tb_name .";";
-
-            try {
-                self::$pdos[self::$defaultDbConnKey]->exec($sql);
-
-                if (isset(self::$backups[self::$defaultDbConnKey])) {
-                    foreach (self::$backups[self::$defaultDbConnKey] as $db_key) {
-                        self::$pdos[$db_key]->exec($sql);
-                    }
-                }
-            }
-            catch (PDOException $e) {
-                if (StaticHandler::isCRON() == false) {
-                    DevToolDebug::print_pdo_exception($e, $sql);
-                }
-                else {
-                    throw new Exception($e->getMessage(), $e->getCode(), $e);
-                }
-            }
-        }
+        return true;
+    }
 
 
-    /* Import SQL file */
-        final static function importSqlFile (string $sql_filepath): bool {
-        	$sql = ''; // SQL variable, used to store current query.
-
-    		$lines = file($sql_filepath); // Read in entire file.
-
-    		// Loop through each line
-    		foreach ($lines as $line) {
-    			// Skip it if it's a comment
-    			if (substr($line, 0, 2) == '--' || trim($line) == '') {
-    				continue;
-    			}
-
-    			$sql .= $line; // Add this line to the current segment.
-
-    			// if it has a semicolon at the end,
-                // it's the end of the query.
-    			if (substr(trim($line), -1, 1) == ';') {
-                    $sql = self::prefix(self::$tb_prefixes[self::$defaultDbConnKey], $sql, true, true);
-
-                    self::$pdos[self::$defaultDbConnKey]->exec($sql);
-
-                    if (isset(self::$backups[self::$defaultDbConnKey])) {
-                        foreach (self::$backups[self::$defaultDbConnKey] as $db_key) {
-                            self::$pdos[$db_key]->exec($sql);
-                        }
-                    }
-
-                    // we don't catch errors because we let DevPanel to do that
-
-    				$sql = ''; // Reset sql variable to empty.
-    			}
-    		}
-
-        	return true;
-        }
-
-
-    final private static function prefix (string $tb_prefix, string $query, bool $dml_dql = false, bool $ddl = false): string
+    /**
+     * (helper)
+     *
+     * Add table prefixes in all places for the SQL queries.
+     */
+    final private static function prefix(string $tb_prefix, string $query, bool $dml_dql = false, bool $ddl = false): string
     {
         // table.*          => pr_table.*
         // table.column     => pr_table.column
@@ -836,47 +949,57 @@ final class DB
             $query
         );
 
-        // FOREIGN KEY column REFERENCES table(column) => FOREIGN KEY column REFERENCES pr_table(column)
-        $query = preg_replace(
-            "/ (FOREIGN \s+ KEY \s+ \(\w+\) \s+ REFERENCES \s+) (\w+ \(\w+\)) /x",
-            '$1'.$tb_prefix.'$2',
-            $query
-        );
-
         if ($dml_dql || $ddl) {
             $commands = array();
 
             // Data Manipulation Language (DML) && Data Query Language (DQL)
             if ($dml_dql) {
                 $commands = array_merge($commands, array(
-                    'INSERT INTO', 'UPDATE', 'FROM'
+                    'INSERT INTO',
+                    'UPDATE',
+                    'FROM',
+                    'JOIN',
                 ));
             }
 
             // Data Definition Language (DDL)
             if ($ddl) {
                 $commands = array_merge($commands, array(
-                    'CREATE TABLE', 'DROP TABLE', 'ALTER TABLE', 'TRUNCATE TABLE'
+                    'CREATE TABLE',
+                    'ALTER TABLE',
+                    'DROP TABLE',
+                    'TRUNCATE TABLE',
+                    'RENAME TO',
                 ));
             }
 
-            // table => pr_table
+            // COMMAND table => COMMAND pr_table
+            $query = preg_replace_callback(
+                // "/(^|\(|\s|,) ((?:INSERT INTO) | (?:UPDATE) | (?:FROM) | (?:CREATE TABLE) | (?:ALTER TABLE)) (\s+) (\w+) (?=,|\s|\)|;|$)/x",
+                "/(^|\(|\s|,) (" . implode(' | ', array_map(function ($command) {
+                    return str_replace(' ', '\s', "(?:$command)");
+                }, $commands)) . ") (\s+) (\w+) (?=,|\s|\)|;|$)/x",
+                function ($m) use ($tb_prefix) {
+                    return $m[1] . $m[2] . $m[3] . $tb_prefix . $m[4];
+                },
+                $query
+            );
+
+            // COMMAND `table` => COMMAND `pr_table`
             $query = preg_replace(
-                // "/(^|\(|\s|,) ((?:INSERT INTO) | (?:UPDATE) | (?:FROM) | (?:CREATE TABLE) | (?:DROP TABLE) | (?:ALTER TABLE) | (?:TRUNCATE TABLE)) (\s+) (\w+) (,|\s|\)|;|$)/x",
+                // "/(^|\(|\s|,) ((?:INSERT INTO) | (?:UPDATE) | (?:FROM) | (?:CREATE TABLE) | (?:DROP TABLE) | (?:ALTER TABLE) | (?:TRUNCATE TABLE) | (?:RENAME TO)) (\s+`) (\w+`) (,|\s|\)|;|$)/x",
                 "/(^|\(|\s|,) (".implode(' | ', array_map(function($command) {
-                    return "(?:$command)";
-                }, $commands)).") (\s+) (\w+) (,|\s|\)|;|$)/x",
+                    return str_replace(' ', '\s', "(?:$command)");
+                }, $commands)) . ") (\s+`) (\w+`) (,|\s|\)|;|$)/x",
                 '$1$2$3'.$tb_prefix.'$4$5',
                 $query
             );
 
-            // `table` => `pr_table`
+            // FOREIGN KEY column REFERENCES table(column) => FOREIGN KEY column REFERENCES pr_table(column)
+            // FOREIGN KEY `column` REFERENCES table(`column`) => FOREIGN KEY `column` REFERENCES pr_table(`column`)
             $query = preg_replace(
-                // "/(^|\(|\s|,) ((?:INSERT INTO) | (?:UPDATE) | (?:FROM) | (?:CREATE TABLE) | (?:DROP TABLE) | (?:ALTER TABLE) | (?:TRUNCATE TABLE)) (\s+`) (\w+`) (,|\s|\)|;|$)/x",
-                "/(^|\(|\s|,) (".implode(' | ', array_map(function($command) {
-                    return "(?:$command)";
-                }, $commands)).") (\s+`) (\w+`) (,|\s|\)|;|$)/x",
-                '$1$2$3'.$tb_prefix.'$4$5',
+                "/ (FOREIGN \s+ KEY \s+ \((?:`?)\w+(?:`?)\) \s+ REFERENCES \s+) (\w+ \s* \((?:`?)\w+(?:`?)\)) /x",
+                '$1' . $tb_prefix . '$2',
                 $query
             );
         }
@@ -884,6 +1007,11 @@ final class DB
         return $query;
     }
 
+    /**
+     * (helper)
+     *
+     * Replace :lg with the app's languages, or with those mentioned in $params[':lg']
+     */
     final private static function languages (string $dbConnKey, string $query, string $class, array &$params = NULL): string
     {
         $regex = "/(^|\(|\s|,|`)((".self::$tb_prefixes[$dbConnKey].")(\w+)\.)?(\w+)(:lg)((\s+AS\s+\w+)(:lg))?(`|,|\s|\)|;|$)/i";
@@ -952,6 +1080,11 @@ final class DB
         return $query;
     }
 
+    /**
+     * (helper)
+     *
+     * Replace: "SET column1, column 2" => "SET column1 = ?, column2 = ?"
+     */
     final private static function normalizeOrphansSetters(string $set): string
     {
         return preg_replace("/(?<=^|,)(\s*\w+(\:lg)?)\s*(?=(,|$))/x", "$1 = ?", $set);
