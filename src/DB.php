@@ -195,7 +195,8 @@ final class DB
     {
         $dbConnKey = (defined("{$sql['class']}::DB_CONN_KEY") ? ($sql['class'])::DB_CONN_KEY : self::$defaultDbConnKey);
 
-        $sql['columns'] = self::prefix(self::$tb_prefixes[$dbConnKey], $sql['columns']);
+        // dml_dql = true, because there could be subqueries as well
+        $sql['columns'] = self::prefix(self::$tb_prefixes[$dbConnKey], $sql['columns'], true);
 
         $query = "SELECT " . $sql['columns'] . " FROM " . self::$tb_prefixes[$dbConnKey] . ($sql['class'])::TABLE;
 
@@ -349,7 +350,8 @@ final class DB
             $sql['columns'] = $sql['columns'] . ', ' . $sql['sort'];
         }
 
-        $sql['columns'] = self::prefix(self::$tb_prefixes[$dbConnKey], $sql['columns']);
+        // dml_dql = true, because there could be subqueries as well
+        $sql['columns'] = self::prefix(self::$tb_prefixes[$dbConnKey], $sql['columns'], true);
 
         $query = "SELECT " . $sql['columns'] . " FROM " . self::$tb_prefixes[$dbConnKey] . ($sql['class'])::TABLE;
 
