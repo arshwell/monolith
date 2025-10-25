@@ -18,7 +18,7 @@ use ScssPhp\ScssPhp\Compiler as ScssPhp;
  * Class for compiling scss/js, getting utils and links.
 
  * @package https://github.com/arshwell/monolith
-*/
+ */
 final class Layout {
     private static $css_suffixes = array(''); // ex: for certain users
 
@@ -960,14 +960,19 @@ final class Layout {
                     $js_web_class = $js_minifier->minify();
                 }
 
-                file_put_contents(
-                    $jsHeader,
+            $absoluteJsHeader = getcwd() . '/' . $jsHeader;
+
+            if (!file_exists($absoluteJsHeader)) {
+                touch($absoluteJsHeader);
+            }
+
+            file_put_contents(
+                $absoluteJsHeader,
                     self::signature($url).PHP_EOL. $js_web_class .PHP_EOL. implode(';'.PHP_EOL.PHP_EOL, array_map(function (array $file): string {
                         $js_minifier = new JsMin($file['name']);
 
                         return $js_minifier->minify();
-                    }, $files)) .PHP_EOL.self::signature($url),
-                    LOCK_EX
+                }, $files)) . PHP_EOL . self::signature($url)
                 );
 
                 $return = true;
@@ -1050,14 +1055,19 @@ final class Layout {
 
                 ini_set('max_execution_time', ini_get('max_execution_time') + 1);
 
-                file_put_contents(
-                    $jsFooter,
+            $absoluteJsFooter = getcwd() . '/' . $jsFooter;
+
+            if (!file_exists($absoluteJsFooter)) {
+                touch($absoluteJsFooter);
+            }
+
+            file_put_contents(
+                $absoluteJsFooter,
                     self::signature().PHP_EOL. implode(';'.PHP_EOL.PHP_EOL, array_map(function ($file) {
                         $js_minifier = new JsMin($file['name']);
 
                         return $js_minifier->minify();
-                    }, $files)) .PHP_EOL.self::signature(),
-                    LOCK_EX
+                }, $files)) . PHP_EOL . self::signature()
                 );
 
                 $return = true;
